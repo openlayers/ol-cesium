@@ -1,0 +1,13 @@
+{
+  "id": "ol3cesium-debug",
+  "inherits": "ol3cesium.json",
+
+  "define": {
+    "goog.DEBUG": true
+  },
+
+  "mode": "WHITESPACE",
+
+  "pretty-print": true,
+  "debug": true
+}
