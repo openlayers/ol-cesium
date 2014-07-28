@@ -170,7 +170,7 @@ ol3Cesium.Instance.prototype.setEnabled = function(opt_enable) {
     }, this);
     this.pausedInteractions_ = [];
 
-    this.camera_.readFromCamera();
+    this.camera_.updateView();
     goog.dom.removeNode(this.container_);
   }
 };
