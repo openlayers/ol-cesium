@@ -50,6 +50,12 @@ ol3Cesium.Instance = function(map) {
   this.enabled_ = false;
 
   /**
+   * @type {!Array.<ol.interaction.Interaction>}
+   * @private
+   */
+  this.pausedInteractions_ = [];
+
+  /**
    * @type {!Cesium.Scene}
    * @private
    */
@@ -148,10 +154,22 @@ ol3Cesium.Instance.prototype.getEnabled = function() {
 ol3Cesium.Instance.prototype.setEnabled = function(opt_enable) {
   this.enabled_ = opt_enable !== false;
   if (this.enabled_) {
+    var interactions = this.map_.getInteractions();
+    interactions.forEach(function(el, i, arr) {
+      this.pausedInteractions_.push(el);
+    }, this);
+    interactions.clear();
+
     this.handleMapTargetChanged_();
     this.handleResize_();
     this.camera_.readFromView();
   } else {
+    var interactions = this.map_.getInteractions();
+    goog.array.forEach(this.pausedInteractions_, function(el, i, arr) {
+      interactions.push(el);
+    }, this);
+    this.pausedInteractions_ = [];
+
     this.camera_.readFromCamera();
     goog.dom.removeNode(this.container_);
   }
