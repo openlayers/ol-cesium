@@ -19,7 +19,7 @@
         init2d();
 
         ol3d = ol3cesium(ol2d);
-        ol3d.setEnabled(true);
+        //ol3d.setEnabled(true);
       }
 
       function init2d() {
@@ -36,8 +36,8 @@
           }),
           target: 'map',
           view: new ol.View({
-            center: [0, 0],
-            zoom: 2
+            center: ol.proj.transform([25, 20], 'EPSG:4326', 'EPSG:3857'),
+            zoom: 3
           })
         });
       }
