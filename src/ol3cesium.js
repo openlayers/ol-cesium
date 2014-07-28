@@ -1,15 +1,18 @@
+goog.provide('ol3Cesium.Instance');
 goog.provide('ol3cesium');
 
 goog.require('goog.dom');
 goog.require('goog.events');
 
+goog.require('ol3Cesium.Camera');
+
 
 /**
  * @param {!ol.Map} map
- * @return {ol3cesium.Instance}
+ * @return {ol3Cesium}
  */
 ol3cesium = function(map) {
-  return new ol3cesium.Instance(map);
+  return new ol3Cesium.Instance(map);
 };
 
 
@@ -18,7 +21,7 @@ ol3cesium = function(map) {
  * @param {!ol.Map} map
  * @constructor
  */
-ol3cesium.Instance = function(map) {
+ol3Cesium.Instance = function(map) {
   /**
    * @type {!ol.Map}
    * @private
@@ -56,6 +59,13 @@ ol3cesium.Instance = function(map) {
   });
 
   /**
+   * @type {!ol3cesium.Camera}
+   * @private
+   */
+  this.camera_ = new ol3Cesium.Camera(this.canvas_, this.scene_.camera,
+                                      this.map_.getView());
+
+  /**
    * @type {!Cesium.Globe}
    * @private
    */
@@ -77,7 +87,6 @@ ol3cesium.Instance = function(map) {
       this.handleMapTargetChanged_, false, this);
 
   var tick = goog.bind(function() {
-    this.handleResize_();
     this.scene_.initializeFrame();
     this.scene_.render();
     Cesium.requestAnimationFrame(tick);
@@ -89,7 +98,7 @@ ol3cesium.Instance = function(map) {
 /**
  * @private
  */
-ol3cesium.Instance.prototype.handleMapTargetChanged_ = function() {
+ol3Cesium.Instance.prototype.handleMapTargetChanged_ = function() {
   if (!this.enabled_) return;
   var vp = this.map_.getViewport();
   var oc = goog.dom.getElementByClass('ol-overlaycontainer', vp);
@@ -101,7 +110,7 @@ ol3cesium.Instance.prototype.handleMapTargetChanged_ = function() {
 /**
  * @private
  */
-ol3cesium.Instance.prototype.handleResize_ = function() {
+ol3Cesium.Instance.prototype.handleResize_ = function() {
   var width = this.canvas_.clientWidth;
   var height = this.canvas_.clientHeight;
 
@@ -116,28 +125,41 @@ ol3cesium.Instance.prototype.handleResize_ = function() {
 
 
 /**
+ * @return {!Cesium.Scene}
+ */
+ol3Cesium.Instance.prototype.getCesiumScene = function() {
+  return this.scene_;
+};
+
+
+/**
  * @return {boolean}
  */
-ol3cesium.Instance.prototype.getEnabled = function() {
+ol3Cesium.Instance.prototype.getEnabled = function() {
   return this.enabled_;
 };
 
 
 /**
+ * Enables/disabled the cesium.
+ * This actually causes the canvas to be added to/removed from DOM.
  * @param {boolean=} opt_enable
  */
-ol3cesium.Instance.prototype.setEnabled = function(opt_enable) {
+ol3Cesium.Instance.prototype.setEnabled = function(opt_enable) {
   this.enabled_ = opt_enable !== false;
   if (this.enabled_) {
     this.handleMapTargetChanged_();
+    this.handleResize_();
+    this.camera_.readFromView();
   } else {
+    this.camera_.readFromCamera();
     goog.dom.removeNode(this.container_);
   }
 };
 
 
-goog.exportSymbol('ol3cesium', ol3cesium);
-goog.exportSymbol('ol3cesium.Instance.prototype.getEnabled',
-                  ol3cesium.Instance.prototype.getEnabled);
-goog.exportSymbol('ol3cesium.Instance.prototype.setEnabled',
-                  ol3cesium.Instance.prototype.setEnabled);
+//goog.exportSymbol('ol3cesium', ol3cesium);
+//goog.exportSymbol('ol3Cesium.Instance.prototype.getEnabled',
+//                  ol3Cesium.Instance.prototype.getEnabled);
+//goog.exportSymbol('ol3Cesium.Instance.prototype.setEnabled',
+//                  ol3Cesium.Instance.prototype.setEnabled);
