@@ -7,23 +7,28 @@ goog.require('goog.events');
 /**
  * This object takes care of additional 3d-specific properties of the view and
  * ensures proper synchronization with the underlying raw Cesium.Camera object.
- * @param {!HTMLCanvasElement} canvas
- * @param {!Cesium.Camera} camera
+ * @param {!Cesium.Scene} scene
  * @param {!ol.View} view
  * @constructor
  */
-ol3Cesium.Camera = function(canvas, camera, view) {
+ol3Cesium.Camera = function(scene, view) {
+  /**
+   * @type {!Cesium.Scene}
+   * @private
+   */
+  this.scene_ = scene;
+
   /**
    * @type {!HTMLCanvasElement}
    * @private
    */
-  this.canvas_ = canvas;
+  this.canvas_ = scene.canvas;
 
   /**
    * @type {!Cesium.Camera}
    * @private
    */
-  this.cam_ = camera;
+  this.cam_ = scene.camera;
 
   /**
    * @type {!ol.View}
@@ -88,11 +93,11 @@ ol3Cesium.Camera = function(canvas, camera, view) {
  * according to the current values of the properties.
  */
 ol3Cesium.Camera.prototype.updateCamera = function() {
-  // TODO: terrain picking
   var ll = this.toLatLng_(this.view_.getCenter());
 
   var carto = new Cesium.Cartographic(goog.math.toRadians(ll[0]),
                                       goog.math.toRadians(ll[1]));
+  if (this.scene_.globe) carto.height = this.scene_.globe.getHeight(carto) || 0;
   this.cam_.setPositionCartographic(carto);
 
   this.cam_.twistLeft(this.view_.getRotation());
@@ -123,7 +128,8 @@ ol3Cesium.Camera.prototype.updateView = function() {
   // target & distance
   var center = new Cesium.Cartesian2(this.canvas_.width / 2,
                                      this.canvas_.height / 2);
-  var target = this.cam_.pickEllipsoid(center);
+  var target = this.scene_.globe.pick(this.cam_.getPickRay(center),
+                                      this.scene_);
   if (target) {
     this.distance_ = Cesium.Cartesian3.distance(target, this.cam_.position);
     target = Cesium.Ellipsoid.WGS84.cartesianToCartographic(target);

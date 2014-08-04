@@ -68,8 +68,7 @@ ol3Cesium.Instance = function(map) {
    * @type {!ol3cesium.Camera}
    * @private
    */
-  this.camera_ = new ol3Cesium.Camera(this.canvas_, this.scene_.camera,
-                                      this.map_.getView());
+  this.camera_ = new ol3Cesium.Camera(this.scene_, this.map_.getView());
 
   /**
    * @type {!Cesium.Globe}
