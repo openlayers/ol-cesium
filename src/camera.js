@@ -71,20 +71,23 @@ ol3Cesium.Camera = function(scene, view) {
   this.distance_ = 1e7;
 
   /**
+   * @type {?Cesium.Matrix4}
+   * @private
+   */
+  this.lastCameraViewMatrix_ = null;
+
+  /**
    * This is used to discard change events on view caused by updateView method.
    * @type {boolean}
    * @private
    */
   this.viewUpdateInProgress_ = false;
 
-  /*
   goog.events.listen(this.view_,
-    ['change:center', 'change:resolution', 'change:rotation'], function(e) {
-    if (!this.viewUpdateInProgress_) this.readFromView();
-  }, false, this);
-  */
+      ['change:center', 'change:resolution', 'change:rotation'], function(e) {
+        if (!this.viewUpdateInProgress_) this.readFromView();
+      }, false, this);
 
-  this.readFromView();
 };
 
 
@@ -104,6 +107,8 @@ ol3Cesium.Camera.prototype.updateCamera = function() {
   if (this.tilt_) this.cam_.lookUp(this.tilt_);
   if (this.roll_) this.cam_.twistLeft(this.roll_);
   this.cam_.moveBackward(this.distance_);
+
+  this.checkCameraChange(true);
 };
 
 
@@ -158,6 +163,22 @@ ol3Cesium.Camera.prototype.updateView = function() {
   //TODO: tilt, roll
 
   this.viewUpdateInProgress_ = false;
+};
+
+
+/**
+ * Check if the underlying camera state has changed and ensure synchronization.
+ * @param {boolean=} opt_dontSync Do not synchronize the view.
+ */
+ol3Cesium.Camera.prototype.checkCameraChange = function(opt_dontSync) {
+  var viewMatrix = this.cam_.viewMatrix;
+  if (!this.lastCameraViewMatrix_ ||
+      !this.lastCameraViewMatrix_.equals(viewMatrix)) {
+    this.lastCameraViewMatrix_ = viewMatrix.clone();
+    if (opt_dontSync !== true) {
+      this.updateView();
+    }
+  }
 };
 
 

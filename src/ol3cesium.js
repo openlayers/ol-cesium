@@ -64,6 +64,11 @@ ol3Cesium.Instance = function(map) {
     'scene3DOnly': true
   });
 
+  var sscc = this.scene_.screenSpaceCameraController;
+  sscc.inertiaSpin = 0;
+  sscc.ineartiaTranslate = 0;
+  sscc.inertiaZoom = 0;
+
   /**
    * @type {!ol3cesium.Camera}
    * @private
@@ -94,6 +99,7 @@ ol3Cesium.Instance = function(map) {
   var tick = goog.bind(function() {
     this.scene_.initializeFrame();
     this.scene_.render();
+    this.camera_.checkCameraChange();
     Cesium.requestAnimationFrame(tick);
   }, this);
   Cesium.requestAnimationFrame(tick);
