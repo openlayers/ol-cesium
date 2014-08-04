@@ -240,6 +240,14 @@ Cesium.Camera.prototype.positionWC;
 
 
 /**
+ * @param {!Cesium.Cartesian2} windowPosition
+ * @param {Cesium.Ray=} opt_result
+ * @return {!Cesium.Ray}
+ */
+Cesium.Camera.prototype.getPickRay = function(windowPosition, opt_result) {};
+
+
+/**
  * @param {Cesium.Cartesian4} cartesian .
  * @param {Cesium.Cartesian4=} opt_result .
  * @return {Cesium.Cartesian4} .
@@ -377,6 +385,16 @@ Cesium.Camera.prototype.lookUp = function(amount) {};
  * @param {number} amount .
  */
 Cesium.Camera.prototype.lookDown = function(amount) {};
+
+/**
+ * @param {number} amount .
+ */
+Cesium.Camera.prototype.moveForward = function(amount) {};
+
+/**
+ * @param {number} amount .
+ */
+Cesium.Camera.prototype.moveBackward = function(amount) {};
 
 /**
  * @param {!Cesium.Cartesian2} windowPos .
@@ -593,6 +611,11 @@ Cesium.Cartographic.prototype.height;
 Cesium.Cartographic.fromDegrees = function(lat, lng) {};
 
 
+/**
+ * @constructor
+ */
+Cesium.Ray = function() {};
+
 
 /**
  * @constructor
@@ -605,6 +628,15 @@ Cesium.Globe = function(ellipsoid) {};
  * @type {Cesium.Ellipsoid}
  */
 Cesium.Globe.prototype.ellipsoid;
+
+
+/**
+ * @param {!Cesium.Ray} ray
+ * @param {!Cesium.Scene} scene
+ * @param {Cesium.Cartesian3=} opt_result
+ * @return {Cesium.Cartesian3|undefined}
+ */
+Cesium.Globe.prototype.pick = function(ray, scene, opt_result) {};
 
 
 
@@ -1185,7 +1217,7 @@ Cesium.PerspectiveFrustrum.prototype.far;
 /**
  * @type {number}
  */
-Cesium.PerspectiveFrustrum.prototype.fovy;
+Cesium.PerspectiveFrustrum.prototype.fov;
 
 
 /**
