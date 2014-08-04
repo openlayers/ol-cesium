@@ -6,7 +6,7 @@
     "goog.DEBUG": true
   },
 
-  "mode": "WHITESPACE",
+  "mode": "ADVANCED",
 
   "pretty-print": true,
   "debug": true

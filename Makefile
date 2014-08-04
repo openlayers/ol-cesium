@@ -6,7 +6,8 @@ all: serve
 
 ol3:
 	@echo --- Runing OL3 compilation ...
-#	cd ./ol3 && python build.py #TODO:
+	cd ./ol3 && python build.py
+	node tasks/generate-externs.js build/ol-externs.js
 cesium:
 	@echo --- Runing Cesium compilation ...
 	cd cesium && "./Tools/apache-ant-1.8.2/bin/ant" minify

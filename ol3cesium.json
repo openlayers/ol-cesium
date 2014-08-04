@@ -5,6 +5,7 @@
   "paths": ['src'],
 
   "externs": [
+    "ol3/build/ol-externs.js",
     "Cesium.externs.js"
   ],
 
@@ -13,7 +14,7 @@
     "goog.DEBUG": false
   },
 
-  "mode": "WHITESPACE",
+  "mode": "ADVANCED",
   "level": "VERBOSE",
   
   // "pretty-print": true,
@@ -24,7 +25,7 @@
     // "accessControls": "ERROR",
     // "visibility": "ERROR"
 
-    "checkTypes": "ERROR",
+    "checkTypes": "OFF",
     "checkRegExp": "ERROR",
     "checkVars": "ERROR",
     "deprecated": "ERROR",
