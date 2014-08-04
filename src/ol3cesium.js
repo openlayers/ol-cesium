@@ -96,6 +96,8 @@ ol3Cesium.Instance = function(map) {
   goog.events.listen(/** @type {!goog.events.EventTarget} */(this.map_),
       'change:target', this.handleMapTargetChanged_, false, this);
 
+  this.camera_.readFromView();
+
   var tick = goog.bind(function() {
     this.scene_.initializeFrame();
     this.scene_.render();
