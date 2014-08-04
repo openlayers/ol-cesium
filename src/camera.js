@@ -54,22 +54,22 @@ ol3Cesium.Camera = function(scene, view) {
 
   /**
    * 0 -- topdown, PI/2 -- the horizon
-   * @type {?number}
+   * @type {number}
    * @private
    */
   this.tilt_ = 0;
 
   /**
-   * @type {?number}
+   * @type {number}
    * @private
    */
   this.roll_ = 0;
 
   /**
-   * @type {?number}
+   * @type {number}
    * @private
    */
-  this.distance_ = 1e7;
+  this.distance_ = 0;
 
   /**
    * @type {?Cesium.Matrix4}
