@@ -9,7 +9,7 @@ goog.require('ol3Cesium.Camera');
 
 /**
  * @param {!ol.Map} map
- * @return {ol3Cesium}
+ * @return {ol3Cesium.Instance}
  */
 ol3cesium = function(map) {
   return new ol3Cesium.Instance(map);
@@ -181,8 +181,11 @@ ol3Cesium.Instance.prototype.setEnabled = function(opt_enable) {
 };
 
 
-//goog.exportSymbol('ol3cesium', ol3cesium);
-//goog.exportSymbol('ol3Cesium.Instance.prototype.getEnabled',
-//                  ol3Cesium.Instance.prototype.getEnabled);
-//goog.exportSymbol('ol3Cesium.Instance.prototype.setEnabled',
-//                  ol3Cesium.Instance.prototype.setEnabled);
+goog.exportSymbol('ol3cesium', ol3cesium);
+goog.exportSymbol('ol3Cesium.Instance', ol3Cesium.Instance);
+goog.exportSymbol('ol3Cesium.Instance.prototype.getEnabled',
+                  ol3Cesium.Instance.prototype.getEnabled);
+goog.exportSymbol('ol3Cesium.Instance.prototype.getCesiumScene',
+                  ol3Cesium.Instance.prototype.getCesiumScene);
+goog.exportSymbol('ol3Cesium.Instance.prototype.setEnabled',
+                  ol3Cesium.Instance.prototype.setEnabled);
