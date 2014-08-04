@@ -53,6 +53,7 @@ ol3Cesium.Camera = function(scene, view) {
   //TODO: handles change of view and its projection
 
   /**
+   * 0 -- topdown, PI/2 -- the horizon
    * @type {?number}
    * @private
    */
@@ -135,12 +136,13 @@ ol3Cesium.Camera.prototype.updateView = function() {
                                      this.canvas_.height / 2);
   var target = this.scene_.globe.pick(this.cam_.getPickRay(center),
                                       this.scene_);
+  var targetCartographic;
   if (target) {
     this.distance_ = Cesium.Cartesian3.distance(target, this.cam_.position);
-    target = Cesium.Ellipsoid.WGS84.cartesianToCartographic(target);
+    targetCartographic = Cesium.Ellipsoid.WGS84.cartesianToCartographic(target);
     this.view_.setCenter(this.fromLatLng_([
-      goog.math.toDegrees(target.longitude),
-      goog.math.toDegrees(target.latitude)]));
+      goog.math.toDegrees(targetCartographic.longitude),
+      goog.math.toDegrees(targetCartographic.latitude)]));
   } else {
     //TODO: ? use position under the camera?
   }
@@ -148,19 +150,45 @@ ol3Cesium.Camera.prototype.updateView = function() {
   // resolution
   this.view_.setResolution(
       this.calcResolutionForDistance_(this.distance_,
-                                      target ? target.latitude : undefined));
+          targetCartographic ? targetCartographic.latitude : 0));
 
 
-  // heading
-  var pos = this.cam_.positionWC; //this forces the update
-  var normal = new Cesium.Cartesian3(-pos.y, pos.x, 0);
-  var angle = Cesium.Cartesian3.angleBetween(this.cam_.right, normal);
-  var orientation = Cesium.Cartesian3.cross(pos, this.cam_.up,
-                                            new Cesium.Cartesian3()).z;
+  /*
+   * Since we are positioning the target, the values of heading, tilt and roll
+   * need to be calculated _at the target_.
+   */
+  if (target) {
+    var pos = this.cam_.positionWC; //this forces the update
 
-  this.view_.setRotation((orientation < 0 ? angle : -angle));
+    // normal to the ellipsoid at the target
+    var targetNormal = new Cesium.Cartesian3();
+    this.scene_.globe.ellipsoid.geocentricSurfaceNormal(target, targetNormal);
 
-  //TODO: tilt, roll
+    // vector from the target to the camera
+    var targetToCamera = new Cesium.Cartesian3();
+    Cesium.Cartesian3.subtract(pos, target, targetToCamera);
+    Cesium.Cartesian3.normalize(targetToCamera, targetToCamera);
+
+
+    // HEADING
+    var normal = new Cesium.Cartesian3(-target.y, target.x, 0);
+    var heading = Cesium.Cartesian3.angleBetween(this.cam_.right, normal);
+    var orientation = Cesium.Cartesian3.cross(target, this.cam_.up,
+                                              new Cesium.Cartesian3()).z;
+
+    this.view_.setRotation((orientation < 0 ? heading : -heading));
+
+    // TILT
+    this.tilt_ = Math.acos(Cesium.Cartesian3.dot(targetNormal,
+                                                 targetToCamera)) || 0;
+
+    // TODO: ROLL
+    this.roll_ = 0;
+  } else {
+    // fallback when there is no target
+    this.view_.setRotation(this.cam_.heading);
+    this.tilt_ = -this.cam_.tilt + Math.PI / 2;
+  }
 
   this.viewUpdateInProgress_ = false;
 };

@@ -240,6 +240,18 @@ Cesium.Camera.prototype.positionWC;
 
 
 /**
+ * @type {number}
+ */
+Cesium.Camera.prototype.heading;
+
+
+/**
+ * @type {number}
+ */
+Cesium.Camera.prototype.tilt;
+
+
+/**
  * @param {!Cesium.Cartesian2} windowPosition
  * @param {Cesium.Ray=} opt_result
  * @return {!Cesium.Ray}
@@ -996,6 +1008,15 @@ Cesium.Ellipsoid.prototype.cartesianToCartographic = function(cartesian, opt_res
  * @return {!Cesium.Cartesian3}
  */
 Cesium.Ellipsoid.prototype.transformPositionToScaledSpace = function(position, opt_result) {};
+
+
+/**
+ * @param {Cesium.Cartesian3} cartesian
+ * @param {Cesium.Cartographic=} opt_result
+ * @return {Cesium.Cartographic}
+ */
+Cesium.Ellipsoid.prototype.geocentricSurfaceNormal = function(cartesian, opt_result) {};
+
 
 /**
  * @constructor
