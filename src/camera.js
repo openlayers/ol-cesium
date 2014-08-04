@@ -84,7 +84,7 @@ ol3Cesium.Camera = function(scene, view) {
    */
   this.viewUpdateInProgress_ = false;
 
-  goog.events.listen(this.view_,
+  goog.events.listen(/** @type {!goog.events.EventTarget} */(this.view_),
       ['change:center', 'change:resolution', 'change:rotation'], function(e) {
         if (!this.viewUpdateInProgress_) this.readFromView();
       }, false, this);
@@ -104,7 +104,7 @@ ol3Cesium.Camera.prototype.updateCamera = function() {
   if (this.scene_.globe) carto.height = this.scene_.globe.getHeight(carto) || 0;
   this.cam_.setPositionCartographic(carto);
 
-  this.cam_.twistLeft(this.view_.getRotation());
+  this.cam_.twistLeft(this.view_.getRotation() || 0);
   if (this.tilt_) this.cam_.lookUp(this.tilt_);
   if (this.roll_) this.cam_.twistLeft(this.roll_);
   this.cam_.moveBackward(this.distance_);
@@ -117,7 +117,8 @@ ol3Cesium.Camera.prototype.updateCamera = function() {
  * Calculates the values of the properties from the current ol.View state.
  */
 ol3Cesium.Camera.prototype.readFromView = function() {
-  this.distance_ = this.calcDistanceForResolution_(this.view_.getResolution(),
+  this.distance_ = this.calcDistanceForResolution_(
+      this.view_.getResolution() || 0,
       goog.math.toRadians(this.toLonLat_(this.view_.getCenter())[1]));
 
   this.updateCamera();

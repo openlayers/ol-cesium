@@ -70,7 +70,7 @@ ol3Cesium.Instance = function(map) {
   sscc.inertiaZoom = 0;
 
   /**
-   * @type {!ol3cesium.Camera}
+   * @type {!ol3Cesium.Camera}
    * @private
    */
   this.camera_ = new ol3Cesium.Camera(this.scene_, this.map_.getView());
@@ -93,8 +93,8 @@ ol3Cesium.Instance = function(map) {
   var osm = new Cesium.OpenStreetMapImageryProvider();
   this.scene_.imageryLayers.addImageryProvider(osm);
 
-  goog.events.listen(this.map_, 'change:target',
-      this.handleMapTargetChanged_, false, this);
+  goog.events.listen(/** @type {!goog.events.EventTarget} */(this.map_),
+      'change:target', this.handleMapTargetChanged_, false, this);
 
   var tick = goog.bind(function() {
     this.scene_.initializeFrame();

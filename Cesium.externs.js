@@ -550,6 +550,14 @@ Cesium.Cartesian3.dot = function(left, right) {};
  * @param {Cesium.Cartesian3} right
  * @return {number}
  */
+Cesium.Cartesian3.distance = function(left, right) {};
+
+
+/**
+ * @param {Cesium.Cartesian3} left
+ * @param {Cesium.Cartesian3} right
+ * @return {number}
+ */
 Cesium.Cartesian3.angleBetween = function(left, right) {};
 
 
@@ -1012,8 +1020,8 @@ Cesium.Ellipsoid.prototype.transformPositionToScaledSpace = function(position, o
 
 /**
  * @param {Cesium.Cartesian3} cartesian
- * @param {Cesium.Cartographic=} opt_result
- * @return {Cesium.Cartographic}
+ * @param {Cesium.Cartesian3=} opt_result
+ * @return {Cesium.Cartesian3}
  */
 Cesium.Ellipsoid.prototype.geocentricSurfaceNormal = function(cartesian, opt_result) {};
 
@@ -1157,9 +1165,9 @@ Cesium.Matrix4.prototype.equals = function(matrix) {};
 
 
 /**
- * @param {Cesium.Matrix4} matrix .
+ * @param {Cesium.Matrix4=} opt_result
  */
-Cesium.Matrix4.prototype.clone = function(matrix) {};
+Cesium.Matrix4.prototype.clone = function(opt_result) {};
 
 
 /**
@@ -1201,10 +1209,10 @@ Cesium.Color = function(opt_r, opt_g, opt_b, opt_a) {};
 
 /**
  * @constructor
- * @param {Object} options
+ * @param {Object=} opt_opts
  * @extends {Cesium.ImageryProvider}
  */
-Cesium.OpenStreetMapImageryProvider = function(options) {};
+Cesium.OpenStreetMapImageryProvider = function(opt_opts) {};
 
 
 
@@ -1292,13 +1300,13 @@ Cesium.Context.prototype.uniformState;
 
 /**
  * @constructor
- * @param {Object.<string, Object>} canvas
+ * @param {Object.<string, Object>=} opt_opts
  */
-Cesium.Scene = function(canvas) {};
+Cesium.Scene = function(opt_opts) {};
 
 
 /**
- * @type {HTMLCanvasElement}
+ * @type {!HTMLCanvasElement}
  */
 Cesium.Scene.prototype.canvas;
 
