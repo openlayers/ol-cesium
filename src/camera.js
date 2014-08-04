@@ -40,14 +40,14 @@ ol3Cesium.Camera = function(scene, view) {
    * @type {ol.TransformFunction}
    * @private
    */
-  this.toLatLng_ = ol.proj.getTransform(this.view_.getProjection(),
+  this.toLonLat_ = ol.proj.getTransform(this.view_.getProjection(),
                                         'EPSG:4326');
 
   /**
    * @type {ol.TransformFunction}
    * @private
    */
-  this.fromLatLng_ = ol.proj.getTransform('EPSG:4326',
+  this.fromLonLat_ = ol.proj.getTransform('EPSG:4326',
                                           this.view_.getProjection());
 
   //TODO: handles change of view and its projection
@@ -97,7 +97,7 @@ ol3Cesium.Camera = function(scene, view) {
  * according to the current values of the properties.
  */
 ol3Cesium.Camera.prototype.updateCamera = function() {
-  var ll = this.toLatLng_(this.view_.getCenter());
+  var ll = this.toLonLat_(this.view_.getCenter());
 
   var carto = new Cesium.Cartographic(goog.math.toRadians(ll[0]),
                                       goog.math.toRadians(ll[1]));
@@ -118,7 +118,7 @@ ol3Cesium.Camera.prototype.updateCamera = function() {
  */
 ol3Cesium.Camera.prototype.readFromView = function() {
   this.distance_ = this.calcDistanceForResolution_(this.view_.getResolution(),
-      goog.math.toRadians(this.toLatLng_(this.view_.getCenter())[1]));
+      goog.math.toRadians(this.toLonLat_(this.view_.getCenter())[1]));
 
   this.updateCamera();
 };
@@ -140,7 +140,7 @@ ol3Cesium.Camera.prototype.updateView = function() {
   if (target) {
     this.distance_ = Cesium.Cartesian3.distance(target, this.cam_.position);
     targetCartographic = Cesium.Ellipsoid.WGS84.cartesianToCartographic(target);
-    this.view_.setCenter(this.fromLatLng_([
+    this.view_.setCenter(this.fromLonLat_([
       goog.math.toDegrees(targetCartographic.longitude),
       goog.math.toDegrees(targetCartographic.latitude)]));
   } else {
