@@ -218,13 +218,22 @@ ol3Cesium.Camera.prototype.checkCameraChange = function(opt_dontSync) {
  */
 ol3Cesium.Camera.prototype.calcDistanceForResolution_ = function(resolution,
                                                                  latitude) {
-  var fovy = this.cam_.frustum.fov;
+  var fovy = this.cam_.frustum.fov; // vertical field of view
+  var metersPerUnit =
+      ol.proj.METERS_PER_UNIT[this.view_.getProjection().getUnits()];
 
   var visibleMapUnits = resolution * this.canvas_.width;
-  var circ = Math.cos(Math.abs(latitude));
+  var relativeCircumference = Math.cos(Math.abs(latitude));
+  var visibleMeters = visibleMapUnits * metersPerUnit * relativeCircumference;
 
-  var meters = circ * visibleMapUnits;
-  var requiredDistance = (meters / 2) / Math.tan(fovy / 2);
+  // distance required to view the calculated length in meters
+  //
+  //  fovy/2
+  //    |\
+  //  x | \
+  //    |--\
+  // visibleMeters/2
+  var requiredDistance = (visibleMeters / 2) / Math.tan(fovy / 2);
 
   return requiredDistance;
 };
@@ -238,11 +247,14 @@ ol3Cesium.Camera.prototype.calcDistanceForResolution_ = function(resolution,
  */
 ol3Cesium.Camera.prototype.calcResolutionForDistance_ = function(distance,
                                                                  latitude) {
+  // See the reverse calculation (calcDistanceForResolution_) for details
   var fovy = this.cam_.frustum.fov;
+  var metersPerUnit =
+      ol.proj.METERS_PER_UNIT[this.view_.getProjection().getUnits()];
 
-  var meters = 2 * distance * Math.tan(fovy / 2);
-  var circ = Math.cos(Math.abs(latitude));
-  var visibleMapUnits = meters / circ;
+  var visibleMeters = 2 * distance * Math.tan(fovy / 2);
+  var relativeCircumference = Math.cos(Math.abs(latitude));
+  var visibleMapUnits = visibleMeters / metersPerUnit / relativeCircumference;
   var resolution = visibleMapUnits / this.canvas_.width;
 
   return resolution;
