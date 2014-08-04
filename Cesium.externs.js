@@ -1457,6 +1457,21 @@ Cesium.ScreenSpaceCameraController.prototype.enableTilt;
  */
 Cesium.ScreenSpaceCameraController.prototype.enableZoom;
 
+/**
+ * @type {number}
+ */
+Cesium.ScreenSpaceCameraController.prototype.inertiaSpin;
+
+/**
+ * @type {number}
+ */
+Cesium.ScreenSpaceCameraController.prototype.ineartiaTranslate;
+
+/**
+ * @type {number}
+ */
+Cesium.ScreenSpaceCameraController.prototype.inertiaZoom;
+
 
 
 /**
