@@ -234,6 +234,12 @@ Cesium.Camera.prototype.constrainedAxis;
 
 
 /**
+ * @type {Cesium.Cartographic} .
+ */
+Cesium.Camera.prototype.positionCartographic;
+
+
+/**
  * @type {Cesium.Cartesian3} .
  */
 Cesium.Camera.prototype.positionWC;
@@ -621,6 +627,13 @@ Cesium.Cartographic.prototype.latitude;
  * @type {number}
  */
 Cesium.Cartographic.prototype.height;
+
+
+/**
+ * @param {Cesium.Cartographic=} opt_result
+ * @return {!Cesium.Cartographic}
+ */
+Cesium.Cartographic.prototype.clone = function(opt_result) {};
 
 
 /**

@@ -297,21 +297,27 @@ ol3Cesium.Camera.prototype.updateView = function() {
                                      this.canvas_.height / 2);
   var target = this.scene_.globe.pick(this.cam_.getPickRay(center),
                                       this.scene_);
-  var targetCartographic;
-  if (target) {
-    this.distance_ = Cesium.Cartesian3.distance(target, this.cam_.position);
-    targetCartographic = Cesium.Ellipsoid.WGS84.cartesianToCartographic(target);
-    this.view_.setCenter(this.fromLonLat_([
-      goog.math.toDegrees(targetCartographic.longitude),
-      goog.math.toDegrees(targetCartographic.latitude)]));
-  } else {
-    //TODO: ? use position under the camera?
+
+  var bestTarget = target;
+  if (!bestTarget) {
+    //TODO: how to handle this properly ?
+    var carto = this.cam_.positionCartographic.clone();
+    if (this.scene_.globe) {
+      carto.height = this.scene_.globe.getHeight(carto) || 0;
+    }
+    bestTarget = Cesium.Ellipsoid.WGS84.cartographicToCartesian(carto);
   }
+  this.distance_ = Cesium.Cartesian3.distance(bestTarget, this.cam_.position);
+  var bestTargetCartographic =
+      Cesium.Ellipsoid.WGS84.cartesianToCartographic(bestTarget);
+  this.view_.setCenter(this.fromLonLat_([
+    goog.math.toDegrees(bestTargetCartographic.longitude),
+    goog.math.toDegrees(bestTargetCartographic.latitude)]));
 
   // resolution
   this.view_.setResolution(
       this.calcResolutionForDistance_(this.distance_,
-          targetCartographic ? targetCartographic.latitude : 0));
+          bestTargetCartographic ? bestTargetCartographic.latitude : 0));
 
 
   /*
