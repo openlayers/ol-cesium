@@ -36,5 +36,7 @@
     "undefinedVars": "ERROR"
   },
 
+  "output-wrapper": "(function(){%output%})();",
+
   "jsdoc-html-output-path": "."
 }
