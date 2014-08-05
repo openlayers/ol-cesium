@@ -28,13 +28,18 @@ ol3Cesium.Instance = function(map) {
    */
   this.map_ = map;
 
-  var fillArea = 'position:absolute;top:0;left:0;width:100%;height:100%';
+  var fillArea = 'position:absolute;top:0;left:0;width:100%;height:100%;';
 
   /**
    * @type {!Element}
    * @private
    */
-  this.container_ = goog.dom.createDom(goog.dom.TagName.DIV, {style: fillArea});
+  this.container_ = goog.dom.createDom(goog.dom.TagName.DIV,
+      {style: fillArea + 'visibility:hidden;'});
+
+  var vp = this.map_.getViewport();
+  var oc = goog.dom.getElementByClass('ol-overlaycontainer', vp);
+  if (oc) goog.dom.insertSiblingBefore(this.container_, oc);
 
   /**
    * @type {!Element}
@@ -93,9 +98,6 @@ ol3Cesium.Instance = function(map) {
   var osm = new Cesium.OpenStreetMapImageryProvider();
   this.scene_.imageryLayers.addImageryProvider(osm);
 
-  goog.events.listen(/** @type {!goog.events.EventTarget} */(this.map_),
-      'change:target', this.handleMapTargetChanged_, false, this);
-
   this.camera_.readFromView();
 
   var tick = goog.bind(function() {
@@ -105,18 +107,6 @@ ol3Cesium.Instance = function(map) {
     Cesium.requestAnimationFrame(tick);
   }, this);
   Cesium.requestAnimationFrame(tick);
-};
-
-
-/**
- * @private
- */
-ol3Cesium.Instance.prototype.handleMapTargetChanged_ = function() {
-  if (!this.enabled_) return;
-  var vp = this.map_.getViewport();
-  var oc = goog.dom.getElementByClass('ol-overlaycontainer', vp);
-  goog.dom.removeNode(this.container_);
-  if (oc) goog.dom.insertSiblingBefore(this.container_, oc);
 };
 
 
@@ -168,6 +158,10 @@ ol3Cesium.Instance.prototype.getEnabled = function() {
  */
 ol3Cesium.Instance.prototype.setEnabled = function(opt_enable) {
   this.enabled_ = opt_enable !== false;
+
+  // some Cesium operations are operating with canvas.clientWidth,
+  // so we can't remove it from DOM or even make display:none;
+  this.container_.style.visibility = this.enabled_ ? 'visible' : 'hidden';
   if (this.enabled_) {
     var interactions = this.map_.getInteractions();
     interactions.forEach(function(el, i, arr) {
@@ -175,7 +169,6 @@ ol3Cesium.Instance.prototype.setEnabled = function(opt_enable) {
     }, this);
     interactions.clear();
 
-    this.handleMapTargetChanged_();
     this.handleResize_();
     this.camera_.readFromView();
   } else {
@@ -186,7 +179,6 @@ ol3Cesium.Instance.prototype.setEnabled = function(opt_enable) {
     this.pausedInteractions_ = [];
 
     this.camera_.updateView();
-    goog.dom.removeNode(this.container_);
   }
 };
 
