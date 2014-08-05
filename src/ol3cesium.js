@@ -88,13 +88,6 @@ ol3Cesium.Instance = function(map) {
   this.scene_.globe = this.globe_;
   this.scene_.skyAtmosphere = new Cesium.SkyAtmosphere();
 
-  var el = this.globe_.ellipsoid;
-  this.scene_.camera.lookAt(
-      el.cartographicToCartesian(new Cesium.Cartographic(0, 0, 1e7)),
-      el.cartographicToCartesian(new Cesium.Cartographic(0, 0, 0)),
-      new Cesium.Cartesian3(0, 0, 1)
-  );
-
   var osm = new Cesium.OpenStreetMapImageryProvider();
   this.scene_.imageryLayers.addImageryProvider(osm);
 
