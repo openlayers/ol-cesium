@@ -74,6 +74,8 @@ ol3Cesium.Instance = function(map) {
   sscc.ineartiaTranslate = 0;
   sscc.inertiaZoom = 0;
 
+  this.scene_.camera.constrainedAxis = Cesium.Cartesian3.UNIT_Z;
+
   /**
    * @type {!ol3Cesium.Camera}
    * @private
