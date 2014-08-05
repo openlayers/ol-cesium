@@ -74,6 +74,16 @@ ol3Cesium.Instance = function(map) {
   sscc.ineartiaTranslate = 0;
   sscc.inertiaZoom = 0;
 
+  sscc.tiltEventTypes.push({
+    'eventType': Cesium.CameraEventType.LEFT_DRAG,
+    'modifier': Cesium.KeyboardEventModifier.SHIFT
+  });
+
+  sscc.lookEventTypes = {
+    'eventType': Cesium.CameraEventType.LEFT_DRAG,
+    'modifier': Cesium.KeyboardEventModifier.ALT
+  };
+
   this.scene_.camera.constrainedAxis = Cesium.Cartesian3.UNIT_Z;
 
   /**

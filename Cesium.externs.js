@@ -287,6 +287,67 @@ Cesium.Camera.prototype.worldToCameraCoordinatesPoint = function(cartesian, opt_
 Cesium.Camera.prototype.viewMatrix;
 
 
+/**
+ * @type {Object}
+ */
+Cesium.CameraEventType;
+
+
+/**
+ * @type {number}
+ */
+Cesium.CameraEventType.LEFT_DRAG;
+
+
+/**
+ * @type {number}
+ */
+Cesium.CameraEventType.MIDDLE_DRAG;
+
+
+/**
+ * @type {number}
+ */
+Cesium.CameraEventType.PINCH;
+
+
+/**
+ * @type {number}
+ */
+Cesium.CameraEventType.RIGHT_DRAG;
+
+
+/**
+ * @type {number}
+ */
+Cesium.CameraEventType.WHEEL;
+
+
+/**
+ * @type {Object}
+ */
+Cesium.KeyboardEventModifier;
+
+
+/**
+ * @type {number}
+ */
+Cesium.KeyboardEventModifier.ALT;
+
+
+/**
+ * @type {number}
+ */
+Cesium.KeyboardEventModifier.CTRL;
+
+
+/**
+ * @type {number}
+ */
+Cesium.KeyboardEventModifier.SHIFT;
+
+
+
 
 /**
  * @param {Object} canvas .
@@ -1484,6 +1545,31 @@ Cesium.ScreenSpaceCameraController.prototype.ineartiaTranslate;
  * @type {number}
  */
 Cesium.ScreenSpaceCameraController.prototype.inertiaZoom;
+
+/**
+ * @type {Array|Object}
+ */
+Cesium.ScreenSpaceCameraController.prototype.lookEventTypes;
+
+/**
+ * @type {Array|Object}
+ */
+Cesium.ScreenSpaceCameraController.prototype.rotateEventTypes;
+
+/**
+ * @type {Array|Object}
+ */
+Cesium.ScreenSpaceCameraController.prototype.tiltEventTypes;
+
+/**
+ * @type {Array|Object}
+ */
+Cesium.ScreenSpaceCameraController.prototype.translateEventTypes;
+
+/**
+ * @type {Array|Object}
+ */
+Cesium.ScreenSpaceCameraController.prototype.zoomEventTypes;
 
 
 
