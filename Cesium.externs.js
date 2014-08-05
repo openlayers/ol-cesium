@@ -1020,10 +1020,10 @@ Cesium.Ellipsoid.prototype.transformPositionToScaledSpace = function(position, o
 
 /**
  * @param {Cesium.Cartesian3} cartesian
- * @param {Cesium.Cartesian3=} opt_result
+ * @param {Cesium.Cartesian3} result
  * @return {Cesium.Cartesian3}
  */
-Cesium.Ellipsoid.prototype.geocentricSurfaceNormal = function(cartesian, opt_result) {};
+Cesium.Ellipsoid.prototype.geocentricSurfaceNormal = function(cartesian, result) {};
 
 
 /**

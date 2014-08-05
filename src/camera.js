@@ -93,6 +93,166 @@ ol3Cesium.Camera = function(scene, view) {
 
 
 /**
+ * @param {number} heading In radians.
+ */
+ol3Cesium.Camera.prototype.setHeading = function(heading) {
+  this.view_.setRotation(heading);
+};
+
+
+/**
+ * @return {number} Heading in radians.
+ */
+ol3Cesium.Camera.prototype.getHeading = function() {
+  return this.view_.getRotation() || 0;
+};
+
+
+/**
+ * @param {number} tilt In radians.
+ */
+ol3Cesium.Camera.prototype.setTilt = function(tilt) {
+  this.tilt_ = tilt;
+  this.updateCamera();
+};
+
+
+/**
+ * @return {number} Tilt in radians.
+ */
+ol3Cesium.Camera.prototype.getTilt = function() {
+  return this.tilt_;
+};
+
+
+/**
+ * @param {number} roll In radians.
+ */
+ol3Cesium.Camera.prototype.setRoll = function(roll) {
+  this.roll_ = roll;
+  this.updateCamera();
+};
+
+
+/**
+ * @return {number} Roll in radians.
+ */
+ol3Cesium.Camera.prototype.getRoll = function() {
+  return this.roll_;
+};
+
+
+/**
+ * @param {number} distance In meters.
+ */
+ol3Cesium.Camera.prototype.setDistance = function(distance) {
+  this.distance_ = distance;
+  this.updateCamera();
+  this.updateView();
+};
+
+
+/**
+ * @return {number} Distance in meters.
+ */
+ol3Cesium.Camera.prototype.getDistance = function() {
+  return this.distance_;
+};
+
+
+/**
+ * Shortcut for ol.View.setCenter().
+ * @param {!ol.Coordinate} target Same projection as the ol.View.
+ */
+ol3Cesium.Camera.prototype.setTarget = function(target) {
+  this.view_.setCenter(target);
+};
+
+
+/**
+ * Shortcut for ol.View.getCenter().
+ * @return {!ol.Coordinate} Same projection as the ol.View.
+ */
+ol3Cesium.Camera.prototype.getTarget = function() {
+  return this.view_.getCenter();
+};
+
+
+/**
+ * Sets the position of the camera.
+ * @param {!ol.Coordinate} position Same projection as the ol.View.
+ */
+ol3Cesium.Camera.prototype.setPosition = function(position) {
+  var ll = this.toLonLat_(position);
+
+  var carto = new Cesium.Cartographic(goog.math.toRadians(ll[0]),
+                                      goog.math.toRadians(ll[1]),
+                                      this.getAltitude());
+
+  this.cam_.position = Cesium.Ellipsoid.WGS84.cartographicToCartesian(carto);
+  this.updateView();
+};
+
+
+/**
+ * Calculates position under the camera.
+ * @return {!ol.Coordinate} Same projection as the ol.View.
+ */
+ol3Cesium.Camera.prototype.getPosition = function() {
+  var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(
+      this.cam_.positionWC);
+
+  return this.fromLonLat_([goog.math.toDegrees(carto.longitude),
+                           goog.math.toDegrees(carto.latitude)]);
+};
+
+
+/**
+ * @param {number} altitude In meters.
+ */
+ol3Cesium.Camera.prototype.setAltitude = function(altitude) {
+  var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(
+      this.cam_.positionWC);
+  carto.height = altitude;
+  this.cam_.position = Cesium.Ellipsoid.WGS84.cartographicToCartesian(carto);
+
+  this.updateView();
+};
+
+
+/**
+ * @return {number} Altitude in meters.
+ */
+ol3Cesium.Camera.prototype.getAltitude = function() {
+  var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(
+      this.cam_.positionWC);
+
+  return carto.height;
+};
+
+
+/**
+ * Rotates the camera to point at the specified target.
+ * @param {!ol.Coordinate} position Same projection as the ol.View.
+ */
+ol3Cesium.Camera.prototype.lookAt = function(position) {
+  var ll = this.toLonLat_(position);
+
+  var carto = new Cesium.Cartographic(goog.math.toRadians(ll[0]),
+                                      goog.math.toRadians(ll[1]));
+  if (this.scene_.globe) carto.height = this.scene_.globe.getHeight(carto) || 0;
+  var carte = Cesium.Ellipsoid.WGS84.cartographicToCartesian(carto);
+
+  var pos = this.cam_.positionWC;
+  var up = Cesium.Ellipsoid.WGS84.geocentricSurfaceNormal(
+      pos, new Cesium.Cartesian3());
+  this.cam_.lookAt(pos, carte, up);
+
+  this.updateView();
+};
+
+
+/**
  * Updates the state of the underlying Cesium.Camera
  * according to the current values of the properties.
  */
@@ -260,3 +420,41 @@ ol3Cesium.Camera.prototype.calcResolutionForDistance_ = function(distance,
 
   return resolution;
 };
+
+
+
+goog.exportSymbol('ol3Cesium.Camera',
+                  ol3Cesium.Camera);
+goog.exportSymbol('ol3Cesium.Camera.prototype.getHeading',
+                  ol3Cesium.Camera.prototype.getHeading);
+goog.exportSymbol('ol3Cesium.Camera.prototype.setHeading',
+                  ol3Cesium.Camera.prototype.setHeading);
+goog.exportSymbol('ol3Cesium.Camera.prototype.getTilt',
+                  ol3Cesium.Camera.prototype.getTilt);
+goog.exportSymbol('ol3Cesium.Camera.prototype.setTilt',
+                  ol3Cesium.Camera.prototype.setTilt);
+goog.exportSymbol('ol3Cesium.Camera.prototype.getRoll',
+                  ol3Cesium.Camera.prototype.getRoll);
+goog.exportSymbol('ol3Cesium.Camera.prototype.setRoll',
+                  ol3Cesium.Camera.prototype.setRoll);
+goog.exportSymbol('ol3Cesium.Camera.prototype.getDistance',
+                  ol3Cesium.Camera.prototype.getDistance);
+goog.exportSymbol('ol3Cesium.Camera.prototype.setDistance',
+                  ol3Cesium.Camera.prototype.setDistance);
+goog.exportSymbol('ol3Cesium.Camera.prototype.getTarget',
+                  ol3Cesium.Camera.prototype.getTarget);
+goog.exportSymbol('ol3Cesium.Camera.prototype.setTarget',
+                  ol3Cesium.Camera.prototype.setTarget);
+goog.exportSymbol('ol3Cesium.Camera.prototype.getPosition',
+                  ol3Cesium.Camera.prototype.getPosition);
+goog.exportSymbol('ol3Cesium.Camera.prototype.setPosition',
+                  ol3Cesium.Camera.prototype.setPosition);
+goog.exportSymbol('ol3Cesium.Camera.prototype.getAltitude',
+                  ol3Cesium.Camera.prototype.getAltitude);
+goog.exportSymbol('ol3Cesium.Camera.prototype.setAltitude',
+                  ol3Cesium.Camera.prototype.setAltitude);
+goog.exportSymbol('ol3Cesium.Camera.prototype.lookAt',
+                  ol3Cesium.Camera.prototype.lookAt);
+
+goog.exportSymbol('ol3Cesium.Camera.prototype.updateView',
+                  ol3Cesium.Camera.prototype.updateView);

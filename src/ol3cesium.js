@@ -138,6 +138,14 @@ ol3Cesium.Instance.prototype.handleResize_ = function() {
 
 
 /**
+ * @return {!ol3Cesium.Camera}
+ */
+ol3Cesium.Instance.prototype.getCamera = function() {
+  return this.camera_;
+};
+
+
+/**
  * @return {!Cesium.Scene}
  */
 ol3Cesium.Instance.prototype.getCesiumScene = function() {
@@ -187,6 +195,8 @@ goog.exportSymbol('ol3cesium', ol3cesium);
 goog.exportSymbol('ol3Cesium.Instance', ol3Cesium.Instance);
 goog.exportSymbol('ol3Cesium.Instance.prototype.getEnabled',
                   ol3Cesium.Instance.prototype.getEnabled);
+goog.exportSymbol('ol3Cesium.Instance.prototype.getCamera',
+                  ol3Cesium.Instance.prototype.getCamera);
 goog.exportSymbol('ol3Cesium.Instance.prototype.getCesiumScene',
                   ol3Cesium.Instance.prototype.getCesiumScene);
 goog.exportSymbol('ol3Cesium.Instance.prototype.setEnabled',
