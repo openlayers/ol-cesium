@@ -24,7 +24,7 @@
           });
         init2d();
 
-        ol3d = new ol3cesium.Instance(ol2d);
+        ol3d = new olcs.OLCesium(ol2d);
         var scene = ol3d.getCesiumScene();
         var terrainProvider = new Cesium.CesiumTerrainProvider({
             url : '//cesiumjs.org/stk-terrain/tilesets/world/tiles'

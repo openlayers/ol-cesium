@@ -1,9 +1,9 @@
-goog.provide('ol3cesium.Instance');
+goog.provide('olcs.OLCesium');
 
 goog.require('goog.dom');
 goog.require('goog.events');
 
-goog.require('ol3cesium.Camera');
+goog.require('olcs.Camera');
 
 
 
@@ -11,7 +11,7 @@ goog.require('ol3cesium.Camera');
  * @param {!ol.Map} map
  * @constructor
  */
-ol3cesium.Instance = function(map) {
+olcs.OLCesium = function(map) {
   /**
    * @type {!ol.Map}
    * @private
@@ -77,10 +77,10 @@ ol3cesium.Instance = function(map) {
   this.scene_.camera.constrainedAxis = Cesium.Cartesian3.UNIT_Z;
 
   /**
-   * @type {!ol3cesium.Camera}
+   * @type {!olcs.Camera}
    * @private
    */
-  this.camera_ = new ol3cesium.Camera(this.scene_, this.map_.getView());
+  this.camera_ = new olcs.Camera(this.scene_, this.map_.getView());
 
   /**
    * @type {!Cesium.Globe}
@@ -108,7 +108,7 @@ ol3cesium.Instance = function(map) {
 /**
  * @private
  */
-ol3cesium.Instance.prototype.handleResize_ = function() {
+olcs.OLCesium.prototype.handleResize_ = function() {
   var width = this.canvas_.clientWidth;
   var height = this.canvas_.clientHeight;
 
@@ -123,9 +123,9 @@ ol3cesium.Instance.prototype.handleResize_ = function() {
 
 
 /**
- * @return {!ol3cesium.Camera}
+ * @return {!olcs.Camera}
  */
-ol3cesium.Instance.prototype.getCamera = function() {
+olcs.OLCesium.prototype.getCamera = function() {
   return this.camera_;
 };
 
@@ -133,7 +133,7 @@ ol3cesium.Instance.prototype.getCamera = function() {
 /**
  * @return {!Cesium.Scene}
  */
-ol3cesium.Instance.prototype.getCesiumScene = function() {
+olcs.OLCesium.prototype.getCesiumScene = function() {
   return this.scene_;
 };
 
@@ -141,7 +141,7 @@ ol3cesium.Instance.prototype.getCesiumScene = function() {
 /**
  * @return {boolean}
  */
-ol3cesium.Instance.prototype.getEnabled = function() {
+olcs.OLCesium.prototype.getEnabled = function() {
   return this.enabled_;
 };
 
@@ -151,7 +151,7 @@ ol3cesium.Instance.prototype.getEnabled = function() {
  * This actually causes the canvas to be added to/removed from DOM.
  * @param {boolean=} opt_enable
  */
-ol3cesium.Instance.prototype.setEnabled = function(opt_enable) {
+olcs.OLCesium.prototype.setEnabled = function(opt_enable) {
   this.enabled_ = opt_enable !== false;
 
   // some Cesium operations are operating with canvas.clientWidth,
@@ -178,12 +178,12 @@ ol3cesium.Instance.prototype.setEnabled = function(opt_enable) {
 };
 
 
-goog.exportSymbol('ol3cesium.Instance', ol3cesium.Instance);
-goog.exportSymbol('ol3cesium.Instance.prototype.getEnabled',
-                  ol3cesium.Instance.prototype.getEnabled);
-goog.exportSymbol('ol3cesium.Instance.prototype.getCamera',
-                  ol3cesium.Instance.prototype.getCamera);
-goog.exportSymbol('ol3cesium.Instance.prototype.getCesiumScene',
-                  ol3cesium.Instance.prototype.getCesiumScene);
-goog.exportSymbol('ol3cesium.Instance.prototype.setEnabled',
-                  ol3cesium.Instance.prototype.setEnabled);
+goog.exportSymbol('olcs.OLCesium', olcs.OLCesium);
+goog.exportSymbol('olcs.OLCesium.prototype.getEnabled',
+                  olcs.OLCesium.prototype.getEnabled);
+goog.exportSymbol('olcs.OLCesium.prototype.getCamera',
+                  olcs.OLCesium.prototype.getCamera);
+goog.exportSymbol('olcs.OLCesium.prototype.getCesiumScene',
+                  olcs.OLCesium.prototype.getCesiumScene);
+goog.exportSymbol('olcs.OLCesium.prototype.setEnabled',
+                  olcs.OLCesium.prototype.setEnabled);
