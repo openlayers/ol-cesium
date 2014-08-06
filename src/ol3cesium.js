@@ -38,6 +38,13 @@ olcs.OLCesium = function(map, opt_target) {
   }
 
   /**
+   * Whether the Cesium container is placed over the ol map.
+   * @type {boolean}
+   * @private
+   */
+  this.isOverMap_ = !goog.isDefAndNotNull(targetElement);
+
+  /**
    * @type {!Element}
    * @private
    */
@@ -164,12 +171,13 @@ olcs.OLCesium.prototype.setEnabled = function(opt_enable) {
   // so we can't remove it from DOM or even make display:none;
   this.container_.style.visibility = this.enabled_ ? 'visible' : 'hidden';
   if (this.enabled_) {
-    var interactions = this.map_.getInteractions();
-    interactions.forEach(function(el, i, arr) {
-      this.pausedInteractions_.push(el);
-    }, this);
-    interactions.clear();
-
+    if (this.isOverMap_) {
+      var interactions = this.map_.getInteractions();
+      interactions.forEach(function(el, i, arr) {
+        this.pausedInteractions_.push(el);
+      }, this);
+      interactions.clear();
+    }
     this.handleResize_();
     this.camera_.readFromView();
   } else {
