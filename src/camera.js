@@ -63,12 +63,6 @@ olcs.Camera = function(scene, view) {
    * @type {number}
    * @private
    */
-  this.roll_ = 0;
-
-  /**
-   * @type {number}
-   * @private
-   */
   this.distance_ = 0;
 
   /**
@@ -122,23 +116,6 @@ olcs.Camera.prototype.setTilt = function(tilt) {
  */
 olcs.Camera.prototype.getTilt = function() {
   return this.tilt_;
-};
-
-
-/**
- * @param {number} roll In radians.
- */
-olcs.Camera.prototype.setRoll = function(roll) {
-  this.roll_ = roll;
-  this.updateCamera();
-};
-
-
-/**
- * @return {number} Roll in radians.
- */
-olcs.Camera.prototype.getRoll = function() {
-  return this.roll_;
 };
 
 
@@ -266,7 +243,6 @@ olcs.Camera.prototype.updateCamera = function() {
 
   this.cam_.twistLeft(this.view_.getRotation() || 0);
   if (this.tilt_) this.cam_.lookUp(this.tilt_);
-  if (this.roll_) this.cam_.twistLeft(this.roll_);
   this.cam_.moveBackward(this.distance_);
 
   this.checkCameraChange(true);
@@ -321,7 +297,7 @@ olcs.Camera.prototype.updateView = function() {
 
 
   /*
-   * Since we are positioning the target, the values of heading, tilt and roll
+   * Since we are positioning the target, the values of heading and tilt
    * need to be calculated _at the target_.
    */
   if (target) {
@@ -348,9 +324,6 @@ olcs.Camera.prototype.updateView = function() {
     // TILT
     this.tilt_ = Math.acos(Cesium.Cartesian3.dot(targetNormal,
                                                  targetToCamera)) || 0;
-
-    // TODO: ROLL
-    this.roll_ = 0;
   } else {
     // fallback when there is no target
     this.view_.setRotation(this.cam_.heading);
@@ -439,10 +412,6 @@ goog.exportSymbol('olcs.Camera.prototype.getTilt',
                   olcs.Camera.prototype.getTilt);
 goog.exportSymbol('olcs.Camera.prototype.setTilt',
                   olcs.Camera.prototype.setTilt);
-goog.exportSymbol('olcs.Camera.prototype.getRoll',
-                  olcs.Camera.prototype.getRoll);
-goog.exportSymbol('olcs.Camera.prototype.setRoll',
-                  olcs.Camera.prototype.setRoll);
 goog.exportSymbol('olcs.Camera.prototype.getDistance',
                   olcs.Camera.prototype.getDistance);
 goog.exportSymbol('olcs.Camera.prototype.setDistance',
