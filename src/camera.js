@@ -105,7 +105,7 @@ olcs.Camera.prototype.getHeading = function() {
  */
 olcs.Camera.prototype.setTilt = function(tilt) {
   this.tilt_ = tilt;
-  this.updateCamera();
+  this.updateCamera_();
 };
 
 
@@ -122,7 +122,7 @@ olcs.Camera.prototype.getTilt = function() {
  */
 olcs.Camera.prototype.setDistance = function(distance) {
   this.distance_ = distance;
-  this.updateCamera();
+  this.updateCamera_();
   this.updateView();
 };
 
@@ -230,8 +230,9 @@ olcs.Camera.prototype.lookAt = function(position) {
 /**
  * Updates the state of the underlying Cesium.Camera
  * according to the current values of the properties.
+ * @private
  */
-olcs.Camera.prototype.updateCamera = function() {
+olcs.Camera.prototype.updateCamera_ = function() {
   var ll = this.toLonLat_(this.view_.getCenter());
 
   var carto = new Cesium.Cartographic(goog.math.toRadians(ll[0]),
@@ -255,7 +256,7 @@ olcs.Camera.prototype.readFromView = function() {
       this.view_.getResolution() || 0,
       goog.math.toRadians(this.toLonLat_(this.view_.getCenter())[1]));
 
-  this.updateCamera();
+  this.updateCamera_();
 };
 
 
