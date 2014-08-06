@@ -190,11 +190,11 @@ olcs.OLCesium.prototype.setEnabled = function(opt_enable) {
 
 
 goog.exportSymbol('olcs.OLCesium', olcs.OLCesium);
-goog.exportSymbol('olcs.OLCesium.prototype.getEnabled',
-                  olcs.OLCesium.prototype.getEnabled);
-goog.exportSymbol('olcs.OLCesium.prototype.getCamera',
-                  olcs.OLCesium.prototype.getCamera);
-goog.exportSymbol('olcs.OLCesium.prototype.getCesiumScene',
-                  olcs.OLCesium.prototype.getCesiumScene);
-goog.exportSymbol('olcs.OLCesium.prototype.setEnabled',
-                  olcs.OLCesium.prototype.setEnabled);
+goog.exportProperty(olcs.OLCesium.prototype, 'getEnabled',
+                    olcs.OLCesium.prototype.getEnabled);
+goog.exportProperty(olcs.OLCesium.prototype, 'getCamera',
+                    olcs.OLCesium.prototype.getCamera);
+goog.exportProperty(olcs.OLCesium.prototype, 'getCesiumScene',
+                    olcs.OLCesium.prototype.getCesiumScene);
+goog.exportProperty(olcs.OLCesium.prototype, 'setEnabled',
+                    olcs.OLCesium.prototype.setEnabled);

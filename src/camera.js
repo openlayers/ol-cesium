@@ -404,32 +404,32 @@ olcs.Camera.prototype.calcResolutionForDistance_ = function(distance,
 
 goog.exportSymbol('olcs.Camera',
                   olcs.Camera);
-goog.exportSymbol('olcs.Camera.prototype.getHeading',
-                  olcs.Camera.prototype.getHeading);
-goog.exportSymbol('olcs.Camera.prototype.setHeading',
-                  olcs.Camera.prototype.setHeading);
-goog.exportSymbol('olcs.Camera.prototype.getTilt',
-                  olcs.Camera.prototype.getTilt);
-goog.exportSymbol('olcs.Camera.prototype.setTilt',
-                  olcs.Camera.prototype.setTilt);
-goog.exportSymbol('olcs.Camera.prototype.getDistance',
-                  olcs.Camera.prototype.getDistance);
-goog.exportSymbol('olcs.Camera.prototype.setDistance',
-                  olcs.Camera.prototype.setDistance);
-goog.exportSymbol('olcs.Camera.prototype.getCenter',
-                  olcs.Camera.prototype.getCenter);
-goog.exportSymbol('olcs.Camera.prototype.setCenter',
-                  olcs.Camera.prototype.setCenter);
-goog.exportSymbol('olcs.Camera.prototype.getPosition',
-                  olcs.Camera.prototype.getPosition);
-goog.exportSymbol('olcs.Camera.prototype.setPosition',
-                  olcs.Camera.prototype.setPosition);
-goog.exportSymbol('olcs.Camera.prototype.getAltitude',
-                  olcs.Camera.prototype.getAltitude);
-goog.exportSymbol('olcs.Camera.prototype.setAltitude',
-                  olcs.Camera.prototype.setAltitude);
-goog.exportSymbol('olcs.Camera.prototype.lookAt',
-                  olcs.Camera.prototype.lookAt);
+goog.exportProperty(olcs.Camera.prototype, 'getHeading',
+                    olcs.Camera.prototype.getHeading);
+goog.exportProperty(olcs.Camera.prototype, 'setHeading',
+                    olcs.Camera.prototype.setHeading);
+goog.exportProperty(olcs.Camera.prototype, 'getTilt',
+                    olcs.Camera.prototype.getTilt);
+goog.exportProperty(olcs.Camera.prototype, 'setTilt',
+                    olcs.Camera.prototype.setTilt);
+goog.exportProperty(olcs.Camera.prototype, 'getDistance',
+                    olcs.Camera.prototype.getDistance);
+goog.exportProperty(olcs.Camera.prototype, 'setDistance',
+                    olcs.Camera.prototype.setDistance);
+goog.exportProperty(olcs.Camera.prototype, 'getCenter',
+                    olcs.Camera.prototype.getCenter);
+goog.exportProperty(olcs.Camera.prototype, 'setCenter',
+                    olcs.Camera.prototype.setCenter);
+goog.exportProperty(olcs.Camera.prototype, 'getPosition',
+                    olcs.Camera.prototype.getPosition);
+goog.exportProperty(olcs.Camera.prototype, 'setPosition',
+                    olcs.Camera.prototype.setPosition);
+goog.exportProperty(olcs.Camera.prototype, 'getAltitude',
+                    olcs.Camera.prototype.getAltitude);
+goog.exportProperty(olcs.Camera.prototype, 'setAltitude',
+                    olcs.Camera.prototype.setAltitude);
+goog.exportProperty(olcs.Camera.prototype, 'lookAt',
+                    olcs.Camera.prototype.lookAt);
 
-goog.exportSymbol('olcs.Camera.prototype.updateView',
-                  olcs.Camera.prototype.updateView);
+goog.exportProperty(olcs.Camera.prototype, 'updateView',
+                    olcs.Camera.prototype.updateView);
