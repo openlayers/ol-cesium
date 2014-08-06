@@ -9,9 +9,10 @@ goog.require('olcs.Camera');
 
 /**
  * @param {!ol.Map} map
+ * @param {Element|string=} opt_target Target element for the Cesium container.
  * @constructor
  */
-olcs.OLCesium = function(map) {
+olcs.OLCesium = function(map, opt_target) {
   /**
    * @type {!ol.Map}
    * @private
@@ -27,9 +28,14 @@ olcs.OLCesium = function(map) {
   this.container_ = goog.dom.createDom(goog.dom.TagName.DIV,
       {style: fillArea + 'visibility:hidden;'});
 
-  var vp = this.map_.getViewport();
-  var oc = goog.dom.getElementByClass('ol-overlaycontainer', vp);
-  if (oc) goog.dom.insertSiblingBefore(this.container_, oc);
+  var targetElement = goog.dom.getElement(opt_target || null);
+  if (targetElement) {
+    goog.dom.appendChild(targetElement, this.container_);
+  } else {
+    var vp = this.map_.getViewport();
+    var oc = goog.dom.getElementByClass('ol-overlaycontainer', vp);
+    if (oc) goog.dom.insertSiblingBefore(this.container_, oc);
+  }
 
   /**
    * @type {!Element}

@@ -24,7 +24,7 @@
           });
         init2d();
 
-        ol3d = new olcs.OLCesium(ol2d);
+        ol3d = new olcs.OLCesium(ol2d, 'map3d');
         var scene = ol3d.getCesiumScene();
         var terrainProvider = new Cesium.CesiumTerrainProvider({
             url : '//cesiumjs.org/stk-terrain/tilesets/world/tiles'
@@ -35,7 +35,7 @@
       }
 
       function init2d() {
-        new ol.Map({
+        ol2d = new ol.Map({
           layers: [
             new ol.layer.Tile({
               source: new ol.source.OSM()
@@ -44,21 +44,12 @@
           target: 'map2d',
           view: view
         });
-        ol2d = new ol.Map({
-          layers: [
-            new ol.layer.Tile({
-              source: new ol.source.OSM()
-            })
-          ],
-          target: 'map3d',
-          view: view
-        });
       }
     </script>
   </head>
   <body onload="javascript:start();">
     <div id="map2d" style="width:600px;height:400px;float:left;"></div>
-    <div id="map3d" style="width:600px;height:400px;float:left;"></div>
+    <div id="map3d" style="width:600px;height:400px;float:left;position:relative;"></div>
     <input type="button" value="Enable/disable" onclick="javascript:ol3d.setEnabled(!ol3d.getEnabled())" />
     <!-- <input type="button" value="Enable/disable" onclick="javascript:setInterval(function(){ol3d.setEnabled(!ol3d.getEnabled());}, 100);" /> -->
   </body>
