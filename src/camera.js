@@ -177,7 +177,7 @@ olcs.Camera.prototype.setPosition = function(position) {
  */
 olcs.Camera.prototype.getPosition = function() {
   var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(
-      this.cam_.positionWC);
+      this.cam_.position);
 
   return this.fromLonLat_([goog.math.toDegrees(carto.longitude),
                            goog.math.toDegrees(carto.latitude)]);
@@ -189,7 +189,7 @@ olcs.Camera.prototype.getPosition = function() {
  */
 olcs.Camera.prototype.setAltitude = function(altitude) {
   var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(
-      this.cam_.positionWC);
+      this.cam_.position);
   carto.height = altitude;
   this.cam_.position = Cesium.Ellipsoid.WGS84.cartographicToCartesian(carto);
 
@@ -202,7 +202,7 @@ olcs.Camera.prototype.setAltitude = function(altitude) {
  */
 olcs.Camera.prototype.getAltitude = function() {
   var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(
-      this.cam_.positionWC);
+      this.cam_.position);
 
   return carto.height;
 };
@@ -222,7 +222,7 @@ olcs.Camera.prototype.lookAt = function(position) {
   }
   var carte = Cesium.Ellipsoid.WGS84.cartographicToCartesian(carto);
 
-  var pos = this.cam_.positionWC;
+  var pos = this.cam_.position;
   var up = Cesium.Ellipsoid.WGS84.geocentricSurfaceNormal(
       pos, new Cesium.Cartesian3());
   this.cam_.lookAt(pos, carte, up);
@@ -308,7 +308,7 @@ olcs.Camera.prototype.updateView = function() {
    * need to be calculated _at the target_.
    */
   if (target) {
-    var pos = this.cam_.positionWC; //this forces the update
+    var pos = this.cam_.position;
 
     // normal to the ellipsoid at the target
     var targetNormal = new Cesium.Cartesian3();
