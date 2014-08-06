@@ -34,7 +34,9 @@ olcs.OLCesium = function(map, opt_target) {
   } else {
     var vp = this.map_.getViewport();
     var oc = goog.dom.getElementByClass('ol-overlaycontainer', vp);
-    if (oc) goog.dom.insertSiblingBefore(this.container_, oc);
+    if (oc) {
+      goog.dom.insertSiblingBefore(this.container_, oc);
+    }
   }
 
   /**

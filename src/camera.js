@@ -78,7 +78,9 @@ olcs.Camera = function(scene, view) {
 
   goog.events.listen(/** @type {!goog.events.EventTarget} */(this.view_),
       ['change:center', 'change:resolution', 'change:rotation'], function(e) {
-        if (!this.viewUpdateInProgress_) this.readFromView();
+        if (!this.viewUpdateInProgress_) {
+          this.readFromView();
+        }
       }, false, this);
 
 };
@@ -215,7 +217,9 @@ olcs.Camera.prototype.lookAt = function(position) {
 
   var carto = new Cesium.Cartographic(goog.math.toRadians(ll[0]),
                                       goog.math.toRadians(ll[1]));
-  if (this.scene_.globe) carto.height = this.scene_.globe.getHeight(carto) || 0;
+  if (this.scene_.globe) {
+    carto.height = this.scene_.globe.getHeight(carto) || 0;
+  }
   var carte = Cesium.Ellipsoid.WGS84.cartographicToCartesian(carto);
 
   var pos = this.cam_.positionWC;
@@ -237,11 +241,15 @@ olcs.Camera.prototype.updateCamera_ = function() {
 
   var carto = new Cesium.Cartographic(goog.math.toRadians(ll[0]),
                                       goog.math.toRadians(ll[1]));
-  if (this.scene_.globe) carto.height = this.scene_.globe.getHeight(carto) || 0;
+  if (this.scene_.globe) {
+    carto.height = this.scene_.globe.getHeight(carto) || 0;
+  }
   this.cam_.setPositionCartographic(carto);
 
   this.cam_.twistLeft(this.view_.getRotation() || 0);
-  if (this.tilt_) this.cam_.lookUp(this.tilt_);
+  if (this.tilt_) {
+    this.cam_.lookUp(this.tilt_);
+  }
   this.cam_.moveBackward(this.distance_);
 
   this.checkCameraChange(true);
