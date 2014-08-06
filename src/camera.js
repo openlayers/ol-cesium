@@ -162,10 +162,10 @@ olcs.Camera.prototype.getDistance = function() {
 
 /**
  * Shortcut for ol.View.setCenter().
- * @param {!ol.Coordinate} target Same projection as the ol.View.
+ * @param {!ol.Coordinate} center Same projection as the ol.View.
  */
-olcs.Camera.prototype.setTarget = function(target) {
-  this.view_.setCenter(target);
+olcs.Camera.prototype.setCenter = function(center) {
+  this.view_.setCenter(center);
 };
 
 
@@ -173,7 +173,7 @@ olcs.Camera.prototype.setTarget = function(target) {
  * Shortcut for ol.View.getCenter().
  * @return {!ol.Coordinate} Same projection as the ol.View.
  */
-olcs.Camera.prototype.getTarget = function() {
+olcs.Camera.prototype.getCenter = function() {
   return this.view_.getCenter();
 };
 
@@ -447,10 +447,10 @@ goog.exportSymbol('olcs.Camera.prototype.getDistance',
                   olcs.Camera.prototype.getDistance);
 goog.exportSymbol('olcs.Camera.prototype.setDistance',
                   olcs.Camera.prototype.setDistance);
-goog.exportSymbol('olcs.Camera.prototype.getTarget',
-                  olcs.Camera.prototype.getTarget);
-goog.exportSymbol('olcs.Camera.prototype.setTarget',
-                  olcs.Camera.prototype.setTarget);
+goog.exportSymbol('olcs.Camera.prototype.getCenter',
+                  olcs.Camera.prototype.getCenter);
+goog.exportSymbol('olcs.Camera.prototype.setCenter',
+                  olcs.Camera.prototype.setCenter);
 goog.exportSymbol('olcs.Camera.prototype.getPosition',
                   olcs.Camera.prototype.getPosition);
 goog.exportSymbol('olcs.Camera.prototype.setPosition',
