@@ -47,10 +47,11 @@ olcs.OLCesium = function(map, opt_target) {
   this.isOverMap_ = !goog.isDefAndNotNull(targetElement);
 
   /**
-   * @type {!Element}
+   * @type {!HTMLCanvasElement}
    * @private
    */
-  this.canvas_ = goog.dom.createDom(goog.dom.TagName.CANVAS, {style: fillArea});
+  this.canvas_ = /** @type {!HTMLCanvasElement} */
+      (goog.dom.createDom(goog.dom.TagName.CANVAS, {style: fillArea}));
   goog.dom.appendChild(this.container_, this.canvas_);
 
   /**
@@ -70,8 +71,8 @@ olcs.OLCesium = function(map, opt_target) {
    * @private
    */
   this.scene_ = new Cesium.Scene({
-    'canvas': this.canvas_,
-    'scene3DOnly': true
+    canvas: this.canvas_,
+    scene3DOnly: true
   });
 
   var sscc = this.scene_.screenSpaceCameraController;

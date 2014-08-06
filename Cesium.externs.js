@@ -288,61 +288,61 @@ Cesium.Camera.prototype.viewMatrix;
 
 
 /**
- * @type {Object}
+ * @typedef {Object}
  */
 Cesium.CameraEventType;
 
 
 /**
- * @type {number}
+ * @type {Cesium.CameraEventType}
  */
 Cesium.CameraEventType.LEFT_DRAG;
 
 
 /**
- * @type {number}
+ * @type {Cesium.CameraEventType}
  */
 Cesium.CameraEventType.MIDDLE_DRAG;
 
 
 /**
- * @type {number}
+ * @type {Cesium.CameraEventType}
  */
 Cesium.CameraEventType.PINCH;
 
 
 /**
- * @type {number}
+ * @type {Cesium.CameraEventType}
  */
 Cesium.CameraEventType.RIGHT_DRAG;
 
 
 /**
- * @type {number}
+ * @type {Cesium.CameraEventType}
  */
 Cesium.CameraEventType.WHEEL;
 
 
 /**
- * @type {Object}
+ * @typedef {Object}
  */
 Cesium.KeyboardEventModifier;
 
 
 /**
- * @type {number}
+ * @type {Cesium.KeyboardEventModifier}
  */
 Cesium.KeyboardEventModifier.ALT;
 
 
 /**
- * @type {number}
+ * @type {Cesium.KeyboardEventModifier}
  */
 Cesium.KeyboardEventModifier.CTRL;
 
 
 /**
- * @type {number}
+ * @type {Cesium.KeyboardEventModifier}
  */
 Cesium.KeyboardEventModifier.SHIFT;
 
@@ -1374,7 +1374,11 @@ Cesium.Context.prototype.uniformState;
 
 /**
  * @constructor
- * @param {Object.<string, Object>=} opt_opts
+ * @param {{canvas: HTMLCanvasElement,
+            contextOptions: (Object|undefined),
+            creditContainer: (Element|undefined),
+            mapProjection: (Object|undefined),
+            scene3DOnly: (boolean|undefined)}} opt_opts
  */
 Cesium.Scene = function(opt_opts) {};
 
@@ -1547,27 +1551,34 @@ Cesium.ScreenSpaceCameraController.prototype.ineartiaTranslate;
 Cesium.ScreenSpaceCameraController.prototype.inertiaZoom;
 
 /**
- * @type {Array|Object}
+ * Helper typedef.
+ * @typedef {{eventType: Cesium.CameraEventType,
+              modifier: Cesium.KeyboardEventModifier}|Cesium.CameraEventType}
+ */
+Cesium._SingleEventType;
+
+/**
+ * @type {Cesium._SingleEventType|Array.<Cesium._SingleEventType>|undefined}
  */
 Cesium.ScreenSpaceCameraController.prototype.lookEventTypes;
 
 /**
- * @type {Array|Object}
+ * @type {Cesium._SingleEventType|Array.<Cesium._SingleEventType>|undefined}
  */
 Cesium.ScreenSpaceCameraController.prototype.rotateEventTypes;
 
 /**
- * @type {Array|Object}
+ * @type {Cesium._SingleEventType|Array.<Cesium._SingleEventType>|undefined}
  */
 Cesium.ScreenSpaceCameraController.prototype.tiltEventTypes;
 
 /**
- * @type {Array|Object}
+ * @type {Cesium._SingleEventType|Array.<Cesium._SingleEventType>|undefined}
  */
 Cesium.ScreenSpaceCameraController.prototype.translateEventTypes;
 
 /**
- * @type {Array|Object}
+ * @type {Cesium._SingleEventType|Array.<Cesium._SingleEventType>|undefined}
  */
 Cesium.ScreenSpaceCameraController.prototype.zoomEventTypes;
 
