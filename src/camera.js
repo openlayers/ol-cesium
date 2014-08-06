@@ -50,8 +50,6 @@ olcs.Camera = function(scene, view) {
   this.fromLonLat_ = ol.proj.getTransform('EPSG:4326',
                                           this.view_.getProjection());
 
-  //TODO: handles change of view and its projection
-
   /**
    * 0 -- topdown, PI/2 -- the horizon
    * @type {number}

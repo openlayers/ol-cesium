@@ -92,6 +92,8 @@ olcs.OLCesium = function(map, opt_target) {
    */
   this.camera_ = new olcs.Camera(this.scene_, this.map_.getView());
 
+  //TODO: handle change of view
+
   /**
    * @type {!Cesium.Globe}
    * @private
