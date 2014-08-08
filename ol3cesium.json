@@ -1,8 +1,9 @@
 {
   "id": "ol3cesium",
 
-  "inputs": ['src/ol3cesium.js'],
-  "paths": ['src'],
+  "inputs": ["src/ol3cesium.js"],
+
+  "paths": ["src"],
 
   "externs": [
     "ol3/build/ol-externs.js",
