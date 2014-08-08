@@ -162,8 +162,8 @@ olcs.OLCesium.prototype.getEnabled = function() {
 
 
 /**
- * Enables/disabled the cesium.
- * This actually causes the canvas to be added to/removed from DOM.
+ * Enables/disables the Cesium.
+ * This modifies the visibility style of the container element.
  * @param {boolean=} opt_enable
  */
 olcs.OLCesium.prototype.setEnabled = function(opt_enable) {
