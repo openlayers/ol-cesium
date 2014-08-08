@@ -98,7 +98,8 @@ olcs.Camera.prototype.setHeading = function(heading) {
  * @return {number} Heading in radians.
  */
 olcs.Camera.prototype.getHeading = function() {
-  return this.view_.getRotation() || 0;
+  var rotation = this.view_.getRotation();
+  return goog.isDef(rotation) ? rotation : 0;
 };
 
 
@@ -218,7 +219,8 @@ olcs.Camera.prototype.lookAt = function(position) {
   var carto = new Cesium.Cartographic(goog.math.toRadians(ll[0]),
                                       goog.math.toRadians(ll[1]));
   if (this.scene_.globe) {
-    carto.height = this.scene_.globe.getHeight(carto) || 0;
+    var height = this.scene_.globe.getHeight(carto);
+    carto.height = goog.isDef(height) ? height : 0;
   }
   var carte = Cesium.Ellipsoid.WGS84.cartographicToCartesian(carto);
 
@@ -242,11 +244,13 @@ olcs.Camera.prototype.updateCamera_ = function() {
   var carto = new Cesium.Cartographic(goog.math.toRadians(ll[0]),
                                       goog.math.toRadians(ll[1]));
   if (this.scene_.globe) {
-    carto.height = this.scene_.globe.getHeight(carto) || 0;
+    var height = this.scene_.globe.getHeight(carto);
+    carto.height = goog.isDef(height) ? height : 0;
   }
   this.cam_.setPositionCartographic(carto);
 
-  this.cam_.twistLeft(this.view_.getRotation() || 0);
+  var rotation = this.view_.getRotation();
+  this.cam_.twistLeft(goog.isDef(rotation) ? rotation : 0);
   if (this.tilt_) {
     this.cam_.lookUp(this.tilt_);
   }
@@ -260,8 +264,9 @@ olcs.Camera.prototype.updateCamera_ = function() {
  * Calculates the values of the properties from the current ol.View state.
  */
 olcs.Camera.prototype.readFromView = function() {
+  var resolution = this.view_.getResolution();
   this.distance_ = this.calcDistanceForResolution_(
-      this.view_.getResolution() || 0,
+      goog.isDef(resolution) ? resolution : 0,
       goog.math.toRadians(this.toLonLat_(this.view_.getCenter())[1]));
 
   this.updateCamera_();
@@ -286,7 +291,8 @@ olcs.Camera.prototype.updateView = function() {
     //TODO: how to handle this properly ?
     var carto = this.cam_.positionCartographic.clone();
     if (this.scene_.globe) {
-      carto.height = this.scene_.globe.getHeight(carto) || 0;
+      var height = this.scene_.globe.getHeight(carto);
+      carto.height = goog.isDef(height) ? height : 0;
     }
     bestTarget = Cesium.Ellipsoid.WGS84.cartographicToCartesian(carto);
   }
@@ -329,8 +335,9 @@ olcs.Camera.prototype.updateView = function() {
     this.view_.setRotation((orientation < 0 ? heading : -heading));
 
     // TILT
-    this.tilt_ = Math.acos(Cesium.Cartesian3.dot(targetNormal,
-                                                 targetToCamera)) || 0;
+    var tiltAngle = Math.acos(
+        Cesium.Cartesian3.dot(targetNormal, targetToCamera));
+    this.tilt_ = isNaN(tiltAngle) ? 0 : tiltAngle;
   } else {
     // fallback when there is no target
     this.view_.setRotation(this.cam_.heading);
