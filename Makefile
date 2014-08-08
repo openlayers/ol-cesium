@@ -19,8 +19,8 @@ build-ol3:
 build-cesium: cesium/Build/Cesium/Cesium.js
 
 .PHONY: serve
-serve: download-plovr build-ol3 build-cesium
-	java -jar .build/$(PLOVR) serve ol3cesium-debug.json
+serve: npm-install build-ol3 build-cesium
+	node build/serve.js
 
 .PHONY: build
 build: dist/ol3cesium.js
