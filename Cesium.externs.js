@@ -1502,7 +1502,7 @@ Cesium.Scene.prototype.globe;
 
 
 /**
- * @type {Cesium.ImageryLayerCollection}
+ * @type {!Cesium.ImageryLayerCollection}
  */
 Cesium.Scene.prototype.imageryLayers;
 

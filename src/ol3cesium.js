@@ -107,12 +107,13 @@ olcs.OLCesium = function(map, opt_target) {
   this.scene_.globe = this.globe_;
   this.scene_.skyAtmosphere = new Cesium.SkyAtmosphere();
 
+  var olLayers = this.map_.getLayers();
   /**
-   * @type {!olcs.RasterSynchronizer}
+   * @type {?olcs.RasterSynchronizer}
    * @private
    */
-  this.rasterSynchronizer_ = new olcs.RasterSynchronizer(
-      this.map_.getLayers(), this.scene_.imageryLayers);
+  this.rasterSynchronizer_ = goog.isDefAndNotNull(olLayers) ?
+      new olcs.RasterSynchronizer(olLayers, this.scene_.imageryLayers) : null;
 
   //TODO: handle change of layer group
 

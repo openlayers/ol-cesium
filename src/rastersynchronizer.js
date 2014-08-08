@@ -55,13 +55,15 @@ olcs.RasterSynchronizer.prototype.synchronize_ = function() {
     // no mapping -> create new layer and set up synchronization
     if (!goog.isDef(cesiumLayer)) {
       cesiumLayer = olcs.RasterSynchronizer.createCorrespondingLayer(el);
-      olcs.RasterSynchronizer.syncLayerProperties(el, cesiumLayer);
-      goog.events.listen(el,
-          ['change:brightness', 'change:contrast', 'change:hue',
-           'change:opacity', 'change:saturation', 'change:visible'],
-          function(e) {
-            olcs.RasterSynchronizer.syncLayerProperties(el, cesiumLayer);
-          });
+      if (!goog.isNull(cesiumLayer)) {
+        olcs.RasterSynchronizer.syncLayerProperties(el, cesiumLayer);
+        goog.events.listen(el,
+            ['change:brightness', 'change:contrast', 'change:hue',
+             'change:opacity', 'change:saturation', 'change:visible'],
+            function(e) {
+              olcs.RasterSynchronizer.syncLayerProperties(el, cesiumLayer);
+            });
+      }
       this.layerMap_[olLayerId] = cesiumLayer;
     }
 
