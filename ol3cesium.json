@@ -1,0 +1,42 @@
+{
+  "id": "ol3cesium",
+
+  "inputs": ['src/ol3cesium.js'],
+  "paths": ['src'],
+
+  "externs": [
+    "ol3/build/ol-externs.js",
+    "Cesium.externs.js"
+  ],
+
+  "define": {
+    // "goog.dom.ASSUME_STANDARDS_MODE": true,
+    "goog.DEBUG": false
+  },
+
+  "mode": "ADVANCED",
+  "level": "VERBOSE",
+  
+  // "pretty-print": true,
+  // "debug": true,
+  
+  "checks": {
+    // Unfortunately, the Closure Library violates these in many places.
+    // "accessControls": "ERROR",
+    // "visibility": "ERROR"
+
+    "checkTypes": "OFF",
+    "checkRegExp": "ERROR",
+    "checkVars": "ERROR",
+    "deprecated": "ERROR",
+    "fileoverviewTags": "ERROR",
+    "invalidCasts": "ERROR",
+    "missingProperties": "ERROR",
+    "nonStandardJsDocs": "OFF",
+    "undefinedVars": "ERROR"
+  },
+
+  "output-wrapper": "(function(){%output%})();",
+
+  "jsdoc-html-output-path": "."
+}
