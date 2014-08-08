@@ -183,11 +183,13 @@ olcs.OLCesium.prototype.setEnabled = function(opt_enable) {
     this.handleResize_();
     this.camera_.readFromView();
   } else {
-    var interactions = this.map_.getInteractions();
-    goog.array.forEach(this.pausedInteractions_, function(el, i, arr) {
-      interactions.push(el);
-    }, this);
-    this.pausedInteractions_ = [];
+    if (this.isOverMap_) {
+      var interactions = this.map_.getInteractions();
+      goog.array.forEach(this.pausedInteractions_, function(el, i, arr) {
+        interactions.push(el);
+      }, this);
+      this.pausedInteractions_.length = 0;
+    }
 
     this.camera_.updateView();
   }
