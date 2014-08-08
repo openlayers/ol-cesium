@@ -5,59 +5,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="robots" content="index, all" />
     <title>ol3cesium exported methods example</title>
-
     <link rel="stylesheet" href="../ol3/css/ol.css" type="text/css">
-    <script src="../ol3/build/ol.js"></script>
-
-    <script src="../cesium/Build/Cesium/Cesium.js"></script>
-
-    <script src="http://localhost:9810/compile?id=ol3cesium-debug"></script>
-
-    <script>
-      var ol2d, ol3d;
-      var camera;
-      function start() {
-        init2d();
-
-        ol3d = new olcs.OLCesium(ol2d);
-        var scene = ol3d.getCesiumScene();
-        var terrainProvider = new Cesium.CesiumTerrainProvider({
-            url : '//cesiumjs.org/stk-terrain/tilesets/world/tiles'
-        });
-        scene.terrainProvider = terrainProvider;
-
-        ol3d.setEnabled(true);
-        camera = ol3d.getCamera();
-
-        var infoDiv = document.getElementById('infoDiv');
-        var printInfo = function() {
-          infoDiv.innerHTML = 'Center: ' + camera.getCenter() + '<br />' +
-                              'Distance: ' + camera.getDistance() + '<br />' +
-                              'Heading: ' + camera.getHeading() + '<br />' +
-                              'Tilt: ' + camera.getTilt() + '<br />' +
-                              '<i>Position:</i> ' + camera.getPosition() + '<br />' +
-                              '<i>Altitude:</i> ' + camera.getAltitude() + '<br />';
-        };
-        setInterval(printInfo, 100);
-      }
-
-      function init2d() {
-        ol2d = new ol.Map({
-          layers: [
-            new ol.layer.Tile({
-              source: new ol.source.OSM()
-            })
-          ],
-          target: 'map',
-          view: new ol.View({
-            center: ol.proj.transform([25, 20], 'EPSG:4326', 'EPSG:3857'),
-            zoom: 3
-          })
-        });
-      }
-    </script>
   </head>
-  <body onload="javascript:start();">
+  <body>
     <div id="map" style="width:600px;height:400px;float:left;"></div>
     <div id="infoDiv"></div>
     <input type="button" value="Enable/disable" onclick="javascript:ol3d.setEnabled(!ol3d.getEnabled())" />
@@ -70,5 +20,9 @@
     <input type="button" value="lookAt([35, 40])" onclick="javascript:camera.lookAt(ol.proj.transform([35, 40], 'EPSG:4326', 'EPSG:3857'))" />
     <input type="button" value="setCenter([40, 45])" onclick="javascript:camera.setCenter(ol.proj.transform([40, 45], 'EPSG:4326', 'EPSG:3857'))" />
     <input type="button" value="setPosition([45, 50])" onclick="javascript:camera.setPosition(ol.proj.transform([45, 50], 'EPSG:4326', 'EPSG:3857'))" />
+    <script src="../ol3/build/ol.js"></script>
+    <script src="../cesium/Build/Cesium/Cesium.js"></script>
+    <script src="/@loader"></script>
+    <script src="exports.js"></script>
   </body>
 </html>
