@@ -895,8 +895,19 @@ Cesium.GeographicTilingScheme.prototype.rectangle;
 /**
  * @constructor
  * @param {Cesium.ImageryProvider} imageryProvider
+ * @param {{rectangle: (Cesium.Rectangle|undefined),
+ *          alpha: (number|Function|undefined),
+ *          brightness: (number|Function|undefined),
+ *          contrast: (number|Function|undefined),
+ *          hue: (number|Function|undefined),
+ *          saturation: (number|Function|undefined),
+ *          gamma: (number|Function|undefined),
+ *          show: (boolean|undefined),
+ *          maximumAnisotropy: (number|undefined),
+ *          minimumTerrainLevel: (number|undefined),
+ *          maximumTerrainLevel: (number|undefined)}=} opt_opts
  */
-Cesium.ImageryLayer = function(imageryProvider) {};
+Cesium.ImageryLayer = function(imageryProvider, opt_opts) {};
 
 
 /**

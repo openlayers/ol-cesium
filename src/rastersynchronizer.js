@@ -56,13 +56,20 @@ olcs.RasterSynchronizer.prototype.synchronize_ = function() {
     if (!goog.isDef(cesiumLayer)) {
       cesiumLayer = olcs.RasterSynchronizer.createCorrespondingLayer(el);
       if (!goog.isNull(cesiumLayer)) {
-        olcs.RasterSynchronizer.syncLayerProperties(el, cesiumLayer);
         goog.events.listen(el,
             ['change:brightness', 'change:contrast', 'change:hue',
              'change:opacity', 'change:saturation', 'change:visible'],
             function(e) {
               olcs.RasterSynchronizer.syncLayerProperties(el, cesiumLayer);
             });
+
+        // there is no way to modify Cesium layer extent,
+        // we have to recreate when ol3 layer extent changes:
+        goog.events.listen(el, 'change:extent', function(e) {
+          this.cesiumLayers_.remove(cesiumLayer, true); // destroy
+          delete this.layerMap_[olLayerId]; // invalidate the map entry
+          this.synchronize_();
+        }, false, this);
       }
       this.layerMap_[olLayerId] = cesiumLayer;
     }
@@ -99,7 +106,7 @@ olcs.RasterSynchronizer.createCorrespondingLayer = function(olLayer) {
       tileGrid = source.getTileGrid();
   if (source instanceof ol.source.OSM) {
     provider = new Cesium.OpenStreetMapImageryProvider({
-      //TODO: url, fileExtension, rectangle, credit, maximumLevel
+      //TODO: url, fileExtension, credit, maximumLevel
       minimumLevel: !goog.isNull(tileGrid) ? tileGrid.getMinZoom() : undefined
     });
   } else if (source instanceof ol.source.BingMaps) {
@@ -108,10 +115,10 @@ olcs.RasterSynchronizer.createCorrespondingLayer = function(olLayer) {
       url: '//dev.virtualearth.net'
     });
   } else if (source instanceof ol.source.TileWMS) {
-    //TODO: url, layers, parameters, rectangle, maximumLevel, credit
+    //TODO: url, layers, parameters, maximumLevel, credit
     provider = new Cesium.WebMapServiceImageryProvider({});
   } else if (source instanceof ol.source.XYZ) {
-    //TODO: url, fileExtension, credit, rectangle, tilingScheme, maximumLevel
+    //TODO: url, fileExtension, credit, tilingScheme, maximumLevel
 
     // The tile size should be the same for all the zoom levels in this case
     var tileSize = !goog.isNull(tileGrid) ? tileGrid.getTileSize(0) : undefined;
@@ -122,7 +129,18 @@ olcs.RasterSynchronizer.createCorrespondingLayer = function(olLayer) {
     });
   }
 
-  return goog.isNull(provider) ? null : new Cesium.ImageryLayer(provider);
+  if (goog.isNull(provider)) {
+    return null;
+  } else {
+    var ext = olLayer.getExtent();
+    var rectangle = goog.isDefAndNotNull(ext) ?
+        new Cesium.Rectangle(ext[0], ext[1], ext[2], ext[3]) : undefined;
+    var cesiumLayer = new Cesium.ImageryLayer(provider, {
+      rectangle: rectangle
+    });
+    olcs.RasterSynchronizer.syncLayerProperties(olLayer, cesiumLayer);
+    return cesiumLayer;
+  }
 };
 
 
