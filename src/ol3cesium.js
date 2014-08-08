@@ -4,6 +4,7 @@ goog.require('goog.dom');
 goog.require('goog.events');
 
 goog.require('olcs.Camera');
+goog.require('olcs.RasterSynchronizer');
 
 
 
@@ -106,8 +107,14 @@ olcs.OLCesium = function(map, opt_target) {
   this.scene_.globe = this.globe_;
   this.scene_.skyAtmosphere = new Cesium.SkyAtmosphere();
 
-  var osm = new Cesium.OpenStreetMapImageryProvider();
-  this.scene_.imageryLayers.addImageryProvider(osm);
+  /**
+   * @type {!olcs.RasterSynchronizer}
+   * @private
+   */
+  this.rasterSynchronizer_ = new olcs.RasterSynchronizer(
+      this.map_.getLayers(), this.scene_.imageryLayers);
+
+  //TODO: handle change of layer group
 
   this.camera_.readFromView();
 

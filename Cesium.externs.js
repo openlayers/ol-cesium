@@ -872,9 +872,15 @@ Cesium.Event = function() {};
 Cesium.Credit = function(opt_text, opt_imageUrl, opt_link) {};
 
 
+/**
+ * @constructor
+ */
+Cesium.TilingScheme = function() {};
+
 
 /**
  * @constructor
+ * @extends {Cesium.TilingScheme}
  */
 Cesium.GeographicTilingScheme = function() {};
 
@@ -892,10 +898,53 @@ Cesium.GeographicTilingScheme.prototype.rectangle;
  */
 Cesium.ImageryLayer = function(imageryProvider) {};
 
+
 /**
  * @type {Cesium.ImageryProvider}
  */
 Cesium.ImageryLayer.prototype.imageryProvider;
+
+
+/**
+ * @type {number}
+ */
+Cesium.ImageryLayer.prototype.brightness;
+
+
+/**
+ * @type {number}
+ */
+Cesium.ImageryLayer.prototype.contrast;
+
+
+/**
+ * @type {number}
+ */
+Cesium.ImageryLayer.prototype.hue;
+
+
+/**
+ * @type {number}
+ */
+Cesium.ImageryLayer.prototype.alpha;
+
+
+/**
+ * @type {number}
+ */
+Cesium.ImageryLayer.prototype.saturation;
+
+
+/**
+ * @type {boolean}
+ */
+Cesium.ImageryLayer.prototype.show;
+
+
+/**
+ * @type {!Cesium.Rectangle}
+ */
+Cesium.ImageryLayer.prototype.rectangle;
 
 
 /**
@@ -940,9 +989,15 @@ Cesium.ImageryLayerCollection.prototype.add = function(layer, opt_index) {};
 
 /**
  * @param {Cesium.ImageryLayer} layer
- * @param {boolean} destroy
+ * @param {boolean=} opt_destroy
  */
-Cesium.ImageryLayerCollection.prototype.remove = function(layer, destroy) {};
+Cesium.ImageryLayerCollection.prototype.remove = function(layer, opt_destroy) {};
+
+
+/**
+ * @param {boolean=} opt_destroy
+ */
+Cesium.ImageryLayerCollection.prototype.removeAll = function(opt_destroy) {};
 
 
 
@@ -1042,6 +1097,12 @@ Cesium.ImageryProvider.loadImage = function(imageryProvider, url) {};
 
 /**
  * @constructor
+ * @param {{url: string,
+ *          key: (string|undefined),
+ *          tileProtocol: (string|undefined),
+ *          mapStyle: (string|undefined),
+ *          tileDiscardPolicy: (Object|undefined),
+ *          proxy: (Object|undefined)}} options
  * @extends {Cesium.ImageryProvider}
  */
 Cesium.BingMapsImageryProvider = function(options) {};
@@ -1283,7 +1344,13 @@ Cesium.Color = function(opt_r, opt_g, opt_b, opt_a) {};
 
 /**
  * @constructor
- * @param {Object=} opt_opts
+ * @param {{url: (string|undefined),
+ *          fileExtension: (string|undefined),
+ *          proxy: (Object|undefined),
+ *          rectangle: (Cesium.Rectangle|undefined),
+ *          minimumLevel: (number|undefined),
+ *          maximumLevel: (number|undefined),
+ *          credit: (Cesium.Credit|string|undefined)}=} opt_opts
  * @extends {Cesium.ImageryProvider}
  */
 Cesium.OpenStreetMapImageryProvider = function(opt_opts) {};
@@ -1292,7 +1359,13 @@ Cesium.OpenStreetMapImageryProvider = function(opt_opts) {};
 
 /**
  * @constructor
- * @param {Object} options
+ * @param {{url: string,
+ *          layers: string,
+ *          parameters: (Object|undefined),
+ *          rectangle: (Cesium.Rectangle|undefined),
+ *          maximumLevel: (number|undefined),
+ *          credit: (Cesium.Credit|string|undefined),
+ *          proxy: (Object|undefined)}} options
  * @extends {Cesium.ImageryProvider}
  */
 Cesium.WebMapServiceImageryProvider = function(options) {};
@@ -1635,8 +1708,17 @@ Cesium.SingleTileImageryProviderOptions;
 
 /**
  * @constructor
+ * @param {{url: (string|undefined),
+ *          fileExtension: (string|undefined),
+ *          proxy: (Object|undefined),
+ *          credit: (Cesium.Credit|string|undefined),
+ *          minimumLevel: (number|undefined),
+ *          maximumLevel: (number|undefined),
+ *          rectangle: (Cesium.Rectangle|undefined),
+ *          tilingScheme: (Cesium.TilingScheme|undefined),
+ *          tileWidth: (number|undefined),
+ *          tileHeight: (number|undefined)}} options
  * @extends {Cesium.ImageryProvider}
- * @param {Object} options
  */
 Cesium.TileMapServiceImageryProvider = function(options) {};
 
@@ -1728,6 +1810,7 @@ Cesium.WebMercatorProjection.prototype.unproject = function(cartesian) {};
 
 /**
  * @constructor
+ * @extends {Cesium.TilingScheme}
  */
 Cesium.WebMercatorTilingScheme = function() {};
 
