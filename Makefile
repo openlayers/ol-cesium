@@ -5,6 +5,9 @@ all: serve
 .PHONY: download-plovr
 download-plovr: .build/$(PLOVR)
 
+.PHONY: npm-install
+npm-install: .build/node_modules.timestamp
+
 .PHONY: build-ol3
 build-ol3:
 	(cd ol3 && \
@@ -38,6 +41,11 @@ clean:
 .PHONY: cleanall
 cleanall: clean
 	rm -rf .build
+
+.build/node_modules.timestamp: package.json
+	npm install
+	mkdir -p $(dir $@)
+	touch $@
 
 .build/python-venv:
 	mkdir -p $(dir $@)
