@@ -1,3 +1,5 @@
+SRC_JS_FILES := $(shell find src -type f -name '*.js')
+
 all: serve
 
 .PHONY: npm-install
@@ -21,9 +23,7 @@ serve: npm-install build-ol3 build-cesium
 dist: dist/ol3cesium.js
 
 .PHONY: lint
-lint: .build/python-venv/bin/gjslint
-	.build/python-venv/bin/fixjsstyle --strict -r ./src
-	.build/python-venv/bin/gjslint --jslint_error=all --strict --custom_jsdoc_tags=api -r ./src
+lint: .build/python-venv/bin/gjslint .build/gjslint.timestamp
 
 .PHONY: server
 server:
@@ -40,6 +40,10 @@ cleanall: clean
 .build/node_modules.timestamp: package.json
 	npm install
 	mkdir -p $(dir $@)
+	touch $@
+
+.build/gjslint.timestamp: $(SRC_JS_FILES)
+	.build/python-venv/bin/gjslint --jslint_error=all --strict --custom_jsdoc_tags=api $?
 	touch $@
 
 .build/python-venv:
