@@ -113,7 +113,8 @@ olcs.OLCesium = function(map, opt_target) {
    * @private
    */
   this.rasterSynchronizer_ = goog.isDefAndNotNull(olLayers) ?
-      new olcs.RasterSynchronizer(olLayers, this.scene_.imageryLayers) : null;
+      new olcs.RasterSynchronizer(this.map_.getView(), olLayers,
+                                  this.scene_.imageryLayers) : null;
 
   //TODO: handle change of layer group
 

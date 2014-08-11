@@ -9,11 +9,18 @@ goog.require('olcs.OLImageryProvider');
 /**
  * This object takes care of one-directional synchronization of
  * ol3 raster layers to the given Cesium globe.
+ * @param {!ol.View} view
  * @param {!ol.Collection} olLayers
  * @param {!Cesium.ImageryLayerCollection} cesiumLayers
  * @constructor
  */
-olcs.RasterSynchronizer = function(olLayers, cesiumLayers) {
+olcs.RasterSynchronizer = function(view, olLayers, cesiumLayers) {
+  /**
+   * @type {!ol.View}
+   * @private
+   */
+  this.view_ = view;
+
   /**
    * @type {!ol.Collection}
    * @private
@@ -50,13 +57,16 @@ olcs.RasterSynchronizer.prototype.synchronize_ = function() {
   var unusedCesiumLayers = goog.object.transpose(this.layerMap_);
   this.cesiumLayers_.removeAll(false);
 
+  var viewProj = this.view_.getProjection();
+
   this.olLayers_.forEach(function(el, i, arr) {
     var olLayerId = goog.getUid(el);
     var cesiumLayer = this.layerMap_[olLayerId];
 
     // no mapping -> create new layer and set up synchronization
     if (!goog.isDef(cesiumLayer)) {
-      cesiumLayer = olcs.RasterSynchronizer.createCorrespondingLayer(el);
+      cesiumLayer = olcs.RasterSynchronizer.createCorrespondingLayer(el,
+                                                                     viewProj);
       if (!goog.isNull(cesiumLayer)) {
         goog.events.listen(el,
             ['change:brightness', 'change:contrast', 'change:hue',
@@ -95,9 +105,12 @@ olcs.RasterSynchronizer.prototype.synchronize_ = function() {
 
 /**
  * @param {!ol.layer.Layer} olLayer
+ * @param {ol.proj.Projection=} opt_projFilter Return null if the layer
+ *                                             uses different projection.
  * @return {?Cesium.ImageryLayer}
  */
-olcs.RasterSynchronizer.createCorrespondingLayer = function(olLayer) {
+olcs.RasterSynchronizer.createCorrespondingLayer = function(olLayer,
+                                                            opt_projFilter) {
   if (!(olLayer instanceof ol.layer.Tile)) {
     return null;
   }
@@ -108,6 +121,9 @@ olcs.RasterSynchronizer.createCorrespondingLayer = function(olLayer) {
   // handle special cases before this general synchronization
   if (source instanceof ol.source.TileImage) {
     var projection = source.getProjection();
+    if (goog.isDef(opt_projFilter) && projection !== opt_projFilter) {
+      return null;
+    }
     var is3857 = projection === ol.proj.get('EPSG:3857');
     var is4326 = projection === ol.proj.get('EPSG:4326');
     if (is3857 || is4326) {
