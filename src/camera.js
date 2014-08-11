@@ -10,6 +10,7 @@ goog.require('goog.events');
  * @param {!Cesium.Scene} scene
  * @param {!ol.View} view
  * @constructor
+ * @api
  */
 olcs.Camera = function(scene, view) {
   /**
@@ -88,6 +89,7 @@ olcs.Camera = function(scene, view) {
 
 /**
  * @param {number} heading In radians.
+ * @api
  */
 olcs.Camera.prototype.setHeading = function(heading) {
   this.view_.setRotation(heading);
@@ -96,6 +98,7 @@ olcs.Camera.prototype.setHeading = function(heading) {
 
 /**
  * @return {number} Heading in radians.
+ * @api
  */
 olcs.Camera.prototype.getHeading = function() {
   var rotation = this.view_.getRotation();
@@ -105,6 +108,7 @@ olcs.Camera.prototype.getHeading = function() {
 
 /**
  * @param {number} tilt In radians.
+ * @api
  */
 olcs.Camera.prototype.setTilt = function(tilt) {
   this.tilt_ = tilt;
@@ -114,6 +118,7 @@ olcs.Camera.prototype.setTilt = function(tilt) {
 
 /**
  * @return {number} Tilt in radians.
+ * @api
  */
 olcs.Camera.prototype.getTilt = function() {
   return this.tilt_;
@@ -122,6 +127,7 @@ olcs.Camera.prototype.getTilt = function() {
 
 /**
  * @param {number} distance In meters.
+ * @api
  */
 olcs.Camera.prototype.setDistance = function(distance) {
   this.distance_ = distance;
@@ -132,6 +138,7 @@ olcs.Camera.prototype.setDistance = function(distance) {
 
 /**
  * @return {number} Distance in meters.
+ * @api
  */
 olcs.Camera.prototype.getDistance = function() {
   return this.distance_;
@@ -141,6 +148,7 @@ olcs.Camera.prototype.getDistance = function() {
 /**
  * Shortcut for ol.View.setCenter().
  * @param {!ol.Coordinate} center Same projection as the ol.View.
+ * @api
  */
 olcs.Camera.prototype.setCenter = function(center) {
   this.view_.setCenter(center);
@@ -150,6 +158,7 @@ olcs.Camera.prototype.setCenter = function(center) {
 /**
  * Shortcut for ol.View.getCenter().
  * @return {!ol.Coordinate} Same projection as the ol.View.
+ * @api
  */
 olcs.Camera.prototype.getCenter = function() {
   return this.view_.getCenter();
@@ -159,6 +168,7 @@ olcs.Camera.prototype.getCenter = function() {
 /**
  * Sets the position of the camera.
  * @param {!ol.Coordinate} position Same projection as the ol.View.
+ * @api
  */
 olcs.Camera.prototype.setPosition = function(position) {
   var ll = this.toLonLat_(position);
@@ -175,6 +185,7 @@ olcs.Camera.prototype.setPosition = function(position) {
 /**
  * Calculates position under the camera.
  * @return {!ol.Coordinate} Same projection as the ol.View.
+ * @api
  */
 olcs.Camera.prototype.getPosition = function() {
   var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(
@@ -187,6 +198,7 @@ olcs.Camera.prototype.getPosition = function() {
 
 /**
  * @param {number} altitude In meters.
+ * @api
  */
 olcs.Camera.prototype.setAltitude = function(altitude) {
   var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(
@@ -200,6 +212,7 @@ olcs.Camera.prototype.setAltitude = function(altitude) {
 
 /**
  * @return {number} Altitude in meters.
+ * @api
  */
 olcs.Camera.prototype.getAltitude = function() {
   var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(
@@ -212,6 +225,7 @@ olcs.Camera.prototype.getAltitude = function() {
 /**
  * Rotates the camera to point at the specified target.
  * @param {!ol.Coordinate} position Same projection as the ol.View.
+ * @api
  */
 olcs.Camera.prototype.lookAt = function(position) {
   var ll = this.toLonLat_(position);
@@ -276,6 +290,7 @@ olcs.Camera.prototype.readFromView = function() {
 /**
  * Calculates the values of the properties from the current Cesium.Camera state.
  * Modifies the center, resolution and rotation properties of the view.
+ * @api
  */
 olcs.Camera.prototype.updateView = function() {
   this.viewUpdateInProgress_ = true;
@@ -413,37 +428,3 @@ olcs.Camera.prototype.calcResolutionForDistance_ = function(distance,
 
   return resolution;
 };
-
-
-
-goog.exportSymbol('olcs.Camera',
-                  olcs.Camera);
-goog.exportProperty(olcs.Camera.prototype, 'getHeading',
-                    olcs.Camera.prototype.getHeading);
-goog.exportProperty(olcs.Camera.prototype, 'setHeading',
-                    olcs.Camera.prototype.setHeading);
-goog.exportProperty(olcs.Camera.prototype, 'getTilt',
-                    olcs.Camera.prototype.getTilt);
-goog.exportProperty(olcs.Camera.prototype, 'setTilt',
-                    olcs.Camera.prototype.setTilt);
-goog.exportProperty(olcs.Camera.prototype, 'getDistance',
-                    olcs.Camera.prototype.getDistance);
-goog.exportProperty(olcs.Camera.prototype, 'setDistance',
-                    olcs.Camera.prototype.setDistance);
-goog.exportProperty(olcs.Camera.prototype, 'getCenter',
-                    olcs.Camera.prototype.getCenter);
-goog.exportProperty(olcs.Camera.prototype, 'setCenter',
-                    olcs.Camera.prototype.setCenter);
-goog.exportProperty(olcs.Camera.prototype, 'getPosition',
-                    olcs.Camera.prototype.getPosition);
-goog.exportProperty(olcs.Camera.prototype, 'setPosition',
-                    olcs.Camera.prototype.setPosition);
-goog.exportProperty(olcs.Camera.prototype, 'getAltitude',
-                    olcs.Camera.prototype.getAltitude);
-goog.exportProperty(olcs.Camera.prototype, 'setAltitude',
-                    olcs.Camera.prototype.setAltitude);
-goog.exportProperty(olcs.Camera.prototype, 'lookAt',
-                    olcs.Camera.prototype.lookAt);
-
-goog.exportProperty(olcs.Camera.prototype, 'updateView',
-                    olcs.Camera.prototype.updateView);

@@ -11,6 +11,7 @@ goog.require('olcs.Camera');
  * @param {!ol.Map} map
  * @param {Element|string=} opt_target Target element for the Cesium container.
  * @constructor
+ * @api
  */
 olcs.OLCesium = function(map, opt_target) {
   /**
@@ -139,6 +140,7 @@ olcs.OLCesium.prototype.handleResize_ = function() {
 
 /**
  * @return {!olcs.Camera}
+ * @api
  */
 olcs.OLCesium.prototype.getCamera = function() {
   return this.camera_;
@@ -147,6 +149,7 @@ olcs.OLCesium.prototype.getCamera = function() {
 
 /**
  * @return {!Cesium.Scene}
+ * @api
  */
 olcs.OLCesium.prototype.getCesiumScene = function() {
   return this.scene_;
@@ -155,6 +158,7 @@ olcs.OLCesium.prototype.getCesiumScene = function() {
 
 /**
  * @return {boolean}
+ * @api
  */
 olcs.OLCesium.prototype.getEnabled = function() {
   return this.enabled_;
@@ -165,6 +169,7 @@ olcs.OLCesium.prototype.getEnabled = function() {
  * Enables/disables the Cesium.
  * This modifies the visibility style of the container element.
  * @param {boolean=} opt_enable
+ * @api
  */
 olcs.OLCesium.prototype.setEnabled = function(opt_enable) {
   this.enabled_ = opt_enable !== false;
@@ -194,14 +199,3 @@ olcs.OLCesium.prototype.setEnabled = function(opt_enable) {
     this.camera_.updateView();
   }
 };
-
-
-goog.exportSymbol('olcs.OLCesium', olcs.OLCesium);
-goog.exportProperty(olcs.OLCesium.prototype, 'getEnabled',
-                    olcs.OLCesium.prototype.getEnabled);
-goog.exportProperty(olcs.OLCesium.prototype, 'getCamera',
-                    olcs.OLCesium.prototype.getCamera);
-goog.exportProperty(olcs.OLCesium.prototype, 'getCesiumScene',
-                    olcs.OLCesium.prototype.getCesiumScene);
-goog.exportProperty(olcs.OLCesium.prototype, 'setEnabled',
-                    olcs.OLCesium.prototype.setEnabled);
