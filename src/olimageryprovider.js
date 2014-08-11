@@ -32,6 +32,10 @@ olcs.OLImageryProvider = function(source) {
   this.tilingScheme_ = new Cesium.WebMercatorTilingScheme(); //TODO:
   this.rectangle_ = this.tilingScheme_.rectangle;
   this.errorEvent_ = new Cesium.Event();
+
+  this.emptyCanvas_ = goog.dom.createElement(goog.dom.TagName.CANVAS);
+  this.emptyCanvas_.width = 1;
+  this.emptyCanvas_.height = 1;
 };
 goog.inherits(olcs.OLImageryProvider, Cesium.ImageryProvider);
 
@@ -118,10 +122,10 @@ olcs.OLImageryProvider.prototype['requestImage'] =
     var url = tileUrlFunction(new ol.TileCoord(level, x, -y - 1),
                               1, this.projection_);
     return goog.isDef(url) ?
-           Cesium.ImageryProvider.loadImage(this, url) : undefined;
+           Cesium.ImageryProvider.loadImage(this, url) : this.emptyCanvas_;
   } else {
-    //TODO: there is no way to tell Cesium to stop trying when this happens
-    return undefined;
+    // return empty canvas to stop Cesium from retrying later
+    return this.emptyCanvas_;
   }
 };
 
