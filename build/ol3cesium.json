@@ -1,0 +1,58 @@
+{
+  "exports": ["*"],
+  "src": ["src/**/*.js"],
+  "compile": {
+    "externs": [
+      "ol3/build/ol-externs.js",
+      "Cesium.externs.js"
+    ],
+    "define": [
+      "goog.DEBUG=false"
+    ],
+    "jscomp_error": [
+      "accessControls",
+      "ambiguousFunctionDecl",
+      "checkDebuggerStatement",
+      "checkEventfulObjectDisposal",
+      "checkProvides",
+      "checkRegExp",
+      "checkStructDictInheritance",
+      "checkVars",
+      "const",
+      "constantProperty",
+      "deprecated",
+      "duplicate",
+      "duplicateMessage",
+      "es3",
+      "externsValidation",
+      "fileoverviewTags",
+      "globalThis",
+      "internetExplorerChecks",
+      "invalidCasts",
+      "misplacedTypeAnnotation",
+      "missingProperties",
+      "nonStandardJsDocs",
+      "strictModuleDepCheck",
+      "suspiciousCode",
+      "typeInvalidation",
+      "tweakValidation",
+      "undefinedNames",
+      "undefinedVars",
+      "unknownDefines",
+      "uselessCode",
+      "violatedModuleDep",
+      "visibility"
+    ],
+    "extra_annotation_name": [
+      "api", "observable"
+    ],
+    "jscomp_off": [
+      "es5Strict",
+      "checkTypes"
+
+    ],
+    "compilation_level": "ADVANCED_OPTIMIZATIONS",
+    "output_wrapper": "(function(){%output%})();",
+    "use_types_for_optimization": true
+    }
+}
