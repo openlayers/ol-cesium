@@ -22,6 +22,8 @@ olcs.OLImageryProvider = function(source) {
    */
   this.projection_ = source.getProjection();
 
+  this.is4326_ = false;
+
   this.ready_ = false;
 
   this.errorEvent_ = new Cesium.Event();
@@ -48,22 +50,36 @@ Object.defineProperties(olcs.OLImageryProvider.prototype, {
 
   tileWidth: {
     get: /** @this {olcs.OLImageryProvider} */
-        function() {return this.tileSize_;}
+        function() {
+          var tg = this.source_.getTileGrid();
+          return !goog.isNull(tg) ? tg.getTileSize(0) : 256;
+        }
   },
 
   tileHeight: {
     get: /** @this {olcs.OLImageryProvider} */
-        function() {return this.tileSize_;}
+        function() {return this.tileWidth;}
   },
 
   maximumLevel: {
     get: /** @this {olcs.OLImageryProvider} */
-        function() {return this.maximumLevel_;}
+        function() {
+          var tg = this.source_.getTileGrid();
+          return !goog.isNull(tg) ? tg.getMaxZoom() : 18;
+        }
   },
 
   minimumLevel: {
     get: /** @this {olcs.OLImageryProvider} */
-        function() {return this.minimumLevel_;}
+        function() {
+          // WARNING: Do not use the minimum level (at least until the extent is
+          // properly set). Cesium assumes the minimumLevel to contain only
+          // a few tiles and tries to load them all at once -- this can
+          // freeze and/or crash the browser !
+          return 0;
+          //var tg = this.source_.getTileGrid();
+          //return !goog.isNull(tg) ? tg.getMinZoom() : 0;
+        }
   },
 
   tilingScheme: {
@@ -102,23 +118,20 @@ Object.defineProperties(olcs.OLImageryProvider.prototype, {
 olcs.OLImageryProvider.prototype.checkReady = function() {
   if (!this.ready_ && this.source_.getState() == 'ready') {
     this.projection_ = this.source_.getProjection();
-    var tileGrid = this.source_.getTileGrid();
-    if (!goog.isNull(tileGrid)) {
-      this.tileSize_ = tileGrid.getTileSize(0);
 
-      // WARNING: Do not use the minimum level (at least until the extent is
-      // properly set). Cesium assumes the minimumLevel contains only
-      // a few tiles and tries to load them all at once -- this can
-      // freeze and/or crash the browser !
-      this.minimumLevel_ = 0; //tileGrid.getMinZoom();
-      this.maximumLevel_ = tileGrid.getMaxZoom();
-
-      this.credit_ = undefined; //TODO: create from attributions
-      this.tilingScheme_ = new Cesium.WebMercatorTilingScheme(); //TODO:
-      this.rectangle_ = this.tilingScheme_.rectangle;
-
-      this.ready_ = true;
+    if (this.projection_ == ol.proj.get('EPSG:4326')) {
+      this.tilingScheme_ = new Cesium.GeographicTilingScheme();
+      this.is4326_ = true;
+    } else if (this.projection_ == ol.proj.get('EPSG:3857')) {
+      this.tilingScheme_ = new Cesium.WebMercatorTilingScheme();
+    } else {
+      return false;
     }
+    this.rectangle_ = this.tilingScheme_.rectangle;
+
+    this.credit_ = undefined; //TODO: create from attributions
+
+    this.ready_ = true;
   }
   return this.ready_;
 };
@@ -142,8 +155,9 @@ olcs.OLImageryProvider.prototype['requestImage'] =
     function(x, y, level) {
   var tileUrlFunction = this.source_.getTileUrlFunction();
   if (!goog.isNull(tileUrlFunction)) {
-    var url = tileUrlFunction(new ol.TileCoord(level, x, -y - 1),
-                              1, this.projection_);
+    var z_ = this.is4326_ ? (level + 1) : level;
+    var y_ = this.is4326_ ? ((1 << level) - y - 1) : (-y - 1);
+    var url = tileUrlFunction(new ol.TileCoord(z_, x, y_), 1, this.projection_);
     return goog.isDef(url) ?
            Cesium.ImageryProvider.loadImage(this, url) : this.emptyCanvas_;
   } else {
