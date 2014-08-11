@@ -11,11 +11,8 @@ build-ol3:
 	 npm install && \
 	 python build.py build/ol.js css/ol.css)
 
-.PHONY: build-cesium
-build-cesium: cesium/Build/Cesium/Cesium.js
-
 .PHONY: serve
-serve: npm-install build-ol3 build-cesium
+serve: npm-install build-ol3 cesium/Build/Cesium/Cesium.js
 	node build/serve.js
 
 .PHONY: dist
@@ -27,6 +24,10 @@ lint: .build/python-venv/bin/gjslint .build/gjslint.timestamp
 .PHONY: clean
 clean:
 	rm -f dist/ol3cesium.js
+	rm -f ol3/build/ol.js
+	rm -f ol3/build/ol.css
+	rm -f ol3/build/ol-externs.js
+	rm -f cesium/Build/Cesium/Cesium.js
 
 .PHONY: cleanall
 cleanall: clean
