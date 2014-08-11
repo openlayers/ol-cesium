@@ -24,10 +24,6 @@ dist: dist/ol3cesium.js
 .PHONY: lint
 lint: .build/python-venv/bin/gjslint .build/gjslint.timestamp
 
-.PHONY: server
-server:
-	python -m SimpleHTTPServer 9811
-
 .PHONY: clean
 clean:
 	rm -f dist/ol3cesium.js
