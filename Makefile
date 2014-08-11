@@ -17,8 +17,8 @@ build-cesium: cesium/Build/Cesium/Cesium.js
 serve: npm-install build-ol3 build-cesium
 	node build/serve.js
 
-.PHONY: build
-build: dist/ol3cesium.js
+.PHONY: dist
+dist: dist/ol3cesium.js
 
 .PHONY: lint
 lint: .build/python-venv/bin/gjslint
