@@ -1,9 +1,4 @@
-PLOVR = plovr-81ed862.jar
-
 all: serve
-
-.PHONY: download-plovr
-download-plovr: .build/$(PLOVR)
 
 .PHONY: npm-install
 npm-install: .build/node_modules.timestamp
@@ -54,10 +49,6 @@ cleanall: clean
 .build/python-venv/bin/gjslint: .build/python-venv
 	.build/python-venv/bin/pip install "http://closure-linter.googlecode.com/files/closure_linter-latest.tar.gz"
 	touch $@
-
-.build/$(PLOVR):
-	mkdir -p $(dir $@)
-	wget -O $@ https://plovr.googlecode.com/files/$(PLOVR)
 
 dist/ol3cesium.js: build/ol3cesium.json build-ol3
 	mkdir -p $(dir $@)
