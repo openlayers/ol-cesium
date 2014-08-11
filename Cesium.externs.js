@@ -879,6 +879,12 @@ Cesium.TilingScheme = function() {};
 
 
 /**
+ * @type {Cesium.Rectangle}
+ */
+Cesium.TilingScheme.prototype.rectangle;
+
+
+/**
  * @constructor
  * @extends {Cesium.TilingScheme}
  */
@@ -886,9 +892,10 @@ Cesium.GeographicTilingScheme = function() {};
 
 
 /**
- * @type {Cesium.Rectangle}
+ * @constructor
+ * @extends {Cesium.TilingScheme}
  */
-Cesium.GeographicTilingScheme.prototype.rectangle;
+Cesium.WebMercatorTilingScheme = function() {};
 
 
 
@@ -1055,16 +1062,31 @@ Cesium.ImageryProvider.prototype.maximumLevel;
 
 
 /**
+ * @type {boolean}
+ */
+Cesium.ImageryProvider.prototype.ready;
+
+
+/**
+ * @type {boolean}
+ */
+Cesium.ImageryProvider.prototype.hasAlphaChannel;
+
+
+/**
+ * @type {Object|undefined}
+ */
+Cesium.ImageryProvider.prototype.proxy;
+
+
+/**
  * @type {string}
  */
 Cesium.ImageryProvider.prototype.url;
 
 
 /**
- *  //@return {TilingScheme} The tiling scheme.
- *  // TODO
- *  //@return {Cesium.GeographicTilingScheme}
- *  @type {Cesium.WebMercatorTilingScheme}
+ *  @type {Cesium.TilingScheme}
  */
 Cesium.ImageryProvider.prototype.tilingScheme;
 
@@ -1087,6 +1109,15 @@ Cesium.ImageryProvider.prototype.errorEvent;
  * @return {Cesium.Credit}
  */
 Cesium.ImageryProvider.prototype.credit;
+
+
+/**
+ * @param {number} x The tile X coordinate.
+ * @param {number} y The tile Y coordinate.
+ * @param {number} level The tile level.
+ * @return {Array.<Cesium.Credit>|undefined} 
+ */
+Cesium.ImageryProvider.prototype.getTileCredits = function(x, y, level) {};
 
 
 /**
@@ -1817,19 +1848,6 @@ Cesium.WebMercatorProjection.prototype.project = function(cartographic) {};
  */
 Cesium.WebMercatorProjection.prototype.unproject = function(cartesian) {};
 
-
-
-/**
- * @constructor
- * @extends {Cesium.TilingScheme}
- */
-Cesium.WebMercatorTilingScheme = function() {};
-
-
-/**
- * @type {Cesium.Rectangle}
- */
-//Cesium.WebMercatorTilingScheme.prototype.rectangle;
 
 
 /** @constructor */

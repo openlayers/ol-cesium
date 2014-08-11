@@ -2,6 +2,8 @@ goog.provide('olcs.RasterSynchronizer');
 
 goog.require('goog.events');
 
+goog.require('olcs.OLImageryProvider');
+
 
 
 /**
@@ -102,31 +104,15 @@ olcs.RasterSynchronizer.createCorrespondingLayer = function(olLayer) {
 
   var provider = null;
 
-  var source = olLayer.getSource(),
-      tileGrid = source.getTileGrid();
-  if (source instanceof ol.source.OSM) {
-    provider = new Cesium.OpenStreetMapImageryProvider({
-      //TODO: url, fileExtension, credit, maximumLevel
-      minimumLevel: !goog.isNull(tileGrid) ? tileGrid.getMinZoom() : undefined
-    });
-  } else if (source instanceof ol.source.BingMaps) {
-    //TODO: url, key, tileProtocol, mapStyle
-    provider = new Cesium.BingMapsImageryProvider({
-      url: '//dev.virtualearth.net'
-    });
-  } else if (source instanceof ol.source.TileWMS) {
-    //TODO: url, layers, parameters, maximumLevel, credit
-    provider = new Cesium.WebMapServiceImageryProvider({});
-  } else if (source instanceof ol.source.XYZ) {
-    //TODO: url, fileExtension, credit, tilingScheme, maximumLevel
-
-    // The tile size should be the same for all the zoom levels in this case
-    var tileSize = !goog.isNull(tileGrid) ? tileGrid.getTileSize(0) : undefined;
-    provider = new Cesium.TileMapServiceImageryProvider({
-      minimumLevel: !goog.isNull(tileGrid) ? tileGrid.getMinZoom() : undefined,
-      tileWidth: tileSize,
-      tileHeight: tileSize
-    });
+  var source = olLayer.getSource();
+  // handle special cases before this general synchronization
+  if (source instanceof ol.source.TileImage) {
+    var projection = source.getProjection();
+    var is3857 = projection === ol.proj.get('EPSG:3857');
+    var is4326 = projection === ol.proj.get('EPSG:4326');
+    if (is3857 || is4326) {
+      provider = new olcs.OLImageryProvider(source);
+    }
   }
 
   if (goog.isNull(provider)) {
