@@ -22,15 +22,8 @@ olcs.OLImageryProvider = function(source) {
    */
   this.projection_ = source.getProjection();
 
-  var tileGrid = source.getTileGrid();
+  this.ready_ = false;
 
-  this.tileSize_ = !goog.isNull(tileGrid) ? tileGrid.getTileSize(0) : 256;
-  this.minimumLevel_ = !goog.isNull(tileGrid) ? tileGrid.getMinZoom() : 0;
-  this.maximumLevel_ = !goog.isNull(tileGrid) ? tileGrid.getMaxZoom() : 18;
-
-  this.credit_ = undefined; //TODO: create from attributions
-  this.tilingScheme_ = new Cesium.WebMercatorTilingScheme(); //TODO:
-  this.rectangle_ = this.tilingScheme_.rectangle;
   this.errorEvent_ = new Cesium.Event();
 
   this.emptyCanvas_ = goog.dom.createElement(goog.dom.TagName.CANVAS);
@@ -44,7 +37,8 @@ goog.inherits(olcs.OLImageryProvider, Cesium.ImageryProvider);
 // in the Cesium.ImageryProvider instance:
 Object.defineProperties(olcs.OLImageryProvider.prototype, {
   ready: {
-    get: function() {return true;}
+    get: /** @this {olcs.OLImageryProvider} */
+        function() {return this.checkReady();}
   },
 
   rectangle: {
@@ -99,6 +93,35 @@ Object.defineProperties(olcs.OLImageryProvider.prototype, {
     get: function() {return true;}
   }
 });
+
+
+/**
+ * Checks if the underlying source just got ready and cached required data.
+ * @return {boolean} Ready state.
+ */
+olcs.OLImageryProvider.prototype.checkReady = function() {
+  if (!this.ready_ && this.source_.getState() == 'ready') {
+    this.projection_ = this.source_.getProjection();
+    var tileGrid = this.source_.getTileGrid();
+    if (!goog.isNull(tileGrid)) {
+      this.tileSize_ = tileGrid.getTileSize(0);
+
+      // WARNING: Do not use the minimum level (at least until the extent is
+      // properly set). Cesium assumes the minimumLevel contains only
+      // a few tiles and tries to load them all at once -- this can
+      // freeze and/or crash the browser !
+      this.minimumLevel_ = 0; //tileGrid.getMinZoom();
+      this.maximumLevel_ = tileGrid.getMaxZoom();
+
+      this.credit_ = undefined; //TODO: create from attributions
+      this.tilingScheme_ = new Cesium.WebMercatorTilingScheme(); //TODO:
+      this.rectangle_ = this.tilingScheme_.rectangle;
+
+      this.ready_ = true;
+    }
+  }
+  return this.ready_;
+};
 
 
 /**
