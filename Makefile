@@ -59,9 +59,9 @@ cleanall: clean
 	mkdir -p $(dir $@)
 	wget -O $@ https://plovr.googlecode.com/files/$(PLOVR)
 
-dist/ol3cesium.js: ol3cesium.json download-plovr build-ol3
+dist/ol3cesium.js: build/ol3cesium.json build-ol3
 	mkdir -p $(dir $@)
-	java -jar .build/$(PLOVR) build $< > $@
+	node build/build.js $< $@
 
 cesium/Cesium/Build/Cesium.js:
 	(cd cesium && \
