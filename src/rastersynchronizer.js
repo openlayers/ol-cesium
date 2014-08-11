@@ -137,33 +137,37 @@ olcs.RasterSynchronizer.createCorrespondingLayer = function(olLayer) {
  * @param {!Cesium.ImageryLayer} csLayer
  */
 olcs.RasterSynchronizer.syncLayerProperties = function(olLayer, csLayer) {
-  var brightness = olLayer.getBrightness();
-  if (goog.isDef(brightness)) {
-    csLayer.brightness = 1 + brightness;
+  var opacity = olLayer.getOpacity();
+  if (goog.isDef(opacity)) {
+    csLayer.alpha = opacity;
+  }
+  var visible = olLayer.getVisible();
+  if (goog.isDef(visible)) {
+    csLayer.show = visible;
   }
 
+  // saturation and contrast are working ok
+  var saturation = olLayer.getSaturation();
+  if (goog.isDef(saturation)) {
+    csLayer.saturation = saturation;
+  }
   var contrast = olLayer.getContrast();
   if (goog.isDef(contrast)) {
     csLayer.contrast = contrast;
   }
 
-  var hue = olLayer.getHue();
-  if (goog.isDef(hue)) {
-    csLayer.hue = hue;
-  }
+  // Cesium actually operates in YIQ space -> hard to emulate
+  // The following values are only a rough approximations:
 
-  var opacity = olLayer.getOpacity();
-  if (goog.isDef(opacity)) {
-    csLayer.alpha = opacity;
-  }
+  // The hue in Cesium has different meaning than the OL equivalent.
+  // var hue = olLayer.getHue();
+  // if (goog.isDef(hue)) {
+  //   csLayer.hue = hue;
+  // }
 
-  var saturation = olLayer.getSaturation();
-  if (goog.isDef(saturation)) {
-    csLayer.saturation = saturation;
-  }
-
-  var visible = olLayer.getVisible();
-  if (goog.isDef(visible)) {
-    csLayer.show = visible;
+  var brightness = olLayer.getBrightness();
+  if (goog.isDef(brightness)) {
+    // rough estimation
+    csLayer.brightness = Math.pow(1 + parseFloat(brightness), 2);
   }
 };
