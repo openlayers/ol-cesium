@@ -59,6 +59,6 @@ ol3/build/ol-externs.js:
 	 npm install && \
 	 node tasks/generate-externs.js build/ol-externs.js)
 
-cesium/Cesium/Build/Cesium.js:
+cesium/Build/Cesium/Cesium.js:
 	(cd cesium && \
 	 ./Tools/apache-ant-1.8.2/bin/ant minify)
