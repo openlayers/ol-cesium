@@ -28,7 +28,7 @@ build: dist/ol3cesium.js
 .PHONY: lint
 lint: .build/python-venv/bin/gjslint
 	.build/python-venv/bin/fixjsstyle --strict -r ./src
-	.build/python-venv/bin/gjslint --strict -r ./src
+	.build/python-venv/bin/gjslint --jslint_error=all --strict --custom_jsdoc_tags=api -r ./src
 
 .PHONY: server
 server:
