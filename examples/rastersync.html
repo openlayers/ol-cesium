@@ -19,8 +19,8 @@
       var layer0, layer1;
       function start() {
         view = new ol.View({
-            center: ol.proj.transform([25, 20], 'EPSG:4326', 'EPSG:3857'),
-            zoom: 3
+            center: ol.proj.transform([-112.2, 36.06], 'EPSG:4326', 'EPSG:3857'),
+            zoom: 11
           });
         init2d();
 
@@ -40,64 +40,72 @@
         });
         layer1 = new ol.layer.Tile({
           source: new ol.source.TileJSON({
+            url: 'http://tileserver.maptiler.com/grandcanyon.json',
+            crossOrigin: 'anonymous'
+          })
+        });
+        layer2 = new ol.layer.Tile({
+          source: new ol.source.TileJSON({
             url: 'http://api.tiles.mapbox.com/v3/' +
                 'mapbox.world-borders-light.jsonp',
             crossOrigin: 'anonymous'
           })
         });
         ol2d = new ol.Map({
-          layers: [layer0, layer1],
+          layers: [layer0, layer1, layer2],
           target: 'map2d',
           view: view,
           renderer: 'webgl'
         });
       }
     </script>
+    <style>
+      fieldset {display:inline-block;float:left;}
+      label {display:block;}
+    </style>
   </head>
   <body onload="javascript:start();">
     <div id="map2d" style="width:600px;height:400px;float:left;"></div>
     <div id="map3d" style="width:600px;height:400px;float:left;position:relative;"></div>
-    <input type="button" value="Enable/disable" onclick="javascript:ol3d.setEnabled(!ol3d.getEnabled())" />
 
-    <ul>
-      <li>
-        <fieldset id="layer0">
-          <!--
-          <label class="checkbox" for="visible0">
-            <input id="visible0" class="visible" type="checkbox"/>visibility
-          </label>
-          -->
-          <label>opacity</label>
-          <input class="opacity" type="range" min="0" max="1" step="0.01" value="1" oninput="layer0.setOpacity(this.value)"/>
-          <label>hue</label>
-          <input class="hue" type="range" min="-3.141592653589793" max="3.141592653589793" step="0.01" oninput="layer0.setHue(this.value)"/>
-          <label>saturation</label>
-          <input class="saturation" type="range" min="0" max="5" step="0.01" oninput="layer0.setSaturation(this.value)"/>
-          <label>contrast</label>
-          <input class="contrast" type="range" min="0" max="2" step="0.01" oninput="layer0.setContrast(this.value)"/>
-          <label>brightness</label>
-          <input class="brightness" type="range" min="-1" max="1" step="0.01" oninput="layer0.setBrightness(this.value)"/>
-        </fieldset>
-      </li>
-      <li>
-        <fieldset id="layer1">
-          <!--
-          <label class="checkbox" for="visible10">
-            <input id="visible1" class="visible" type="checkbox"/>visibility
-          </label>
-          -->
-          <label>opacity</label>
-          <input class="opacity" type="range" min="0" max="1" step="0.01" value="1" oninput="layer1.setOpacity(this.value)"/>
-          <label>hue</label>
-          <input class="hue" type="range" min="-3.141592653589793" max="3.141592653589793" step="0.01" oninput="layer1.setHue(this.value)"/>
-          <label>saturation</label>
-          <input class="saturation" type="range" min="0" max="5" step="0.01" oninput="layer1.setSaturation(this.value)"/>
-          <label>contrast</label>
-          <input class="contrast" type="range" min="0" max="2" step="0.01" oninput="layer1.setContrast(this.value)"/>
-          <label>brightness</label>
-          <input class="brightness" type="range" min="-1" max="1" step="0.01" oninput="layer1.setBrightness(this.value)"/>
-        </fieldset>
-      </li>
-    </ul>
+    <fieldset id="layer0">
+      <label class="checkbox" for="visible0">
+        <input id="visible0" class="visible" type="checkbox" onchange="layer0.setVisible(this.checked)" checked/>OpenAerial layer
+      </label>
+      <label>opacity</label>
+      <input class="opacity" type="range" min="0" max="1" step="0.01" value="1" oninput="layer0.setOpacity(this.value)"/>
+      <label>saturation</label>
+      <input class="saturation" type="range" min="0" max="5" step="0.01" oninput="layer0.setSaturation(this.value)"/>
+      <label>contrast</label>
+      <input class="contrast" type="range" min="0" max="2" step="0.01" oninput="layer0.setContrast(this.value)"/>
+      <label>brightness</label>
+      <input class="brightness" type="range" min="-1" max="1" step="0.01" oninput="layer0.setBrightness(this.value)"/>
+    </fieldset>
+    <fieldset id="layer1">
+      <label class="checkbox" for="visible10">
+        <input id="visible1" class="visible" type="checkbox" onchange="layer1.setVisible(this.checked)" checked/>Grand Canyon overlay
+      </label>
+      <label>opacity</label>
+      <input class="opacity" type="range" min="0" max="1" step="0.01" value="1" oninput="layer1.setOpacity(this.value)"/>
+      <label>saturation</label>
+      <input class="saturation" type="range" min="0" max="5" step="0.01" oninput="layer1.setSaturation(this.value)"/>
+      <label>contrast</label>
+      <input class="contrast" type="range" min="0" max="2" step="0.01" oninput="layer1.setContrast(this.value)"/>
+      <label>brightness</label>
+      <input class="brightness" type="range" min="-1" max="1" step="0.01" oninput="layer1.setBrightness(this.value)"/>
+    </fieldset>
+    <fieldset id="layer2">
+      <label class="checkbox" for="visible10">
+        <input id="visible1" class="visible" type="checkbox" onchange="layer2.setVisible(this.checked)" checked/>World borders
+      </label>
+      <label>opacity</label>
+      <input class="opacity" type="range" min="0" max="1" step="0.01" value="1" oninput="layer2.setOpacity(this.value)"/>
+      <label>saturation</label>
+      <input class="saturation" type="range" min="0" max="5" step="0.01" oninput="layer2.setSaturation(this.value)"/>
+      <label>contrast</label>
+      <input class="contrast" type="range" min="0" max="2" step="0.01" oninput="layer2.setContrast(this.value)"/>
+      <label>brightness</label>
+      <input class="brightness" type="range" min="-1" max="1" step="0.01" oninput="layer2.setBrightness(this.value)"/>
+    </fieldset>
   </body>
 </html>
