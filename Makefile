@@ -9,8 +9,7 @@ npm-install: .build/node_modules.timestamp
 build-ol3:
 	(cd ol3 && \
 	 npm install && \
-	 python build.py build/ol.js css/ol.css && \
-	 node tasks/generate-externs.js build/ol-externs.js)
+	 python build.py build/ol.js css/ol.css)
 
 .PHONY: build-cesium
 build-cesium: cesium/Build/Cesium/Cesium.js
@@ -54,9 +53,14 @@ cleanall: clean
 	.build/python-venv/bin/pip install "http://closure-linter.googlecode.com/files/closure_linter-latest.tar.gz"
 	touch $@
 
-dist/ol3cesium.js: build/ol3cesium.json build-ol3
+dist/ol3cesium.js: build/ol3cesium.json $(SRC_JS_FILES) ol3/build/ol-externs.js
 	mkdir -p $(dir $@)
 	node build/build.js $< $@
+
+ol3/build/ol-externs.js:
+	(cd ol3 && \
+	 npm install && \
+	 node tasks/generate-externs.js build/ol-externs.js)
 
 cesium/Cesium/Build/Cesium.js:
 	(cd cesium && \
