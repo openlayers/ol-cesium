@@ -118,6 +118,14 @@ olcs.OLCesium = function(map, opt_target) {
 
   //TODO: handle change of layer group
 
+  if (this.isOverMap_) {
+    // if in "stacked mode", hide everything except canvas (including credits)
+    var credits = goog.dom.getNextElementSibling(this.canvas_);
+    if (goog.isDefAndNotNull(credits)) {
+      credits.style.display = 'none';
+    }
+  }
+
   this.camera_.readFromView();
 
   var tick = goog.bind(function() {
