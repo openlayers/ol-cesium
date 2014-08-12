@@ -1,43 +1,46 @@
-PLOVR = plovr-81ed862.jar
+SRC_JS_FILES := $(shell find src -type f -name '*.js')
 
 all: serve
 
-.PHONY: download-plovr
-download-plovr: .build/$(PLOVR)
+.PHONY: npm-install
+npm-install: .build/node_modules.timestamp
 
 .PHONY: build-ol3
 build-ol3:
 	(cd ol3 && \
 	 npm install && \
-	 python build.py build/ol.js css/ol.css && \
-	 node tasks/generate-externs.js build/ol-externs.js)
-
-.PHONY: build-cesium
-build-cesium: cesium/Build/Cesium/Cesium.js
+	 python build.py build/ol.js css/ol.css)
 
 .PHONY: serve
-serve: download-plovr build-ol3 build-cesium
-	java -jar .build/$(PLOVR) serve ol3cesium-debug.json
+serve: npm-install build-ol3 cesium/Build/Cesium/Cesium.js
+	node build/serve.js
 
-.PHONY: build
-build: dist/ol3cesium.js
+.PHONY: dist
+dist: dist/ol3cesium.js
 
 .PHONY: lint
-lint: .build/python-venv/bin/gjslint
-	.build/python-venv/bin/fixjsstyle --strict -r ./src
-	.build/python-venv/bin/gjslint --strict -r ./src
-
-.PHONY: server
-server:
-	python -m SimpleHTTPServer 9811
+lint: .build/python-venv/bin/gjslint .build/gjslint.timestamp
 
 .PHONY: clean
 clean:
 	rm -f dist/ol3cesium.js
+	rm -f ol3/build/ol.js
+	rm -f ol3/build/ol.css
+	rm -f ol3/build/ol-externs.js
+	rm -f cesium/Build/Cesium/Cesium.js
 
 .PHONY: cleanall
 cleanall: clean
 	rm -rf .build
+
+.build/node_modules.timestamp: package.json
+	npm install
+	mkdir -p $(dir $@)
+	touch $@
+
+.build/gjslint.timestamp: $(SRC_JS_FILES)
+	.build/python-venv/bin/gjslint --jslint_error=all --strict --custom_jsdoc_tags=api $?
+	touch $@
 
 .build/python-venv:
 	mkdir -p $(dir $@)
@@ -47,14 +50,15 @@ cleanall: clean
 	.build/python-venv/bin/pip install "http://closure-linter.googlecode.com/files/closure_linter-latest.tar.gz"
 	touch $@
 
-.build/$(PLOVR):
+dist/ol3cesium.js: build/ol3cesium.json $(SRC_JS_FILES) ol3/build/ol-externs.js
 	mkdir -p $(dir $@)
-	wget -O $@ https://plovr.googlecode.com/files/$(PLOVR)
+	node build/build.js $< $@
 
-dist/ol3cesium.js: ol3cesium.json download-plovr build-ol3
-	mkdir -p $(dir $@)
-	java -jar .build/$(PLOVR) build $< > $@
+ol3/build/ol-externs.js:
+	(cd ol3 && \
+	 npm install && \
+	 node tasks/generate-externs.js build/ol-externs.js)
 
-cesium/Cesium/Build/Cesium.js:
+cesium/Build/Cesium/Cesium.js:
 	(cd cesium && \
 	 ./Tools/apache-ant-1.8.2/bin/ant minify)

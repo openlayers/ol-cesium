@@ -1,0 +1,28 @@
+{
+  "name": "ol3-cesium",
+  "version": "0.0.1",
+  "description": "OpenLayers 3 Cesium integration library",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/boundless/ol3-cesium.git"
+  },
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/boundless/ol3-cesium/issues"
+  },
+  "dependencies": {
+    "async": "~0.2.10",
+    "htmlparser2": "~3.7.1"
+  },
+  "devDependencies": {
+    "closure-util": "0.19.0",
+    "fs-extra": "~0.8.1",
+    "graceful-fs": "~3.0.2",
+    "jsdoc": "~3.3.0-alpha7",
+    "jshint": "~2.5.1",
+    "nomnom": "~1.6.2",
+    "temp": "~0.7.0",
+    "walk": "~2.3.3"
+  }
+}
