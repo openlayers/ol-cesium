@@ -64,6 +64,7 @@ olcs.RasterSynchronizer.prototype.synchronize = function() {
     // no mapping -> create new layer and set up synchronization
     if (!goog.isDef(cesiumLayer)) {
       cesiumLayer = olcs.RasterSynchronizer.createCorrespondingLayer(el,
+                                                                     viewProj,
                                                                      viewProj);
       if (!goog.isNull(cesiumLayer)) {
         goog.events.listen(el,
@@ -105,10 +106,14 @@ olcs.RasterSynchronizer.prototype.synchronize = function() {
  * @param {!ol.layer.Layer} olLayer
  * @param {ol.proj.Projection=} opt_projFilter Return null if the layer
  *                                             uses different projection.
+ * @param {ol.proj.Projection=} opt_fallbackProj Projection to assume if the
+ *                                               projection of the source
+ *                                               is not defined.
  * @return {?Cesium.ImageryLayer}
  */
 olcs.RasterSynchronizer.createCorrespondingLayer = function(olLayer,
-                                                            opt_projFilter) {
+                                                            opt_projFilter,
+                                                            opt_fallbackProj) {
   if (!(olLayer instanceof ol.layer.Tile)) {
     return null;
   }
@@ -119,13 +124,15 @@ olcs.RasterSynchronizer.createCorrespondingLayer = function(olLayer,
   // handle special cases before this general synchronization
   if (source instanceof ol.source.TileImage) {
     var projection = source.getProjection();
-    if (goog.isDef(opt_projFilter) && projection !== opt_projFilter) {
+    if (goog.isNull(projection)) projection = opt_fallbackProj;
+    if (!goog.isDefAndNotNull(projection) ||
+        (goog.isDef(opt_projFilter) && projection !== opt_projFilter)) {
       return null;
     }
     var is3857 = projection === ol.proj.get('EPSG:3857');
     var is4326 = projection === ol.proj.get('EPSG:4326');
     if (is3857 || is4326) {
-      provider = new olcs.OLImageryProvider(source);
+      provider = new olcs.OLImageryProvider(source, opt_fallbackProj);
     }
   }
 

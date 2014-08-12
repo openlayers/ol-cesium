@@ -6,10 +6,13 @@ goog.provide('olcs.OLImageryProvider');
  * Special class derived from Cesium.ImageryProvider
  * that is connected to the given ol.source.TileImage.
  * @param {!ol.source.TileImage} source
+ * @param {ol.proj.Projection=} opt_fallbackProj Projection to assume if the
+ *                                               projection of the source
+ *                                               is not defined.
  * @constructor
  * @extends {Cesium.ImageryProvider}
  */
-olcs.OLImageryProvider = function(source) {
+olcs.OLImageryProvider = function(source, opt_fallbackProj) {
   /**
    * @type {!ol.source.TileImage}
    * @private
@@ -17,10 +20,16 @@ olcs.OLImageryProvider = function(source) {
   this.source_ = source;
 
   /**
-   * @type {!ol.proj.Projection}
+   * @type {?ol.proj.Projection}
    * @private
    */
-  this.projection_ = source.getProjection();
+  this.projection_ = null;
+
+  /**
+   * @type {?ol.proj.Projection}
+   * @private
+   */
+  this.fallbackProj_ = goog.isDef(opt_fallbackProj) ? opt_fallbackProj : null;
 
   this.is4326_ = false;
 
@@ -117,8 +126,8 @@ Object.defineProperties(olcs.OLImageryProvider.prototype, {
  */
 olcs.OLImageryProvider.prototype.checkReady = function() {
   if (!this.ready_ && this.source_.getState() == 'ready') {
-    this.projection_ = this.source_.getProjection();
-
+    var proj = this.source_.getProjection();
+    this.projection_ = goog.isDefAndNotNull(proj) ? proj : this.fallbackProj_;
     if (this.projection_ == ol.proj.get('EPSG:4326')) {
       this.tilingScheme_ = new Cesium.GeographicTilingScheme();
       this.is4326_ = true;
@@ -155,7 +164,7 @@ olcs.OLImageryProvider.prototype['getTileCredits'] = function(x, y, level) {
 olcs.OLImageryProvider.prototype['requestImage'] =
     function(x, y, level) {
   var tileUrlFunction = this.source_.getTileUrlFunction();
-  if (!goog.isNull(tileUrlFunction)) {
+  if (!goog.isNull(tileUrlFunction) && !goog.isNull(this.projection_)) {
     var z_ = this.is4326_ ? (level + 1) : level;
     var y_ = this.is4326_ ? ((1 << level) - y - 1) : (-y - 1);
     var url = tileUrlFunction(new ol.TileCoord(z_, x, y_), 1, this.projection_);
