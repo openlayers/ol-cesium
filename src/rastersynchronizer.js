@@ -136,12 +136,17 @@ olcs.RasterSynchronizer.createCorrespondingLayer = function(olLayer,
   if (goog.isNull(provider)) {
     return null;
   } else {
+    var layerOptions = {};
+
     var ext = olLayer.getExtent();
-    var rectangle = goog.isDefAndNotNull(ext) ?
-        new Cesium.Rectangle(ext[0], ext[1], ext[2], ext[3]) : undefined;
-    var cesiumLayer = new Cesium.ImageryLayer(provider, {
-      rectangle: rectangle
-    });
+    if (goog.isDefAndNotNull(ext) && !goog.isNull(viewProj)) {
+      var llExt = ol.proj.transformExtent(ext, viewProj, 'EPSG:4326');
+      layerOptions.rectangle = new Cesium.Rectangle(
+          goog.math.toRadians(llExt[0]), goog.math.toRadians(llExt[1]),
+          goog.math.toRadians(llExt[2]), goog.math.toRadians(llExt[3]));
+    }
+
+    var cesiumLayer = new Cesium.ImageryLayer(provider, layerOptions);
     olcs.RasterSynchronizer.syncLayerProperties(olLayer, cesiumLayer);
     return cesiumLayer;
   }
