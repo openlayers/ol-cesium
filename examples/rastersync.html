@@ -9,11 +9,18 @@
     <style>
       fieldset {display:inline-block;float:left;}
       label {display:block;}
+      body.hideLayerInputs fieldset {display:none;}
     </style>
   </head>
   <body>
     <div id="map2d" style="width:600px;height:400px;float:left;"></div>
     <div id="map3d" style="width:600px;height:400px;float:left;position:relative;"></div>
+    <input type="button" value="Remove all layers" onclick="ol2d.getLayers().clear();document.body.className='hideLayerInputs';" />
+    <input type="button" value="Add Bing Maps" onclick="addBingMaps();" />
+    <input type="button" value="Add OSM" onclick="addOSM();" />
+    <input type="button" value="Add Stamen" onclick="addStamen();" />
+    <input type="button" value="Add TileWMS" onclick="addTileWMS();" />
+    <input type="button" value="Add TileJSON" onclick="addTileJSON();" />
 
     <fieldset id="layer0">
       <label class="checkbox" for="visible0">

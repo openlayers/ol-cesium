@@ -35,3 +35,45 @@ var terrainProvider = new Cesium.CesiumTerrainProvider({
 scene.terrainProvider = terrainProvider;
 
 ol3d.setEnabled(true);
+
+var addBingMaps = function() {
+  ol2d.addLayer(new ol.layer.Tile({
+    source: new ol.source.BingMaps({
+      key: 'Ak-dzM4wZjSqTlzveKz5u0d4IQ4bRzVI309GxmkgSVr1ewS6iPSrOvOKhA-CJlm3',
+      imagerySet: 'Aerial'
+    })
+  }));
+};
+
+var addOSM = function() {
+  ol2d.addLayer(new ol.layer.Tile({
+    opacity: 0.7,
+    source: new ol.source.OSM()
+  }));
+};
+
+var addStamen = function() {
+  ol2d.addLayer(new ol.layer.Tile({
+    source: new ol.source.Stamen({
+      opacity: 0.7,
+      layer: 'watercolor'
+    })
+  }));
+};
+
+var addTileWMS = function() {
+  ol2d.addLayer(new ol.layer.Tile({
+    opacity: 0.5,
+    extent: [-13884991, 2870341, -7455066, 6338219],
+    source: new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
+      url: 'http://demo.opengeo.org/geoserver/wms',
+      params: {'LAYERS': 'topp:states', 'TILED': true},
+      serverType: 'geoserver',
+      crossOrigin: 'anonymous'
+    }))
+  }));
+};
+
+var addTileJSON = function() {
+  ol2d.addLayer(layer2);
+};
