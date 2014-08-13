@@ -31,8 +31,6 @@ olcs.OLImageryProvider = function(source, opt_fallbackProj) {
    */
   this.fallbackProj_ = goog.isDef(opt_fallbackProj) ? opt_fallbackProj : null;
 
-  this.is4326_ = false;
-
   this.ready_ = false;
 
   this.errorEvent_ = new Cesium.Event();
@@ -130,7 +128,6 @@ olcs.OLImageryProvider.prototype.checkReady = function() {
     this.projection_ = goog.isDefAndNotNull(proj) ? proj : this.fallbackProj_;
     if (this.projection_ == ol.proj.get('EPSG:4326')) {
       this.tilingScheme_ = new Cesium.GeographicTilingScheme();
-      this.is4326_ = true;
     } else if (this.projection_ == ol.proj.get('EPSG:3857')) {
       this.tilingScheme_ = new Cesium.WebMercatorTilingScheme();
     } else {
@@ -165,8 +162,12 @@ olcs.OLImageryProvider.prototype['requestImage'] =
     function(x, y, level) {
   var tileUrlFunction = this.source_.getTileUrlFunction();
   if (!goog.isNull(tileUrlFunction) && !goog.isNull(this.projection_)) {
-    var z_ = this.is4326_ ? (level + 1) : level;
-    var y_ = this.is4326_ ? ((1 << level) - y - 1) : (-y - 1);
+    // perform mapping of Cesium tile coordinates to ol3 tile coordinates
+    var z_ = (this.tilingScheme_ instanceof Cesium.GeographicTilingScheme) ?
+             (level + 1) : level;
+    var y_ = (this.source_.getTileGrid() instanceof ol.tilegrid.XYZ) ?
+             y : (y - (1 << level));
+    y_ = -y_ - 1; // opposite indexing
     var url = tileUrlFunction(new ol.TileCoord(z_, x, y_), 1, this.projection_);
     return goog.isDef(url) ?
            Cesium.ImageryProvider.loadImage(this, url) : this.emptyCanvas_;
