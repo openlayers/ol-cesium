@@ -137,25 +137,28 @@ olcs.RasterSynchronizer.createCorrespondingLayer = function(olLayer,
     var is4326 = projection === ol.proj.get('EPSG:4326');
     if (is3857 || is4326) {
       provider = new olcs.OLImageryProvider(source, viewProj);
+    } else {
+      return null;
     }
-  }
-
-  if (goog.isNull(provider)) {
-    return null;
   } else {
-    var layerOptions = {};
-
-    var ext = olLayer.getExtent();
-    if (goog.isDefAndNotNull(ext) && !goog.isNull(viewProj)) {
-      var llExt = ol.proj.transformExtent(ext, viewProj, 'EPSG:4326');
-      layerOptions.rectangle = Cesium.Rectangle.fromDegrees(llExt[0], llExt[1],
-                                                            llExt[2], llExt[3]);
-    }
-
-    var cesiumLayer = new Cesium.ImageryLayer(provider, layerOptions);
-    olcs.RasterSynchronizer.syncLayerProperties(olLayer, cesiumLayer);
-    return cesiumLayer;
+    // sources other than TileImage are currently not supported
+    return null;
   }
+
+  // the provider is always non-null if we got this far
+
+  var layerOptions = {};
+
+  var ext = olLayer.getExtent();
+  if (goog.isDefAndNotNull(ext) && !goog.isNull(viewProj)) {
+    var llExt = ol.proj.transformExtent(ext, viewProj, 'EPSG:4326');
+    layerOptions.rectangle = Cesium.Rectangle.fromDegrees(llExt[0], llExt[1],
+                                                          llExt[2], llExt[3]);
+  }
+
+  var cesiumLayer = new Cesium.ImageryLayer(provider, layerOptions);
+  olcs.RasterSynchronizer.syncLayerProperties(olLayer, cesiumLayer);
+  return cesiumLayer;
 };
 
 
