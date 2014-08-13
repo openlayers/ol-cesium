@@ -65,6 +65,7 @@ olcs.RasterSynchronizer.prototype.synchronize = function() {
     if (!goog.isDef(cesiumLayer)) {
       cesiumLayer = olcs.RasterSynchronizer.createCorrespondingLayer(el,
                                                                      viewProj);
+      olcs.RasterSynchronizer.syncLayerProperties(el, cesiumLayer);
       if (!goog.isNull(cesiumLayer)) {
         goog.events.listen(el,
             ['change:brightness', 'change:contrast', 'change:hue',
@@ -157,7 +158,6 @@ olcs.RasterSynchronizer.createCorrespondingLayer = function(olLayer,
   }
 
   var cesiumLayer = new Cesium.ImageryLayer(provider, layerOptions);
-  olcs.RasterSynchronizer.syncLayerProperties(olLayer, cesiumLayer);
   return cesiumLayer;
 };
 
