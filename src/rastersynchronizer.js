@@ -42,7 +42,7 @@ olcs.RasterSynchronizer = function(view, olLayers, cesiumLayers) {
   this.layerMap_ = {};
 
   goog.events.listen(/** @type {!goog.events.EventTarget} */(this.olLayers_),
-      goog.events.EventType.CHANGE, function(e) {
+      [goog.events.EventType.CHANGE, 'add', 'remove'], function(e) {
         this.synchronize();
       }, false, this);
 };
@@ -92,12 +92,15 @@ olcs.RasterSynchronizer.prototype.synchronize = function() {
   }, this);
 
   // destroy unused Cesium ImageryLayers
-  goog.object.forEach(unusedCesiumLayers, function(val, key, obj) {
-    if (goog.isDefAndNotNull(val)) {
-      delete this.layerMap_[key];
-      val.destroy();
-    }
-  }, this);
+  goog.array.forEach(goog.object.getValues(unusedCesiumLayers),
+      function(el, i, arr) {
+        var layerId = el;
+        var layer = this.layerMap_[layerId];
+        if (goog.isDef(layer)) {
+          delete this.layerMap_[layer];
+          layer.destroy();
+        }
+      }, this);
 };
 
 
