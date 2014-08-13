@@ -1,6 +1,6 @@
 var view = new ol.View({
   projection: 'EPSG:4326',
-  center: [0, 0],
+  center: [-100, 35],
   zoom: 3
 });
 
@@ -12,8 +12,19 @@ var layer = new ol.layer.Tile({
     }
   })
 });
+var overlay = new ol.layer.Tile({
+  opacity: 0.7,
+  extent: [-124.74, 24.96, -66.96, 49.38],
+  source: new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
+    url: 'http://demo.opengeo.org/geoserver/wms',
+    params: {'LAYERS': 'topp:states', 'TILED': true},
+    serverType: 'geoserver',
+    crossOrigin: 'anonymous'
+  }))
+});
+
 var ol2d = new ol.Map({
-  layers: [layer],
+  layers: [layer, overlay],
   target: 'map2d',
   view: view
 });
