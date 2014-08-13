@@ -141,9 +141,8 @@ olcs.RasterSynchronizer.createCorrespondingLayer = function(olLayer,
     var ext = olLayer.getExtent();
     if (goog.isDefAndNotNull(ext) && !goog.isNull(viewProj)) {
       var llExt = ol.proj.transformExtent(ext, viewProj, 'EPSG:4326');
-      layerOptions.rectangle = new Cesium.Rectangle(
-          goog.math.toRadians(llExt[0]), goog.math.toRadians(llExt[1]),
-          goog.math.toRadians(llExt[2]), goog.math.toRadians(llExt[3]));
+      layerOptions.rectangle = Cesium.Rectangle.fromDegrees(llExt[0], llExt[1],
+                                                            llExt[2], llExt[3]);
     }
 
     var cesiumLayer = new Cesium.ImageryLayer(provider, layerOptions);

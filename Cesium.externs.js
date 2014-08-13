@@ -1227,6 +1227,16 @@ Cesium.Rectangle.prototype.north;
 /** @type {!Cesium.Rectangle} */
 Cesium.Rectangle.MAX_VALUE;
 
+/** 
+ * @param {number} west
+ * @param {number} south
+ * @param {number} east
+ * @param {number} north
+ * @param {Cesium.Rectangle=} opt_result
+ * @return {!Cesium.Rectangle}
+ */
+Cesium.Rectangle.fromDegrees = function(west, south, east, north, opt_result) {};
+
 
 
 /**
