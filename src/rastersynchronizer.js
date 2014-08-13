@@ -118,7 +118,11 @@ olcs.RasterSynchronizer.createCorrespondingLayer = function(olLayer,
   var provider = null;
 
   var source = olLayer.getSource();
-  // handle special cases before this general synchronization
+  // handle special cases before the general synchronization
+  if (source instanceof ol.source.WMTS) {
+    // WMTS uses different TileGrid which is not currently supported
+    return null;
+  }
   if (source instanceof ol.source.TileImage) {
     var projection = source.getProjection();
 
