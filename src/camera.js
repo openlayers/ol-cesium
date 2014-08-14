@@ -1,6 +1,7 @@
 goog.provide('olcs.Camera');
 
 goog.require('goog.events');
+goog.require('olcs.core');
 
 
 
@@ -230,18 +231,8 @@ olcs.Camera.prototype.getAltitude = function() {
 olcs.Camera.prototype.lookAt = function(position) {
   var ll = this.toLonLat_(position);
 
-  var carto = new Cesium.Cartographic(goog.math.toRadians(ll[0]),
-                                      goog.math.toRadians(ll[1]));
-  if (this.scene_.globe) {
-    var height = this.scene_.globe.getHeight(carto);
-    carto.height = goog.isDef(height) ? height : 0;
-  }
-  var carte = Cesium.Ellipsoid.WGS84.cartographicToCartesian(carto);
-
-  var pos = this.cam_.position;
-  var up = Cesium.Ellipsoid.WGS84.geocentricSurfaceNormal(
-      pos, new Cesium.Cartesian3());
-  this.cam_.lookAt(pos, carte, up);
+  var carto = Cesium.Cartographic.fromDegrees(ll[0], ll[1]);
+  olcs.core.lookAt(this.cam_, carto, this.scene_.globe);
 
   this.updateView();
 };
