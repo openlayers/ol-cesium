@@ -387,11 +387,11 @@ olcs.Camera.prototype.checkCameraChange = function(opt_dontSync) {
  */
 olcs.Camera.prototype.calcDistanceForResolution_ = function(resolution,
                                                             latitude) {
-  var fovy = this.cam_.frustum.fov; // vertical field of view
+  var fovy = this.cam_.frustum.fovy; // vertical field of view
   var metersPerUnit =
       ol.proj.METERS_PER_UNIT[this.view_.getProjection().getUnits()];
 
-  var visibleMapUnits = resolution * this.canvas_.width;
+  var visibleMapUnits = resolution * this.canvas_.height;
   var relativeCircumference = Math.cos(Math.abs(latitude));
   var visibleMeters = visibleMapUnits * metersPerUnit * relativeCircumference;
 
@@ -417,14 +417,14 @@ olcs.Camera.prototype.calcDistanceForResolution_ = function(resolution,
 olcs.Camera.prototype.calcResolutionForDistance_ = function(distance,
                                                             latitude) {
   // See the reverse calculation (calcDistanceForResolution_) for details
-  var fovy = this.cam_.frustum.fov;
+  var fovy = this.cam_.frustum.fovy;
   var metersPerUnit =
       ol.proj.METERS_PER_UNIT[this.view_.getProjection().getUnits()];
 
   var visibleMeters = 2 * distance * Math.tan(fovy / 2);
   var relativeCircumference = Math.cos(Math.abs(latitude));
   var visibleMapUnits = visibleMeters / metersPerUnit / relativeCircumference;
-  var resolution = visibleMapUnits / this.canvas_.width;
+  var resolution = visibleMapUnits / this.canvas_.height;
 
   return resolution;
 };
