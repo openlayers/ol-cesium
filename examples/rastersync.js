@@ -20,7 +20,7 @@ var layer2 = new ol.layer.Tile({
   })
 });
 var ol2d = new ol.Map({
-  layers: [layer0, layer1, layer2],
+  layers: [layer0, new ol.layer.Group({layers: [layer1, layer2]})],
   target: 'map2d',
   view: view,
   renderer: 'webgl'

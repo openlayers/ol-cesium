@@ -57,26 +57,37 @@ olcs.RasterSynchronizer.prototype.synchronize = function() {
 
   var viewProj = this.view_.getProjection();
 
-  this.olLayers_.forEach(function(el, i, arr) {
-    var olLayerId = goog.getUid(el);
+  var synchronizeLayer = goog.bind(function(olLayer) {
+    // handle layer groups
+    if (olLayer instanceof ol.layer.Group) {
+      var sublayers = olLayer.getLayers();
+      if (goog.isDef(sublayers)) {
+        sublayers.forEach(function(el, i, arr) {
+          synchronizeLayer(el);
+        });
+      }
+      return;
+    }
+
+    var olLayerId = goog.getUid(olLayer);
     var cesiumLayer = this.layerMap_[olLayerId];
 
     // no mapping -> create new layer and set up synchronization
     if (!goog.isDef(cesiumLayer)) {
-      cesiumLayer = olcs.RasterSynchronizer.createCorrespondingLayer(el,
+      cesiumLayer = olcs.RasterSynchronizer.createCorrespondingLayer(olLayer,
                                                                      viewProj);
-      olcs.RasterSynchronizer.syncLayerProperties(el, cesiumLayer);
+      olcs.RasterSynchronizer.syncLayerProperties(olLayer, cesiumLayer);
       if (!goog.isNull(cesiumLayer)) {
-        goog.events.listen(el,
+        goog.events.listen(olLayer,
             ['change:brightness', 'change:contrast', 'change:hue',
              'change:opacity', 'change:saturation', 'change:visible'],
             function(e) {
-              olcs.RasterSynchronizer.syncLayerProperties(el, cesiumLayer);
+              olcs.RasterSynchronizer.syncLayerProperties(olLayer, cesiumLayer);
             });
 
         // there is no way to modify Cesium layer extent,
         // we have to recreate when ol3 layer extent changes:
-        goog.events.listen(el, 'change:extent', function(e) {
+        goog.events.listen(olLayer, 'change:extent', function(e) {
           this.cesiumLayers_.remove(cesiumLayer, true); // destroy
           delete this.layerMap_[olLayerId]; // invalidate the map entry
           this.synchronize();
@@ -91,6 +102,10 @@ olcs.RasterSynchronizer.prototype.synchronize = function() {
       delete unusedCesiumLayers[cesiumLayer];
     }
   }, this);
+
+  this.olLayers_.forEach(function(el, i, arr) {
+    synchronizeLayer(el);
+  });
 
   // destroy unused Cesium ImageryLayers
   goog.array.forEach(goog.object.getValues(unusedCesiumLayers),
