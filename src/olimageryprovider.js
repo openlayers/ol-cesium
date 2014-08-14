@@ -1,5 +1,7 @@
 goog.provide('olcs.OLImageryProvider');
 
+goog.require('goog.events');
+
 
 
 /**
@@ -38,6 +40,11 @@ olcs.OLImageryProvider = function(source, opt_fallbackProj) {
   this.emptyCanvas_ = goog.dom.createElement(goog.dom.TagName.CANVAS);
   this.emptyCanvas_.width = 1;
   this.emptyCanvas_.height = 1;
+
+  goog.events.listen(this.source_, goog.events.EventType.CHANGE, function(e) {
+    this.handleSourceChanged_();
+  }, false, this);
+  this.handleSourceChanged_();
 };
 goog.inherits(olcs.OLImageryProvider, Cesium.ImageryProvider);
 
@@ -47,7 +54,7 @@ goog.inherits(olcs.OLImageryProvider, Cesium.ImageryProvider);
 Object.defineProperties(olcs.OLImageryProvider.prototype, {
   ready: {
     get: /** @this {olcs.OLImageryProvider} */
-        function() {return this.checkReady();}
+        function() {return this.ready_;}
   },
 
   rectangle: {
@@ -119,10 +126,10 @@ Object.defineProperties(olcs.OLImageryProvider.prototype, {
 
 
 /**
- * Checks if the underlying source just got ready and cached required data.
- * @return {boolean} Ready state.
+ * Checks if the underlying source is ready and cached required data.
+ * @private
  */
-olcs.OLImageryProvider.prototype.checkReady = function() {
+olcs.OLImageryProvider.prototype.handleSourceChanged_ = function() {
   if (!this.ready_ && this.source_.getState() == 'ready') {
     var proj = this.source_.getProjection();
     this.projection_ = goog.isDefAndNotNull(proj) ? proj : this.fallbackProj_;
@@ -131,7 +138,7 @@ olcs.OLImageryProvider.prototype.checkReady = function() {
     } else if (this.projection_ == ol.proj.get('EPSG:3857')) {
       this.tilingScheme_ = new Cesium.WebMercatorTilingScheme();
     } else {
-      return false;
+      return;
     }
     this.rectangle_ = this.tilingScheme_.rectangle;
 
@@ -140,7 +147,6 @@ olcs.OLImageryProvider.prototype.checkReady = function() {
 
     this.ready_ = true;
   }
-  return this.ready_;
 };
 
 
