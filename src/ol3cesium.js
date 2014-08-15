@@ -113,8 +113,10 @@ olcs.OLCesium = function(map, opt_target) {
 
   var tick = goog.bind(function() {
     this.scene_.initializeFrame();
-    this.scene_.render();
-    this.camera_.checkCameraChange();
+    if (this.enabled_) {
+      this.scene_.render();
+      this.camera_.checkCameraChange();
+    }
     Cesium.requestAnimationFrame(tick);
   }, this);
   Cesium.requestAnimationFrame(tick);
