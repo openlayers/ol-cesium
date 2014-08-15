@@ -391,8 +391,16 @@ olcs.Camera.prototype.calcDistanceForResolution_ = function(resolution,
   var metersPerUnit =
       ol.proj.METERS_PER_UNIT[this.view_.getProjection().getUnits()];
 
+  // number of "map units" visible in 2D (vertically)
   var visibleMapUnits = resolution * this.canvas_.height;
+
+  // The metersPerUnit does not take latitude into account, but it should
+  // be lower with increasing latitude -- we have to compensate.
+  // In 3D it is not possible to maintain the resolution at more than one point,
+  // so it only makes sense to use the latitude of the "target" point.
   var relativeCircumference = Math.cos(Math.abs(latitude));
+
+  // how many meters should be visible in 3D
   var visibleMeters = visibleMapUnits * metersPerUnit * relativeCircumference;
 
   // distance required to view the calculated length in meters
@@ -403,6 +411,9 @@ olcs.Camera.prototype.calcDistanceForResolution_ = function(resolution,
   //    |--\
   // visibleMeters/2
   var requiredDistance = (visibleMeters / 2) / Math.tan(fovy / 2);
+
+  // NOTE: This calculation is not absolutely precise, because metersPerUnit
+  // is a great simplification. It does not take ellipsoid/terrain into account.
 
   return requiredDistance;
 };
