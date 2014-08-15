@@ -2,8 +2,6 @@ goog.provide('olcs.OLImageryProvider');
 
 goog.require('goog.events');
 
-goog.require('olcs.core');
-
 
 
 /**
@@ -144,11 +142,48 @@ olcs.OLImageryProvider.prototype.handleSourceChanged_ = function() {
     }
     this.rectangle_ = this.tilingScheme_.rectangle;
 
-    var credit = olcs.core.createCreditForSource(this.source_);
+    var credit = olcs.OLImageryProvider.createCreditForSource(this.source_);
     this.credit_ = !goog.isNull(credit) ? credit : undefined;
 
     this.ready_ = true;
   }
+};
+
+
+/**
+ * Tries to create proper Cesium.Credit for
+ * the given ol.source.Source as closely as possible.
+ * @param {!ol.source.Source} source
+ * @return {?Cesium.Credit}
+ */
+olcs.OLImageryProvider.createCreditForSource = function(source) {
+  var text = '';
+  var attributions = source.getAttributions();
+  if (!goog.isNull(attributions)) {
+    goog.array.forEach(attributions, function(el, i, arr) {
+      // strip html tags (not supported in Cesium)
+      text += el.getHTML().replace(/<\/?[^>]+(>|$)/g, '') + ' ';
+    });
+  }
+
+  var imageUrl, link;
+  if (text.length == 0) {
+    // only use logo if no text is specified
+    // otherwise the Cesium will automatically skip the text:
+    // "The text to be displayed on the screen if no imageUrl is specified."
+    var logo = source.getLogo();
+    if (goog.isDef(logo)) {
+      if (goog.isString(logo)) {
+        imageUrl = logo;
+      } else {
+        imageUrl = logo.src;
+        link = logo.href;
+      }
+    }
+  }
+
+  return (goog.isDef(imageUrl) || text.length > 0) ?
+         new Cesium.Credit(text, imageUrl, link) : null;
 };
 
 

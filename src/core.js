@@ -90,44 +90,6 @@ olcs.core.createCorrespondingLayer = function(olLayer, viewProj) {
 
 
 /**
- * Tries to create proper Cesium.Credit for
- * the given ol.source.Source as closely as possible.
- * @param {!ol.source.Source} source
- * @return {?Cesium.Credit}
- * @api
- */
-olcs.core.createCreditForSource = function(source) {
-  var text = '';
-  var attributions = source.getAttributions();
-  if (!goog.isNull(attributions)) {
-    goog.array.forEach(attributions, function(el, i, arr) {
-      // strip html tags (not supported in Cesium)
-      text += el.getHTML().replace(/<\/?[^>]+(>|$)/g, '') + ' ';
-    });
-  }
-
-  var imageUrl, link;
-  if (text.length == 0) {
-    // only use logo if no text is specified
-    // otherwise the Cesium will automatically skip the text:
-    // "The text to be displayed on the screen if no imageUrl is specified."
-    var logo = source.getLogo();
-    if (goog.isDef(logo)) {
-      if (goog.isString(logo)) {
-        imageUrl = logo;
-      } else {
-        imageUrl = logo.src;
-        link = logo.href;
-      }
-    }
-  }
-
-  return (goog.isDef(imageUrl) || text.length > 0) ?
-         new Cesium.Credit(text, imageUrl, link) : null;
-};
-
-
-/**
  * Synchronizes the layer rendering properties (brightness, contrast, hue,
  * opacity, saturation, visible) to the given Cesium ImageryLayer.
  * @param {!ol.layer.Layer} olLayer
