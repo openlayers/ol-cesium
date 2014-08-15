@@ -378,12 +378,20 @@ olcs.Camera.prototype.checkCameraChange = function(opt_dontSync) {
  */
 olcs.Camera.prototype.calcDistanceForResolution_ = function(resolution,
                                                             latitude) {
-  var fovy = this.cam_.frustum.fov; // vertical field of view
+  var fovy = this.cam_.frustum.fovy; // vertical field of view
   var metersPerUnit =
       ol.proj.METERS_PER_UNIT[this.view_.getProjection().getUnits()];
 
-  var visibleMapUnits = resolution * this.canvas_.width;
+  // number of "map units" visible in 2D (vertically)
+  var visibleMapUnits = resolution * this.canvas_.height;
+
+  // The metersPerUnit does not take latitude into account, but it should
+  // be lower with increasing latitude -- we have to compensate.
+  // In 3D it is not possible to maintain the resolution at more than one point,
+  // so it only makes sense to use the latitude of the "target" point.
   var relativeCircumference = Math.cos(Math.abs(latitude));
+
+  // how many meters should be visible in 3D
   var visibleMeters = visibleMapUnits * metersPerUnit * relativeCircumference;
 
   // distance required to view the calculated length in meters
@@ -394,6 +402,9 @@ olcs.Camera.prototype.calcDistanceForResolution_ = function(resolution,
   //    |--\
   // visibleMeters/2
   var requiredDistance = (visibleMeters / 2) / Math.tan(fovy / 2);
+
+  // NOTE: This calculation is not absolutely precise, because metersPerUnit
+  // is a great simplification. It does not take ellipsoid/terrain into account.
 
   return requiredDistance;
 };
@@ -408,14 +419,14 @@ olcs.Camera.prototype.calcDistanceForResolution_ = function(resolution,
 olcs.Camera.prototype.calcResolutionForDistance_ = function(distance,
                                                             latitude) {
   // See the reverse calculation (calcDistanceForResolution_) for details
-  var fovy = this.cam_.frustum.fov;
+  var fovy = this.cam_.frustum.fovy;
   var metersPerUnit =
       ol.proj.METERS_PER_UNIT[this.view_.getProjection().getUnits()];
 
   var visibleMeters = 2 * distance * Math.tan(fovy / 2);
   var relativeCircumference = Math.cos(Math.abs(latitude));
   var visibleMapUnits = visibleMeters / metersPerUnit / relativeCircumference;
-  var resolution = visibleMapUnits / this.canvas_.width;
+  var resolution = visibleMapUnits / this.canvas_.height;
 
   return resolution;
 };
