@@ -872,30 +872,97 @@ Cesium.Event = function() {};
 Cesium.Credit = function(opt_text, opt_imageUrl, opt_link) {};
 
 
-
 /**
  * @constructor
  */
-Cesium.GeographicTilingScheme = function() {};
+Cesium.TilingScheme = function() {};
 
 
 /**
  * @type {Cesium.Rectangle}
  */
-Cesium.GeographicTilingScheme.prototype.rectangle;
+Cesium.TilingScheme.prototype.rectangle;
+
+
+/**
+ * @constructor
+ * @extends {Cesium.TilingScheme}
+ */
+Cesium.GeographicTilingScheme = function() {};
+
+
+/**
+ * @constructor
+ * @extends {Cesium.TilingScheme}
+ */
+Cesium.WebMercatorTilingScheme = function() {};
 
 
 
 /**
  * @constructor
  * @param {Cesium.ImageryProvider} imageryProvider
+ * @param {{rectangle: (Cesium.Rectangle|undefined),
+ *          alpha: (number|Function|undefined),
+ *          brightness: (number|Function|undefined),
+ *          contrast: (number|Function|undefined),
+ *          hue: (number|Function|undefined),
+ *          saturation: (number|Function|undefined),
+ *          gamma: (number|Function|undefined),
+ *          show: (boolean|undefined),
+ *          maximumAnisotropy: (number|undefined),
+ *          minimumTerrainLevel: (number|undefined),
+ *          maximumTerrainLevel: (number|undefined)}=} opt_opts
  */
-Cesium.ImageryLayer = function(imageryProvider) {};
+Cesium.ImageryLayer = function(imageryProvider, opt_opts) {};
+
 
 /**
  * @type {Cesium.ImageryProvider}
  */
 Cesium.ImageryLayer.prototype.imageryProvider;
+
+
+/**
+ * @type {number}
+ */
+Cesium.ImageryLayer.prototype.brightness;
+
+
+/**
+ * @type {number}
+ */
+Cesium.ImageryLayer.prototype.contrast;
+
+
+/**
+ * @type {number}
+ */
+Cesium.ImageryLayer.prototype.hue;
+
+
+/**
+ * @type {number}
+ */
+Cesium.ImageryLayer.prototype.alpha;
+
+
+/**
+ * @type {number}
+ */
+Cesium.ImageryLayer.prototype.saturation;
+
+
+/**
+ * @type {boolean}
+ */
+Cesium.ImageryLayer.prototype.show;
+
+
+/**
+ * @type {!Cesium.Rectangle}
+ */
+Cesium.ImageryLayer.prototype.rectangle;
 
 
 /**
@@ -940,9 +1007,15 @@ Cesium.ImageryLayerCollection.prototype.add = function(layer, opt_index) {};
 
 /**
  * @param {Cesium.ImageryLayer} layer
- * @param {boolean} destroy
+ * @param {boolean=} opt_destroy
  */
-Cesium.ImageryLayerCollection.prototype.remove = function(layer, destroy) {};
+Cesium.ImageryLayerCollection.prototype.remove = function(layer, opt_destroy) {};
+
+
+/**
+ * @param {boolean=} opt_destroy
+ */
+Cesium.ImageryLayerCollection.prototype.removeAll = function(opt_destroy) {};
 
 
 
@@ -989,16 +1062,31 @@ Cesium.ImageryProvider.prototype.maximumLevel;
 
 
 /**
+ * @type {boolean}
+ */
+Cesium.ImageryProvider.prototype.ready;
+
+
+/**
+ * @type {boolean}
+ */
+Cesium.ImageryProvider.prototype.hasAlphaChannel;
+
+
+/**
+ * @type {Object|undefined}
+ */
+Cesium.ImageryProvider.prototype.proxy;
+
+
+/**
  * @type {string}
  */
 Cesium.ImageryProvider.prototype.url;
 
 
 /**
- *  //@return {TilingScheme} The tiling scheme.
- *  // TODO
- *  //@return {Cesium.GeographicTilingScheme}
- *  @type {Cesium.WebMercatorTilingScheme}
+ *  @type {Cesium.TilingScheme}
  */
 Cesium.ImageryProvider.prototype.tilingScheme;
 
@@ -1027,6 +1115,15 @@ Cesium.ImageryProvider.prototype.credit;
  * @param {number} x The tile X coordinate.
  * @param {number} y The tile Y coordinate.
  * @param {number} level The tile level.
+ * @return {Array.<Cesium.Credit>|undefined} 
+ */
+Cesium.ImageryProvider.prototype.getTileCredits = function(x, y, level) {};
+
+
+/**
+ * @param {number} x The tile X coordinate.
+ * @param {number} y The tile Y coordinate.
+ * @param {number} level The tile level.
  * @return {Object|undefined} 
  */
 Cesium.ImageryProvider.prototype.requestImage = function(x, y, level) {};
@@ -1042,6 +1139,12 @@ Cesium.ImageryProvider.loadImage = function(imageryProvider, url) {};
 
 /**
  * @constructor
+ * @param {{url: string,
+ *          key: (string|undefined),
+ *          tileProtocol: (string|undefined),
+ *          mapStyle: (string|undefined),
+ *          tileDiscardPolicy: (Object|undefined),
+ *          proxy: (Object|undefined)}} options
  * @extends {Cesium.ImageryProvider}
  */
 Cesium.BingMapsImageryProvider = function(options) {};
@@ -1123,6 +1226,16 @@ Cesium.Rectangle.prototype.north;
 
 /** @type {!Cesium.Rectangle} */
 Cesium.Rectangle.MAX_VALUE;
+
+/** 
+ * @param {number} west
+ * @param {number} south
+ * @param {number} east
+ * @param {number} north
+ * @param {Cesium.Rectangle=} opt_result
+ * @return {!Cesium.Rectangle}
+ */
+Cesium.Rectangle.fromDegrees = function(west, south, east, north, opt_result) {};
 
 
 
@@ -1283,7 +1396,13 @@ Cesium.Color = function(opt_r, opt_g, opt_b, opt_a) {};
 
 /**
  * @constructor
- * @param {Object=} opt_opts
+ * @param {{url: (string|undefined),
+ *          fileExtension: (string|undefined),
+ *          proxy: (Object|undefined),
+ *          rectangle: (Cesium.Rectangle|undefined),
+ *          minimumLevel: (number|undefined),
+ *          maximumLevel: (number|undefined),
+ *          credit: (Cesium.Credit|string|undefined)}=} opt_opts
  * @extends {Cesium.ImageryProvider}
  */
 Cesium.OpenStreetMapImageryProvider = function(opt_opts) {};
@@ -1292,7 +1411,13 @@ Cesium.OpenStreetMapImageryProvider = function(opt_opts) {};
 
 /**
  * @constructor
- * @param {Object} options
+ * @param {{url: string,
+ *          layers: string,
+ *          parameters: (Object|undefined),
+ *          rectangle: (Cesium.Rectangle|undefined),
+ *          maximumLevel: (number|undefined),
+ *          credit: (Cesium.Credit|string|undefined),
+ *          proxy: (Object|undefined)}} options
  * @extends {Cesium.ImageryProvider}
  */
 Cesium.WebMapServiceImageryProvider = function(options) {};
@@ -1429,7 +1554,7 @@ Cesium.Scene.prototype.globe;
 
 
 /**
- * @type {Cesium.ImageryLayerCollection}
+ * @type {!Cesium.ImageryLayerCollection}
  */
 Cesium.Scene.prototype.imageryLayers;
 
@@ -1635,8 +1760,17 @@ Cesium.SingleTileImageryProviderOptions;
 
 /**
  * @constructor
+ * @param {{url: (string|undefined),
+ *          fileExtension: (string|undefined),
+ *          proxy: (Object|undefined),
+ *          credit: (Cesium.Credit|string|undefined),
+ *          minimumLevel: (number|undefined),
+ *          maximumLevel: (number|undefined),
+ *          rectangle: (Cesium.Rectangle|undefined),
+ *          tilingScheme: (Cesium.TilingScheme|undefined),
+ *          tileWidth: (number|undefined),
+ *          tileHeight: (number|undefined)}} options
  * @extends {Cesium.ImageryProvider}
- * @param {Object} options
  */
 Cesium.TileMapServiceImageryProvider = function(options) {};
 
@@ -1724,18 +1858,6 @@ Cesium.WebMercatorProjection.prototype.project = function(cartographic) {};
  */
 Cesium.WebMercatorProjection.prototype.unproject = function(cartesian) {};
 
-
-
-/**
- * @constructor
- */
-Cesium.WebMercatorTilingScheme = function() {};
-
-
-/**
- * @type {Cesium.Rectangle}
- */
-//Cesium.WebMercatorTilingScheme.prototype.rectangle;
 
 
 /** @constructor */

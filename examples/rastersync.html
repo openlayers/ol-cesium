@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="index, all" />
+    <title>ol3cesium raster layer synchronization example</title>
+    <link rel="stylesheet" href="../ol3/css/ol.css" type="text/css">
+    <style>
+      fieldset {display:inline-block;float:left;}
+      label {display:block;}
+      body.hideLayerInputs fieldset {display:none;}
+    </style>
+  </head>
+  <body>
+    <div id="map2d" style="width:600px;height:400px;float:left;"></div>
+    <div id="map3d" style="width:600px;height:400px;float:left;position:relative;"></div>
+    <input type="button" value="Remove all layers" onclick="ol2d.getLayers().clear();document.body.className='hideLayerInputs';" />
+    <input type="button" value="Add Bing Maps" onclick="addBingMaps();" />
+    <input type="button" value="Add OSM" onclick="addOSM();" />
+    <input type="button" value="Add Stamen" onclick="addStamen();" />
+    <input type="button" value="Add TileWMS" onclick="addTileWMS();" />
+    <input type="button" value="Add TileJSON" onclick="addTileJSON();" />
+
+    <fieldset id="layer0">
+      <label class="checkbox" for="visible0">
+        <input id="visible0" class="visible" type="checkbox" onchange="layer0.setVisible(this.checked)" checked/>OpenAerial layer
+      </label>
+      <label>opacity</label>
+      <input class="opacity" type="range" min="0" max="1" step="0.01" value="1" oninput="layer0.setOpacity(this.value)"/>
+      <label>saturation</label>
+      <input class="saturation" type="range" min="0" max="5" step="0.01" oninput="layer0.setSaturation(this.value)"/>
+      <label>contrast</label>
+      <input class="contrast" type="range" min="0" max="2" step="0.01" oninput="layer0.setContrast(this.value)"/>
+      <label>brightness</label>
+      <input class="brightness" type="range" min="-1" max="1" step="0.01" oninput="layer0.setBrightness(this.value)"/>
+    </fieldset>
+    <fieldset id="layer1">
+      <label class="checkbox" for="visible10">
+        <input id="visible1" class="visible" type="checkbox" onchange="layer1.setVisible(this.checked)" checked/>Grand Canyon overlay
+      </label>
+      <label>opacity</label>
+      <input class="opacity" type="range" min="0" max="1" step="0.01" value="1" oninput="layer1.setOpacity(this.value)"/>
+      <label>saturation</label>
+      <input class="saturation" type="range" min="0" max="5" step="0.01" oninput="layer1.setSaturation(this.value)"/>
+      <label>contrast</label>
+      <input class="contrast" type="range" min="0" max="2" step="0.01" oninput="layer1.setContrast(this.value)"/>
+      <label>brightness</label>
+      <input class="brightness" type="range" min="-1" max="1" step="0.01" oninput="layer1.setBrightness(this.value)"/>
+    </fieldset>
+    <fieldset id="layer2">
+      <label class="checkbox" for="visible10">
+        <input id="visible1" class="visible" type="checkbox" onchange="layer2.setVisible(this.checked)" checked/>World borders
+      </label>
+      <label>opacity</label>
+      <input class="opacity" type="range" min="0" max="1" step="0.01" value="1" oninput="layer2.setOpacity(this.value)"/>
+      <label>saturation</label>
+      <input class="saturation" type="range" min="0" max="5" step="0.01" oninput="layer2.setSaturation(this.value)"/>
+      <label>contrast</label>
+      <input class="contrast" type="range" min="0" max="2" step="0.01" oninput="layer2.setContrast(this.value)"/>
+      <label>brightness</label>
+      <input class="brightness" type="range" min="-1" max="1" step="0.01" oninput="layer2.setBrightness(this.value)"/>
+    </fieldset>
+    <script src="../ol3/build/ol.js"></script>
+    <script src="../cesium/Build/Cesium/Cesium.js"></script>
+    <script src="/@loader"></script>
+    <script src="rastersync.js"></script>
+  </body>
+</html>

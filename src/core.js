@@ -1,5 +1,8 @@
 goog.provide('olcs.core');
 
+goog.require('goog.array');
+
+goog.require('olcs.core.OLImageryProvider');
 
 
 /**
@@ -26,3 +29,120 @@ olcs.core.lookAt = function(camera, target, opt_globe) {
   camera.lookAt(position, target, up);
 };
 
+
+/**
+ * Convert an OpenLayers extent to a Cesium rectangle.
+ * @param {ol.Extent} extent Extent.
+ * @param {ol.proj.ProjectionLike} projection Extent projection.
+ * @return {Cesium.Rectangle} The corresponding Cesium rectangle.
+ * @api
+ */
+olcs.core.extentToRectangle = function(extent, projection) {
+  if (!goog.isNull(extent) && !goog.isNull(projection)) {
+    var llExt = ol.proj.transformExtent(extent, projection, 'EPSG:4326');
+    return Cesium.Rectangle.fromDegrees(llExt[0], llExt[1], llExt[2], llExt[3]);
+  } else {
+    return null;
+  }
+};
+
+
+/**
+ * Creates Cesium.ImageryLayer best corresponding to the given ol.layer.Layer.
+ * Only supports raster layers
+ * @param {!ol.layer.Layer} olLayer
+ * @param {?ol.proj.Projection} viewProj Projection of the view.
+ * @return {?Cesium.ImageryLayer} null if not possible (or supported)
+ * @api
+ */
+olcs.core.tileLayerToImageryLayer = function(olLayer, viewProj) {
+  if (!(olLayer instanceof ol.layer.Tile)) {
+    return null;
+  }
+
+  var provider = null;
+
+  var source = olLayer.getSource();
+  // handle special cases before the general synchronization
+  if (source instanceof ol.source.WMTS) {
+    // WMTS uses different TileGrid which is not currently supported
+    return null;
+  }
+  if (source instanceof ol.source.TileImage) {
+    var projection = source.getProjection();
+
+    if (goog.isNull(projection)) {
+      // if not explicit, assume the same projection as view
+      projection = viewProj;
+    } else if (projection !== viewProj) {
+      return null; // do not sync layers with projections different than view
+    }
+
+    var is3857 = projection === ol.proj.get('EPSG:3857');
+    var is4326 = projection === ol.proj.get('EPSG:4326');
+    if (is3857 || is4326) {
+      provider = new olcs.core.OLImageryProvider(source, viewProj);
+    } else {
+      return null;
+    }
+  } else {
+    // sources other than TileImage are currently not supported
+    return null;
+  }
+
+  // the provider is always non-null if we got this far
+
+  var layerOptions = {};
+
+  var ext = olLayer.getExtent();
+  if (goog.isDefAndNotNull(ext) && !goog.isNull(viewProj)) {
+    layerOptions.rectangle = olcs.core.extentToRectangle(ext, viewProj);
+  }
+
+  var cesiumLayer = new Cesium.ImageryLayer(provider, layerOptions);
+  return cesiumLayer;
+};
+
+
+/**
+ * Synchronizes the layer rendering properties (brightness, contrast, hue,
+ * opacity, saturation, visible) to the given Cesium ImageryLayer.
+ * @param {!ol.layer.Layer} olLayer
+ * @param {!Cesium.ImageryLayer} csLayer
+ * @api
+ */
+olcs.core.updateCesiumLayerProperties = function(olLayer, csLayer) {
+  var opacity = olLayer.getOpacity();
+  if (goog.isDef(opacity)) {
+    csLayer.alpha = opacity;
+  }
+  var visible = olLayer.getVisible();
+  if (goog.isDef(visible)) {
+    csLayer.show = visible;
+  }
+
+  // saturation and contrast are working ok
+  var saturation = olLayer.getSaturation();
+  if (goog.isDef(saturation)) {
+    csLayer.saturation = saturation;
+  }
+  var contrast = olLayer.getContrast();
+  if (goog.isDef(contrast)) {
+    csLayer.contrast = contrast;
+  }
+
+  // Cesium actually operates in YIQ space -> hard to emulate
+  // The following values are only a rough approximations:
+
+  // The hue in Cesium has different meaning than the OL equivalent.
+  // var hue = olLayer.getHue();
+  // if (goog.isDef(hue)) {
+  //   csLayer.hue = hue;
+  // }
+
+  var brightness = olLayer.getBrightness();
+  if (goog.isDef(brightness)) {
+    // rough estimation
+    csLayer.brightness = Math.pow(1 + parseFloat(brightness), 2);
+  }
+};

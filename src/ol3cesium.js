@@ -4,6 +4,7 @@ goog.require('goog.dom');
 goog.require('goog.events');
 
 goog.require('olcs.Camera');
+goog.require('olcs.RasterSynchronizer');
 
 
 
@@ -106,8 +107,25 @@ olcs.OLCesium = function(map, opt_target) {
   this.scene_.globe = this.globe_;
   this.scene_.skyAtmosphere = new Cesium.SkyAtmosphere();
 
-  var osm = new Cesium.OpenStreetMapImageryProvider();
-  this.scene_.imageryLayers.addImageryProvider(osm);
+  var olLayers = this.map_.getLayers();
+  /**
+   * @type {?olcs.RasterSynchronizer}
+   * @private
+   */
+  this.rasterSynchronizer_ = goog.isDefAndNotNull(olLayers) ?
+      new olcs.RasterSynchronizer(this.map_.getView(), olLayers,
+                                  this.scene_.imageryLayers) : null;
+  this.rasterSynchronizer_.synchronize();
+
+  //TODO: handle change of layer group
+
+  if (this.isOverMap_) {
+    // if in "stacked mode", hide everything except canvas (including credits)
+    var credits = goog.dom.getNextElementSibling(this.canvas_);
+    if (goog.isDefAndNotNull(credits)) {
+      credits.style.display = 'none';
+    }
+  }
 
   this.camera_.readFromView();
 
