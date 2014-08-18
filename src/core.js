@@ -31,6 +31,23 @@ olcs.core.lookAt = function(camera, target, opt_globe) {
 
 
 /**
+ * Convert an OpenLayers extent to a Cesium rectangle.
+ * @param {ol.Extent} extent Extent.
+ * @param {ol.proj.ProjectionLike} projection Extent projection.
+ * @return {Cesium.Rectangle} The corresponding Cesium rectangle.
+ * @api
+ */
+olcs.core.extentToRectangle = function(extent, projection) {
+  if (!goog.isNull(extent) && !goog.isNull(projection)) {
+    var llExt = ol.proj.transformExtent(extent, projection, 'EPSG:4326');
+    return Cesium.Rectangle.fromDegrees(llExt[0], llExt[1], llExt[2], llExt[3]);
+  } else {
+    return null;
+  }
+};
+
+
+/**
  * Creates Cesium.ImageryLayer best corresponding to the given ol.layer.Layer.
  * Only supports raster layers
  * @param {!ol.layer.Layer} olLayer
@@ -79,9 +96,7 @@ olcs.core.createCorrespondingLayer = function(olLayer, viewProj) {
 
   var ext = olLayer.getExtent();
   if (goog.isDefAndNotNull(ext) && !goog.isNull(viewProj)) {
-    var llExt = ol.proj.transformExtent(ext, viewProj, 'EPSG:4326');
-    layerOptions.rectangle = Cesium.Rectangle.fromDegrees(llExt[0], llExt[1],
-                                                          llExt[2], llExt[3]);
+    layerOptions.rectangle = olcs.core.extentToRectangle(ext, viewProj);
   }
 
   var cesiumLayer = new Cesium.ImageryLayer(provider, layerOptions);
