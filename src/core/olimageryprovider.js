@@ -191,19 +191,18 @@ olcs.core.OLImageryProvider.createCreditForSource = function(source) {
 /**
  * TODO: attributions for individual tile ranges
  * @override
- * @this {olcs.core.OLImageryProvider}
  */
-olcs.core.OLImageryProvider.prototype['getTileCredits'] =
-    function(x, y, level) {
+olcs.core.OLImageryProvider.prototype.getTileCredits = function(x, y, level) {
   return undefined;
 };
+goog.exportProperty(olcs.core.OLImageryProvider.prototype, 'getTileCredits',
+                    olcs.core.OLImageryProvider.prototype.getTileCredits);
 
 
 /**
  * @override
- * @this {olcs.core.OLImageryProvider}
  */
-olcs.core.OLImageryProvider.prototype['requestImage'] = function(x, y, level) {
+olcs.core.OLImageryProvider.prototype.requestImage = function(x, y, level) {
   var tileUrlFunction = this.source_.getTileUrlFunction();
   if (!goog.isNull(tileUrlFunction) && !goog.isNull(this.projection_)) {
     // perform mapping of Cesium tile coordinates to ol3 tile coordinates
@@ -220,3 +219,5 @@ olcs.core.OLImageryProvider.prototype['requestImage'] = function(x, y, level) {
     return this.emptyCanvas_;
   }
 };
+goog.exportProperty(olcs.core.OLImageryProvider.prototype, 'requestImage',
+                    olcs.core.OLImageryProvider.prototype.requestImage);
