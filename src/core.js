@@ -55,7 +55,7 @@ olcs.core.extentToRectangle = function(extent, projection) {
  * @return {?Cesium.ImageryLayer} null if not possible (or supported)
  * @api
  */
-olcs.core.createCorrespondingLayer = function(olLayer, viewProj) {
+olcs.core.tileLayerToImageryLayer = function(olLayer, viewProj) {
   if (!(olLayer instanceof ol.layer.Tile)) {
     return null;
   }

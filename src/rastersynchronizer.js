@@ -74,7 +74,7 @@ olcs.RasterSynchronizer.prototype.synchronize = function() {
 
     // no mapping -> create new layer and set up synchronization
     if (!goog.isDef(cesiumLayer)) {
-      cesiumLayer = olcs.core.createCorrespondingLayer(olLayer, viewProj);
+      cesiumLayer = olcs.core.tileLayerToImageryLayer(olLayer, viewProj);
       olcs.core.updateCesiumLayerProperties(olLayer, cesiumLayer);
       if (!goog.isNull(cesiumLayer)) {
         goog.events.listen(olLayer,
