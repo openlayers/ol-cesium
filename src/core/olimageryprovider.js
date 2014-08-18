@@ -212,7 +212,7 @@ olcs.core.OLImageryProvider.prototype['requestImage'] = function(x, y, level) {
     var y_ = (this.source_.getTileGrid() instanceof ol.tilegrid.XYZ) ?
              y : (y - (1 << level));
     y_ = -y_ - 1; // opposite indexing
-    var url = tileUrlFunction(new ol.TileCoord(z_, x, y_), 1, this.projection_);
+    var url = tileUrlFunction([z_, x, y_], 1, this.projection_);
     return goog.isDef(url) ?
            Cesium.ImageryProvider.loadImage(this, url) : this.emptyCanvas_;
   } else {
