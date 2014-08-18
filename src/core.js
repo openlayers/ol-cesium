@@ -2,7 +2,7 @@ goog.provide('olcs.core');
 
 goog.require('goog.array');
 
-goog.require('olcs.OLImageryProvider');
+goog.require('olcs.core.OLImageryProvider');
 
 
 /**
@@ -81,7 +81,7 @@ olcs.core.createCorrespondingLayer = function(olLayer, viewProj) {
     var is3857 = projection === ol.proj.get('EPSG:3857');
     var is4326 = projection === ol.proj.get('EPSG:4326');
     if (is3857 || is4326) {
-      provider = new olcs.OLImageryProvider(source, viewProj);
+      provider = new olcs.core.OLImageryProvider(source, viewProj);
     } else {
       return null;
     }

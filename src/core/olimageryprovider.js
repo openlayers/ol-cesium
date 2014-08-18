@@ -1,4 +1,4 @@
-goog.provide('olcs.OLImageryProvider');
+goog.provide('olcs.core.OLImageryProvider');
 
 goog.require('goog.events');
 
@@ -14,7 +14,7 @@ goog.require('goog.events');
  * @constructor
  * @extends {Cesium.ImageryProvider}
  */
-olcs.OLImageryProvider = function(source, opt_fallbackProj) {
+olcs.core.OLImageryProvider = function(source, opt_fallbackProj) {
   /**
    * @type {!ol.source.TileImage}
    * @private
@@ -46,24 +46,24 @@ olcs.OLImageryProvider = function(source, opt_fallbackProj) {
   }, false, this);
   this.handleSourceChanged_();
 };
-goog.inherits(olcs.OLImageryProvider, Cesium.ImageryProvider);
+goog.inherits(olcs.core.OLImageryProvider, Cesium.ImageryProvider);
 
 
 // definitions of getters that are required to be present
 // in the Cesium.ImageryProvider instance:
-Object.defineProperties(olcs.OLImageryProvider.prototype, {
+Object.defineProperties(olcs.core.OLImageryProvider.prototype, {
   ready: {
-    get: /** @this {olcs.OLImageryProvider} */
+    get: /** @this {olcs.core.OLImageryProvider} */
         function() {return this.ready_;}
   },
 
   rectangle: {
-    get: /** @this {olcs.OLImageryProvider} */
+    get: /** @this {olcs.core.OLImageryProvider} */
         function() {return this.rectangle_;}
   },
 
   tileWidth: {
-    get: /** @this {olcs.OLImageryProvider} */
+    get: /** @this {olcs.core.OLImageryProvider} */
         function() {
           var tg = this.source_.getTileGrid();
           return !goog.isNull(tg) ? tg.getTileSize(0) : 256;
@@ -71,12 +71,12 @@ Object.defineProperties(olcs.OLImageryProvider.prototype, {
   },
 
   tileHeight: {
-    get: /** @this {olcs.OLImageryProvider} */
+    get: /** @this {olcs.core.OLImageryProvider} */
         function() {return this.tileWidth;}
   },
 
   maximumLevel: {
-    get: /** @this {olcs.OLImageryProvider} */
+    get: /** @this {olcs.core.OLImageryProvider} */
         function() {
           var tg = this.source_.getTileGrid();
           return !goog.isNull(tg) ? tg.getMaxZoom() : 18;
@@ -84,7 +84,7 @@ Object.defineProperties(olcs.OLImageryProvider.prototype, {
   },
 
   minimumLevel: {
-    get: /** @this {olcs.OLImageryProvider} */
+    get: /** @this {olcs.core.OLImageryProvider} */
         function() {
           // WARNING: Do not use the minimum level (at least until the extent is
           // properly set). Cesium assumes the minimumLevel to contain only
@@ -97,7 +97,7 @@ Object.defineProperties(olcs.OLImageryProvider.prototype, {
   },
 
   tilingScheme: {
-    get: /** @this {olcs.OLImageryProvider} */
+    get: /** @this {olcs.core.OLImageryProvider} */
         function() {return this.tilingScheme_;}
   },
 
@@ -106,12 +106,12 @@ Object.defineProperties(olcs.OLImageryProvider.prototype, {
   },
 
   errorEvent: {
-    get: /** @this {olcs.OLImageryProvider} */
+    get: /** @this {olcs.core.OLImageryProvider} */
         function() {return this.errorEvent_;}
   },
 
   credit: {
-    get: /** @this {olcs.OLImageryProvider} */
+    get: /** @this {olcs.core.OLImageryProvider} */
         function() {return this.credit_;}
   },
 
@@ -129,7 +129,7 @@ Object.defineProperties(olcs.OLImageryProvider.prototype, {
  * Checks if the underlying source is ready and cached required data.
  * @private
  */
-olcs.OLImageryProvider.prototype.handleSourceChanged_ = function() {
+olcs.core.OLImageryProvider.prototype.handleSourceChanged_ = function() {
   if (!this.ready_ && this.source_.getState() == 'ready') {
     var proj = this.source_.getProjection();
     this.projection_ = goog.isDefAndNotNull(proj) ? proj : this.fallbackProj_;
@@ -142,7 +142,8 @@ olcs.OLImageryProvider.prototype.handleSourceChanged_ = function() {
     }
     this.rectangle_ = this.tilingScheme_.rectangle;
 
-    var credit = olcs.OLImageryProvider.createCreditForSource(this.source_);
+    var credit =
+        olcs.core.OLImageryProvider.createCreditForSource(this.source_);
     this.credit_ = !goog.isNull(credit) ? credit : undefined;
 
     this.ready_ = true;
@@ -156,7 +157,7 @@ olcs.OLImageryProvider.prototype.handleSourceChanged_ = function() {
  * @param {!ol.source.Source} source
  * @return {?Cesium.Credit}
  */
-olcs.OLImageryProvider.createCreditForSource = function(source) {
+olcs.core.OLImageryProvider.createCreditForSource = function(source) {
   var text = '';
   var attributions = source.getAttributions();
   if (!goog.isNull(attributions)) {
@@ -190,19 +191,19 @@ olcs.OLImageryProvider.createCreditForSource = function(source) {
 /**
  * TODO: attributions for individual tile ranges
  * @override
- * @this {olcs.OLImageryProvider}
+ * @this {olcs.core.OLImageryProvider}
  */
-olcs.OLImageryProvider.prototype['getTileCredits'] = function(x, y, level) {
+olcs.core.OLImageryProvider.prototype['getTileCredits'] =
+    function(x, y, level) {
   return undefined;
 };
 
 
 /**
  * @override
- * @this {olcs.OLImageryProvider}
+ * @this {olcs.core.OLImageryProvider}
  */
-olcs.OLImageryProvider.prototype['requestImage'] =
-    function(x, y, level) {
+olcs.core.OLImageryProvider.prototype['requestImage'] = function(x, y, level) {
   var tileUrlFunction = this.source_.getTileUrlFunction();
   if (!goog.isNull(tileUrlFunction) && !goog.isNull(this.projection_)) {
     // perform mapping of Cesium tile coordinates to ol3 tile coordinates
