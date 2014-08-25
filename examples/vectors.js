@@ -200,27 +200,3 @@ var terrainProvider = new Cesium.CesiumTerrainProvider({
 scene.terrainProvider = terrainProvider;
 ol3d.setEnabled(true);
 
-var csGeometries = [];
-var features = vectorSource.getFeatures();
-var projection = map.getView().getProjection();
-var resolution = map.getView().getResolution();
-for (var i = 0; i < features.length; ++i) {
-  var feature = features[i];
-  console.log('Converting', feature.getGeometry().getType());
-  var layerStyle = vectorLayer.getStyle();
-  layerStyle = olcs.core.computePlainStyle(feature, layerStyle, resolution);
-  var primitives = olcs.core.olFeatureToCesium(feature, layerStyle, projection);
-  if (goog.isDef(primitives)) scene.primitives.add(primitives);
-  else console.log('Could not create primitive');
-}
-
-/*
-for (var i = 0; i < csGeometries.length; ++i) {
-  var csgeo = csGeometries[i];
-  if (!goog.isDef(csgeo)) continue;
-  //if (i != 7) continue;
-  console.log('now, ', csgeo.oltype, csgeo);
-  var primitive = createPrimitive(csgeo);
-  scene.primitives.add(primitive);
-}
-*/

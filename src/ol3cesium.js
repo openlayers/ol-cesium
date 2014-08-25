@@ -5,6 +5,7 @@ goog.require('goog.events');
 
 goog.require('olcs.Camera');
 goog.require('olcs.RasterSynchronizer');
+goog.require('olcs.VectorSynchronizer');
 
 
 
@@ -118,6 +119,11 @@ olcs.OLCesium = function(map, opt_target) {
   this.rasterSynchronizer_.synchronize();
 
   //TODO: handle change of layer group
+
+  this.vectorSynchronizer_ = goog.isDefAndNotNull(olLayers) ?
+    new olcs.VectorSynchronizer(this.map_.getView(), olLayers,
+                                this.scene_.primitives) : null;
+  this.vectorSynchronizer_.synchronize();
 
   if (this.isOverMap_) {
     // if in "stacked mode", hide everything except canvas (including credits)

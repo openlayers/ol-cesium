@@ -662,3 +662,29 @@ olcs.core.olFeatureToCesium = function(feature, style, projection,
 };
 
 
+/**
+ * Convert an OpenLayers vector layer to Cesium primitive collection.
+ * @param {!ol.layer.Vector} olLayer
+ * @param {!ol.View} olView
+ * @return {Cesium.PrimitiveCollection}
+ */
+olcs.core.olVectorLayerToCesium = function(olLayer, olView) {
+  goog.asserts.assert(olLayer instanceof ol.layer.Vector);
+
+  var vectorLayer = olLayer;
+  var features = vectorLayer.getSource().getFeatures();
+  var proj = olView.getProjection();
+  var resolution = olView.getResolution();
+
+  var allPrimitives = new Cesium.PrimitiveCollection();
+  for (var i = 0; i < features.length; ++i) {
+    var feature = features[i];
+    var layerStyle = vectorLayer.getStyle();
+    layerStyle = olcs.core.computePlainStyle(feature, layerStyle, resolution);
+    var primitives = olcs.core.olFeatureToCesium(feature, layerStyle, proj);
+    if (goog.isDef(primitives)) allPrimitives.add(primitives);
+  }
+
+ return allPrimitives;
+};
+
