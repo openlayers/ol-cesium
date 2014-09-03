@@ -1,3 +1,22 @@
+var iconFeature = new ol.Feature({
+    geometry: new ol.geom.Point([700000, 200000]),
+      name: 'Null Island',
+      population: 4000,
+      rainfall: 500
+});
+
+var iconStyle = new ol.style.Style({
+    image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+          anchor: [0.5, 46],
+          anchorXUnits: 'fraction',
+          anchorYUnits: 'pixels',
+          opacity: 0.75,
+          src: 'data/icon.png'
+        }))
+});
+
+iconFeature.setStyle(iconStyle);
+
 
 var image = new ol.style.Circle({
   radius: 5,
@@ -171,12 +190,23 @@ var vectorLayer = new ol.layer.Vector({
   style: styleFunction
 });
 
+
+var vectorSource2 = new ol.source.Vector({
+    features: [iconFeature]
+});
+
+var vectorLayer2 = new ol.layer.Vector({
+    source: vectorSource2
+});
+
+
 var map = new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM()
     }),
-    vectorLayer
+    vectorLayer,
+    vectorLayer2
   ],
   target: 'map2d',
   controls: ol.control.defaults({
@@ -206,3 +236,11 @@ setTimeout(function() {
     map.getLayers().insertAt(1, vectorLayer);
   }, 3000);
 }, 8000);
+
+var csLabels = new Cesium.LabelCollection();
+csLabels.add({
+    position: Cesium.Cartesian3.fromRadians(20, 20, 0),
+    text: 'Pre-existing primitive'
+});
+scene.primitives.add(csLabels);
+
