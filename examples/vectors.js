@@ -212,8 +212,20 @@ var vectorLayer2 = new ol.layer.Vector({
     source: vectorSource2
 });
 
+var dragAndDropInteraction = new ol.interaction.DragAndDrop({
+  formatConstructors: [
+    ol.format.GPX,
+    ol.format.GeoJSON,
+    ol.format.IGC,
+    ol.format.KML,
+    ol.format.TopoJSON
+  ]
+});
+
+
 
 var map = new ol.Map({
+  interactions: ol.interaction.defaults().extend([dragAndDropInteraction]),
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM()
@@ -233,6 +245,19 @@ var map = new ol.Map({
   })
 });
 
+dragAndDropInteraction.on('addfeatures', function(event) {
+  var vectorSource = new ol.source.Vector({
+    features: event.features,
+    projection: event.projection
+  });
+  map.getLayers().push(new ol.layer.Vector({
+    source: vectorSource,
+    style: styleFunction
+  }));
+  var view = map.getView();
+  view.fitExtent(
+      vectorSource.getExtent(), /** @type {ol.Size} */ (map.getSize()));
+});
 
 
 var ol3d = new olcs.OLCesium(map, 'map3d');
