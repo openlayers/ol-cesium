@@ -7,10 +7,8 @@ goog.require('olcs.core.OLImageryProvider');
 
 /**
  * @type {number}
- * @api
  */
 olcs.core.GL_ALIASED_LINE_WIDTH_RANGE;
-//goog.exportProperty();
 
 
 /**

@@ -78,10 +78,6 @@ olcs.OLCesium = function(map, opt_target) {
     scene3DOnly: true
   });
 
-  // Set global constant value which depends on the GL implementation
-  // and should never change.
-  olcs.core.GL_ALIASED_LINE_WIDTH_RANGE = this.scene_.maximumAliasedLineWidth;
-
   var sscc = this.scene_.screenSpaceCameraController;
   sscc.inertiaSpin = 0;
   sscc.ineartiaTranslate = 0;
