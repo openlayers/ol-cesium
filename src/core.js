@@ -5,6 +5,9 @@ goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('olcs.core.OLImageryProvider');
 
+(function anonymous() {
+
+
 /**
  * @type {number}
  */
@@ -671,7 +674,6 @@ olcs.core.olStyleToCesium = function(style, outline) {
  * @param {!ol.style.Style|ol.style.Text} style
  * @param {boolean} outline
  * @return {!Cesium.Color}
- * @api
  */
 var extractColorFromOlStyle = function(style, outline) {
   var fillColor = style.getFill() ? style.getFill().getColor() : null;
@@ -693,7 +695,6 @@ var extractColorFromOlStyle = function(style, outline) {
  * Use GL aliased line width range constraint.
  * @param {!ol.style.Style|ol.style.Text} style
  * @return {number}
- * @api
  */
 var extractLineWidthFromOlStyle = function(style) {
   var width = style.getStroke() ? style.getStroke().getWidth() : 1;
@@ -825,3 +826,4 @@ olcs.core.olVectorLayerToCesium = function(olLayer, olView) {
  return allPrimitives;
 };
 
+})();
