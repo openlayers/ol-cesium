@@ -79,12 +79,10 @@ olcs.VectorSynchronizer.prototype.synchronize = function() {
       view = /** @type {!ol.View} */ (view);
       csPrimitives = olcs.core.olVectorLayerToCesium(olLayer, view);
 
-      if (!goog.isNull(csPrimitives)) {
-        goog.events.listen(olLayer,
-            ['change:visible'],
-            function(e) {
-              csPrimitives.show = olLayer.getVisible();
-            });
+      if (csPrimitives) {
+        olLayer.on('change:visible', function(e) {
+          csPrimitives.show = olLayer.getVisible();
+        });
       }
       this.layerMap_[olLayerId] = csPrimitives;
     }
