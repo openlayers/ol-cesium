@@ -54,8 +54,18 @@ cleanall: clean
 dist/ol3cesium.js: build/ol3cesium.json $(SRC_JS_FILES) ol3/build/ol-externs.js Cesium.externs.js build/build.js
 	mkdir -p $(dir $@)
 	node build/build.js $< $@
+	sed  -i 's!$(shell pwd)/dist!source!g' dist/ol3cesium.js.map
 	sed  -i 's!$(shell pwd)!source!g' dist/ol3cesium.js.map
 	echo '//# sourceMappingURL=ol3cesium.js.map' >> dist/ol3cesium.js
+	cp -R examples dist/
+	for f in dist/examples/*.html; do sed 'sY/@loaderY../ol3cesium.jsY' -i $$f; done
+	for f in dist/examples/*.html; do sed 'sY../ol3/build/ol.jsY../ol-debug.jsY' -i $$f; done
+	for f in dist/examples/*.html; do sed 'sY../cesium/Build/Cesium/Cesium.jsY../Cesium/Cesium.jsY' -i $$f; done
+	cp ol3/build/ol-debug.js dist/
+	cp -R cesium/Build/Cesium dist/
+	mkdir -p dist/ol3/css/
+	cp ol3/build/ol.css dist/ol3/css/
+	-ln -s .. dist/source
 
 
 ol3/build/ol-externs.js:
