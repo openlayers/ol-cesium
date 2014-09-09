@@ -18,7 +18,7 @@ olcs.VectorSynchronizer = function(map, scene) {
    * @type {!Cesium.PrimitiveCollection}
    * @private
    */
-  this.csAllPrimitives_ = scene.primitives;
+  this.csAllPrimitives_ = scene.primitives.add(new Cesium.PrimitiveCollection());
 
   // Set global constant value which depends on the GL implementation
   // and should never change.
