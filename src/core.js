@@ -1,4 +1,3 @@
-'use strict';
 goog.provide('olcs.core');
 
 goog.require('goog.array');
