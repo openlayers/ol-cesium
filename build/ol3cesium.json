@@ -7,7 +7,7 @@
       "Cesium.externs.js"
     ],
     "define": [
-      "goog.DEBUG=false"
+      "goog.DEBUG=true"
     ],
     "jscomp_error": [
       "accessControls",
@@ -46,12 +46,10 @@
     "extra_annotation_name": [
       "api", "observable"
     ],
-    "jscomp_off": [
-      "es5Strict"
-
-    ],
     "compilation_level": "ADVANCED_OPTIMIZATIONS",
     "output_wrapper": "(function(){%output%})();",
-    "use_types_for_optimization": true
+    "use_types_for_optimization": true,
+    "create_source_map": "dist/ol3cesium.js.map",
+    "source_map_format": "V3"
     }
 }

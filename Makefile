@@ -50,9 +50,13 @@ cleanall: clean
 	.build/python-venv/bin/pip install "http://closure-linter.googlecode.com/files/closure_linter-latest.tar.gz"
 	touch $@
 
-dist/ol3cesium.js: build/ol3cesium.json $(SRC_JS_FILES) ol3/build/ol-externs.js
+# A sourcemap is prepared, the source is exected to be deployed in 'source' directory
+dist/ol3cesium.js: build/ol3cesium.json $(SRC_JS_FILES) ol3/build/ol-externs.js Cesium.externs.js build/build.js
 	mkdir -p $(dir $@)
 	node build/build.js $< $@
+	sed  -i 's!$(shell pwd)!source!g' dist/ol3cesium.js.map
+	echo '//# sourceMappingURL=ol3cesium.js.map' >> dist/ol3cesium.js
+
 
 ol3/build/ol-externs.js:
 	(cd ol3 && \
