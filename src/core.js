@@ -776,9 +776,7 @@ olcs.core.olFeatureToCesium = function(feature, style, projection,
       geom = /** @type {!ol.geom.Polygon} */ (geom);
       return olcs.core.olPolygonGeometryToCesium(geom, proj, style);
     case 'MultiPoint':
-      throw 'generalize single point case';
     case 'MultiLineString':
-      return olcs.core.olMultiGeometryToCesium(geom, proj, style);
     case 'MultiPolygon':
       return olcs.core.olMultiGeometryToCesium(geom, proj, style);
     case 'LinearRing':

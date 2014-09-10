@@ -46,7 +46,13 @@ var styles = {
     })
   })],
   'MultiPoint': [new ol.style.Style({
-    image: image
+    image: image,
+    text: new ol.style.Text({
+      text: 'MP',
+      stroke: new ol.style.Stroke({
+        color: 'purple'
+      })
+    })
   })],
   'MultiPolygon': [new ol.style.Style({
     stroke: new ol.style.Stroke({
@@ -72,7 +78,7 @@ var styles = {
       textBaseline: 'middle',
       stroke: new ol.style.Stroke({
         color: 'magenta',
-        width: 4
+        width: 3
       }),
       fill: new ol.style.Fill({
         color: 'rgba(0, 0, 155, 0.3)'
@@ -169,6 +175,17 @@ var vectorSource = new ol.source.GeoJSON(
                 [[[-5e6, 6e6], [-5e6, 8e6], [-3e6, 8e6], [-3e6, 6e6]]],
                 [[[-2e6, 6e6], [-2e6, 8e6], [0, 8e6], [0, 6e6]]],
                 [[[1e6, 6e6], [1e6, 8e6], [3e6, 8e6], [3e6, 6e6]]]
+              ]
+            }
+          },
+          {
+            'type': 'Feature',
+            'geometry': {
+              'type': 'MultiPoint',
+              'coordinates': [
+                [-6e6, 6e6],
+                [-2e6, 6e6],
+                [1e6, 6e6]
               ]
             }
           },
