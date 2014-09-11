@@ -832,6 +832,12 @@ Cesium.PrimitiveCollection.prototype.add = function(poly) {};
 
 /**
  * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.PrimitiveCollection} poly .
+ * @return {boolean}
+ */
+Cesium.PrimitiveCollection.prototype.contains = function(poly) {};
+
+/**
+ * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.PrimitiveCollection} poly .
  */
 Cesium.PrimitiveCollection.prototype.raiseToTop = function(poly) {};
 
