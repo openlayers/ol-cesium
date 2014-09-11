@@ -1748,6 +1748,9 @@ Cesium.ScreenSpaceEventType = function() {};
 Cesium.ScreenSpaceEventType.LEFT_DOWN;
 
 /** @type {Cesium.ScreenSpaceEventType} */
+Cesium.ScreenSpaceEventType.LEFT_UP;
+
+/** @type {Cesium.ScreenSpaceEventType} */
 Cesium.ScreenSpaceEventType.RIGHT_DOWN;
 
 /** @type {Cesium.ScreenSpaceEventType} */
@@ -1759,6 +1762,8 @@ Cesium.ScreenSpaceEventType.WHEEL;
 /** @type {Cesium.ScreenSpaceEventType} */
 Cesium.ScreenSpaceEventType.PINCH_START;
 
+/** @type {Cesium.ScreenSpaceEventType} */
+Cesium.ScreenSpaceEventType.MOUSE_MOVE;
 
 
 /**
