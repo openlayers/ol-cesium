@@ -1715,12 +1715,23 @@ Cesium.ScreenSpaceCameraController.prototype.zoomEventTypes;
  */
 Cesium.ScreenSpaceEventHandler = function(canvas) {};
 
+/**
+ * @return {undefined}
+ */
+Cesium.ScreenSpaceEventHandler.prototype.destroy = function() {};
+
+/**
+ * @param {Cesium.ScreenSpaceEventType} type .
+ * @param {Cesium.KeyboardEventModifier=} opt_modifier .
+ */
+Cesium.ScreenSpaceEventHandler.prototype.removeInputAction = function(type, opt_modifier) {};
 
 /**
  * @param {Function} callback .
  * @param {Cesium.ScreenSpaceEventType} type .
+ * @param {Cesium.KeyboardEventModifier=} opt_modifier .
  */
-Cesium.ScreenSpaceEventHandler.prototype.setInputAction = function(callback, type) {};
+Cesium.ScreenSpaceEventHandler.prototype.setInputAction = function(callback, type, opt_modifier) {};
 
 
 /** @constructor */
