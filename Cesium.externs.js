@@ -324,7 +324,7 @@ Cesium.CameraEventType.WHEEL;
 
 
 /**
- * @typedef {Object}
+ * @typedef {number}
  */
 Cesium.KeyboardEventModifier;
 
@@ -477,9 +477,10 @@ Cesium.Camera.prototype.moveBackward = function(amount) {};
 
 /**
  * @param {!Cesium.Cartesian2} windowPos .
+ * @param {Cesium.Ellipsoid=} opt_ellipsoid .
  * @return {!Cesium.Cartesian3} .
  */
-Cesium.Camera.prototype.pickEllipsoid = function(windowPos) {};
+Cesium.Camera.prototype.pickEllipsoid = function(windowPos, opt_ellipsoid) {};
 
 
 /**
@@ -824,10 +825,16 @@ Cesium.PrimitiveCollection = function() {};
 
 
 /**
- * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.PrimitiveCollection} poly .
+ * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.PrimitiveCollection|Cesium.RectanglePrimitive} poly .
  */
 Cesium.PrimitiveCollection.prototype.add = function(poly) {};
 
+
+/**
+ * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.PrimitiveCollection|Cesium.RectanglePrimitive} poly .
+ * @return {boolean}
+ */
+Cesium.PrimitiveCollection.prototype.contains = function(poly) {};
 
 /**
  * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.PrimitiveCollection} poly .
@@ -836,7 +843,7 @@ Cesium.PrimitiveCollection.prototype.raiseToTop = function(poly) {};
 
 
 /**
- * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.PrimitiveCollection} poly .
+ * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.PrimitiveCollection|Cesium.RectanglePrimitive} poly .
  */
 Cesium.PrimitiveCollection.prototype.remove = function(poly) {};
 
@@ -1205,12 +1212,12 @@ Cesium.Ellipsoid.prototype.geocentricSurfaceNormal = function(cartesian, result)
 
 /**
  * @constructor
- * @param {number} west
- * @param {number} south
- * @param {number} east
- * @param {number} north
+ * @param {number=} opt_west
+ * @param {number=} opt_south
+ * @param {number=} opt_east
+ * @param {number=} opt_north
  */
-Cesium.Rectangle = function(west, south, east, north) {};
+Cesium.Rectangle = function(opt_west, opt_south, opt_east, opt_north) {};
 
 /** @type {number} */
 Cesium.Rectangle.prototype.west;
@@ -1237,6 +1244,31 @@ Cesium.Rectangle.MAX_VALUE;
  */
 Cesium.Rectangle.fromDegrees = function(west, south, east, north, opt_result) {};
 
+
+/**
+ * @typedef {{asynchronous: (boolean|undefined),
+ *     height: (number|undefined),
+ *     rectangle: (Cesium.Rectangle|undefined),
+ *     material: (Cesium.Material|undefined)}}
+ */
+Cesium.RectanglePrimitiveOptions;
+
+/**
+ * @constructor
+ * @param {Cesium.RectanglePrimitiveOptions} options .
+ */
+Cesium.RectanglePrimitive = function(options) {};
+
+
+/**
+ * @type {!Cesium.Material} material .
+ */
+Cesium.RectanglePrimitive.prototype.material;
+
+/**
+ * @type {!Cesium.Rectangle} rectangle .
+ */
+Cesium.RectanglePrimitive.prototype.rectangle;
 
 
 /**
@@ -1715,12 +1747,23 @@ Cesium.ScreenSpaceCameraController.prototype.zoomEventTypes;
  */
 Cesium.ScreenSpaceEventHandler = function(canvas) {};
 
+/**
+ * @return {undefined}
+ */
+Cesium.ScreenSpaceEventHandler.prototype.destroy = function() {};
+
+/**
+ * @param {Cesium.ScreenSpaceEventType} type .
+ * @param {Cesium.KeyboardEventModifier=} opt_modifier .
+ */
+Cesium.ScreenSpaceEventHandler.prototype.removeInputAction = function(type, opt_modifier) {};
 
 /**
  * @param {Function} callback .
  * @param {Cesium.ScreenSpaceEventType} type .
+ * @param {Cesium.KeyboardEventModifier=} opt_modifier .
  */
-Cesium.ScreenSpaceEventHandler.prototype.setInputAction = function(callback, type) {};
+Cesium.ScreenSpaceEventHandler.prototype.setInputAction = function(callback, type, opt_modifier) {};
 
 
 /** @constructor */
@@ -1728,6 +1771,9 @@ Cesium.ScreenSpaceEventType = function() {};
 
 /** @type {Cesium.ScreenSpaceEventType} */
 Cesium.ScreenSpaceEventType.LEFT_DOWN;
+
+/** @type {Cesium.ScreenSpaceEventType} */
+Cesium.ScreenSpaceEventType.LEFT_UP;
 
 /** @type {Cesium.ScreenSpaceEventType} */
 Cesium.ScreenSpaceEventType.RIGHT_DOWN;
@@ -1741,6 +1787,8 @@ Cesium.ScreenSpaceEventType.WHEEL;
 /** @type {Cesium.ScreenSpaceEventType} */
 Cesium.ScreenSpaceEventType.PINCH_START;
 
+/** @type {Cesium.ScreenSpaceEventType} */
+Cesium.ScreenSpaceEventType.MOUSE_MOVE;
 
 
 /**
