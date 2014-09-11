@@ -825,13 +825,13 @@ Cesium.PrimitiveCollection = function() {};
 
 
 /**
- * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.PrimitiveCollection} poly .
+ * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.PrimitiveCollection|Cesium.RectanglePrimitive} poly .
  */
 Cesium.PrimitiveCollection.prototype.add = function(poly) {};
 
 
 /**
- * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.PrimitiveCollection} poly .
+ * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.PrimitiveCollection|Cesium.RectanglePrimitive} poly .
  * @return {boolean}
  */
 Cesium.PrimitiveCollection.prototype.contains = function(poly) {};
@@ -843,7 +843,7 @@ Cesium.PrimitiveCollection.prototype.raiseToTop = function(poly) {};
 
 
 /**
- * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.PrimitiveCollection} poly .
+ * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.PrimitiveCollection|Cesium.RectanglePrimitive} poly .
  */
 Cesium.PrimitiveCollection.prototype.remove = function(poly) {};
 
@@ -1244,6 +1244,31 @@ Cesium.Rectangle.MAX_VALUE;
  */
 Cesium.Rectangle.fromDegrees = function(west, south, east, north, opt_result) {};
 
+
+/**
+ * @typedef {{asynchronous: (boolean|undefined),
+ *     height: (number|undefined),
+ *     rectangle: (Cesium.Rectangle|undefined),
+ *     material: (Cesium.Material|undefined)}}
+ */
+Cesium.RectanglePrimitiveOptions;
+
+/**
+ * @constructor
+ * @param {Cesium.RectanglePrimitiveOptions} options .
+ */
+Cesium.RectanglePrimitive = function(options) {};
+
+
+/**
+ * @type {!Cesium.Material} material .
+ */
+Cesium.RectanglePrimitive.prototype.material;
+
+/**
+ * @type {!Cesium.Rectangle} rectangle .
+ */
+Cesium.RectanglePrimitive.prototype.rectangle;
 
 
 /**
