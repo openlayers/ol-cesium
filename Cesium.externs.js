@@ -324,7 +324,7 @@ Cesium.CameraEventType.WHEEL;
 
 
 /**
- * @typedef {Object}
+ * @typedef {number}
  */
 Cesium.KeyboardEventModifier;
 
