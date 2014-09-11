@@ -477,9 +477,10 @@ Cesium.Camera.prototype.moveBackward = function(amount) {};
 
 /**
  * @param {!Cesium.Cartesian2} windowPos .
+ * @param {Cesium.Ellipsoid=} opt_ellipsoid .
  * @return {!Cesium.Cartesian3} .
  */
-Cesium.Camera.prototype.pickEllipsoid = function(windowPos) {};
+Cesium.Camera.prototype.pickEllipsoid = function(windowPos, opt_ellipsoid) {};
 
 
 /**
