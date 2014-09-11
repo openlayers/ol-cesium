@@ -1205,12 +1205,12 @@ Cesium.Ellipsoid.prototype.geocentricSurfaceNormal = function(cartesian, result)
 
 /**
  * @constructor
- * @param {number} west
- * @param {number} south
- * @param {number} east
- * @param {number} north
+ * @param {number=} opt_west
+ * @param {number=} opt_south
+ * @param {number=} opt_east
+ * @param {number=} opt_north
  */
-Cesium.Rectangle = function(west, south, east, north) {};
+Cesium.Rectangle = function(opt_west, opt_south, opt_east, opt_north) {};
 
 /** @type {number} */
 Cesium.Rectangle.prototype.west;
