@@ -58,6 +58,7 @@ olcs.VectorSynchronizer.prototype.synchronize = function() {
   this.csAllPrimitives_.destroyPrimitives = false;
   this.csAllPrimitives_.removeAll();
 
+
   var synchronizeLayer = goog.bind(function(olLayer) {
     // handle layer groups
     if (olLayer instanceof ol.layer.Group) {
@@ -67,6 +68,8 @@ olcs.VectorSynchronizer.prototype.synchronize = function() {
           synchronizeLayer(el);
         });
       }
+      return;
+    } else if (!(olLayer instanceof ol.layer.Vector)) {
       return;
     }
 
@@ -93,9 +96,9 @@ olcs.VectorSynchronizer.prototype.synchronize = function() {
     }
   }, this);
 
+
   olLayers.forEach(function(el, i, arr) {
-    if (el instanceof ol.layer.Vector)
-      synchronizeLayer(el);
+    synchronizeLayer(el);
   });
 
   // destroy unused Cesium primitives
