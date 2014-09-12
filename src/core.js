@@ -8,9 +8,10 @@ goog.require('olcs.core.OLImageryProvider');
 
 
 /**
+ * -1 when not initialized.
  * @type {number}
  */
-olcs.core.GL_ALIASED_LINE_WIDTH_RANGE;
+olcs.core.glAliasedLineWidthRange = -1;
 
 
 /**
@@ -703,8 +704,12 @@ var extractColorFromOlStyle = function(style, outline) {
  * @return {number}
  */
 var extractLineWidthFromOlStyle = function(style) {
+  if (olcs.core.glAliasedLineWidthRange == -1) {
+    throw 'olcs.core.glAliasedLineWidthRange must be initialized ' +
+      'using Cesium.Scene.maximumAliasedLineWidth';
+  }
   var width = style.getStroke() ? style.getStroke().getWidth() : 1;
-  return Math.min(width, olcs.core.GL_ALIASED_LINE_WIDTH_RANGE);
+  return Math.min(width, olcs.core.glAliasedLineWidthRange);
 };
 
 /**

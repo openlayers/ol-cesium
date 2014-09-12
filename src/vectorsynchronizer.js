@@ -20,9 +20,8 @@ olcs.VectorSynchronizer = function(map, scene) {
    */
   this.csAllPrimitives_ = scene.primitives.add(new Cesium.PrimitiveCollection());
 
-  // Set global constant value which depends on the GL implementation
-  // and should never change.
-  olcs.core.GL_ALIASED_LINE_WIDTH_RANGE = scene.maximumAliasedLineWidth;
+  // Initialize core library
+  olcs.core.glAliasedLineWidthRange = scene.maximumAliasedLineWidth;
 
   /**
    * @type {!ol.Map}
