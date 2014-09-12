@@ -219,6 +219,7 @@ var olGeometryCloneTo4326 = function(geometry, projection) {
 var createColoredPrimitive = function(geometry, color, opt_lineWidth) {
   var createInstance = function(geometry, color) {
     return new Cesium.GeometryInstance({
+      // always update Cesium externs before adding a property
       geometry: geometry,
       attributes: {
         color: Cesium.ColorGeometryInstanceAttribute.fromColor(color)
@@ -227,10 +228,8 @@ var createColoredPrimitive = function(geometry, color, opt_lineWidth) {
   };
 
   var options = {
+    // always update Cesium externs before adding a property
     flat: true, // work with all geometries
-    // prevent rendering through globe? Does not work as expected.
-    // May be due to the (manual) way scene is created? See sandcastle:
-    // http://cesiumjs.org/Cesium/Apps/Sandcastle/index.html?src=Simple%20Polyline.html&label=Showcases
     renderState: {
       depthTest: {
         enabled: true
@@ -249,6 +248,7 @@ var createColoredPrimitive = function(geometry, color, opt_lineWidth) {
   var instances = createInstance(geometry, color);
 
   var primitive = new Cesium.Primitive({
+    // always update Cesium externs before adding a property
     geometryInstances: instances,
     appearance: appearance
   });
@@ -311,11 +311,13 @@ olcs.core.olCircleGeometryToCesium = function(olGeometry, projection, olStyle) {
   var radius = Cesium.Cartesian3.distance(center, point);
 
   var fillGeometry = new Cesium.CircleGeometry({
+    // always update Cesium externs before adding a property
     center: center,
     radius: radius
   });
 
   var outlineGeometry = new Cesium.CircleOutlineGeometry({
+    // always update Cesium externs before adding a property
     center: center,
     radius: radius
    });
@@ -345,16 +347,19 @@ olcs.core.olLineStringGeometryToCesium = function(olGeometry, projection,
       olGeometry.getCoordinates());
 
   var appearance = new Cesium.PolylineMaterialAppearance({
+    // always update Cesium externs before adding a property
     material: olcs.core.olStyleToCesium(olStyle, true)
   });
 
   // Handle both color and width
   var outlineGeometry = new Cesium.PolylineGeometry({
+    // always update Cesium externs before adding a property
     positions: positions,
     vertexFormat: appearance.vertexFormat
   });
 
   var outlinePrimitive = new Cesium.Primitive({
+    // always update Cesium externs before adding a property
     geometryInstances: new Cesium.GeometryInstance({
       geometry: outlineGeometry
     }),
@@ -380,6 +385,7 @@ olcs.core.olPolygonGeometryToCesium = function(olGeometry, projection,
   goog.asserts.assert(olGeometry.getType() == 'Polygon');
 
   var rings = olGeometry.getLinearRings();
+  // always update Cesium externs before adding a property
   var hierarchy = {};
   for (var i = 0; i < rings.length; ++i) {
     var positions = olcs.core.ol4326CoordinateArrayToCesiumCartesians(
@@ -396,11 +402,13 @@ olcs.core.olPolygonGeometryToCesium = function(olGeometry, projection,
   }
 
   var fillGeometry = new Cesium.PolygonGeometry({
+    // always update Cesium externs before adding a property
     polygonHierarchy: hierarchy
   });
 
   var width = extractLineWidthFromOlStyle(olStyle);
   var outlineGeometry = new Cesium.PolygonOutlineGeometry({
+     // always update Cesium externs before adding a property
      polygonHierarchy: hierarchy,
      width: width
   });
@@ -434,6 +442,7 @@ olcs.core.olPointGeometryToCesium = function(geometry, projection, style) {
 
   var billboards = new Cesium.BillboardCollection();
   billboards.add({
+   // always update Cesium externs before adding a property
    image: image,
 //   scaleByDistance: new Cesium.NearFarScalar(1.5e2, 2.0, 1.5e7, 0.5),
    position: position
@@ -504,15 +513,8 @@ olcs.core.olGeometry4326TextPartToCesium = function(geometry, style) {
       ol.extent.getCenter(geometry.getExtent()));
 
   primitives.modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(position);
-  var options = {
-    positions: Cesium.Cartesian3.ZERO,
-    style: labelStyle,
-    fillColor: fillColor,
-    outlineColor: outlineColor,
-    outlineWidth: width,
-//    scaleByDistance: new Cesium.NearFarScalar(1.5e2, 2.0, 1.5e7, 0.5),
-    text: text
-  };
+  var options = /** @type {Cesium.optionsLabelCollection} */ ({});
+  options.text = text;
 
   if (style.getOffsetX() != 0 && style.getOffsetY() != 0) {
     var offset = new Cesium.Cartesian2(style.getOffsetX(), style.getOffsetY());
@@ -526,13 +528,12 @@ olcs.core.olGeometry4326TextPartToCesium = function(geometry, style) {
 
   var labelStyle = undefined;
   if (style.getFill()) {
-    var fillColor = extractColorFromOlStyle(style, false);
-    options.fillColor = fillColor;
+    options.fillColor = extractColorFromOlStyle(style, false);
     labelStyle = Cesium.LabelStyle.FILL;
   }
   if (style.getStroke()) {
-    var width = extractLineWidthFromOlStyle(style);
-    var outlineColor = extractColorFromOlStyle(style, true);
+    options.outlineWidth = extractLineWidthFromOlStyle(style);
+    options.outlineColor = extractColorFromOlStyle(style, true);
     labelStyle = Cesium.LabelStyle.OUTLINE;
   }
   if (style.getFill() && style.getStroke()) {
@@ -654,6 +655,7 @@ olcs.core.olStyleToCesium = function(style, outline) {
 
   if (outline && stroke.getLineDash()) {
     return Cesium.Material.fromType('Stripe', {
+      // always update Cesium externs before adding a property
       horizontal: false,
       repeat: 500, // TODO how to calculate this?
       evenColor: color,
@@ -661,6 +663,7 @@ olcs.core.olStyleToCesium = function(style, outline) {
     });
   } else {
     return Cesium.Material.fromType('Color', {
+      // always update Cesium externs before adding a property
       color: color
     });
   }
@@ -822,7 +825,7 @@ olcs.core.olVectorLayerToCesium = function(olLayer, olView) {
     if (goog.isDef(primitives)) allPrimitives.add(primitives);
   }
 
- return allPrimitives;
+  return allPrimitives;
 };
 
 })();
