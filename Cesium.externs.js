@@ -4,6 +4,26 @@
  */
 var Cesium = {};
 
+/**
+ * @constructor
+ * @param {number=} opt_r .
+ * @param {number=} opt_g .
+ * @param {number=} opt_b .
+ * @param {number=} opt_a .
+ */
+Cesium.Color = function(opt_r, opt_g, opt_b, opt_a) {};
+
+/**
+ * @param {string} name
+ * @return {!Cesium.Color}
+ */
+Cesium.Color.fromCssColorString = function(name) {};
+
+/**
+ * @param {!Array.<number>} color
+ * @return {!Cesium.Color}
+ */
+Cesium.Color.unpack = function(color) {};
 
 
 /**
@@ -79,12 +99,22 @@ Cesium.VerticalOrigin.BOTTOM;
 
 /**
  * @constructor
+ * @extends {Cesium.Primitive} // as it can be added to PrimitiveCollection...
  */
 Cesium.BillboardCollection = function() {};
 
 
 /**
- * @param {Object=} opt_opts .
+ * @typedef {{
+ *   image: string,
+ *   position: !Cesium.Cartesian3
+ * }}
+ */
+Cesium.optionsBillboardCollectionAdd;
+
+
+/**
+ * @param {Cesium.optionsBillboardCollectionAdd} opt_opts .
  * @return {Cesium.Billboard} .
  */
 Cesium.BillboardCollection.prototype.add = function(opt_opts) {};
@@ -413,7 +443,7 @@ Cesium.CameraEventAggregator.prototype.getButtonReleaseTime = function(type, opt
 /**
  * @return {boolean} .
  */
-Cesium.CameraEventAggregator.prototype.isDestroyed = function() {}
+Cesium.CameraEventAggregator.prototype.isDestroyed = function() {};
 
 
 /**
@@ -755,6 +785,26 @@ Cesium.Polygon.prototype.material;
 
 
 /**
+ * Merge of all values
+ * @typedef {{
+ *   color: (Cesium.Color | undefined),
+ *   horizontal: (boolean | undefined),
+ *   repeat: (number | undefined),
+ *   evenColor: (Cesium.Color | undefined),
+ *   oddColor: (Cesium.Color | undefined)
+ * }}
+ */
+Cesium.optionsMaterialFromTypeAny;
+
+/**
+ * @param {string} type .
+ * @param {Cesium.optionsMaterialFromTypeAny} opt_ .
+ */
+Cesium.Material.fromType = function(type, opt_) {};
+
+
+
+/**
  * @type {boolean} .
  */
 Cesium.Polygon.prototype.show;
@@ -816,25 +866,388 @@ Cesium.Polyline.prototype.material;
  */
 Cesium.Polyline.prototype.width;
 
+/**
+ * @constructor
+ */
+Cesium.Appearance = function() {};
+
+/**
+ * @typedef {{
+ *   geometryInstances: !Cesium.GeometryInstance,
+ *   appearance: !Cesium.Appearance
+ * }}
+ */
+Cesium.optionsPrimitive;
+
+/**
+ * @constructor
+ * @param {Cesium.optionsPrimitive=} opt_opts 
+ */
+Cesium.Primitive = function(opt_opts) {};
+
+/**
+ * @constructor
+ * @extends {Cesium.Primitive}
+ */
+Cesium.LabelCollection = function() {};
+
+/**
+ * @constructor
+ * @struct
+ */
+Cesium.optionsLabelCollection = function() {};
+
+/**
+ * @type {string| undefined}
+ */
+Cesium.optionsLabelCollection.prototype.text;
+
+/**
+ * @type {string| undefined}
+ */
+Cesium.optionsLabelCollection.prototype.font;
+
+/**
+ * @type {Cesium.Cartesian2| undefined}
+ */
+Cesium.optionsLabelCollection.prototype.pixelOffset;
+
+/**
+ * @type {Cesium.Cartesian3 | undefined}
+ */
+Cesium.optionsLabelCollection.prototype.position;
+
+/**
+ * @type {Cesium.Color | undefined}
+ */
+Cesium.optionsLabelCollection.prototype.fillColor;
+
+/**
+ * @type {Cesium.Color | undefined}
+ */
+Cesium.optionsLabelCollection.prototype.outlineColor;
+
+/**
+ * @type {number | undefined}
+ */
+Cesium.optionsLabelCollection.prototype.outlineWidth;
+
+/**
+ * @type {number | undefined}
+ */
+Cesium.optionsLabelCollection.prototype.style;
+
+/**
+ * @type {Cesium.HorizontalOrigin | undefined}
+ */
+Cesium.optionsLabelCollection.prototype.horizontalOrigin;
+
+/**
+ * @type {Cesium.VerticalOrigin | undefined}
+ */
+Cesium.optionsLabelCollection.prototype.verticalOrigin;
+
+
+/**
+ * @param {Cesium.optionsLabelCollection} opt
+ */
+Cesium.LabelCollection.prototype.add = function(opt) {};
+
+/**
+ * @type {Cesium.Matrix4}
+ */
+Cesium.LabelCollection.prototype.modelMatrix;
+
+/**
+ * @constructor
+ */
+Cesium.LabelStyle = function() {};
+
+/**
+ * @type {number}
+ */
+Cesium.LabelStyle.FILL;
+
+/**
+ * @type {number}
+ */
+Cesium.LabelStyle.OUTLINE;
+
+/**
+ * @type {number}
+ */
+Cesium.LabelStyle.FILL_AND_OUTLINE;
+
+/**
+ * @constructor
+ */
+Cesium.Geometry = function() {};
+
+
+/**
+ * @typedef {{
+ * center: !Cesium.Cartesian3,
+ * radius: number
+ * }}
+ */
+Cesium.optionsCircleGeometry;
+
+/**
+ * @constructor
+ * @param {Cesium.optionsCircleGeometry=} opt_opts
+ * @extends {Cesium.Geometry}
+ */
+Cesium.CircleGeometry = function(opt_opts) {};
+
+/**
+ * @typedef {{
+ * center: !Cesium.Cartesian3,
+ * radius: number
+ * }}
+ */
+Cesium.optionsCircleOutlineGeometry;
+
+/**
+ * @constructor
+ * @param {Cesium.optionsCircleOutlineGeometry=} opt_opts
+ * @extends {Cesium.Geometry}
+ */
+Cesium.CircleOutlineGeometry = function(opt_opts) {};
+
 
 
 /**
  * @constructor
  */
+Cesium.ColorGeometryInstanceAttribute = function() {};
+
+
+/**
+ * @param {!Cesium.Color} color
+ * @return {!Cesium.ColorGeometryInstanceAttribute}
+ */
+Cesium.ColorGeometryInstanceAttribute.fromColor = function(color) {};
+
+/**
+ * @constructor
+ * @struct
+ */
+Cesium.optionsGeometryInstance = function() {};
+
+/**
+ * @type {!Cesium.Geometry}
+ */
+Cesium.optionsGeometryInstance.prototype.geometry;
+
+ 
+/**
+ * @constructor
+ * @struct {Cesium.GeometryInstanceAttribute}
+ */
+Cesium.GeometryInstanceAttribute;
+ 
+/**
+ * @type {Cesium.GeometryInstanceAttribute| undefined}
+ */
+Cesium.optionsGeometryInstance.prototype.attributes;
+
+/**
+ * @type {Cesium.Color}
+ */
+Cesium.GeometryInstanceAttribute.prototype.color;
+
+
+
+
+/**
+ * @constructor
+ * @param {Object} object
+ */
+Cesium.GeometryInstance = function(object) {};
+
+
+/**
+ * @constructor
+ */
+Cesium.HorizontalOrigin = function() {};
+
+
+/**
+ * @type {Cesium.HorizontalOrigin}
+ */
+Cesium.HorizontalOrigin.LEFT;
+
+/**
+ * @type {Cesium.HorizontalOrigin}
+ */
+Cesium.HorizontalOrigin.CENTER;
+
+/**
+ * @type {Cesium.HorizontalOrigin}
+ */
+Cesium.HorizontalOrigin.RIGHT;
+
+/**
+ * @typedef {{
+ * enabled: (boolean| undefined)
+ * }}
+ */
+Cesium.optionsDepthTest;
+
+/**
+ * @typedef {{
+ * lineWidth: (number| undefined),
+ * depthTest: (Cesium.optionsDepthTest | undefined)
+ * }}
+ */
+Cesium.optionsRenderState;
+
+/**
+ * @typedef {{
+ * flat: (boolean| undefined),
+ * renderState: (Cesium.optionsRenderState | undefined)
+ * }}
+ */
+Cesium.optionsPerInstanceColorAppearance;
+
+/**
+ * @constructor
+ * @param {Object} object
+ * @extends {Cesium.Appearance}
+ */
+Cesium.PerInstanceColorAppearance = function(object) {};
+
+
+
+/**
+ * @typedef {{
+ * positions: !Array.<Cesium.Cartesian3>,
+ * holes: (Cesium.optionsPolygonHoles | undefined)
+ * }}
+ */
+Cesium.optionsPolygonHoles;
+
+
+/**
+ * @typedef {{
+ * positions: !Array.<Cesium.Cartesian3>,
+ * holes: (Cesium.optionsPolygonHoles | undefined)
+ * }}
+ */
+Cesium.optionsPolygonHierarchy;
+
+
+/**
+ * @typedef {{
+ * width: number,
+ * polygonHierarchy: !Cesium.optionsPolygonHierarchy
+ * }}
+ */
+Cesium.optionsPolygonOutlineGeometry;
+
+
+/**
+ * @typedef {{
+ * positions: !Array.<Cesium.Cartesian3>,
+ * polygonHierarchy: !Cesium.optionsPolygonHierarchy
+ * }}
+ */
+Cesium.optionsPolygonGeometry;
+
+
+
+/**
+ * @constructor
+ * @param {Object=} object
+ * @extends{Cesium.Geometry}
+ */
+Cesium.PolygonGeometry = function(object) {};
+
+
+/**
+ * @typedef {{
+ * positions: !Array.<Cesium.Cartesian3>,
+ * vertexFormat: number
+ * }}
+ */
+Cesium.optionsPolylineGeometry;
+
+
+
+/**
+ * @constructor
+ * @param {Object=} object
+ * @extends{Cesium.Geometry}
+ */
+Cesium.PolygonOutlineGeometry = function(object) {};
+
+
+/**
+ * @typedef {{
+ * positions: !Array.<Cesium.Cartesian3>,
+ * vertexFormat: number
+ * }}
+ */
+Cesium.optionsPolylineGeometry;
+
+
+/**
+ * @constructor
+ * @param {Object=} object
+ * @extends{Cesium.Geometry}
+ */
+Cesium.PolylineGeometry = function(object) {};
+
+
+
+/**
+ * @constructor
+ * @param {{material: Cesium.Material}} object
+ * @extends {Cesium.Appearance}
+ */
+Cesium.PolylineMaterialAppearance = function(object) {};
+
+/**
+ * @type {number}
+ */
+Cesium.PolylineMaterialAppearance.prototype.vertexFormat;
+
+/**
+ * @constructor
+ */
+Cesium.Transforms = function() {};
+
+/**
+ * @param {Cesium.Cartesian3} origin .
+ * @param {Cesium.Ellipsoid=} opt_ellipsoid .
+ * @param {Cesium.Matrix4=} opt_result .
+ * @return {Cesium.Matrix4}
+ */
+Cesium.Transforms.eastNorthUpToFixedFrame = function(origin, opt_ellipsoid, opt_result) {};
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * @constructor
+ * @extends{Cesium.Primitive}
+ */
 Cesium.PrimitiveCollection = function() {};
 
 
 /**
- * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.PrimitiveCollection|Cesium.RectanglePrimitive} poly .
+ * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.Primitive} poly .
  */
 Cesium.PrimitiveCollection.prototype.add = function(poly) {};
 
-
-/**
- * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.PrimitiveCollection|Cesium.RectanglePrimitive} poly .
- * @return {boolean}
- */
-Cesium.PrimitiveCollection.prototype.contains = function(poly) {};
 
 /**
  * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.PrimitiveCollection} poly .
@@ -843,9 +1256,25 @@ Cesium.PrimitiveCollection.prototype.raiseToTop = function(poly) {};
 
 
 /**
- * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.PrimitiveCollection|Cesium.RectanglePrimitive} poly .
+ * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.Primitive} poly .
  */
 Cesium.PrimitiveCollection.prototype.remove = function(poly) {};
+
+/**
+ */
+Cesium.PrimitiveCollection.prototype.destroy = function() {};
+
+
+
+/**
+ */
+Cesium.PrimitiveCollection.prototype.removeAll = function() {};
+
+
+/**
+ * @type {boolean}
+ */
+Cesium.PrimitiveCollection.prototype.destroyPrimitives;
 
 
 /**
@@ -979,6 +1408,11 @@ Cesium.ImageryLayer.prototype.rectangle;
 Cesium.ImageryLayer.prototype.loadImage = function(url) {};
 
 
+/**
+ */
+Cesium.ImageryLayer.prototype.destroy = function() {};
+
+
 
 /**
  * @constructor
@@ -999,7 +1433,7 @@ Cesium.ImageryLayerCollection.prototype.length;
 
 
 /**
- * @param {number} index 
+ * @param {number} index
  * @return {Cesium.ImageryLayer} layer
  */
 Cesium.ImageryLayerCollection.prototype.get = function(index) {};
@@ -1007,7 +1441,7 @@ Cesium.ImageryLayerCollection.prototype.get = function(index) {};
 
 /**
  * @param {Cesium.ImageryLayer} layer
- * @param {number=} opt_index 
+ * @param {number=} opt_index
  */
 Cesium.ImageryLayerCollection.prototype.add = function(layer, opt_index) {};
 
@@ -1122,7 +1556,7 @@ Cesium.ImageryProvider.prototype.credit;
  * @param {number} x The tile X coordinate.
  * @param {number} y The tile Y coordinate.
  * @param {number} level The tile level.
- * @return {Array.<Cesium.Credit>|undefined} 
+ * @return {Array.<Cesium.Credit>|undefined}
  */
 Cesium.ImageryProvider.prototype.getTileCredits = function(x, y, level) {};
 
@@ -1131,7 +1565,7 @@ Cesium.ImageryProvider.prototype.getTileCredits = function(x, y, level) {};
  * @param {number} x The tile X coordinate.
  * @param {number} y The tile Y coordinate.
  * @param {number} level The tile level.
- * @return {Object|undefined} 
+ * @return {Object|undefined}
  */
 Cesium.ImageryProvider.prototype.requestImage = function(x, y, level) {};
 
@@ -1234,7 +1668,7 @@ Cesium.Rectangle.prototype.north;
 /** @type {!Cesium.Rectangle} */
 Cesium.Rectangle.MAX_VALUE;
 
-/** 
+/**
  * @param {number} west
  * @param {number} south
  * @param {number} east
@@ -1256,6 +1690,7 @@ Cesium.RectanglePrimitiveOptions;
 /**
  * @constructor
  * @param {Cesium.RectanglePrimitiveOptions} options .
+ * @extends {Cesium.Primitive}
  */
 Cesium.RectanglePrimitive = function(options) {};
 
@@ -1414,18 +1849,6 @@ Cesium.Matrix4.multiplyByVector = function(matrix, point, opt_result) {};
 Cesium.Matrix4.toArray = function(matrix) {};
 
 
-
-/**
- * @constructor
- * @param {number=} opt_r .
- * @param {number=} opt_g .
- * @param {number=} opt_b .
- * @param {number=} opt_a .
- */
-Cesium.Color = function(opt_r, opt_g, opt_b, opt_a) {};
-
-
-
 /**
  * @constructor
  * @param {{url: (string|undefined),
@@ -1472,6 +1895,12 @@ Cesium.PerspectiveFrustrum.prototype.aspectRatio;
  * @type {number}
  */
 Cesium.PerspectiveFrustrum.prototype.far;
+
+
+/**
+ * @type {number}
+ */
+Cesium.PerspectiveFrustrum.prototype.fovy;
 
 
 /**
@@ -1598,7 +2027,7 @@ Cesium.Scene.prototype.mode;
 
 
 /**
- * @type {Cesium.PrimitiveCollection}
+ * @type {!Cesium.PrimitiveCollection}
  */
 Cesium.Scene.prototype.primitives;
 
@@ -1620,7 +2049,10 @@ Cesium.Scene.prototype.skyBox;
  */
 Cesium.Scene.prototype.skyAtmosphere;
 
-
+/**
+ * @type {number}
+ */
+Cesium.Scene.prototype.maximumAliasedLineWidth;
 
 /**
  * @constructor

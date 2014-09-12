@@ -158,7 +158,7 @@ olcs.Camera.prototype.setCenter = function(center) {
 
 /**
  * Shortcut for ol.View.getCenter().
- * @return {!ol.Coordinate} Same projection as the ol.View.
+ * @return {ol.Coordinate|undefined} Same projection as the ol.View.
  * @api
  */
 olcs.Camera.prototype.getCenter = function() {

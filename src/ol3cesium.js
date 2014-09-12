@@ -5,6 +5,7 @@ goog.require('goog.events');
 
 goog.require('olcs.Camera');
 goog.require('olcs.RasterSynchronizer');
+goog.require('olcs.VectorSynchronizer');
 
 
 
@@ -108,16 +109,21 @@ olcs.OLCesium = function(map, opt_target) {
   this.scene_.skyAtmosphere = new Cesium.SkyAtmosphere();
 
   var olLayers = this.map_.getLayers();
+  // FIXME: ol3 should always return a collection.
+  // and prevent changing the reference in map.
+  goog.asserts.assert(goog.isDefAndNotNull(olLayers));
+
   /**
    * @type {?olcs.RasterSynchronizer}
    * @private
    */
-  this.rasterSynchronizer_ = goog.isDefAndNotNull(olLayers) ?
-      new olcs.RasterSynchronizer(this.map_.getView(), olLayers,
-                                  this.scene_.imageryLayers) : null;
+  this.rasterSynchronizer_ = new olcs.RasterSynchronizer(
+        this.map_.getView(), olLayers, this.scene_.imageryLayers);
   this.rasterSynchronizer_.synchronize();
 
-  //TODO: handle change of layer group
+  this.vectorSynchronizer_ = new olcs.VectorSynchronizer(this.map_,
+      this.scene_);
+  this.vectorSynchronizer_.synchronize();
 
   if (this.isOverMap_) {
     // if in "stacked mode", hide everything except canvas (including credits)

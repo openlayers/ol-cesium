@@ -8,7 +8,6 @@ var closure = require('closure-util');
 var fse = require('fs-extra');
 var fs = require('graceful-fs');
 var nomnom = require('nomnom');
-var temp = require('temp').track();
 var exec = require('child_process').exec;
 
 var generateExports = require('./generate-exports');
@@ -76,31 +75,20 @@ function readConfig(configPath, callback) {
 
 
 /**
- * Write the exports code to a temporary file.
+ * Write the exports code to dist/exports.js.
  * @param {string} exports Exports code.
  * @param {function(Error, string)} callback Called with the path to the temp
  *     file (or any error).
  */
 function writeExports(exports, callback) {
-  temp.open({prefix: 'exports', suffix: '.js'}, function(err, info) {
+  var path = 'dist/exports.js';
+  log.verbose('build', 'Writing exports: to ' + path);
+  fs.writeFile(path, exports, function(err) {
     if (err) {
       callback(err);
-      return;
+    } else {
+      callback(null, path)
     }
-    log.verbose('build', 'Writing exports: ' + info.path);
-    fs.writeFile(info.path, exports, function(err) {
-      if (err) {
-        callback(err);
-        return;
-      }
-      fs.close(info.fd, function(err) {
-        if (err) {
-          callback(err);
-          return;
-        }
-        callback(null, info.path);
-      });
-    });
   });
 }
 
