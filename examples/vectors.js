@@ -7,12 +7,16 @@ var iconFeature = new ol.Feature({
 
 var iconStyle = new ol.style.Style({
     image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
-          anchor: [0.5, 46],
-          anchorXUnits: 'fraction',
-          anchorYUnits: 'pixels',
-          opacity: 0.75,
-          src: 'data/icon.png'
-        }))
+      anchor: [0.5, 46],
+      anchorXUnits: 'fraction',
+      anchorYUnits: 'pixels',
+      opacity: 0.75,
+      src: 'data/icon.png'
+    })),
+    text: new ol.style.Text({
+      text: 'Icon',
+      font: 'italic'
+    })
 });
 
 iconFeature.setStyle(iconStyle);
@@ -63,7 +67,16 @@ var styles = {
       color: 'rgba(0, 0, 255, 0.1)'
     }),
     text: new ol.style.Text({
-      text: 'Some text'
+      text: 'Some text',
+      textAlign: 'center',
+      textBaseline: 'middle',
+      stroke: new ol.style.Stroke({
+        color: 'magenta',
+        width: 4
+      }),
+      fill: new ol.style.Fill({
+        color: 'rgba(0, 0, 155, 0.3)'
+      })
     })
   })],
   'GeometryCollection': [new ol.style.Style({

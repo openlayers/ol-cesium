@@ -1,3 +1,4 @@
+'use strict';
 goog.provide('olcs.core');
 
 goog.require('goog.array');
@@ -5,7 +6,7 @@ goog.require('goog.asserts');
 goog.require('olcs.core.OLImageryProvider');
 
 /**
- * @type {!number}
+ * @type {number}
  * @api
  */
 olcs.core.GL_ALIASED_LINE_WIDTH_RANGE;
@@ -226,12 +227,22 @@ var createColoredPrimitive = function(geometry, color, opt_lineWidth) {
   };
 
   var options = {
-    flat: true // work with all geometries
+    flat: true, // work with all geometries
+    // prevent rendering through globe? Does not work as expected.
+    // May be due to the (manual) way scene is created? See sandcastle:
+    // http://cesiumjs.org/Cesium/Apps/Sandcastle/index.html?src=Simple%20Polyline.html&label=Showcases
+    renderState: {
+      depthTest: {
+        enabled: true
+      }
+    }
   };
+
   if (goog.isDef(opt_lineWidth)) {
-    options.renderState = {
-      lineWidth: opt_lineWidth
-    };
+    if (!options.renderState) {
+      options.renderState = {};
+    }
+    options.renderState.lineWidth = opt_lineWidth;
   }
   var appearance = new Cesium.PerInstanceColorAppearance(options);
 
@@ -485,7 +496,6 @@ olcs.core.olGeometry4326TextPartToCesium = function(geometry, style) {
   var text = style.getText();
   goog.asserts.assert(goog.isDef(text));
 
-  var color = extractColorFromOlStyle(style, false);
 
   var primitives = new Cesium.LabelCollection();
   // TODO: export and use the text draw position from ol3 .
@@ -493,16 +503,87 @@ olcs.core.olGeometry4326TextPartToCesium = function(geometry, style) {
   var position = olcs.core.ol4326CoordinateToCesiumCartesian(
       ol.extent.getCenter(geometry.getExtent()));
 
-  // TODO: handle the other parameters of ol.style.Text
   primitives.modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(position);
-  primitives.add({
+  var options = {
     positions: Cesium.Cartesian3.ZERO,
-    horizontalOrigin: Cesium.HorizontalOrigin.CENTER,
-    verticalOrigin: Cesium.VerticalOrigin.CENTER,
-    fillColor: color,
+    style: labelStyle,
+    fillColor: fillColor,
+    outlineColor: outlineColor,
+    outlineWidth: width,
 //    scaleByDistance: new Cesium.NearFarScalar(1.5e2, 2.0, 1.5e7, 0.5),
     text: text
-  });
+  };
+
+  if (style.getOffsetX() != 0 && style.getOffsetY() != 0) {
+    var offset = new Cesium.Cartesian2(style.getOffsetX(), style.getOffsetY());
+    options.pixelOffset = offset;
+  }
+
+  var font = style.getFont();
+  if (goog.isDefAndNotNull(font)) {
+    options.font = font;
+  }
+
+  var labelStyle = undefined;
+  if (style.getFill()) {
+    var fillColor = extractColorFromOlStyle(style, false);
+    options.fillColor = fillColor;
+    labelStyle = Cesium.LabelStyle.FILL;
+  }
+  if (style.getStroke()) {
+    var width = extractLineWidthFromOlStyle(style);
+    var outlineColor = extractColorFromOlStyle(style, true);
+    labelStyle = Cesium.LabelStyle.OUTLINE;
+  }
+  if (style.getFill() && style.getStroke()) {
+    labelStyle = Cesium.LabelStyle.FILL_AND_OUTLINE;
+  }
+  options.style = labelStyle;
+
+  if (style.getTextAlign()) {
+    var horizontalOrigin;
+    switch (style.getTextAlign()) {
+      case 'center':
+        horizontalOrigin = Cesium.HorizontalOrigin.CENTER;
+        break;
+      case 'left':
+        horizontalOrigin = Cesium.HorizontalOrigin.LEFT;
+        break;
+      case 'right':
+        horizontalOrigin = Cesium.HorizontalOrigin.RIGHT;
+        break;
+      default:
+        throw 'unhandled text align ' + style.getTextAlign();
+    }
+    options.horizontalOrigin = horizontalOrigin;
+  }
+
+  if (style.getTextBaseline()) {
+    var verticalOrigin;
+    switch (style.getTextBaseline()) {
+      case 'top':
+        verticalOrigin = Cesium.VerticalOrigin.TOP;
+        break;
+      case 'middle':
+        verticalOrigin = Cesium.VerticalOrigin.CENTER;
+        break;
+      case 'bottom':
+        verticalOrigin = Cesium.VerticalOrigin.BOTTOM;
+        break;
+      case 'alphabetic':
+        verticalOrigin = Cesium.VerticalOrigin.TOP;
+        break;
+      case 'hanging':
+        verticalOrigin = Cesium.VerticalOrigin.BOTTOM;
+        break;
+      default:
+        throw 'unhandled text baseline ' + style.getTextBaseline();
+    }
+    options.verticalOrigin = verticalOrigin;
+  }
+
+
+  primitives.add(options);
   return primitives;
 };
 
@@ -613,7 +694,7 @@ var extractColorFromOlStyle = function(style, outline) {
  * Return the width of stroke from a plain ol style.
  * Use GL aliased line width range constraint.
  * @param {!ol.style.Style|ol.style.Text} style
- * @return {!number}
+ * @return {number}
  * @api
  */
 var extractLineWidthFromOlStyle = function(style) {
@@ -625,31 +706,32 @@ var extractLineWidthFromOlStyle = function(style) {
  * Compute OpenLayers plain style.
  * Evaluates style function, blend arrays, get default style.
  * @param {!ol.Feature} feature
- * @param {ol.style.Style | Array.<ol.style.Style> | ol.style.StyleFunction | undefined} style
+ * @param {ol.style.StyleFunction|undefined} fallbackStyle
  * @param {number=} resolution
- * @return {ol.style.Style}
+ * @return {ol.style.Style} null if no style is available
  * @api
  */
-olcs.core.computePlainStyle = function(feature, style, resolution) {
-  goog.asserts.assert(goog.isDef(feature));
-  if (!goog.isDef(style)) style = feature.getStyle();
+olcs.core.computePlainStyle = function(feature, fallbackStyle, resolution) {
+  var featureStyle = feature.getStyleFunction();
+  var style;
+  if (goog.isDef(featureStyle)) {
+    style = featureStyle(resolution);
+  }
+  if (!goog.isDefAndNotNull(style) && goog.isDefAndNotNull(fallbackStyle)) {
+    style = fallbackStyle(feature, resolution);
+  }
 
   if (!goog.isDef(style)) {
-    throw 'Export an accessor for ol3 default style'; // FIXME
-  } else if (goog.isFunction(style)) {
-    var styles = style(feature, resolution);
-    // recurse to handle arrays
-    return olcs.core.computePlainStyle(feature, styles, resolution);
-  } else if (goog.isArray(style)) {
-    // FIXME combine materials as in cesium-materials-pack?
-    // then this function must return a custom material
-    // More simply, could blend the colors like described in
-    // http://en.wikipedia.org/wiki/Alpha_compositing
-    return style[0];
-  } else {
-    goog.asserts.assert(style instanceof ol.style.Style);
-    return style;
+    // The feature must not be displayed
+    return null;
   }
+
+  goog.asserts.assert(goog.isArray(style));
+  // FIXME combine materials as in cesium-materials-pack?
+  // then this function must return a custom material
+  // More simply, could blend the colors like described in
+  // http://en.wikipedia.org/wiki/Alpha_compositing
+  return style[0];
 };
 
 
@@ -726,14 +808,18 @@ olcs.core.olVectorLayerToCesium = function(olLayer, olView) {
     return allPrimitives;
   }
   proj = /** @type {!ol.proj.Projection} */ (proj);
-  resolution = /** @type {!number} */ (resolution);
+  resolution = (resolution);
   for (var i = 0; i < features.length; ++i) {
     var feature = features[i];
     if (!goog.isDefAndNotNull(feature)) {
       continue;
     }
-    var layerStyle = vectorLayer.getStyle();
+    var layerStyle = vectorLayer.getStyleFunction();
     layerStyle = olcs.core.computePlainStyle(feature, layerStyle, resolution);
+    if (!layerStyle) {
+      // only 'render' features with a style
+      continue;
+    }
     var primitives = olcs.core.olFeatureToCesium(feature, layerStyle, proj);
     if (goog.isDef(primitives)) allPrimitives.add(primitives);
   }
