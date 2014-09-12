@@ -861,6 +861,26 @@ Cesium.LabelCollection = function() {};
 /**
  * @constructor
  */
+Cesium.LabelStyle = function() {};
+
+/**
+ * @type {number}
+ */
+Cesium.LabelStyle.FILL;
+
+/**
+ * @type {number}
+ */
+Cesium.LabelStyle.OUTLINE;
+
+/**
+ * @type {number}
+ */
+Cesium.LabelStyle.FILL_AND_OUTLINE;
+
+/**
+ * @constructor
+ */
 Cesium.Geometry = function() {};
 
 /**
@@ -908,7 +928,17 @@ Cesium.HorizontalOrigin = function() {};
 /**
  * @type {number}
  */
+Cesium.HorizontalOrigin.LEFT;
+
+/**
+ * @type {number}
+ */
 Cesium.HorizontalOrigin.CENTER;
+
+/**
+ * @type {number}
+ */
+Cesium.HorizontalOrigin.RIGHT;
 
 
 
@@ -1794,7 +1824,7 @@ Cesium.Scene.prototype.skyBox;
 Cesium.Scene.prototype.skyAtmosphere;
 
 /**
- * @type {!number}
+ * @type {number}
  */
 Cesium.Scene.prototype.maximumAliasedLineWidth;
 
