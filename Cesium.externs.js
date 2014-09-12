@@ -4,7 +4,6 @@
  */
 var Cesium = {};
 
-
 /**
  * @constructor
  * @param {number=} opt_r .
@@ -15,7 +14,7 @@ var Cesium = {};
 Cesium.Color = function(opt_r, opt_g, opt_b, opt_a) {};
 
 /**
- * @param {!string} name
+ * @param {string} name
  * @return {!Cesium.Color}
  */
 Cesium.Color.fromCssColorString = function(name) {};
@@ -106,7 +105,16 @@ Cesium.BillboardCollection = function() {};
 
 
 /**
- * @param {Object=} opt_opts .
+ * @typedef {{
+ *   image: string,
+ *   position: !Cesium.Cartesian3
+ * }}
+ */
+Cesium.optionsBillboardCollectionAdd;
+
+
+/**
+ * @param {Cesium.optionsBillboardCollectionAdd} opt_opts .
  * @return {Cesium.Billboard} .
  */
 Cesium.BillboardCollection.prototype.add = function(opt_opts) {};
@@ -775,9 +783,22 @@ Cesium.Polygon.prototype.positions;
  */
 Cesium.Polygon.prototype.material;
 
+
 /**
- * @param {!string} type .
- * @param {Object=} opt_ .
+ * Merge of all values
+ * @typedef {{
+ *   color: (Cesium.Color | undefined),
+ *   horizontal: (boolean | undefined),
+ *   repeat: (number | undefined),
+ *   evenColor: (Cesium.Color | undefined),
+ *   oddColor: (Cesium.Color | undefined)
+ * }}
+ */
+Cesium.optionsMaterialFromTypeAny;
+
+/**
+ * @param {string} type .
+ * @param {Cesium.optionsMaterialFromTypeAny} opt_ .
  */
 Cesium.Material.fromType = function(type, opt_) {};
 
@@ -845,10 +866,22 @@ Cesium.Polyline.prototype.material;
  */
 Cesium.Polyline.prototype.width;
 
+/**
+ * @constructor
+ */
+Cesium.Appearance = function() {};
+
+/**
+ * @typedef {{
+ *   geometryInstances: !Cesium.GeometryInstance,
+ *   appearance: !Cesium.Appearance
+ * }}
+ */
+Cesium.optionsPrimitive;
 
 /**
  * @constructor
- * @param {Object=} opt_opts 
+ * @param {Cesium.optionsPrimitive=} opt_opts 
  */
 Cesium.Primitive = function(opt_opts) {};
 
@@ -857,6 +890,73 @@ Cesium.Primitive = function(opt_opts) {};
  * @extends {Cesium.Primitive}
  */
 Cesium.LabelCollection = function() {};
+
+/**
+ * @constructor
+ * @struct
+ */
+Cesium.optionsLabelCollection = function() {};
+
+/**
+ * @type {string| undefined}
+ */
+Cesium.optionsLabelCollection.prototype.text;
+
+/**
+ * @type {string| undefined}
+ */
+Cesium.optionsLabelCollection.prototype.font;
+
+/**
+ * @type {Cesium.Cartesian2| undefined}
+ */
+Cesium.optionsLabelCollection.prototype.pixelOffset;
+
+/**
+ * @type {Cesium.Cartesian3 | undefined}
+ */
+Cesium.optionsLabelCollection.prototype.position;
+
+/**
+ * @type {Cesium.Color | undefined}
+ */
+Cesium.optionsLabelCollection.prototype.fillColor;
+
+/**
+ * @type {Cesium.Color | undefined}
+ */
+Cesium.optionsLabelCollection.prototype.outlineColor;
+
+/**
+ * @type {number | undefined}
+ */
+Cesium.optionsLabelCollection.prototype.outlineWidth;
+
+/**
+ * @type {number | undefined}
+ */
+Cesium.optionsLabelCollection.prototype.style;
+
+/**
+ * @type {Cesium.HorizontalOrigin | undefined}
+ */
+Cesium.optionsLabelCollection.prototype.horizontalOrigin;
+
+/**
+ * @type {Cesium.VerticalOrigin | undefined}
+ */
+Cesium.optionsLabelCollection.prototype.verticalOrigin;
+
+
+/**
+ * @param {Cesium.optionsLabelCollection} opt
+ */
+Cesium.LabelCollection.prototype.add = function(opt) {};
+
+/**
+ * @type {Cesium.Matrix4}
+ */
+Cesium.LabelCollection.prototype.modelMatrix;
 
 /**
  * @constructor
@@ -883,16 +983,33 @@ Cesium.LabelStyle.FILL_AND_OUTLINE;
  */
 Cesium.Geometry = function() {};
 
+
+/**
+ * @typedef {{
+ * center: !Cesium.Cartesian3,
+ * radius: number
+ * }}
+ */
+Cesium.optionsCircleGeometry;
+
 /**
  * @constructor
- * @param {Object=} opt_opts
+ * @param {Cesium.optionsCircleGeometry=} opt_opts
  * @extends {Cesium.Geometry}
  */
 Cesium.CircleGeometry = function(opt_opts) {};
 
 /**
+ * @typedef {{
+ * center: !Cesium.Cartesian3,
+ * radius: number
+ * }}
+ */
+Cesium.optionsCircleOutlineGeometry;
+
+/**
  * @constructor
- * @param {Object=} opt_opts
+ * @param {Cesium.optionsCircleOutlineGeometry=} opt_opts
  * @extends {Cesium.Geometry}
  */
 Cesium.CircleOutlineGeometry = function(opt_opts) {};
@@ -911,6 +1028,36 @@ Cesium.ColorGeometryInstanceAttribute = function() {};
  */
 Cesium.ColorGeometryInstanceAttribute.fromColor = function(color) {};
 
+/**
+ * @constructor
+ * @struct
+ */
+Cesium.optionsGeometryInstance = function() {};
+
+/**
+ * @type {!Cesium.Geometry}
+ */
+Cesium.optionsGeometryInstance.prototype.geometry;
+
+ 
+/**
+ * @constructor
+ * @struct {Cesium.GeometryInstanceAttribute}
+ */
+Cesium.GeometryInstanceAttribute;
+ 
+/**
+ * @type {Cesium.GeometryInstanceAttribute| undefined}
+ */
+Cesium.optionsGeometryInstance.prototype.attributes;
+
+/**
+ * @type {Cesium.Color}
+ */
+Cesium.GeometryInstanceAttribute.prototype.color;
+
+
+
 
 /**
  * @constructor
@@ -926,27 +1073,86 @@ Cesium.HorizontalOrigin = function() {};
 
 
 /**
- * @type {number}
+ * @type {Cesium.HorizontalOrigin}
  */
 Cesium.HorizontalOrigin.LEFT;
 
 /**
- * @type {number}
+ * @type {Cesium.HorizontalOrigin}
  */
 Cesium.HorizontalOrigin.CENTER;
 
 /**
- * @type {number}
+ * @type {Cesium.HorizontalOrigin}
  */
 Cesium.HorizontalOrigin.RIGHT;
 
+/**
+ * @typedef {{
+ * enabled: (boolean| undefined)
+ * }}
+ */
+Cesium.optionsDepthTest;
 
+/**
+ * @typedef {{
+ * lineWidth: (number| undefined),
+ * depthTest: (Cesium.optionsDepthTest | undefined)
+ * }}
+ */
+Cesium.optionsRenderState;
+
+/**
+ * @typedef {{
+ * flat: (boolean| undefined),
+ * renderState: (Cesium.optionsRenderState | undefined)
+ * }}
+ */
+Cesium.optionsPerInstanceColorAppearance;
 
 /**
  * @constructor
  * @param {Object} object
+ * @extends {Cesium.Appearance}
  */
 Cesium.PerInstanceColorAppearance = function(object) {};
+
+
+
+/**
+ * @typedef {{
+ * positions: !Array.<Cesium.Cartesian3>,
+ * holes: (Cesium.optionsPolygonHoles | undefined)
+ * }}
+ */
+Cesium.optionsPolygonHoles;
+
+
+/**
+ * @typedef {{
+ * positions: !Array.<Cesium.Cartesian3>,
+ * holes: (Cesium.optionsPolygonHoles | undefined)
+ * }}
+ */
+Cesium.optionsPolygonHierarchy;
+
+
+/**
+ * @typedef {{
+ * width: number,
+ * polygonHierarchy: !Cesium.optionsPolygonHierarchy
+ * }}
+ */
+Cesium.optionsPolygonOutlineGeometry;
+
+
+/**
+ * @typedef {{
+ * positions: !Array.<Cesium.Cartesian3>,
+ * polygonHierarchy: !Cesium.optionsPolygonHierarchy
+ * }}
+ */
+Cesium.optionsPolygonGeometry;
 
 
 
@@ -958,6 +1164,15 @@ Cesium.PerInstanceColorAppearance = function(object) {};
 Cesium.PolygonGeometry = function(object) {};
 
 
+/**
+ * @typedef {{
+ * positions: !Array.<Cesium.Cartesian3>,
+ * vertexFormat: number
+ * }}
+ */
+Cesium.optionsPolylineGeometry;
+
+
 
 /**
  * @constructor
@@ -965,6 +1180,16 @@ Cesium.PolygonGeometry = function(object) {};
  * @extends{Cesium.Geometry}
  */
 Cesium.PolygonOutlineGeometry = function(object) {};
+
+
+/**
+ * @typedef {{
+ * positions: !Array.<Cesium.Cartesian3>,
+ * vertexFormat: number
+ * }}
+ */
+Cesium.optionsPolylineGeometry;
+
 
 /**
  * @constructor
@@ -977,7 +1202,8 @@ Cesium.PolylineGeometry = function(object) {};
 
 /**
  * @constructor
- * @param {Object=} object
+ * @param {{material: Cesium.Material}} object
+ * @extends {Cesium.Appearance}
  */
 Cesium.PolylineMaterialAppearance = function(object) {};
 
