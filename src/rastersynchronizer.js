@@ -75,7 +75,6 @@ olcs.RasterSynchronizer.prototype.synchronize = function() {
     // no mapping -> create new layer and set up synchronization
     if (!goog.isDef(cesiumLayer)) {
       cesiumLayer = olcs.core.tileLayerToImageryLayer(olLayer, viewProj);
-      olcs.core.updateCesiumLayerProperties(olLayer, cesiumLayer);
       if (!goog.isNull(cesiumLayer)) {
         goog.events.listen(olLayer,
             ['change:brightness', 'change:contrast', 'change:hue',
@@ -83,6 +82,7 @@ olcs.RasterSynchronizer.prototype.synchronize = function() {
             function(e) {
               olcs.core.updateCesiumLayerProperties(olLayer, cesiumLayer);
             });
+        olcs.core.updateCesiumLayerProperties(olLayer, cesiumLayer);
 
         // there is no way to modify Cesium layer extent,
         // we have to recreate when ol3 layer extent changes:
