@@ -176,7 +176,7 @@ olcs.core.ol4326CoordinateToCesiumCartesian = function(coordinate) {
  * @return {!Array.<Cesium.Cartesian3>} Cesium cartesian coordinates
  * @api
  */
-olcs.core.ol4326CoordinateArrayToCesiumCartesians = function(coordinates) {
+olcs.core.ol4326CoordinateArrayToCsCartesians = function(coordinates) {
   goog.asserts.assert(coordinates !== null);
   var toCartesian = olcs.core.ol4326CoordinateToCesiumCartesian;
   var cartesians = [];
@@ -343,7 +343,7 @@ olcs.core.olLineStringGeometryToCesium = function(olGeometry, projection,
   olGeometry = olGeometryCloneTo4326(olGeometry, projection);
   goog.asserts.assert(olGeometry.getType() == 'LineString');
 
-  var positions = olcs.core.ol4326CoordinateArrayToCesiumCartesians(
+  var positions = olcs.core.ol4326CoordinateArrayToCsCartesians(
       olGeometry.getCoordinates());
 
   var appearance = new Cesium.PolylineMaterialAppearance({
@@ -387,23 +387,27 @@ olcs.core.olPolygonGeometryToCesium = function(olGeometry, projection,
   var rings = olGeometry.getLinearRings();
   // always update Cesium externs before adding a property
   var hierarchy = {};
+  var polygonHierarchy = hierarchy;
+  goog.asserts.assert(rings.length > 0);
+
   for (var i = 0; i < rings.length; ++i) {
-    var positions = olcs.core.ol4326CoordinateArrayToCesiumCartesians(
-        rings[i].getCoordinates());
+    var olPositions = rings[i].getCoordinates();
+    var positions = olcs.core.ol4326CoordinateArrayToCsCartesians(olPositions);
+    goog.asserts.assert(positions && positions.length > 0);
     if (i == 0) {
       hierarchy.positions = positions;
     } else {
-      if (goog.isDef(hierarchy.holes)) {
-        hierarchy.holes.push(positions);
-      } else {
-        hierarchy.holes = [positions];
-      }
+      hierarchy.holes = {
+        // always update Cesium externs before adding a property
+        positions: positions
+      };
+      hierarchy = hierarchy.holes;
     }
   }
 
   var fillGeometry = new Cesium.PolygonGeometry({
     // always update Cesium externs before adding a property
-    polygonHierarchy: hierarchy
+    polygonHierarchy: polygonHierarchy
   });
 
   var width = extractLineWidthFromOlStyle(olStyle);
