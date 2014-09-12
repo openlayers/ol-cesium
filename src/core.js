@@ -4,6 +4,13 @@ goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('olcs.core.OLImageryProvider');
 
+/**
+ * @type {!number}
+ * @api
+ */
+olcs.core.GL_ALIASED_LINE_WIDTH_RANGE;
+//goog.exportProperty();
+
 
 /**
  * Rotate the camera so that its direction goes through the target point.
@@ -20,13 +27,13 @@ olcs.core.lookAt = function(camera, target, opt_globe) {
   }
 
   var ellipsoid = Cesium.Ellipsoid.WGS84;
-  target = ellipsoid.cartographicToCartesian(target);
+  var targetb = ellipsoid.cartographicToCartesian(target);
 
   var position = camera.position;
   var up = new Cesium.Cartesian3();
   ellipsoid.geocentricSurfaceNormal(position, up);
 
-  camera.lookAt(position, target, up);
+  camera.lookAt(position, targetb, up);
 };
 
 
@@ -150,11 +157,12 @@ olcs.core.updateCesiumLayerProperties = function(olLayer, csLayer) {
 
 /**
  * Convert a 2D or 3D OpenLayers coordinate to Cesium.
- * @param {!ol.coordinate} coordinate Ol3 coordinate
- * @return {Cesium.Cartesian3} Cesium cartesian coordinate
- * @api convenience
+ * @param {ol.Coordinate} coordinate Ol3 coordinate.
+ * @return {!Cesium.Cartesian3} Cesium cartesian coordinate
+ * @api
  */
 olcs.core.ol4326CoordinateToCesiumCartesian = function(coordinate) {
+  goog.asserts.assert(coordinate !== null);
   return coordinate.length > 2 ?
     Cesium.Cartesian3.fromDegrees(coordinate[0], coordinate[1], coordinate[2]) :
     Cesium.Cartesian3.fromDegrees(coordinate[0], coordinate[1]);
@@ -163,11 +171,12 @@ olcs.core.ol4326CoordinateToCesiumCartesian = function(coordinate) {
 
 /**
  * Convert an array of 2D or 3D OpenLayers coordinates to Cesium.
- * @param {!Array.<ol.Coordinate>} coordinates Ol3 coordinates
- * @return {Array.<Cesium.Cartesian3>} Cesium cartesian coordinates
- * @api convenience
+ * @param {Array.<!ol.Coordinate>} coordinates Ol3 coordinates.
+ * @return {!Array.<Cesium.Cartesian3>} Cesium cartesian coordinates
+ * @api
  */
 olcs.core.ol4326CoordinateArrayToCesiumCartesians = function(coordinates) {
+  goog.asserts.assert(coordinates !== null);
   var toCartesian = olcs.core.ol4326CoordinateToCesiumCartesian;
   var cartesians = [];
   for (var i = 0; i < coordinates.length; ++i) {
@@ -178,20 +187,21 @@ olcs.core.ol4326CoordinateArrayToCesiumCartesians = function(coordinates) {
 
 
 /**
- * Convert an Ol3 geometry to 4326 projection.
- * The geometry will be clone only when reprojection is required.
- * @param {!ol.geom.Geometry} geometry
+ * Convert an OpenLayers geometry to 4326 projection.
+ * The geometry will be cloned only when reprojection is required.
+ * @param {!T} geometry
  * @param {!ol.proj.ProjectionLike} projection
- * @return {ol.geom.Geometry}
+ * @return {!T}
+ * @template T
  */
 var olGeometryCloneTo4326 = function(geometry, projection) {
   goog.asserts.assert(goog.isDef(projection));
 
   var proj4326 = ol.proj.get('EPSG:4326');
-  projection = ol.proj.get(projection);
-  if (projection !== proj4326) {
+  var proj = ol.proj.get(projection);
+  if (proj !== proj4326) {
     geometry = geometry.clone();
-    geometry.transform(projection, proj4326);
+    geometry.transform(proj, proj4326);
   }
   return geometry;
 };
@@ -199,11 +209,13 @@ var olGeometryCloneTo4326 = function(geometry, projection) {
 
 /**
  * Basics primitive creation using a color attribute.
- * @param {!ol.geom.Geometry} geometry
+ * Note that Cesium has 'interior' and outline geometries.
+ * @param {!Cesium.Geometry} geometry
  * @param {!Cesium.Color} color
- * @return {Cesium.Primitive}
+ * @param {number=} opt_lineWidth
+ * @return {!Cesium.Primitive}
  */
-var createColoredPrimitive = function(geometry, color) {
+var createColoredPrimitive = function(geometry, color, opt_lineWidth) {
   var createInstance = function(geometry, color) {
     return new Cesium.GeometryInstance({
       geometry: geometry,
@@ -213,19 +225,17 @@ var createColoredPrimitive = function(geometry, color) {
     });
   };
 
-  var appearance = new Cesium.PerInstanceColorAppearance({
+  var options = {
     flat: true // work with all geometries
-  });
-
-  var instances = [];
-  if (goog.isArray(geometry)) {
-    geometry.forEach(function(geometry) {
-      var instance = createInstance(geometry, color);
-      instances.push(instance);
-    });
-  } else {
-    instances = createInstance(geometry, color);
+  };
+  if (goog.isDef(opt_lineWidth)) {
+    options.renderState = {
+      lineWidth: opt_lineWidth
+    };
   }
+  var appearance = new Cesium.PerInstanceColorAppearance(options);
+
+  var instances = createInstance(geometry, color);
 
   var primitive = new Cesium.Primitive({
     geometryInstances: instances,
@@ -238,11 +248,11 @@ var createColoredPrimitive = function(geometry, color) {
 
 /**
  * Create a primitive collection out of two Cesium geometries.
- * Only the ol3 style colors will be used.
+ * Only the OpenLayers style colors will be used.
  * @param {!Cesium.Geometry} fillGeometry
  * @param {!Cesium.Geometry} outlineGeometry
  * @param {!ol.style.Style} olStyle
- * @return {Cesium.PrimitiveCollection}
+ * @return {!Cesium.PrimitiveCollection}
  */
 var wrapFillAndOutlineGeometries = function(fillGeometry, outlineGeometry,
     olStyle) {
@@ -250,7 +260,9 @@ var wrapFillAndOutlineGeometries = function(fillGeometry, outlineGeometry,
   var fillPrimitive = createColoredPrimitive(fillGeometry, fillColor);
 
   var outlineColor = extractColorFromOlStyle(olStyle, true);
-  var outlinePrimitive = createColoredPrimitive(outlineGeometry, outlineColor);
+  var width = extractLineWidthFromOlStyle(olStyle);
+  var outlinePrimitive = createColoredPrimitive(outlineGeometry, outlineColor,
+      width);
 
   var primitives = new Cesium.PrimitiveCollection();
   primitives.add(fillPrimitive);
@@ -265,18 +277,20 @@ var wrapFillAndOutlineGeometries = function(fillGeometry, outlineGeometry,
 
 /**
  * Convert an OpenLayers circle geometry to Cesium.
- * @param {!ol.geom.geometry} olGeometry Ol3 circle geometry
- * @param {!ol.projectionLike} projection
- * @param {!ol.style} olStyle
- * @return {Cesium.Geometry|Array.<Cesium.Geometry>} geometries
+ * @param {!ol.geom.Circle} olGeometry Ol3 circle geometry.
+ * @param {!ol.proj.ProjectionLike} projection
+ * @param {!ol.style.Style} olStyle
+ * @return {!Cesium.PrimitiveCollection} primitives
+ * @api
  */
 olcs.core.olCircleGeometryToCesium = function(olGeometry, projection, olStyle) {
   olGeometry = olGeometryCloneTo4326(olGeometry, projection);
   goog.asserts.assert(olGeometry.getType() == 'Circle');
 
-  // ol.coordinate
+  // ol.Coordinate
   var center = olGeometry.getCenter();
-  var point = center.slice(); point[0] += olGeometry.getRadius();
+  var point = center.slice();
+  point[0] += olGeometry.getRadius();
 
   // Cesium
   center = olcs.core.ol4326CoordinateToCesiumCartesian(center);
@@ -304,10 +318,11 @@ olcs.core.olCircleGeometryToCesium = function(olGeometry, projection, olStyle) {
 
 /**
  * Convert an OpenLayers line string geometry to Cesium.
- * @param {!ol.geom.geometry} olGeometry Ol3 line string geometry
- * @param {!ol.projectionLike} projection
- * @param {!ol.style} olStyle
- * @return {Cesium.Geometry|Array.<Cesium.Geometry>} geometries
+ * @param {!ol.geom.LineString} olGeometry Ol3 line string geometry.
+ * @param {!ol.proj.ProjectionLike} projection
+ * @param {!ol.style.Style} olStyle
+ * @return {!Cesium.PrimitiveCollection} primitives
+ * @api
  */
 olcs.core.olLineStringGeometryToCesium = function(olGeometry, projection,
     olStyle) {
@@ -315,8 +330,8 @@ olcs.core.olLineStringGeometryToCesium = function(olGeometry, projection,
   olGeometry = olGeometryCloneTo4326(olGeometry, projection);
   goog.asserts.assert(olGeometry.getType() == 'LineString');
 
-  var positions = olGeometry.getCoordinates();
-  positions = olcs.core.ol4326CoordinateArrayToCesiumCartesians(positions);
+  var positions = olcs.core.ol4326CoordinateArrayToCesiumCartesians(
+      olGeometry.getCoordinates());
 
   var appearance = new Cesium.PolylineMaterialAppearance({
     material: olcs.core.olStyleToCesium(olStyle, true)
@@ -341,10 +356,11 @@ olcs.core.olLineStringGeometryToCesium = function(olGeometry, projection,
 
 /**
  * Convert an OpenLayers polygon geometry to Cesium.
- * @param {!ol.geom.Polygon} olGeometry Ol3 polygon geometry
- * @param {!ol.projectionLike} projection
- * @param {!ol.style} olStyle
- * @return {Cesium.Geometry|Array.<Cesium.Geometry>} geometries
+ * @param {!ol.geom.Polygon} olGeometry Ol3 polygon geometry.
+ * @param {!ol.proj.ProjectionLike} projection
+ * @param {!ol.style.Style} olStyle
+ * @return {!Cesium.PrimitiveCollection} primitives
+ * @api
  */
 olcs.core.olPolygonGeometryToCesium = function(olGeometry, projection,
     olStyle) {
@@ -355,13 +371,16 @@ olcs.core.olPolygonGeometryToCesium = function(olGeometry, projection,
   var rings = olGeometry.getLinearRings();
   var hierarchy = {};
   for (var i = 0; i < rings.length; ++i) {
-    var positions = rings[i].getCoordinates();
-    positions = olcs.core.ol4326CoordinateArrayToCesiumCartesians(positions);
+    var positions = olcs.core.ol4326CoordinateArrayToCesiumCartesians(
+        rings[i].getCoordinates());
     if (i == 0) {
       hierarchy.positions = positions;
     } else {
-      if (goog.isDef(hierarchy.holes)) hierarchy.holes.push(positions);
-      else hierarchy.holes = [positions];
+      if (goog.isDef(hierarchy.holes)) {
+        hierarchy.holes.push(positions);
+      } else {
+        hierarchy.holes = [positions];
+      }
     }
   }
 
@@ -369,7 +388,7 @@ olcs.core.olPolygonGeometryToCesium = function(olGeometry, projection,
     polygonHierarchy: hierarchy
   });
 
-  var width = olStyle.getStroke() ? olStyle.getStroke().getWidth() : 1;
+  var width = extractLineWidthFromOlStyle(olStyle);
   var outlineGeometry = new Cesium.PolygonOutlineGeometry({
      polygonHierarchy: hierarchy,
      width: width
@@ -385,19 +404,22 @@ olcs.core.olPolygonGeometryToCesium = function(olGeometry, projection,
 /**
  * Convert a point geometry to a Cesium BillboardCollection.
  * @param {!ol.geom.Point} geometry
- * @param {!ol.projectionLike} projection
+ * @param {!ol.proj.ProjectionLike} projection
  * @param {!ol.style.Style} style
- * @return {Cesium.BillboardCollection} primitive
+ * @return {!Cesium.PrimitiveCollection} primitives
+ * @api
  */
 olcs.core.olPointGeometryToCesium = function(geometry, projection, style) {
   goog.asserts.assert(geometry.getType() == 'Point');
   geometry = olGeometryCloneTo4326(geometry, projection);
 
-  var image = extractOlStyleImage(style.getImage());
+  var image = style.getImage().getImage();
   goog.asserts.assert(image);
-  var color = extractColorFromOlStyle(style);
-  var position = ol.extent.getCenter(geometry.getExtent());
-  position = olcs.core.ol4326CoordinateToCesiumCartesian(position);
+  if (image instanceof Image)
+    goog.asserts.assert(image.complete); // converter is stateless
+  var color = extractColorFromOlStyle(style, false);
+  var position = olcs.core.ol4326CoordinateToCesiumCartesian(
+      ol.extent.getCenter(geometry.getExtent()));
 
   var billboards = new Cesium.BillboardCollection();
   billboards.add({
@@ -412,14 +434,15 @@ olcs.core.olPointGeometryToCesium = function(geometry, projection, style) {
 
 /**
  * Convert an OpenLayers multi-something geometry to Cesium.
- * @param {!ol.geom.geometry} geometry Ol3 geometry
- * @param {!ol.projectionLike} projection
- * @param {!ol.style} olStyle
- * @return {Cesium.Geometry|Array.<Cesium.Geometry>} geometries
+ * @param {!ol.geom.Geometry} geometry Ol3 geometry.
+ * @param {!ol.proj.ProjectionLike} projection
+ * @param {!ol.style.Style} olStyle
+ * @return {!Cesium.PrimitiveCollection} primitives
+ * @api
  */
 olcs.core.olMultiGeometryToCesium = function(geometry, projection,
     olStyle) {
-  // Do not reproject to 4326 as it will be done further
+  // Do not reproject to 4326 now because it will be done later.
 
   // FIXME: would be better to combine all child geometries in one primitive
   // instead we create n primitives for simplicity.
@@ -431,18 +454,22 @@ olcs.core.olMultiGeometryToCesium = function(geometry, projection,
     return primitives;
   };
 
+  var subgeos;
   switch (geometry.getType()) {
     case 'MultiPoint':
-      var subgeos = geometry.getPoints();
+      geometry = /** @type {!ol.geom.MultiPoint} */ (geometry);
+      subgeos = geometry.getPoints();
       return accumulate(subgeos, olcs.core.olPointGeometryToCesium);
     case 'MultiLineString':
-      var subgeos = geometry.getLineStrings();
+      geometry = /** @type {!ol.geom.MultiLineString} */ (geometry);
+      subgeos = geometry.getLineStrings();
       return accumulate(subgeos, olcs.core.olLineStringGeometryToCesium);
     case 'MultiPolygon':
-      var subgeos = geometry.getPolygons();
+      geometry = /** @type {!ol.geom.MultiPolygon} */ (geometry);
+      subgeos = geometry.getPolygons();
       return accumulate(subgeos, olcs.core.olPolygonGeometryToCesium);
     default:
-      throw 'Unhandled multi geometry type' + geometry.getType();
+      goog.asserts.fail('Unhandled multi geometry type' + geometry.getType());
   }
 };
 
@@ -450,23 +477,21 @@ olcs.core.olMultiGeometryToCesium = function(geometry, projection,
 /**
  * Convert an OpenLayers text style to Cesium.
  * @param {!ol.geom.Geometry} geometry
- * @param {!ol.style} style
+ * @param {!ol.style.Text} style
  * @return {Cesium.LabelCollection} Cesium primitive
  * @api
  */
 olcs.core.olGeometry4326TextPartToCesium = function(geometry, style) {
-  goog.asserts.assert(style instanceof ol.style.Text);
-
   var text = style.getText();
-  if (!goog.isDef(text)) return;
+  goog.asserts.assert(goog.isDef(text));
 
-  var color = extractColorFromOlStyle(style);
+  var color = extractColorFromOlStyle(style, false);
 
   var primitives = new Cesium.LabelCollection();
   // TODO: export and use the text draw position from ol3 .
   // See src/ol/render/vector.js
-  var position = ol.extent.getCenter(geometry.getExtent());
-  position = olcs.core.ol4326CoordinateToCesiumCartesian(position);
+  var position = olcs.core.ol4326CoordinateToCesiumCartesian(
+      ol.extent.getCenter(geometry.getExtent()));
 
   // TODO: handle the other parameters of ol.style.Text
   primitives.modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(position);
@@ -476,81 +501,80 @@ olcs.core.olGeometry4326TextPartToCesium = function(geometry, style) {
     verticalOrigin: Cesium.VerticalOrigin.CENTER,
     fillColor: color,
 //    scaleByDistance: new Cesium.NearFarScalar(1.5e2, 2.0, 1.5e7, 0.5),
-    text: style.getText()
+    text: text
   });
   return primitives;
 };
 
 
 
-
+/**
+ * Create a Cesium primitive if style has a text component.
+ * Eventually return a PrimitiveCollection including current primitive.
+ * @param {!ol.geom.Geometry} geometry
+ * @param {!ol.style.Style} style
+ * @param {!Cesium.Primitive} primitive current primitive
+ * @return {!Cesium.PrimitiveCollection}
+ */
 var addTextStyle = function(geometry, style, primitive) {
-  style = style.getText();
-  if (!style) return primitive;
+  var primitives;
   if (!(primitive instanceof Cesium.PrimitiveCollection)) {
-    var primitives = new Cesium.Cesium.PrimitiveCollection();
+    var primitives = new Cesium.PrimitiveCollection();
     primitives.add(primitive);
-    primitive = primitives;
+  } else {
+    primitives = primitive;
   }
-  primitive.add(olcs.core.olGeometry4326TextPartToCesium(geometry, style));
-  return primitive;
+
+  if (!style.getText()) {
+    return primitives;
+  }
+
+  var text = /** @type {!ol.style.Text} */ (style.getText());
+  var label = olcs.core.olGeometry4326TextPartToCesium(geometry, text);
+  if (label) {
+    primitives.add(label);
+  }
+  return primitives;
 };
 
 
 /**
- * Extract the image from an OpenLayers style.
- * Eventually renders the style in a canvas.
- * @param {!ol.style} style
- * @return {canvas |image} raster
+ * @param {ol.Color|string} olColor
+ * @return {!Cesium.Color}
  */
-var extractOlStyleImage = function(style) {
-  if (style instanceof ol.style.Circle) {
-    // FIXME better use the render method from style
-    // no need to duplicate everything here
-    var canvas = document.createElement('canvas');
-    var radius = style.getRadius();
-    canvas.width = 2 * (radius + 1);
-    canvas.height = 2 * (radius + 1);
-    var context2D = canvas.getContext('2d');
-    context2D.beginPath();
-    context2D.arc(canvas.width / 2, canvas.height / 2, radius, 0,
-      Cesium.Math.TWO_PI, true);
-    context2D.closePath();
-    if (style.getFill() && style.getFill().getColor()) {
-      context2D.fillStyle = style.getFill().getColor();
-      context2D.fill();
-    }
-    if (style.getStroke() && style.getStroke().getColor()) {
-      context2D.strokeStyle = style.getStroke().getColor();
-      context2D.stroke();
-    }
-    return canvas;
-  } else if (style instanceof ol.style.Icon) {
-    var image = style.getImage();
-    // when having only src, must get access to ol loading and caching mechanism
-    // https://github.com/openlayers/ol3/blob/master/src/ol/style/iconstyle.js#L557
-    return image;
-  } else throw 'Not handled';
+var convertOlColorToCesium = function(olColor) {
+  olColor = olColor || 'black';
+  if (goog.isArray(olColor)) {
+    return Cesium.Color.unpack(olColor);
+  } else if (goog.isString(olColor)) {
+    return Cesium.Color.fromCssColorString(olColor);
+  } else {
+    throw 'impossible';
+  }
 };
+
 
 /**
  * Convert an OpenLayers style to a Cesium Material.
  * @param {!ol.style.Style} style
  * @param {boolean} outline
  * @return {Cesium.Material}
+ * @api
  */
 olcs.core.olStyleToCesium = function(style, outline) {
   var fill = style.getFill();
   var stroke = style.getStroke();
-  if ((outline && !stroke) || (!outline && !fill)) return undefined;
+  if ((outline && !stroke) || (!outline && !fill)) {
+    return null; // FIXME use a default style? Developer error?
+  }
 
   var color = outline ? stroke.getColor() : fill.getColor();
-  color = Cesium.Color.fromCssColorString(color);
+  color = convertOlColorToCesium(color);
 
   if (outline && stroke.getLineDash()) {
     return Cesium.Material.fromType('Stripe', {
       horizontal: false,
-      repeat: 500, // how to calculate this?
+      repeat: 500, // TODO how to calculate this?
       evenColor: color,
       oddColor: new Cesium.Color(0, 0, 0, 0) // transparent
     });
@@ -562,30 +586,47 @@ olcs.core.olStyleToCesium = function(style, outline) {
 
 };
 
+
 /**
  * Return the fill or stroke color from a plain ol style.
- * @param {!ol.style.Style} style
+ * @param {!ol.style.Style|ol.style.Text} style
  * @param {boolean} outline
- * @return {Cesium.Color}
+ * @return {!Cesium.Color}
+ * @api
  */
 var extractColorFromOlStyle = function(style, outline) {
   var fillColor = style.getFill() ? style.getFill().getColor() : null;
   var strokeColor = style.getStroke() ? style.getStroke().getColor() : null;
 
   var olColor = 'black';
-  if (strokeColor && outline) olColor = strokeColor;
-  else if (fillColor) olColor = fillColor;
+  if (strokeColor && outline) {
+    olColor = strokeColor;
+  } else if (fillColor) {
+    olColor = fillColor;
+  }
 
-  return Cesium.Color.fromCssColorString(olColor);
+  return convertOlColorToCesium(olColor);
 };
 
 
 /**
+ * Return the width of stroke from a plain ol style.
+ * Use GL aliased line width range constraint.
+ * @param {!ol.style.Style|ol.style.Text} style
+ * @return {!number}
+ * @api
+ */
+var extractLineWidthFromOlStyle = function(style) {
+  var width = style.getStroke() ? style.getStroke().getWidth() : 1;
+  return Math.min(width, olcs.core.GL_ALIASED_LINE_WIDTH_RANGE);
+};
+
+/**
  * Compute OpenLayers plain style.
  * Evaluates style function, blend arrays, get default style.
- * @param {!ol.feature.Feature} feature
+ * @param {!ol.Feature} feature
  * @param {ol.style.Style | Array.<ol.style.Style> | ol.style.StyleFunction | undefined} style
- * @param {number} resolution
+ * @param {number=} resolution
  * @return {ol.style.Style}
  * @api
  */
@@ -614,11 +655,11 @@ olcs.core.computePlainStyle = function(feature, style, resolution) {
 
 /**
  * Convert one OpenLayers feature up to a collection of Cesium primitives.
- * @param {!ol.feature} feature Ol3 feature
- * @param {ol.style.Style} style Ol3 plain style
- * @param {!ol.projectionLike} projection
- * @param {ol.Geometry=} opt_geometry
- * @return {Cesium.Primitive|Cesium.PrimitiveCollection} primitives
+ * @param {!ol.Feature} feature Ol3 feature.
+ * @param {ol.style.Style} style Ol3 plain style.
+ * @param {!ol.proj.ProjectionLike} projection
+ * @param {ol.geom.Geometry=} opt_geometry
+ * @return {!Cesium.Primitive} primitives
  * @api
  */
 olcs.core.olFeatureToCesium = function(feature, style, projection,
@@ -633,31 +674,34 @@ olcs.core.olFeatureToCesium = function(feature, style, projection,
   switch (geom.getType()) {
     case 'GeometryCollection':
       var primitives = new Cesium.PrimitiveCollection();
-      geom.getGeometries().forEach(function(geom) {
+      var collection = /** @type {!ol.geom.GeometryCollection} */ (geom);
+      collection.getGeometries().forEach(function(geom) {
         var prims = olcs.core.olFeatureToCesium(feature, style, proj, geom);
-        if (goog.isDef(prims))
-          primitives.add(prims);
-        else console.log('A subprimitive was lost');
+        primitives.add(prims);
       });
       return primitives;
     case 'Point':
+      geom = /** @type {!ol.geom.Point} */ (geom);
       return olcs.core.olPointGeometryToCesium(geom, proj, style);
     case 'Circle':
+      geom = /** @type {!ol.geom.Circle} */ (geom);
       return olcs.core.olCircleGeometryToCesium(geom, proj, style);
-     case 'LineString':
+    case 'LineString':
+      geom = /** @type {!ol.geom.LineString} */ (geom);
       return olcs.core.olLineStringGeometryToCesium(geom, proj, style);
-     case 'Polygon':
+    case 'Polygon':
+      geom = /** @type {!ol.geom.Polygon} */ (geom);
       return olcs.core.olPolygonGeometryToCesium(geom, proj, style);
-      case 'MultiPoint':
-        throw 'generalize single point case';
-      case 'MultiLineString':
-        return olcs.core.olMultiGeometryToCesium(geom, proj, style);
-      case 'MultiPolygon':
-        return olcs.core.olMultiGeometryToCesium(geom, proj, style);
-      case 'LinearRing':
-        throw 'Linear ring geometries should only be part of polygon.';
-     default:
-       throw 'ol geom type not handled : ' + geom.getType();
+    case 'MultiPoint':
+      throw 'generalize single point case';
+    case 'MultiLineString':
+      return olcs.core.olMultiGeometryToCesium(geom, proj, style);
+    case 'MultiPolygon':
+      return olcs.core.olMultiGeometryToCesium(geom, proj, style);
+    case 'LinearRing':
+      throw 'Linear ring geometries should only be part of polygon.';
+    default:
+      throw 'ol geom type not handled : ' + geom.getType();
   }
 };
 
@@ -667,6 +711,7 @@ olcs.core.olFeatureToCesium = function(feature, style, projection,
  * @param {!ol.layer.Vector} olLayer
  * @param {!ol.View} olView
  * @return {Cesium.PrimitiveCollection}
+ * @api
  */
 olcs.core.olVectorLayerToCesium = function(olLayer, olView) {
   goog.asserts.assert(olLayer instanceof ol.layer.Vector);
@@ -677,8 +722,16 @@ olcs.core.olVectorLayerToCesium = function(olLayer, olView) {
   var resolution = olView.getResolution();
 
   var allPrimitives = new Cesium.PrimitiveCollection();
+  if (!goog.isDef(resolution) || !goog.isDef(proj)) {
+    return allPrimitives;
+  }
+  proj = /** @type {!ol.proj.Projection} */ (proj);
+  resolution = /** @type {!number} */ (resolution);
   for (var i = 0; i < features.length; ++i) {
     var feature = features[i];
+    if (!goog.isDefAndNotNull(feature)) {
+      continue;
+    }
     var layerStyle = vectorLayer.getStyle();
     layerStyle = olcs.core.computePlainStyle(feature, layerStyle, resolution);
     var primitives = olcs.core.olFeatureToCesium(feature, layerStyle, proj);

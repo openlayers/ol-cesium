@@ -8,29 +8,23 @@ goog.require('olcs.core');
 
 /**
  * Unidirectionally synchronize OpenLayers vector layers to Cesium.
- * @param {!ol.View} view
- * @param {!ol.Collection} olLayers
- * @param {!Cesium.PrimitiveCollection} csPrimitives
+ * @param {!ol.Map} map
+ * @param {!Cesium.Scene} scene
  * @constructor
  */
-olcs.VectorSynchronizer = function(view, olLayers, csPrimitives) {
-  /**
-   * @type {!ol.View}
-   * @private
-   */
-  this.view_ = view;
-
-  /**
-   * @type {!ol.Collection}
-   * @private
-   */
-  this.olLayers_ = olLayers;
+olcs.VectorSynchronizer = function(map, scene) {
 
   /**
    * @type {!Cesium.PrimitiveCollection}
    * @private
    */
-  this.csAllPrimitives_ = csPrimitives;
+  this.csAllPrimitives_ = scene.primitives;
+
+  /**
+   * @type {!ol.Map}
+   * @private
+   */
+  this.map_ = map;
 
   /**
    * Map of ol3 layer ids (from goog.getUid) to the Cesium PrimitiveCollection.
@@ -39,18 +33,24 @@ olcs.VectorSynchronizer = function(view, olLayers, csPrimitives) {
    * @private
    */
   this.layerMap_ = {};
-
-  goog.events.listen(/** @type {!goog.events.EventTarget} */(this.olLayers_),
-      [goog.events.EventType.CHANGE, 'add', 'remove'], function(e) {
+  var layers = map.getLayers(); // FIXME: have ol3 guarantee the layer
+                                //reference never changes
+  goog.events.listen(/** @type {!goog.events.EventTarget} */(layers),
+      ['change', 'add', 'remove'], function(e) {
         this.synchronize();
       }, false, this);
 };
 
 
 /**
- * Performs complete synchronization of the raster layers.
+ * Performs complete synchronization of the vector layers.
  */
 olcs.VectorSynchronizer.prototype.synchronize = function() {
+  var view = this.map_.getView(); // view reference might change
+  if (!goog.isDefAndNotNull(view)) {
+    return;
+  }
+  var olLayers = this.map_.getLayers();
   var unusedCesiumPrimitives = goog.object.transpose(this.layerMap_);
   this.csAllPrimitives_.destroyPrimitives = false;
   this.csAllPrimitives_.removeAll();
@@ -72,7 +72,8 @@ olcs.VectorSynchronizer.prototype.synchronize = function() {
 
     // no mapping -> create new layer and set up synchronization
     if (!goog.isDef(csPrimitives)) {
-      csPrimitives = olcs.core.olVectorLayerToCesium(olLayer, this.view_);
+      view = /** @type {!ol.View} */ (view);
+      csPrimitives = olcs.core.olVectorLayerToCesium(olLayer, view);
 
       if (!goog.isNull(csPrimitives)) {
         goog.events.listen(olLayer,
@@ -91,12 +92,12 @@ olcs.VectorSynchronizer.prototype.synchronize = function() {
     }
   }, this);
 
-  this.olLayers_.forEach(function(el, i, arr) {
+  olLayers.forEach(function(el, i, arr) {
     if (el instanceof ol.layer.Vector)
       synchronizeLayer(el);
   });
 
-  // destroy unused Cesium ImageryLayers
+  // destroy unused Cesium primitives
   goog.array.forEach(goog.object.getValues(unusedCesiumPrimitives),
       function(el, i, arr) {
         var layerId = el;

@@ -47,8 +47,7 @@
       "api", "observable"
     ],
     "jscomp_off": [
-      "es5Strict",
-      "checkTypes"
+      "es5Strict"
 
     ],
     "compilation_level": "ADVANCED_OPTIMIZATIONS",
