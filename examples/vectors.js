@@ -286,7 +286,7 @@ scene.terrainProvider = terrainProvider;
 ol3d.setEnabled(true);
 
 setTimeout(function() {
-  map.getLayers().removeAt(1);
+  map.getLayers().remove(vectorLayer);
   setTimeout(function() {
     map.getLayers().insertAt(1, vectorLayer);
   }, 3000);

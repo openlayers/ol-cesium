@@ -505,21 +505,35 @@ goog.require('olcs.core.OLImageryProvider');
     goog.asserts.assert(geometry.getType() == 'Point');
     geometry = olGeometryCloneTo4326(geometry, projection);
 
-    var image = style.getImage().getImage();
+    var imageStyle = style.getImage();
+    var image = imageStyle.getImage();
+    var isImageLoaded = function(image) {
+      return image.src != '' &&
+          image.naturalHeight != 0 &&
+          image.naturalWidth != 0 &&
+          image.complete;
+    };
     goog.asserts.assert(image);
-    if (image instanceof Image)
-      goog.asserts.assert(image.complete); // converter is stateless
-    var color = extractColorFromOlStyle(style, false);
-    var position = olcs.core.ol4326CoordinateToCesiumCartesian(
-        ol.extent.getCenter(geometry.getExtent()));
-
     var billboards = new Cesium.BillboardCollection();
-    billboards.add({
-      // always update Cesium externs before adding a property
-      image: image,
-      color: color,
-      position: position
-    });
+    var reallyCreateBillboard = function() {
+      var center = ol.extent.getCenter(geometry.getExtent());
+      var position = olcs.core.ol4326CoordinateToCesiumCartesian(center);
+      billboards.add({
+        // always update Cesium externs before adding a property
+        image: image,
+        position: position
+      });
+    };
+    if (image instanceof Image && !isImageLoaded(image)) {
+      // Cesium requires the image to be loaded
+      var listener = function() {
+        reallyCreateBillboard();
+      };
+
+      goog.events.listenOnce(image, 'load', listener, false, this);
+    } else {
+      reallyCreateBillboard();
+    }
 
     return addTextStyle(geometry, style, billboards);
   };
