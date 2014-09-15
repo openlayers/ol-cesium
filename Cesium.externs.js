@@ -1252,6 +1252,11 @@ Cesium.PrimitiveCollection = function() {};
  */
 Cesium.PrimitiveCollection.prototype.add = function(poly) {};
 
+/**
+ * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.Primitive} poly .
+ * @return {boolean}
+ */
+Cesium.PrimitiveCollection.prototype.contains = function(poly) {};
 
 /**
  * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.PrimitiveCollection} poly .
