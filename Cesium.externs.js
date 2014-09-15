@@ -841,6 +841,10 @@ Cesium.Material = function() {};
 Cesium.Material.prototype.uniforms;
 
 
+/**
+ * @type {string} .
+ */
+Cesium.Material.ColorType;
 
 
 /**
