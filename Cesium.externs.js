@@ -2172,6 +2172,11 @@ Cesium.ScreenSpaceCameraController.prototype.translateEventTypes;
 Cesium.ScreenSpaceCameraController.prototype.zoomEventTypes;
 
 
+/**
+ * @typedef {{position: Cesium.Cartesian2,
+ *     endPosition: Cesium.Cartesian2}}
+ */
+Cesium.ScreenSpaceEventHandlerEvent;
 
 /**
  * @constructor
@@ -2191,7 +2196,7 @@ Cesium.ScreenSpaceEventHandler.prototype.destroy = function() {};
 Cesium.ScreenSpaceEventHandler.prototype.removeInputAction = function(type, opt_modifier) {};
 
 /**
- * @param {Function} callback .
+ * @param {function(Cesium.ScreenSpaceEventHandlerEvent)} callback .
  * @param {Cesium.ScreenSpaceEventType} type .
  * @param {Cesium.KeyboardEventModifier=} opt_modifier .
  */
