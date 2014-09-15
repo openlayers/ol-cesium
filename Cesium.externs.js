@@ -798,9 +798,9 @@ Cesium.optionsMaterialFromTypeAny;
 
 /**
  * @param {string} type .
- * @param {Cesium.optionsMaterialFromTypeAny} opt_ .
+ * @param {Cesium.optionsMaterialFromTypeAny=} opt_uniforms .
  */
-Cesium.Material.fromType = function(type, opt_) {};
+Cesium.Material.fromType = function(type, opt_uniforms) {};
 
 
 
