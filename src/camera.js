@@ -9,11 +9,11 @@ goog.require('olcs.core');
  * This object takes care of additional 3d-specific properties of the view and
  * ensures proper synchronization with the underlying raw Cesium.Camera object.
  * @param {!Cesium.Scene} scene
- * @param {!ol.View} view
+ * @param {!ol.Map} map
  * @constructor
  * @api
  */
-olcs.Camera = function(scene, view) {
+olcs.Camera = function(scene, map) {
   /**
    * @type {!Cesium.Scene}
    * @private
@@ -33,24 +33,34 @@ olcs.Camera = function(scene, view) {
   this.cam_ = scene.camera;
 
   /**
-   * @type {!ol.View}
+   * @type {!ol.Map}
    * @private
    */
-  this.view_ = view;
+  this.map_ = map;
 
   /**
-   * @type {ol.TransformFunction}
+   * @type {?ol.View}
    * @private
    */
-  this.toLonLat_ = ol.proj.getTransform(this.view_.getProjection(),
-                                        'EPSG:4326');
+  this.view_ = null;
 
   /**
-   * @type {ol.TransformFunction}
+   * @type {!Array}
    * @private
    */
-  this.fromLonLat_ = ol.proj.getTransform('EPSG:4326',
-                                          this.view_.getProjection());
+  this.viewListenKeys_ = [];
+
+  /**
+   * @type {?ol.TransformFunction}
+   * @private
+   */
+  this.toLonLat_ = null;
+
+  /**
+   * @type {?ol.TransformFunction}
+   * @private
+   */
+  this.fromLonLat_ = null;
 
   /**
    * 0 -- topdown, PI/2 -- the horizon
@@ -78,13 +88,44 @@ olcs.Camera = function(scene, view) {
    */
   this.viewUpdateInProgress_ = false;
 
-  goog.events.listen(/** @type {!goog.events.EventTarget} */(this.view_),
-      ['change:center', 'change:resolution', 'change:rotation'], function(e) {
-        if (!this.viewUpdateInProgress_) {
-          this.readFromView();
-        }
-      }, false, this);
+  this.map_.on('change:view', function(e) {
+    this.setView_(this.map_.getView());
+  }, this);
+  this.setView_(this.map_.getView());
+};
 
+
+/**
+ * @param {ol.View|null|undefined} view New view to use.
+ * @private
+ */
+olcs.Camera.prototype.setView_ = function(view) {
+  if (!goog.isNull(this.view_)) {
+    goog.array.forEach(this.viewListenKeys_, this.view_.unByKey);
+  }
+
+  this.view_ = goog.isDefAndNotNull(view) ? view : null;
+  if (goog.isDefAndNotNull(view)) {
+    this.toLonLat_ = ol.proj.getTransform(view.getProjection(), 'EPSG:4326');
+    this.fromLonLat_ = ol.proj.getTransform('EPSG:4326', view.getProjection());
+
+    var handleViewEvent_ = goog.bind(function(e) {
+      if (!this.viewUpdateInProgress_) {
+        this.readFromView();
+      }
+    }, this);
+
+    this.viewListenKeys_ = [
+      view.on('change:center', handleViewEvent_),
+      view.on('change:resolution', handleViewEvent_),
+      view.on('change:rotation', handleViewEvent_)
+    ];
+    this.readFromView();
+  } else {
+    this.toLonLat_ = null;
+    this.fromLonLat_ = null;
+    this.viewListenKeys_ = [];
+  }
 };
 
 
@@ -93,15 +134,22 @@ olcs.Camera = function(scene, view) {
  * @api
  */
 olcs.Camera.prototype.setHeading = function(heading) {
+  if (goog.isNull(this.view_)) {
+    return;
+  }
+
   this.view_.setRotation(heading);
 };
 
 
 /**
- * @return {number} Heading in radians.
+ * @return {number|undefined} Heading in radians.
  * @api
  */
 olcs.Camera.prototype.getHeading = function() {
+  if (goog.isNull(this.view_)) {
+    return undefined;
+  }
   var rotation = this.view_.getRotation();
   return goog.isDef(rotation) ? rotation : 0;
 };
@@ -152,6 +200,9 @@ olcs.Camera.prototype.getDistance = function() {
  * @api
  */
 olcs.Camera.prototype.setCenter = function(center) {
+  if (goog.isNull(this.view_)) {
+    return;
+  }
   this.view_.setCenter(center);
 };
 
@@ -162,6 +213,9 @@ olcs.Camera.prototype.setCenter = function(center) {
  * @api
  */
 olcs.Camera.prototype.getCenter = function() {
+  if (goog.isNull(this.view_)) {
+    return undefined;
+  }
   return this.view_.getCenter();
 };
 
@@ -172,6 +226,9 @@ olcs.Camera.prototype.getCenter = function() {
  * @api
  */
 olcs.Camera.prototype.setPosition = function(position) {
+  if (goog.isNull(this.toLonLat_)) {
+    return;
+  }
   var ll = this.toLonLat_(position);
 
   var carto = new Cesium.Cartographic(goog.math.toRadians(ll[0]),
@@ -185,10 +242,13 @@ olcs.Camera.prototype.setPosition = function(position) {
 
 /**
  * Calculates position under the camera.
- * @return {!ol.Coordinate} Same projection as the ol.View.
+ * @return {!ol.Coordinate|undefined} Same projection as the ol.View.
  * @api
  */
 olcs.Camera.prototype.getPosition = function() {
+  if (goog.isNull(this.fromLonLat_)) {
+    return undefined;
+  }
   var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(
       this.cam_.position);
 
@@ -229,6 +289,9 @@ olcs.Camera.prototype.getAltitude = function() {
  * @api
  */
 olcs.Camera.prototype.lookAt = function(position) {
+  if (goog.isNull(this.toLonLat_)) {
+    return;
+  }
   var ll = this.toLonLat_(position);
 
   var carto = Cesium.Cartographic.fromDegrees(ll[0], ll[1]);
@@ -244,6 +307,9 @@ olcs.Camera.prototype.lookAt = function(position) {
  * @private
  */
 olcs.Camera.prototype.updateCamera_ = function() {
+  if (goog.isNull(this.view_) || goog.isNull(this.toLonLat_)) {
+    return;
+  }
   var ll = this.toLonLat_(this.view_.getCenter());
 
   var carto = new Cesium.Cartographic(goog.math.toRadians(ll[0]),
@@ -269,6 +335,9 @@ olcs.Camera.prototype.updateCamera_ = function() {
  * Calculates the values of the properties from the current ol.View state.
  */
 olcs.Camera.prototype.readFromView = function() {
+  if (goog.isNull(this.view_) || goog.isNull(this.toLonLat_)) {
+    return;
+  }
   var resolution = this.view_.getResolution();
   this.distance_ = this.calcDistanceForResolution_(
       goog.isDef(resolution) ? resolution : 0,
@@ -284,6 +353,9 @@ olcs.Camera.prototype.readFromView = function() {
  * @api
  */
 olcs.Camera.prototype.updateView = function() {
+  if (goog.isNull(this.view_) || goog.isNull(this.fromLonLat_)) {
+    return;
+  }
   this.viewUpdateInProgress_ = true;
 
   // target & distance

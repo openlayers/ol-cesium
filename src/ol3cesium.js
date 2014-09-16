@@ -100,7 +100,7 @@ olcs.OLCesium = function(map, opt_target) {
    * @type {!olcs.Camera}
    * @private
    */
-  this.camera_ = new olcs.Camera(this.scene_, view);
+  this.camera_ = new olcs.Camera(this.scene_, this.map_);
 
   /**
    * @type {!Cesium.Globe}
