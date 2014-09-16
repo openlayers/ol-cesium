@@ -10,11 +10,10 @@ goog.require('olcs.core');
  * This object takes care of one-directional synchronization of
  * ol3 raster layers to the given Cesium globe.
  * @param {!ol.Map} map
- * @param {!ol.Collection} olLayers
  * @param {!Cesium.ImageryLayerCollection} cesiumLayers
  * @constructor
  */
-olcs.RasterSynchronizer = function(map, olLayers, cesiumLayers) {
+olcs.RasterSynchronizer = function(map, cesiumLayers) {
   /**
    * @type {!ol.Map}
    * @private
@@ -28,10 +27,16 @@ olcs.RasterSynchronizer = function(map, olLayers, cesiumLayers) {
   this.view_ = null;
 
   /**
-   * @type {!ol.Collection}
+   * @type {?ol.Collection.<ol.layer.Base>}
    * @private
    */
-  this.olLayers_ = olLayers;
+  this.olLayers_ = null;
+
+  /**
+   * @type {!Array}
+   * @private
+   */
+  this.olLayersListenKeys_ = [];
 
   /**
    * @type {!Cesium.ImageryLayerCollection}
@@ -47,15 +52,15 @@ olcs.RasterSynchronizer = function(map, olLayers, cesiumLayers) {
    */
   this.layerMap_ = {};
 
-  goog.events.listen(/** @type {!goog.events.EventTarget} */(this.olLayers_),
-      [goog.events.EventType.CHANGE, 'add', 'remove'], function(e) {
-        this.synchronize();
-      }, false, this);
-
   this.map_.on('change:view', function(e) {
     this.setView_(this.map_.getView());
   }, this);
   this.setView_(this.map_.getView());
+
+  this.map_.on('change:layergroup', function(e) {
+    this.setLayers_(this.map_.getLayers());
+  }, this);
+  this.setLayers_(this.map_.getLayers());
 };
 
 
@@ -73,10 +78,39 @@ olcs.RasterSynchronizer.prototype.setView_ = function(view) {
 
 
 /**
+ * @param {ol.Collection.<ol.layer.Base>} layers New layers to use.
+ * @private
+ */
+olcs.RasterSynchronizer.prototype.setLayers_ = function(layers) {
+  if (!goog.isNull(this.olLayers_)) {
+    goog.array.forEach(this.olLayersListenKeys_, this.olLayers_.unByKey);
+  }
+
+  this.olLayers_ = layers;
+  if (!goog.isNull(layers)) {
+    var handleCollectionEvent_ = goog.bind(function(e) {
+      this.synchronize();
+    }, this);
+
+    this.olLayersListenKeys_ = [
+      layers.on(goog.events.EventType.CHANGE, handleCollectionEvent_),
+      layers.on('add', handleCollectionEvent_),
+      layers.on('remove', handleCollectionEvent_)
+    ];
+  } else {
+    this.olLayersListenKeys_ = [];
+  }
+
+  this.destroyAll();
+  this.synchronize();
+};
+
+
+/**
  * Performs complete synchronization of the raster layers.
  */
 olcs.RasterSynchronizer.prototype.synchronize = function() {
-  if (goog.isNull(this.view_)) {
+  if (goog.isNull(this.view_) || goog.isNull(this.olLayers_)) {
     return;
   }
   var unusedCesiumLayers = goog.object.transpose(this.layerMap_);
