@@ -41,9 +41,9 @@ olcs.core.OLImageryProvider = function(source, opt_fallbackProj) {
   this.emptyCanvas_.width = 1;
   this.emptyCanvas_.height = 1;
 
-  goog.events.listen(this.source_, goog.events.EventType.CHANGE, function(e) {
+  this.source_.on(goog.events.EventType.CHANGE, function(e) {
     this.handleSourceChanged_();
-  }, false, this);
+  }, this);
   this.handleSourceChanged_();
 };
 goog.inherits(olcs.core.OLImageryProvider, Cesium.ImageryProvider);

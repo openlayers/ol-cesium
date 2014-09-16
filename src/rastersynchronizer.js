@@ -82,7 +82,10 @@ olcs.RasterSynchronizer.prototype.synchronize = function() {
             ['change:brightness', 'change:contrast', 'change:hue',
              'change:opacity', 'change:saturation', 'change:visible'],
             function(e) {
-              olcs.core.updateCesiumLayerProperties(olLayer, cesiumLayer);
+              // the compiler does not seem to be able to infer this
+              if (!goog.isNull(cesiumLayer)) {
+                olcs.core.updateCesiumLayerProperties(olLayer, cesiumLayer);
+              }
             });
         olcs.core.updateCesiumLayerProperties(olLayer, cesiumLayer);
 
