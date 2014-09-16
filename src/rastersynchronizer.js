@@ -9,17 +9,23 @@ goog.require('olcs.core');
 /**
  * This object takes care of one-directional synchronization of
  * ol3 raster layers to the given Cesium globe.
- * @param {!ol.View} view
+ * @param {!ol.Map} map
  * @param {!ol.Collection} olLayers
  * @param {!Cesium.ImageryLayerCollection} cesiumLayers
  * @constructor
  */
-olcs.RasterSynchronizer = function(view, olLayers, cesiumLayers) {
+olcs.RasterSynchronizer = function(map, olLayers, cesiumLayers) {
   /**
-   * @type {!ol.View}
+   * @type {!ol.Map}
    * @private
    */
-  this.view_ = view;
+  this.map_ = map;
+
+  /**
+   * @type {?ol.View}
+   * @private
+   */
+  this.view_ = null;
 
   /**
    * @type {!ol.Collection}
@@ -45,6 +51,24 @@ olcs.RasterSynchronizer = function(view, olLayers, cesiumLayers) {
       [goog.events.EventType.CHANGE, 'add', 'remove'], function(e) {
         this.synchronize();
       }, false, this);
+
+  this.map_.on('change:view', function(e) {
+    this.setView_(this.map_.getView());
+  }, this);
+  this.setView_(this.map_.getView());
+};
+
+
+/**
+ * @param {ol.View|null|undefined} view New view to use.
+ * @private
+ */
+olcs.RasterSynchronizer.prototype.setView_ = function(view) {
+  this.view_ = goog.isDefAndNotNull(view) ? view : null;
+
+  // destroy all, the change of view can affect which layers are synced
+  this.destroyAll();
+  this.synchronize();
 };
 
 
@@ -52,6 +76,9 @@ olcs.RasterSynchronizer = function(view, olLayers, cesiumLayers) {
  * Performs complete synchronization of the raster layers.
  */
 olcs.RasterSynchronizer.prototype.synchronize = function() {
+  if (goog.isNull(this.view_)) {
+    return;
+  }
   var unusedCesiumLayers = goog.object.transpose(this.layerMap_);
   this.cesiumLayers_.removeAll(false);
 
@@ -123,4 +150,13 @@ olcs.RasterSynchronizer.prototype.synchronize = function() {
           }
         }
       }, this);
+};
+
+
+/**
+ * Destroys all the create Cesium layers.
+ */
+olcs.RasterSynchronizer.prototype.destroyAll = function() {
+  this.cesiumLayers_.removeAll(); // destroy
+  this.layerMap_ = {};
 };

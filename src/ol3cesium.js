@@ -92,10 +92,6 @@ olcs.OLCesium = function(map, opt_target) {
 
   this.scene_.camera.constrainedAxis = Cesium.Cartesian3.UNIT_Z;
 
-  var view = this.map_.getView();
-  goog.asserts.assert(goog.isDefAndNotNull(view));
-  //TODO: handle 'change:view' and even null view
-
   /**
    * @type {!olcs.Camera}
    * @private
@@ -118,8 +114,8 @@ olcs.OLCesium = function(map, opt_target) {
    * @type {?olcs.RasterSynchronizer}
    * @private
    */
-  this.rasterSynchronizer_ = new olcs.RasterSynchronizer(view, olLayers,
-      this.scene_.imageryLayers);
+  this.rasterSynchronizer_ = new olcs.RasterSynchronizer(
+      this.map_, olLayers, this.scene_.imageryLayers);
   this.rasterSynchronizer_.synchronize();
 
   this.vectorSynchronizer_ = new olcs.VectorSynchronizer(this.map_,
