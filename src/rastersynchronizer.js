@@ -113,7 +113,9 @@ olcs.RasterSynchronizer.prototype.synchronize = function() {
         var layer = this.layerMap_[layerId];
         if (goog.isDef(layer)) {
           delete this.layerMap_[layerId];
-          layer.destroy();
+          if (!goog.isNull(layer)) {
+            layer.destroy();
+          }
         }
       }, this);
 };
