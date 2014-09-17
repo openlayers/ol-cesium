@@ -21,6 +21,9 @@ dist: dist/ol3cesium.js
 .PHONY: lint
 lint: .build/python-venv/bin/gjslint .build/gjslint.timestamp
 
+.PHONY: check
+check: lint dist
+
 .PHONY: clean
 clean:
 	rm -f dist/ol3cesium.js
