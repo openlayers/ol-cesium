@@ -473,7 +473,7 @@ olcs.core.olMultiGeometryToCesium = function(geometry, projection,
   // instead we create n primitives for simplicity.
   var accumulate = function(geometries, functor) {
     var primitives = new Cesium.PrimitiveCollection();
-    geometries.forEach(function(geometry) {
+    goog.array.forEach(geometries, function(geometry) {
       primitives.add(functor(geometry, projection, olStyle));
     });
     return primitives;
@@ -767,7 +767,7 @@ olcs.core.olFeatureToCesium = function(feature, style, projection,
     case 'GeometryCollection':
       var primitives = new Cesium.PrimitiveCollection();
       var collection = /** @type {!ol.geom.GeometryCollection} */ (geom);
-      collection.getGeometries().forEach(function(geom) {
+      goog.array.forEach(collection.getGeometries(), function(geom) {
         var prims = olcs.core.olFeatureToCesium(feature, style, proj, geom);
         primitives.add(prims);
       });

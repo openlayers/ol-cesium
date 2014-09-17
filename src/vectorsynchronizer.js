@@ -102,7 +102,8 @@ olcs.VectorSynchronizer.prototype.synchronize = function() {
   });
 
   // destroy unused Cesium primitives
-  goog.object.getValues(unusedCesiumPrimitives).forEach(function(el, i, arr) {
+  goog.array.forEach(goog.object.getValues(unusedCesiumPrimitives),
+      function(el, i, arr) {
         var layerId = el;
         var primitives = this.layerMap_[layerId];
         if (goog.isDef(primitives)) {
