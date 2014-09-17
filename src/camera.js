@@ -45,10 +45,10 @@ olcs.Camera = function(scene, map) {
   this.view_ = null;
 
   /**
-   * @type {!Array}
+   * @type {?*}
    * @private
    */
-  this.viewListenKeys_ = [];
+  this.viewListenKey_ = null;
 
   /**
    * @type {?ol.TransformFunction}
@@ -101,7 +101,8 @@ olcs.Camera = function(scene, map) {
  */
 olcs.Camera.prototype.setView_ = function(view) {
   if (!goog.isNull(this.view_)) {
-    goog.array.forEach(this.viewListenKeys_, this.view_.unByKey);
+    this.view_.unByKey(this.viewListenKey_);
+    this.viewListenKey_ = null;
   }
 
   this.view_ = view;
@@ -109,22 +110,23 @@ olcs.Camera.prototype.setView_ = function(view) {
     this.toLonLat_ = ol.proj.getTransform(view.getProjection(), 'EPSG:4326');
     this.fromLonLat_ = ol.proj.getTransform('EPSG:4326', view.getProjection());
 
-    var handleViewEvent_ = goog.bind(function(e) {
-      if (!this.viewUpdateInProgress_) {
-        this.readFromView();
-      }
-    }, this);
-
-    this.viewListenKeys_ = [
-      view.on('change:center', handleViewEvent_),
-      view.on('change:resolution', handleViewEvent_),
-      view.on('change:rotation', handleViewEvent_)
-    ];
+    this.viewListenKey_ = view.on('propertychange',
+                                  this.handleViewEvent_, this);
     this.readFromView();
   } else {
     this.toLonLat_ = null;
     this.fromLonLat_ = null;
-    this.viewListenKeys_ = [];
+  }
+};
+
+
+/**
+ * @param {?} e
+ * @private
+ */
+olcs.Camera.prototype.handleViewEvent_ = function(e) {
+  if (!this.viewUpdateInProgress_) {
+    this.readFromView();
   }
 };
 
