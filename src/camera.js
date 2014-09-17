@@ -96,7 +96,7 @@ olcs.Camera = function(scene, map) {
 
 
 /**
- * @param {ol.View|null|undefined} view New view to use.
+ * @param {?ol.View} view New view to use.
  * @private
  */
 olcs.Camera.prototype.setView_ = function(view) {
@@ -104,8 +104,8 @@ olcs.Camera.prototype.setView_ = function(view) {
     goog.array.forEach(this.viewListenKeys_, this.view_.unByKey);
   }
 
-  this.view_ = goog.isDefAndNotNull(view) ? view : null;
-  if (goog.isDefAndNotNull(view)) {
+  this.view_ = view;
+  if (!goog.isNull(view)) {
     this.toLonLat_ = ol.proj.getTransform(view.getProjection(), 'EPSG:4326');
     this.fromLonLat_ = ol.proj.getTransform('EPSG:4326', view.getProjection());
 

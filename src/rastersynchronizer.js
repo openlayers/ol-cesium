@@ -65,11 +65,11 @@ olcs.RasterSynchronizer = function(map, cesiumLayers) {
 
 
 /**
- * @param {ol.View|null|undefined} view New view to use.
+ * @param {?ol.View} view New view to use.
  * @private
  */
 olcs.RasterSynchronizer.prototype.setView_ = function(view) {
-  this.view_ = goog.isDefAndNotNull(view) ? view : null;
+  this.view_ = view;
 
   // destroy all, the change of view can affect which layers are synced
   this.destroyAll();
