@@ -18,7 +18,8 @@ olcs.VectorSynchronizer = function(map, scene) {
    * @type {!Cesium.PrimitiveCollection}
    * @private
    */
-  this.csAllPrimitives_ = scene.primitives.add(new Cesium.PrimitiveCollection());
+  this.csAllPrimitives_ = scene.primitives.add(
+      new Cesium.PrimitiveCollection());
 
   // Initialize core library
   olcs.core.glAliasedLineWidthRange = scene.maximumAliasedLineWidth;
@@ -36,8 +37,7 @@ olcs.VectorSynchronizer = function(map, scene) {
    * @private
    */
   this.layerMap_ = {};
-  var layers = map.getLayers(); // FIXME: have ol3 guarantee the layer
-                                //reference never changes
+  var layers = map.getLayers(); // FIXME: listen for changes
   goog.events.listen(/** @type {!goog.events.EventTarget} */(layers),
       ['change', 'add', 'remove'], function(e) {
         this.synchronize();
