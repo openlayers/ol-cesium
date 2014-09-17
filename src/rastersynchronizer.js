@@ -72,7 +72,7 @@ olcs.RasterSynchronizer.prototype.setView_ = function(view) {
   this.view_ = view;
 
   // destroy all, the change of view can affect which layers are synced
-  this.destroyAll();
+  this.destroyAll_();
   this.synchronize();
 };
 
@@ -101,7 +101,7 @@ olcs.RasterSynchronizer.prototype.setLayers_ = function(layers) {
     this.olLayersListenKeys_ = [];
   }
 
-  this.destroyAll();
+  this.destroyAll_();
   this.synchronize();
 };
 
@@ -188,9 +188,10 @@ olcs.RasterSynchronizer.prototype.synchronize = function() {
 
 
 /**
- * Destroys all the create Cesium layers.
+ * Destroys all the created Cesium layers.
+ * @private
  */
-olcs.RasterSynchronizer.prototype.destroyAll = function() {
+olcs.RasterSynchronizer.prototype.destroyAll_ = function() {
   this.cesiumLayers_.removeAll(); // destroy
   this.layerMap_ = {};
 };
