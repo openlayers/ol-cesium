@@ -25,7 +25,7 @@ npm-install: .build/node_modules.timestamp
 build-ol3:
 	(cd ol3 && \
 	 npm install && \
-	 python build.py build/ol.js css/ol.css)
+	 python build.py build/ol.js build/ol.css)
 
 .PHONY: serve
 serve: npm-install build-ol3 cesium/Build/Cesium/Cesium.js
