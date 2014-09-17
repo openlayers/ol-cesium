@@ -67,6 +67,8 @@ olcs.RasterSynchronizer.prototype.synchronize = function() {
         });
       }
       return;
+    } else if (!(olLayer instanceof ol.layer.Tile)) {
+      return;
     }
 
     var olLayerId = goog.getUid(olLayer);
