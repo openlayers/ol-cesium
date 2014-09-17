@@ -93,7 +93,7 @@ olcs.RasterSynchronizer.prototype.setLayers_ = function(layers) {
     }, this);
 
     this.olLayersListenKeys_ = [
-      layers.on(goog.events.EventType.CHANGE, handleCollectionEvent_),
+      layers.on('change', handleCollectionEvent_),
       layers.on('add', handleCollectionEvent_),
       layers.on('remove', handleCollectionEvent_)
     ];
