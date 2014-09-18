@@ -530,7 +530,7 @@ goog.require('olcs.core.OLImageryProvider');
         reallyCreateBillboard();
       };
 
-      goog.events.listenOnce(image, 'load', listener, false, this);
+      goog.events.listenOnce(image, 'load', listener);
     } else {
       reallyCreateBillboard();
     }

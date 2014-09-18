@@ -1,22 +1,22 @@
 var iconFeature = new ol.Feature({
-    geometry: new ol.geom.Point([700000, 200000]),
-      name: 'Null Island',
-      population: 4000,
-      rainfall: 500
+  geometry: new ol.geom.Point([700000, 200000]),
+  name: 'Null Island',
+  population: 4000,
+  rainfall: 500
 });
 
 var iconStyle = new ol.style.Style({
-    image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
-      anchor: [0.5, 46],
-      anchorXUnits: 'fraction',
-      anchorYUnits: 'pixels',
-      opacity: 0.75,
-      src: 'data/icon.png'
-    })),
-    text: new ol.style.Text({
-      text: 'Icon',
-      font: 'italic'
-    })
+  image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+    anchor: [0.5, 46],
+    anchorXUnits: 'fraction',
+    anchorYUnits: 'pixels',
+    opacity: 0.75,
+    src: 'data/icon.png'
+  })),
+  text: new ol.style.Text({
+    text: 'Icon',
+    font: 'italic'
+  })
 });
 
 iconFeature.setStyle(iconStyle);
@@ -138,7 +138,22 @@ var vectorSource = new ol.source.GeoJSON(
             'type': 'Feature',
             'geometry': {
               'type': 'LineString',
-              'coordinates': [[4e6, -2e6], [8e6, 2e6]]
+              'coordinates': [
+                [1e5, 1e5, 1],
+                [2e5, 2e5, 100000],
+                [3e5, 3e5, 1000],
+                [4e5, 4e5, 100000],
+                [5e5, 5e5, 100],
+                [6e5, 6e5, 100000],
+                [7e5, 7e5, 1]
+              ]
+            }
+          },
+          {
+            'type': 'Feature',
+            'geometry': {
+              'type': 'LineString',
+              'coordinates': [[4e6, -2e6, 100000], [8e6, 2e6, 200000]]
             }
           },
           {
@@ -222,11 +237,11 @@ var vectorLayer = new ol.layer.Vector({
 
 
 var vectorSource2 = new ol.source.Vector({
-    features: [iconFeature]
+  features: [iconFeature]
 });
 
 var vectorLayer2 = new ol.layer.Vector({
-    source: vectorSource2
+  source: vectorSource2
 });
 
 var dragAndDropInteraction = new ol.interaction.DragAndDrop({
@@ -245,7 +260,10 @@ var map = new ol.Map({
   interactions: ol.interaction.defaults().extend([dragAndDropInteraction]),
   layers: [
     new ol.layer.Tile({
-      source: new ol.source.OSM()
+      source: new ol.source.BingMaps({
+        key: 'Ak-dzM4wZjSqTlzveKz5u0d4IQ4bRzVI309GxmkgSVr1ewS6iPSrOvOKhA-CJlm3',
+        imagerySet: 'Aerial'
+      })
     }),
     vectorLayer,
     vectorLayer2
@@ -283,6 +301,7 @@ var terrainProvider = new Cesium.CesiumTerrainProvider({
   url: '//cesiumjs.org/stk-terrain/tilesets/world/tiles'
 });
 scene.terrainProvider = terrainProvider;
+scene.globe.depthTestAgainstTerrain = true;
 ol3d.setEnabled(true);
 
 setTimeout(function() {
@@ -294,8 +313,8 @@ setTimeout(function() {
 
 var csLabels = new Cesium.LabelCollection();
 csLabels.add({
-    position: Cesium.Cartesian3.fromRadians(20, 20, 0),
-    text: 'Pre-existing primitive'
+  position: Cesium.Cartesian3.fromRadians(20, 20, 0),
+  text: 'Pre-existing primitive'
 });
 scene.primitives.add(csLabels);
 
