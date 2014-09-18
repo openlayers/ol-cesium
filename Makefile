@@ -45,6 +45,7 @@ check: lint dist
 clean:
 	rm -f dist/ol3cesium.js
 	rm -f ol3/build/ol.js
+	rm -f ol3/build/ol-debug.js
 	rm -f ol3/build/ol.css
 	rm -f ol3/build/ol-externs.js
 	rm -f cesium/Build/Cesium/Cesium.js
