@@ -210,8 +210,11 @@ olcs.OLCesium.prototype.setEnabled = function(opt_enable) {
       }, this);
       interactions.clear();
 
-      this.hiddenRootGroup_ = this.map_.getLayerGroup();
-      this.hiddenRootGroup_.setVisible(false);
+      var rootGroup = this.map_.getLayerGroup();
+      if (rootGroup.getVisible()) {
+        this.hiddenRootGroup_ = rootGroup;
+        this.hiddenRootGroup_.setVisible(false);
+      }
     }
     this.handleResize_();
     this.camera_.readFromView();
