@@ -300,7 +300,6 @@ var terrainProvider = new Cesium.CesiumTerrainProvider({
   url: '//cesiumjs.org/stk-terrain/tilesets/world/tiles'
 });
 scene.terrainProvider = terrainProvider;
-scene.globe.depthTestAgainstTerrain = true;
 ol3d.setEnabled(true);
 
 setTimeout(function() {
