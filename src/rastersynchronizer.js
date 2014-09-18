@@ -157,6 +157,11 @@ olcs.RasterSynchronizer.prototype.synchronize = function() {
           delete this.layerMap_[olLayerId]; // invalidate the map entry
           this.synchronize();
         }, this);
+
+        olLayer.on('change', function(e) {
+          // when the source changes, re-add the layers to force update
+          this.synchronize();
+        }, this);
       }
       this.layerMap_[olLayerId] = cesiumLayer;
     }
