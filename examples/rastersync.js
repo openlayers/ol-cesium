@@ -61,17 +61,26 @@ var addStamen = function() {
   }));
 };
 
-var addTileWMS = function() {
-  ol2d.addLayer(new ol.layer.Tile({
-    opacity: 0.5,
-    extent: [-13884991, 2870341, -7455066, 6338219],
-    source: new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
+var tileWMSSource = new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
       url: 'http://demo.opengeo.org/geoserver/wms',
       params: {'LAYERS': 'topp:states', 'TILED': true},
       serverType: 'geoserver',
       crossOrigin: 'anonymous'
-    }))
+    }));
+
+var addTileWMS = function() {
+  ol2d.addLayer(new ol.layer.Tile({
+    opacity: 0.5,
+    extent: [-13884991, 2870341, -7455066, 6338219],
+    source: tileWMSSource
   }));
+};
+
+var changeI = 0;
+var changeTileWMSParams = function() {
+  tileWMSSource.updateParams({
+    'LAYERS': (changeI++) % 2 == 0 ? 'nurc:Img_Sample' : 'topp:states'
+  });
 };
 
 var addTileJSON = function() {
