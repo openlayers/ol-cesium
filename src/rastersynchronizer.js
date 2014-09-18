@@ -78,7 +78,7 @@ olcs.RasterSynchronizer.prototype.synchronize = function() {
     if (!goog.isDef(cesiumLayer)) {
       cesiumLayer = olcs.core.tileLayerToImageryLayer(olLayer, viewProj);
       if (!goog.isNull(cesiumLayer)) {
-        goog.events.listen(olLayer,
+        olLayer.on(
             ['change:brightness', 'change:contrast', 'change:hue',
              'change:opacity', 'change:saturation', 'change:visible'],
             function(e) {
@@ -91,11 +91,11 @@ olcs.RasterSynchronizer.prototype.synchronize = function() {
 
         // there is no way to modify Cesium layer extent,
         // we have to recreate when ol3 layer extent changes:
-        goog.events.listen(olLayer, 'change:extent', function(e) {
+        olLayer.on('change:extent', function(e) {
           this.cesiumLayers_.remove(cesiumLayer, true); // destroy
           delete this.layerMap_[olLayerId]; // invalidate the map entry
           this.synchronize();
-        }, false, this);
+        }, this);
       }
       this.layerMap_[olLayerId] = cesiumLayer;
     }
