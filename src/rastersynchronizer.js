@@ -9,23 +9,34 @@ goog.require('olcs.core');
 /**
  * This object takes care of one-directional synchronization of
  * ol3 raster layers to the given Cesium globe.
- * @param {!ol.View} view
- * @param {!ol.Collection} olLayers
+ * @param {!ol.Map} map
  * @param {!Cesium.ImageryLayerCollection} cesiumLayers
  * @constructor
  */
-olcs.RasterSynchronizer = function(view, olLayers, cesiumLayers) {
+olcs.RasterSynchronizer = function(map, cesiumLayers) {
   /**
-   * @type {!ol.View}
+   * @type {!ol.Map}
    * @private
    */
-  this.view_ = view;
+  this.map_ = map;
 
   /**
-   * @type {!ol.Collection}
+   * @type {?ol.View}
    * @private
    */
-  this.olLayers_ = olLayers;
+  this.view_ = null;
+
+  /**
+   * @type {?ol.Collection.<ol.layer.Base>}
+   * @private
+   */
+  this.olLayers_ = null;
+
+  /**
+   * @type {!Array}
+   * @private
+   */
+  this.olLayersListenKeys_ = [];
 
   /**
    * @type {!Cesium.ImageryLayerCollection}
@@ -41,10 +52,57 @@ olcs.RasterSynchronizer = function(view, olLayers, cesiumLayers) {
    */
   this.layerMap_ = {};
 
-  goog.events.listen(/** @type {!goog.events.EventTarget} */(this.olLayers_),
-      [goog.events.EventType.CHANGE, 'add', 'remove'], function(e) {
-        this.synchronize();
-      }, false, this);
+  this.map_.on('change:view', function(e) {
+    this.setView_(this.map_.getView());
+  }, this);
+  this.setView_(this.map_.getView());
+
+  this.map_.on('change:layergroup', function(e) {
+    this.setLayers_(this.map_.getLayers());
+  }, this);
+  this.setLayers_(this.map_.getLayers());
+};
+
+
+/**
+ * @param {?ol.View} view New view to use.
+ * @private
+ */
+olcs.RasterSynchronizer.prototype.setView_ = function(view) {
+  this.view_ = view;
+
+  // destroy all, the change of view can affect which layers are synced
+  this.destroyAll_();
+  this.synchronize();
+};
+
+
+/**
+ * @param {ol.Collection.<ol.layer.Base>} layers New layers to use.
+ * @private
+ */
+olcs.RasterSynchronizer.prototype.setLayers_ = function(layers) {
+  if (!goog.isNull(this.olLayers_)) {
+    goog.array.forEach(this.olLayersListenKeys_, this.olLayers_.unByKey);
+  }
+
+  this.olLayers_ = layers;
+  if (!goog.isNull(layers)) {
+    var handleCollectionEvent_ = goog.bind(function(e) {
+      this.synchronize();
+    }, this);
+
+    this.olLayersListenKeys_ = [
+      layers.on('change', handleCollectionEvent_),
+      layers.on('add', handleCollectionEvent_),
+      layers.on('remove', handleCollectionEvent_)
+    ];
+  } else {
+    this.olLayersListenKeys_ = [];
+  }
+
+  this.destroyAll_();
+  this.synchronize();
 };
 
 
@@ -52,6 +110,9 @@ olcs.RasterSynchronizer = function(view, olLayers, cesiumLayers) {
  * Performs complete synchronization of the raster layers.
  */
 olcs.RasterSynchronizer.prototype.synchronize = function() {
+  if (goog.isNull(this.view_) || goog.isNull(this.olLayers_)) {
+    return;
+  }
   var unusedCesiumLayers = goog.object.transpose(this.layerMap_);
   this.cesiumLayers_.removeAll(false);
 
@@ -123,4 +184,14 @@ olcs.RasterSynchronizer.prototype.synchronize = function() {
           }
         }
       }, this);
+};
+
+
+/**
+ * Destroys all the created Cesium layers.
+ * @private
+ */
+olcs.RasterSynchronizer.prototype.destroyAll_ = function() {
+  this.cesiumLayers_.removeAll(); // destroy
+  this.layerMap_ = {};
 };
