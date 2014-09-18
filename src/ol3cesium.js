@@ -1,5 +1,6 @@
 goog.provide('olcs.OLCesium');
 
+goog.require('goog.async.AnimationDelay');
 goog.require('goog.dom');
 goog.require('goog.events');
 
@@ -128,15 +129,13 @@ olcs.OLCesium = function(map, opt_target) {
 
   this.camera_.readFromView();
 
-  var tick = goog.bind(function() {
+  this.cesiumRenderingDelay_ = new goog.async.AnimationDelay(function(time) {
     this.scene_.initializeFrame();
-    if (this.enabled_) {
-      this.scene_.render();
-      this.camera_.checkCameraChange();
-    }
-    Cesium.requestAnimationFrame(tick);
-  }, this);
-  Cesium.requestAnimationFrame(tick);
+    this.scene_.render();
+    this.camera_.checkCameraChange();
+
+    this.cesiumRenderingDelay_.start();
+  }, undefined, this);
 };
 
 
@@ -206,6 +205,7 @@ olcs.OLCesium.prototype.setEnabled = function(opt_enable) {
     }
     this.handleResize_();
     this.camera_.readFromView();
+    this.cesiumRenderingDelay_.start();
   } else {
     if (this.isOverMap_) {
       var interactions = this.map_.getInteractions();
@@ -216,5 +216,6 @@ olcs.OLCesium.prototype.setEnabled = function(opt_enable) {
     }
 
     this.camera_.updateView();
+    this.cesiumRenderingDelay_.stop();
   }
 };
