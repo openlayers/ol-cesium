@@ -97,25 +97,16 @@ dist/ol3cesium.js: build/ol3cesium.json $(SRC_JS_FILES) ol3/build/ol-externs.js 
 	-ln -s .. dist/source
 
 ol3/build/ol-externs.js:
-	(cd ol3 && \
-	 npm install && \
-	 node tasks/generate-externs.js build/ol-externs.js)
+	(cd ol3 && npm install && node tasks/generate-externs.js build/ol-externs.js)
 
 ol3/build/ol.js:
-	(cd ol3 && \
-	 npm install && \
-	 python build.py build/ol.js)
+	(cd ol3 && npm install && python build.py build/ol.js)
 
 ol3/build/ol-debug.js:
-	(cd ol3 && \
-	 npm install && \
-	 python build.py build/ol-debug.js)
+	(cd ol3 && npm install && python build.py build/ol-debug.js)
 
 ol3/build/ol.css:
-	(cd ol3 && \
-	 npm install && \
-	 python build.py build/ol.css)
+	(cd ol3 && npm install && python build.py build/ol.css)
 
 cesium/Build/Cesium/Cesium.js:
-	(cd cesium && \
-	 ./Tools/apache-ant-1.8.2/bin/ant minify)
+	(cd cesium && ./Tools/apache-ant-1.8.2/bin/ant minify)
