@@ -302,13 +302,6 @@ var terrainProvider = new Cesium.CesiumTerrainProvider({
 scene.terrainProvider = terrainProvider;
 ol3d.setEnabled(true);
 
-setTimeout(function() {
-  map.getLayers().remove(vectorLayer);
-  setTimeout(function() {
-    map.getLayers().insertAt(1, vectorLayer);
-  }, 3000);
-}, 8000);
-
 var csLabels = new Cesium.LabelCollection();
 csLabels.add({
   position: Cesium.Cartesian3.fromRadians(20, 20, 0),
@@ -318,3 +311,13 @@ scene.primitives.add(csLabels);
 
 // Adding a feature after the layer has been synchronized.
 vectorSource.addFeature(new ol.Feature(new ol.geom.Circle([5e6, 7e6], 1e6)));
+
+var hasTheVectorLayer = true;
+function addOrRemoveOneVectorLayer() {
+  if (hasTheVectorLayer) {
+    map.getLayers().remove(vectorLayer);
+  } else {
+    map.getLayers().insertAt(1, vectorLayer);
+  }
+  hasTheVectorLayer = !hasTheVectorLayer;
+}
