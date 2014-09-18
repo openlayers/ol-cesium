@@ -228,7 +228,6 @@ var vectorSource = new ol.source.GeoJSON(
       }
     }));
 
-vectorSource.addFeature(new ol.Feature(new ol.geom.Circle([5e6, 7e6], 1e6)));
 
 var vectorLayer = new ol.layer.Vector({
   source: vectorSource,
@@ -318,3 +317,5 @@ csLabels.add({
 });
 scene.primitives.add(csLabels);
 
+// Adding a feature after the layer has been synchronized.
+vectorSource.addFeature(new ol.Feature(new ol.geom.Circle([5e6, 7e6], 1e6)));
