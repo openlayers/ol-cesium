@@ -84,11 +84,10 @@ olcs.VectorSynchronizer.prototype.synchronize = function() {
         csPrimitives.show = olLayer.getVisible();
       });
 
-      olLayer.on('change', function(e) {
-        this.csAllPrimitives_.destroyPrimitives = true;
+      olLayer.once('change', function(e) {
         this.csAllPrimitives_.remove(csPrimitives);
-        this.csAllPrimitives_.destroyPrimitives = false;
-        this.layerMap_[olLayerId] = undefined;
+        csPrimitives.destroy(); // from now on, do not use csPrimitives
+        delete this.layerMap_[olLayerId];
         synchronizeLayer(olLayer);
       }, this);
 
