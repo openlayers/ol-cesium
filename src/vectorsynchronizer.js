@@ -38,10 +38,9 @@ olcs.VectorSynchronizer = function(map, scene) {
    */
   this.layerMap_ = {};
   var layers = map.getLayers(); // FIXME: listen for changes
-  goog.events.listen(/** @type {!goog.events.EventTarget} */(layers),
-      ['change', 'add', 'remove'], function(e) {
-        this.synchronize();
-      }, false, this);
+  layers.on(['change', 'add', 'remove'], function(e) {
+    this.synchronize();
+  }, this);
 };
 
 
@@ -81,11 +80,18 @@ olcs.VectorSynchronizer.prototype.synchronize = function() {
       view = /** @type {!ol.View} */ (view);
       csPrimitives = olcs.core.olVectorLayerToCesium(olLayer, view);
 
-      if (csPrimitives) {
-        olLayer.on('change:visible', function(e) {
-          csPrimitives.show = olLayer.getVisible();
-        });
-      }
+      olLayer.on('change:visible', function(e) {
+        csPrimitives.show = olLayer.getVisible();
+      });
+
+      olLayer.on('change', function(e) {
+        this.csAllPrimitives_.destroyPrimitives = true;
+        this.csAllPrimitives_.remove(csPrimitives);
+        this.csAllPrimitives_.destroyPrimitives = false;
+        this.layerMap_[olLayerId] = undefined;
+        synchronizeLayer(olLayer);
+      }, this);
+
       this.layerMap_[olLayerId] = csPrimitives;
     }
 

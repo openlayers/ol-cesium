@@ -6,14 +6,19 @@
     <meta name="robots" content="index, all" />
     <title>ol3cesium vectors example</title>
     <link rel="stylesheet" href="../ol3/css/ol.css" type="text/css"></link>
+    <style>.cesium-credit-textContainer { display: inline-block; font-size: 50%; line-height: 100%;}</style>
   </head>
   <body>
     <div id="map2d" style="width:600px;height:400px;float:left;"></div>
     <div id="map3d" style="width:600px;height:400px;float:left;position:relative;"></div>
     <div><input type="button" value="Enable/disable Cesium"
       onclick="javascript:ol3d.setEnabled(!ol3d.getEnabled())" /></div>
-    <div><input type="button" value="Enable/disable depth test"
+    <div><input type="button" value="Toggle depth test"
       onclick="javascript:scene.globe.depthTestAgainstTerrain = !scene.globe.depthTestAgainstTerrain" /></div>
+    <div><input type="button" value="Toggle circle style"
+      onclick="javascript:toggleStyle()" /></div>
+    <div><input type="button" value="Add/remove one vector layer"
+      onclick="javascript:addOrRemoveOneVectorLayer()" /></div>
     <script src="../ol3/build/ol.js"></script>
     <script src="../cesium/Build/Cesium/Cesium.js"></script>
     <script src="/@loader"></script>

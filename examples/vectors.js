@@ -228,7 +228,7 @@ var vectorSource = new ol.source.GeoJSON(
       }
     }));
 
-vectorSource.addFeature(new ol.Feature(new ol.geom.Circle([5e6, 7e6], 1e6)));
+var theCircle = new ol.Feature(new ol.geom.Circle([5e6, 7e6], 1e6));
 
 var vectorLayer = new ol.layer.Vector({
   source: vectorSource,
@@ -301,15 +301,7 @@ var terrainProvider = new Cesium.CesiumTerrainProvider({
   url: '//cesiumjs.org/stk-terrain/tilesets/world/tiles'
 });
 scene.terrainProvider = terrainProvider;
-scene.globe.depthTestAgainstTerrain = true;
 ol3d.setEnabled(true);
-
-setTimeout(function() {
-  map.getLayers().remove(vectorLayer);
-  setTimeout(function() {
-    map.getLayers().insertAt(1, vectorLayer);
-  }, 3000);
-}, 8000);
 
 var csLabels = new Cesium.LabelCollection();
 csLabels.add({
@@ -318,3 +310,30 @@ csLabels.add({
 });
 scene.primitives.add(csLabels);
 
+// Adding a feature after the layer has been synchronized.
+vectorSource.addFeature(theCircle);
+
+var hasTheVectorLayer = true;
+function addOrRemoveOneVectorLayer() {
+  if (hasTheVectorLayer) {
+    map.getLayers().remove(vectorLayer);
+  } else {
+    map.getLayers().insertAt(1, vectorLayer);
+  }
+  hasTheVectorLayer = !hasTheVectorLayer;
+}
+
+var oldStyle = new ol.style.Style({
+  stroke: new ol.style.Stroke({
+    color: 'blue',
+    width: 2
+  }),
+  fill: new ol.style.Fill({
+    color: 'green'
+  })
+});
+function toggleStyle() {
+  var swap = theCircle.getStyle();
+  theCircle.setStyle(oldStyle);
+  oldStyle = swap;
+}

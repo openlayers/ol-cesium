@@ -818,7 +818,7 @@ goog.require('olcs.core.OLImageryProvider');
    * Convert an OpenLayers vector layer to Cesium primitive collection.
    * @param {!ol.layer.Vector} olLayer
    * @param {!ol.View} olView
-   * @return {Cesium.PrimitiveCollection}
+   * @return {!Cesium.PrimitiveCollection}
    * @api
    */
   olcs.core.olVectorLayerToCesium = function(olLayer, olView) {
