@@ -13,8 +13,10 @@
     <div id="map3d" style="width:600px;height:400px;float:left;position:relative;"></div>
     <div><input type="button" value="Enable/disable Cesium"
       onclick="javascript:ol3d.setEnabled(!ol3d.getEnabled())" /></div>
-    <div><input type="button" value="Enable/disable depth test"
+    <div><input type="button" value="Toggle depth test"
       onclick="javascript:scene.globe.depthTestAgainstTerrain = !scene.globe.depthTestAgainstTerrain" /></div>
+    <div><input type="button" value="Toggle circle style"
+      onclick="javascript:toggleStyle()" /></div>
     <div><input type="button" value="Add/remove one vector layer"
       onclick="javascript:addOrRemoveOneVectorLayer()" /></div>
     <script src="../ol3/build/ol.js"></script>

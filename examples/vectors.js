@@ -228,6 +228,7 @@ var vectorSource = new ol.source.GeoJSON(
       }
     }));
 
+var theCircle = new ol.Feature(new ol.geom.Circle([5e6, 7e6], 1e6));
 
 var vectorLayer = new ol.layer.Vector({
   source: vectorSource,
@@ -310,7 +311,7 @@ csLabels.add({
 scene.primitives.add(csLabels);
 
 // Adding a feature after the layer has been synchronized.
-vectorSource.addFeature(new ol.Feature(new ol.geom.Circle([5e6, 7e6], 1e6)));
+vectorSource.addFeature(theCircle);
 
 var hasTheVectorLayer = true;
 function addOrRemoveOneVectorLayer() {
@@ -320,4 +321,19 @@ function addOrRemoveOneVectorLayer() {
     map.getLayers().insertAt(1, vectorLayer);
   }
   hasTheVectorLayer = !hasTheVectorLayer;
+}
+
+var oldStyle = new ol.style.Style({
+  stroke: new ol.style.Stroke({
+    color: 'blue',
+    width: 2
+  }),
+  fill: new ol.style.Fill({
+    color: 'green'
+  })
+});
+function toggleStyle() {
+  var swap = theCircle.getStyle();
+  theCircle.setStyle(oldStyle);
+  oldStyle = swap;
 }
