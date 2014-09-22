@@ -70,6 +70,12 @@ olcs.OLCesium = function(map, opt_target) {
   this.pausedInteractions_ = [];
 
   /**
+   * @type {?ol.layer.Group}
+   * @private
+   */
+  this.hiddenRootGroup_ = null;
+
+  /**
    * @type {!Cesium.Scene}
    * @private
    */
@@ -203,6 +209,12 @@ olcs.OLCesium.prototype.setEnabled = function(opt_enable) {
         this.pausedInteractions_.push(el);
       }, this);
       interactions.clear();
+
+      var rootGroup = this.map_.getLayerGroup();
+      if (rootGroup.getVisible()) {
+        this.hiddenRootGroup_ = rootGroup;
+        this.hiddenRootGroup_.setVisible(false);
+      }
     }
     this.handleResize_();
     this.camera_.readFromView();
@@ -213,6 +225,11 @@ olcs.OLCesium.prototype.setEnabled = function(opt_enable) {
         interactions.push(el);
       }, this);
       this.pausedInteractions_.length = 0;
+
+      if (!goog.isNull(this.hiddenRootGroup_)) {
+        this.hiddenRootGroup_.setVisible(true);
+        this.hiddenRootGroup_ = null;
+      }
     }
 
     this.camera_.updateView();
