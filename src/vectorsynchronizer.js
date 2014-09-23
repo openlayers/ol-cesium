@@ -18,8 +18,9 @@ olcs.VectorSynchronizer = function(map, scene) {
    * @type {!Cesium.PrimitiveCollection}
    * @private
    */
-  this.csAllPrimitives_ = scene.primitives.add(
-      new Cesium.PrimitiveCollection());
+  this.csAllPrimitives_ = new Cesium.PrimitiveCollection();
+  scene.primitives.add(this.csAllPrimitives_);
+  this.csAllPrimitives_.destroyPrimitives = false;
 
   // Initialize core library
   olcs.core.glAliasedLineWidthRange = scene.maximumAliasedLineWidth;
@@ -48,17 +49,16 @@ olcs.VectorSynchronizer = function(map, scene) {
  * Performs complete synchronization of the vector layers.
  */
 olcs.VectorSynchronizer.prototype.synchronize = function() {
-  var view = this.map_.getView(); // view reference might change
-  if (!goog.isDefAndNotNull(view)) {
-    return;
+  var view = this.map_.getView(); // reference might change
+  if (goog.isNull(view)) {
+    return; // FIXME: destroy everything?
   }
   var olLayers = this.map_.getLayers();
   var unusedCesiumPrimitives = goog.object.transpose(this.layerMap_);
-  this.csAllPrimitives_.destroyPrimitives = false;
   this.csAllPrimitives_.removeAll();
 
 
-  var synchronizeLayer = goog.bind(function(olLayer) {
+  var synchronizeLayer = goog.bind(function(olLayer, view) {
     // handle layer groups
     if (olLayer instanceof ol.layer.Group) {
       var sublayers = olLayer.getLayers();
@@ -77,18 +77,40 @@ olcs.VectorSynchronizer.prototype.synchronize = function() {
 
     // no mapping -> create new layer and set up synchronization
     if (!goog.isDef(csPrimitives)) {
-      view = /** @type {!ol.View} */ (view);
+      var source = olLayer.getSource();
       csPrimitives = olcs.core.olVectorLayerToCesium(olLayer, view);
 
       olLayer.on('change:visible', function(e) {
         csPrimitives.show = olLayer.getVisible();
       });
 
-      olLayer.once('change', function(e) {
-        this.csAllPrimitives_.remove(csPrimitives);
-        csPrimitives.destroy(); // from now on, do not use csPrimitives
-        delete this.layerMap_[olLayerId];
-        synchronizeLayer(olLayer);
+      var onAddFeature = function(feature) {
+        var primitive = olcs.core.olFeatureToCesiumUsingView(olLayer, view,
+            feature);
+        if (primitive) {
+          csPrimitives.add(primitive);
+        }
+      };
+
+      var onRemoveFeature = function(feature) {
+        csPrimitives.remove(feature.csPrimitive);
+      };
+
+      source.on('addfeature', function(e) {
+        goog.isDefAndNotNull(e.feature);
+        onAddFeature(e.feature);
+      }, this);
+
+      source.on('removefeature', function(e) {
+        goog.isDefAndNotNull(e.feature);
+        onRemoveFeature(e.feature);
+      }, this);
+
+      source.on('updatefeature', function(e) {
+        var feature = e.feature;
+        goog.isDefAndNotNull(feature);
+        onRemoveFeature(feature);
+        onAddFeature(feature);
       }, this);
 
       this.layerMap_[olLayerId] = csPrimitives;
@@ -103,7 +125,7 @@ olcs.VectorSynchronizer.prototype.synchronize = function() {
 
 
   olLayers.forEach(function(el, i, arr) {
-    synchronizeLayer(el);
+    synchronizeLayer(el, view);
   });
 
   // destroy unused Cesium primitives

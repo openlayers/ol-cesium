@@ -830,6 +830,34 @@ goog.require('olcs.core.OLImageryProvider');
 
 
   /**
+   * Convert an OpenLayers feature to Cesium primitive collection.
+   * @param {!ol.layer.Vector} layer
+   * @param {!ol.View} view
+   * @param {!ol.Feature} feature
+   * @return {Cesium.Primitive}
+   * @api
+   */
+  olcs.core.olFeatureToCesiumUsingView = function(layer, view, feature) {
+    var proj = view.getProjection();
+    var resolution = view.getResolution();
+
+    if (!resolution || !proj || !feature) {
+      return null;
+    }
+
+    var layerStyle = layer.getStyleFunction();
+    layerStyle = olcs.core.computePlainStyle(feature, layerStyle, resolution);
+
+    if (!layerStyle) {
+      // only 'render' features with a style
+      return null;
+    }
+
+    return olcs.core.olFeatureToCesium(feature, layerStyle, proj);
+  };
+
+
+  /**
    * Convert an OpenLayers vector layer to Cesium primitive collection.
    * @param {!ol.layer.Vector} olLayer
    * @param {!ol.View} olView
@@ -862,7 +890,7 @@ goog.require('olcs.core.OLImageryProvider');
         continue;
       }
       var primitives = olcs.core.olFeatureToCesium(feature, layerStyle, proj);
-      if (goog.isDef(primitives)) allPrimitives.add(primitives);
+      allPrimitives.add(primitives);
     }
 
     return allPrimitives;
