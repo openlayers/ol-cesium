@@ -788,6 +788,12 @@ goog.require('olcs.core.OLImageryProvider');
 
     goog.asserts.assert(style instanceof ol.style.Style);
 
+    var id = function(primitives) {
+      feature.csPrimitive = primitives;
+      primitives.olFeatureId = feature.getId();
+      return primitives;
+    };
+
     switch (geom.getType()) {
       case 'GeometryCollection':
         var primitives = new Cesium.PrimitiveCollection();
@@ -796,27 +802,29 @@ goog.require('olcs.core.OLImageryProvider');
           var prims = olcs.core.olFeatureToCesium(feature, style, proj, geom);
           primitives.add(prims);
         });
-        return primitives;
+        return id(primitives);
       case 'Point':
         geom = /** @type {!ol.geom.Point} */ (geom);
-        return olcs.core.olPointGeometryToCesium(geom, proj, style);
+        return id(olcs.core.olPointGeometryToCesium(geom, proj, style));
       case 'Circle':
         geom = /** @type {!ol.geom.Circle} */ (geom);
-        return olcs.core.olCircleGeometryToCesium(geom, proj, style);
+        return id(olcs.core.olCircleGeometryToCesium(geom, proj, style));
       case 'LineString':
         geom = /** @type {!ol.geom.LineString} */ (geom);
-        return olcs.core.olLineStringGeometryToCesium(geom, proj, style);
+        return id(olcs.core.olLineStringGeometryToCesium(geom, proj, style));
       case 'Polygon':
         geom = /** @type {!ol.geom.Polygon} */ (geom);
-        return olcs.core.olPolygonGeometryToCesium(geom, proj, style);
+        return id(olcs.core.olPolygonGeometryToCesium(geom, proj, style));
       case 'MultiPoint':
       case 'MultiLineString':
       case 'MultiPolygon':
-        return olcs.core.olMultiGeometryToCesium(geom, proj, style);
+        return id(olcs.core.olMultiGeometryToCesium(geom, proj, style));
       case 'LinearRing':
-        throw 'Linear ring geometries should only be part of polygon.';
+        goog.asserts.fail('LinearRing should only be part of polygon.');
+        break;
       default:
-        throw 'ol geom type not handled : ' + geom.getType();
+        goog.asserts.fail('ol geom type not handled : ' + geom.getType());
+        break;
     }
   };
 
