@@ -27,10 +27,10 @@ ol3d.setEnabled(true);
 
 var selectionStyle = new ol.style.Style({
   fill: new ol.style.Fill({
-    color: 'rgba(255, 255, 255, 0.6)'
+    color: [255, 255, 255, 0.6]
   }),
   stroke: new ol.style.Stroke({
-    color: 'rgba(0, 153, 255, 1)',
+    color: [0, 153, 255, 1],
     width: 3
   })
 });
