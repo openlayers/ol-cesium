@@ -686,7 +686,12 @@ goog.require('olcs.core.OLImageryProvider');
   var convertOlColorToCesium = function(olColor) {
     olColor = olColor || 'black';
     if (goog.isArray(olColor)) {
-      return Cesium.Color.unpack(olColor);
+      return new Cesium.Color(
+          Cesium.Color.byteToFloat(olColor[0]),
+          Cesium.Color.byteToFloat(olColor[1]),
+          Cesium.Color.byteToFloat(olColor[2]),
+          olColor[3]
+      );
     } else if (goog.isString(olColor)) {
       return Cesium.Color.fromCssColorString(olColor);
     } else {
