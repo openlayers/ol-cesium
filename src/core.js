@@ -307,16 +307,19 @@ goog.require('olcs.core.OLImageryProvider');
   var wrapFillAndOutlineGeometries = function(fillGeometry, outlineGeometry,
       olStyle) {
     var fillColor = extractColorFromOlStyle(olStyle, false);
-    var fillPrimitive = createColoredPrimitive(fillGeometry, fillColor);
-
     var outlineColor = extractColorFromOlStyle(olStyle, true);
-    var width = extractLineWidthFromOlStyle(olStyle);
-    var outlinePrimitive = createColoredPrimitive(outlineGeometry, outlineColor,
-        width);
 
     var primitives = new Cesium.PrimitiveCollection();
-    primitives.add(fillPrimitive);
-    primitives.add(outlinePrimitive);
+    if (olStyle.getFill()) {
+      var p = createColoredPrimitive(fillGeometry, fillColor);
+      primitives.add(p);
+    }
+
+    if (olStyle.getStroke()) {
+      var width = extractLineWidthFromOlStyle(olStyle);
+      var p = createColoredPrimitive(outlineGeometry, outlineColor, width);
+      primitives.add(p);
+    }
 
     return primitives;
   };
@@ -689,9 +692,8 @@ goog.require('olcs.core.OLImageryProvider');
       return Cesium.Color.unpack(olColor);
     } else if (goog.isString(olColor)) {
       return Cesium.Color.fromCssColorString(olColor);
-    } else {
-      throw 'impossible';
     }
+    goog.asserts.fail('impossible');
   };
 
 
