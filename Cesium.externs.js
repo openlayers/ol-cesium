@@ -25,6 +25,11 @@ Cesium.Color.fromCssColorString = function(name) {};
  */
 Cesium.Color.unpack = function(color) {};
 
+/**
+ * @param {number} component Integer in range [0-255]
+ * @return {number} float in range [0-1]
+ */
+Cesium.Color.byteToFloat = function(component) {};
 
 /**
  * @constructor
