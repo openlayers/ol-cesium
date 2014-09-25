@@ -372,6 +372,7 @@ goog.require('olcs.core.OLImageryProvider');
 
     // ol.Coordinate
     var center = olGeometry.getCenter();
+    var height = center.length == 3 ? center[2] : 0.0;
     var point = center.slice();
     point[0] += olGeometry.getRadius();
 
@@ -385,13 +386,15 @@ goog.require('olcs.core.OLImageryProvider');
     var fillGeometry = new Cesium.CircleGeometry({
       // always update Cesium externs before adding a property
       center: center,
-      radius: radius
+      radius: radius,
+      height: height
     });
 
     var outlineGeometry = new Cesium.CircleOutlineGeometry({
       // always update Cesium externs before adding a property
       center: center,
-      radius: radius
+      radius: radius,
+      height: height
     });
 
     var wrap = wrapFillAndOutlineGeometries;
@@ -479,13 +482,15 @@ goog.require('olcs.core.OLImageryProvider');
 
     var fillGeometry = new Cesium.PolygonGeometry({
       // always update Cesium externs before adding a property
-      polygonHierarchy: polygonHierarchy
+      polygonHierarchy: polygonHierarchy,
+      perPositionHeight: true
     });
 
     var width = extractLineWidthFromOlStyle(olStyle);
     var outlineGeometry = new Cesium.PolygonOutlineGeometry({
       // always update Cesium externs before adding a property
       polygonHierarchy: hierarchy,
+      perPositionHeight: true,
       width: width
     });
 
@@ -519,7 +524,7 @@ goog.require('olcs.core.OLImageryProvider');
     goog.asserts.assert(image);
     var billboards = new Cesium.BillboardCollection();
     var reallyCreateBillboard = function() {
-      var center = ol.extent.getCenter(geometry.getExtent());
+      var center = geometry.getCoordinates();
       var position = olcs.core.ol4326CoordinateToCesiumCartesian(center);
       billboards.add({
         // always update Cesium externs before adding a property
@@ -527,6 +532,7 @@ goog.require('olcs.core.OLImageryProvider');
         position: position
       });
     };
+
     if (image instanceof Image && !isImageLoaded(image)) {
       // Cesium requires the image to be loaded
       var listener = function() {
@@ -599,8 +605,12 @@ goog.require('olcs.core.OLImageryProvider');
     var primitives = new Cesium.LabelCollection();
     // TODO: export and use the text draw position from ol3 .
     // See src/ol/render/vector.js
-    var position = olcs.core.ol4326CoordinateToCesiumCartesian(
-        ol.extent.getCenter(geometry.getExtent()));
+    var extentCenter = ol.extent.getCenter(geometry.getExtent());
+    if (geometry instanceof ol.geom.SimpleGeometry) {
+      var first = geometry.getFirstCoordinate();
+      extentCenter[2] = first.length == 3 ? first[2] : 0.0;
+    }
+    var position = olcs.core.ol4326CoordinateToCesiumCartesian(extentCenter);
 
     primitives.modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(
         position);

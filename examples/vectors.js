@@ -1,5 +1,5 @@
 var iconFeature = new ol.Feature({
-  geometry: new ol.geom.Point([700000, 200000]),
+  geometry: new ol.geom.Point([700000, 200000, 100000]),
 });
 
 var iconStyle = new ol.style.Style({
@@ -124,7 +124,7 @@ var vectorSource = new ol.source.GeoJSON(
             'type': 'Feature',
             'geometry': {
               'type': 'Point',
-              'coordinates': [0, 0]
+              'coordinates': [0, 0, 1e5]
             }
           },
           {
@@ -160,7 +160,9 @@ var vectorSource = new ol.source.GeoJSON(
             'type': 'Feature',
             'geometry': {
               'type': 'Polygon',
-              'coordinates': [[[-5e6, -1e6], [-4e6, 1e6], [-3e6, -1e6]]]
+              'coordinates': [
+                [[-5e6, -1e6, 1e6], [-4e6, 1e6, 1e6], [-3e6, -1e6, 1e6]]
+              ]
             }
           },
           {
@@ -180,9 +182,14 @@ var vectorSource = new ol.source.GeoJSON(
             'geometry': {
               'type': 'MultiPolygon',
               'coordinates': [
-                [[[-5e6, 6e6], [-5e6, 8e6], [-3e6, 8e6], [-3e6, 6e6]]],
-                [[[-2e6, 6e6], [-2e6, 8e6], [0, 8e6], [0, 6e6]]],
-                [[[1e6, 6e6], [1e6, 8e6], [3e6, 8e6], [3e6, 6e6]]]
+                [[
+                  [-5e6, 6e6, 8e5],
+                  [-5e6, 8e6, 8e5],
+                  [-3e6, 8e6, 8e5],
+                  [-3e6, 6e6, 8e5]
+                ]],
+                [[[-2e6, 6e6, 4e5], [-2e6, 8e6, 1e5], [0, 8e6], [0, 6e6]]],
+                [[[1e6, 6e6, 1e5], [1e6, 8e6], [3e6, 8e6], [3e6, 6e6]]]
               ]
             }
           },
@@ -191,9 +198,9 @@ var vectorSource = new ol.source.GeoJSON(
             'geometry': {
               'type': 'MultiPoint',
               'coordinates': [
-                [-6e6, 6e6],
-                [-2e6, 6e6],
-                [1e6, 6e6]
+                [-5e6, 6e6, 8e5],
+                [-2e6, 6e6, 4e5],
+                [1e6, 6e6, 1e5]
               ]
             }
           },
@@ -221,7 +228,7 @@ var vectorSource = new ol.source.GeoJSON(
       }
     }));
 
-var theCircle = new ol.Feature(new ol.geom.Circle([5e6, 7e6], 1e6));
+var theCircle = new ol.Feature(new ol.geom.Circle([5e6, 7e6, 5e5], 1e6));
 
 var vectorLayer = new ol.layer.Vector({
   source: vectorSource,
