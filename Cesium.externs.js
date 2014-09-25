@@ -111,7 +111,7 @@ Cesium.BillboardCollection = function() {};
 
 /**
  * @typedef {{
- *   image: string,
+ *   image: (string|HTMLCanvasElement|Image),
  *   position: !Cesium.Cartesian3
  * }}
  */
