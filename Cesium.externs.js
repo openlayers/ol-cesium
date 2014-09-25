@@ -761,6 +761,13 @@ Cesium.Globe.prototype.ellipsoid;
 
 
 /**
+ * @param {!Cesium.Cartographic} cartographic
+ * @return {number|undefined}
+ */
+Cesium.Globe.prototype.getHeight = function(cartographic) {};
+
+
+/**
  * @param {!Cesium.Ray} ray
  * @param {!Cesium.Scene} scene
  * @param {Cesium.Cartesian3=} opt_result
