@@ -50,7 +50,7 @@ olcs.VectorSynchronizer = function(map, scene) {
  */
 olcs.VectorSynchronizer.prototype.synchronize = function() {
   var view = this.map_.getView(); // reference might change
-  if (goog.isNull(view)) {
+  if (!view) {
     return; // FIXME: destroy everything?
   }
   var olLayers = this.map_.getLayers();
@@ -58,13 +58,17 @@ olcs.VectorSynchronizer.prototype.synchronize = function() {
   this.csAllPrimitives_.removeAll();
 
 
+  /**
+   * @param {!ol.layer.Layer} olLayer
+   * @param {!ol.View} view
+   */
   var synchronizeLayer = goog.bind(function(olLayer, view) {
     // handle layer groups
     if (olLayer instanceof ol.layer.Group) {
       var sublayers = olLayer.getLayers();
       if (goog.isDef(sublayers)) {
         sublayers.forEach(function(el, i, arr) {
-          synchronizeLayer(el);
+          synchronizeLayer(el, view);
         });
       }
       return;
@@ -125,6 +129,7 @@ olcs.VectorSynchronizer.prototype.synchronize = function() {
 
 
   olLayers.forEach(function(el, i, arr) {
+    goog.asserts.assert(!goog.isNull(view));
     synchronizeLayer(el, view);
   });
 
