@@ -93,7 +93,6 @@ olcs.RasterSynchronizer.prototype.setLayers_ = function(layers) {
     }, this);
 
     this.olLayersListenKeys_ = [
-      layers.on('change', handleCollectionEvent_),
       layers.on('add', handleCollectionEvent_),
       layers.on('remove', handleCollectionEvent_)
     ];
@@ -127,6 +126,10 @@ olcs.RasterSynchronizer.prototype.synchronize = function() {
           synchronizeLayer(el);
         });
       }
+      olLayer.on('change', function(e) {
+        // when some layers are added or removed inside the group
+        this.synchronize();
+      }, this);
       return;
     } else if (!(olLayer instanceof ol.layer.Tile)) {
       return;
