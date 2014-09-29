@@ -232,6 +232,9 @@ olcs.Camera.prototype.setPosition = function(position) {
     return;
   }
   var ll = this.toLonLat_(position);
+  if (!goog.isDefAndNotNull(ll)) {
+    return;
+  }
 
   var carto = new Cesium.Cartographic(goog.math.toRadians(ll[0]),
                                       goog.math.toRadians(ll[1]),
@@ -254,8 +257,9 @@ olcs.Camera.prototype.getPosition = function() {
   var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(
       this.cam_.position);
 
-  return this.fromLonLat_([goog.math.toDegrees(carto.longitude),
-                           goog.math.toDegrees(carto.latitude)]);
+  var pos = this.fromLonLat_([goog.math.toDegrees(carto.longitude),
+                              goog.math.toDegrees(carto.latitude)]);
+  return goog.isNull(pos) ? undefined : pos;
 };
 
 
@@ -295,6 +299,9 @@ olcs.Camera.prototype.lookAt = function(position) {
     return;
   }
   var ll = this.toLonLat_(position);
+  if (!goog.isDefAndNotNull(ll)) {
+    return;
+  }
 
   var carto = Cesium.Cartographic.fromDegrees(ll[0], ll[1]);
   olcs.core.lookAt(this.cam_, carto, this.scene_.globe);
@@ -312,7 +319,14 @@ olcs.Camera.prototype.updateCamera_ = function() {
   if (goog.isNull(this.view_) || goog.isNull(this.toLonLat_)) {
     return;
   }
-  var ll = this.toLonLat_(this.view_.getCenter());
+  var center = this.view_.getCenter();
+  if (!goog.isDefAndNotNull(center)) {
+    return;
+  }
+  var ll = this.toLonLat_(center);
+  if (!goog.isDefAndNotNull(ll)) {
+    return;
+  }
 
   var carto = new Cesium.Cartographic(goog.math.toRadians(ll[0]),
                                       goog.math.toRadians(ll[1]));
@@ -340,10 +354,18 @@ olcs.Camera.prototype.readFromView = function() {
   if (goog.isNull(this.view_) || goog.isNull(this.toLonLat_)) {
     return;
   }
+  var center = this.view_.getCenter();
+  if (!goog.isDefAndNotNull(center)) {
+    return;
+  }
+  var ll = this.toLonLat_(center);
+  if (!goog.isDefAndNotNull(ll)) {
+    return;
+  }
+
   var resolution = this.view_.getResolution();
   this.distance_ = this.calcDistanceForResolution_(
-      goog.isDef(resolution) ? resolution : 0,
-      goog.math.toRadians(this.toLonLat_(this.view_.getCenter())[1]));
+      goog.isDef(resolution) ? resolution : 0, goog.math.toRadians(ll[1]));
 
   this.updateCamera_();
 };
