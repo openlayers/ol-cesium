@@ -1455,6 +1455,13 @@ Cesium.ImageryLayerCollection.prototype.get = function(index) {};
 
 /**
  * @param {Cesium.ImageryLayer} layer
+ * @return {number} index
+ */
+Cesium.ImageryLayerCollection.prototype.indexOf = function(layer) {};
+
+
+/**
+ * @param {Cesium.ImageryLayer} layer
  * @param {number=} opt_index
  */
 Cesium.ImageryLayerCollection.prototype.add = function(layer, opt_index) {};
