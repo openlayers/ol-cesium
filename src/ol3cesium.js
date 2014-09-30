@@ -118,7 +118,7 @@ olcs.OLCesium = function(map, opt_target) {
    * @private
    */
   this.rasterSynchronizer_ = new olcs.RasterSynchronizer(this.map_,
-      this.scene_.imageryLayers);
+      this.scene_);
   this.rasterSynchronizer_.synchronize();
 
   this.vectorSynchronizer_ = new olcs.VectorSynchronizer(this.map_,

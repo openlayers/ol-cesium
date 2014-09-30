@@ -1,7 +1,6 @@
 goog.provide('olcs.RasterSynchronizer');
 
-goog.require('goog.events');
-
+goog.require('olcs.AbstractSynchronizer');
 goog.require('olcs.core');
 
 
@@ -10,200 +9,85 @@ goog.require('olcs.core');
  * This object takes care of one-directional synchronization of
  * ol3 raster layers to the given Cesium globe.
  * @param {!ol.Map} map
- * @param {!Cesium.ImageryLayerCollection} cesiumLayers
+ * @param {!Cesium.Scene} scene
  * @constructor
+ * @extends {olcs.AbstractSynchronizer.<Cesium.ImageryLayer>}
  */
-olcs.RasterSynchronizer = function(map, cesiumLayers) {
-  /**
-   * @type {!ol.Map}
-   * @private
-   */
-  this.map_ = map;
-
-  /**
-   * @type {?ol.View}
-   * @private
-   */
-  this.view_ = null;
-
-  /**
-   * @type {?ol.Collection.<ol.layer.Base>}
-   * @private
-   */
-  this.olLayers_ = null;
-
-  /**
-   * @type {!Array}
-   * @private
-   */
-  this.olLayersListenKeys_ = [];
-
+olcs.RasterSynchronizer = function(map, scene) {
   /**
    * @type {!Cesium.ImageryLayerCollection}
    * @private
    */
-  this.cesiumLayers_ = cesiumLayers;
+  this.cesiumLayers_ = scene.imageryLayers;
 
-  /**
-   * Map of ol3 layer ids (from goog.getUid) to the Cesium ImageryLayers.
-   * null value means, that we are unable to create equivalent layer.
-   * @type {Object.<number, ?Cesium.ImageryLayer>}
-   * @private
-   */
-  this.layerMap_ = {};
+  goog.base(this, map, scene);
+};
+goog.inherits(olcs.RasterSynchronizer, olcs.AbstractSynchronizer);
 
-  this.map_.on('change:view', function(e) {
-    this.setView_(this.map_.getView());
-  }, this);
-  this.setView_(this.map_.getView());
 
-  this.map_.on('change:layergroup', function(e) {
-    this.setLayers_(this.map_.getLayers());
-  }, this);
-  this.setLayers_(this.map_.getLayers());
+/**
+ * @inheritDoc
+ */
+olcs.RasterSynchronizer.prototype.addCesiumObject = function(object) {
+  this.cesiumLayers_.add(object);
 };
 
 
 /**
- * @param {?ol.View} view New view to use.
- * @private
+ * @inheritDoc
  */
-olcs.RasterSynchronizer.prototype.setView_ = function(view) {
-  this.view_ = view;
-
-  // destroy all, the change of view can affect which layers are synced
-  this.destroyAll_();
-  this.synchronize();
+olcs.RasterSynchronizer.prototype.destroyCesiumObject = function(object) {
+  object.destroy();
 };
 
 
 /**
- * @param {ol.Collection.<ol.layer.Base>} layers New layers to use.
- * @private
+ * @inheritDoc
  */
-olcs.RasterSynchronizer.prototype.setLayers_ = function(layers) {
-  if (!goog.isNull(this.olLayers_)) {
-    goog.array.forEach(this.olLayersListenKeys_, this.olLayers_.unByKey);
+olcs.RasterSynchronizer.prototype.removeAllCesiumObjects = function(destroy) {
+  this.cesiumLayers_.removeAll(destroy);
+};
+
+
+/**
+ * @inheritDoc
+ */
+olcs.RasterSynchronizer.prototype.createSingleCounterpart = function(olLayer) {
+  if (!(olLayer instanceof ol.layer.Tile)) {
+    return null;
   }
 
-  this.olLayers_ = layers;
-  if (!goog.isNull(layers)) {
-    var handleCollectionEvent_ = goog.bind(function(e) {
+  var viewProj = this.view.getProjection();
+  var cesiumObject = olcs.core.tileLayerToImageryLayer(olLayer, viewProj);
+  if (!goog.isNull(cesiumObject)) {
+    olLayer.on(
+        ['change:brightness', 'change:contrast', 'change:hue',
+         'change:opacity', 'change:saturation', 'change:visible'],
+        function(e) {
+          // the compiler does not seem to be able to infer this
+          if (!goog.isNull(cesiumObject)) {
+            olcs.core.updateCesiumLayerProperties(olLayer, cesiumObject);
+          }
+        });
+    olcs.core.updateCesiumLayerProperties(olLayer, cesiumObject);
+
+    // there is no way to modify Cesium layer extent,
+    // we have to recreate when ol3 layer extent changes:
+    olLayer.on('change:extent', function(e) {
+      this.cesiumLayers_.remove(cesiumObject, true); // destroy
+      delete this.layerMap[goog.getUid(olLayer)]; // invalidate the map entry
       this.synchronize();
     }, this);
 
-    this.olLayersListenKeys_ = [
-      layers.on('add', handleCollectionEvent_),
-      layers.on('remove', handleCollectionEvent_)
-    ];
-  } else {
-    this.olLayersListenKeys_ = [];
+    olLayer.on('change', function(e) {
+      // when the source changes, re-add the layer to force update
+      var position = this.cesiumLayers_.indexOf(cesiumObject);
+      if (position >= 0) {
+        this.cesiumLayers_.remove(cesiumObject, false);
+        this.cesiumLayers_.add(cesiumObject, position);
+      }
+    }, this);
   }
 
-  this.destroyAll_();
-  this.synchronize();
-};
-
-
-/**
- * Performs complete synchronization of the raster layers.
- */
-olcs.RasterSynchronizer.prototype.synchronize = function() {
-  if (goog.isNull(this.view_) || goog.isNull(this.olLayers_)) {
-    return;
-  }
-  var unusedCesiumLayers = goog.object.transpose(this.layerMap_);
-  this.cesiumLayers_.removeAll(false);
-
-  var viewProj = this.view_.getProjection();
-
-  var synchronizeLayer = goog.bind(function(olLayer) {
-    // handle layer groups
-    if (olLayer instanceof ol.layer.Group) {
-      var sublayers = olLayer.getLayers();
-      if (goog.isDef(sublayers)) {
-        sublayers.forEach(function(el, i, arr) {
-          synchronizeLayer(el);
-        });
-      }
-      olLayer.on('change', function(e) {
-        // when some layers are added or removed inside the group
-        this.synchronize();
-      }, this);
-      return;
-    } else if (!(olLayer instanceof ol.layer.Tile)) {
-      return;
-    }
-
-    var olLayerId = goog.getUid(olLayer);
-    var cesiumLayer = this.layerMap_[olLayerId];
-
-    // no mapping -> create new layer and set up synchronization
-    if (!goog.isDef(cesiumLayer)) {
-      cesiumLayer = olcs.core.tileLayerToImageryLayer(olLayer, viewProj);
-      if (!goog.isNull(cesiumLayer)) {
-        olLayer.on(
-            ['change:brightness', 'change:contrast', 'change:hue',
-             'change:opacity', 'change:saturation', 'change:visible'],
-            function(e) {
-              // the compiler does not seem to be able to infer this
-              if (!goog.isNull(cesiumLayer)) {
-                olcs.core.updateCesiumLayerProperties(olLayer, cesiumLayer);
-              }
-            });
-        olcs.core.updateCesiumLayerProperties(olLayer, cesiumLayer);
-
-        // there is no way to modify Cesium layer extent,
-        // we have to recreate when ol3 layer extent changes:
-        olLayer.on('change:extent', function(e) {
-          this.cesiumLayers_.remove(cesiumLayer, true); // destroy
-          delete this.layerMap_[olLayerId]; // invalidate the map entry
-          this.synchronize();
-        }, this);
-
-        olLayer.on('change', function(e) {
-          // when the source changes, re-add the layer to force update
-          var position = this.cesiumLayers_.indexOf(cesiumLayer);
-          if (position >= 0) {
-            this.cesiumLayers_.remove(cesiumLayer, false);
-            this.cesiumLayers_.add(cesiumLayer, position);
-          }
-        }, this);
-      }
-      this.layerMap_[olLayerId] = cesiumLayer;
-    }
-
-    // add Cesium layers
-    if (cesiumLayer) {
-      this.cesiumLayers_.add(cesiumLayer);
-      delete unusedCesiumLayers[cesiumLayer];
-    }
-  }, this);
-
-  this.olLayers_.forEach(function(el, i, arr) {
-    synchronizeLayer(el);
-  });
-
-  // destroy unused Cesium ImageryLayers
-  goog.array.forEach(goog.object.getValues(unusedCesiumLayers),
-      function(el, i, arr) {
-        var layerId = el;
-        var layer = this.layerMap_[layerId];
-        if (goog.isDef(layer)) {
-          delete this.layerMap_[layerId];
-          if (!goog.isNull(layer)) {
-            layer.destroy();
-          }
-        }
-      }, this);
-};
-
-
-/**
- * Destroys all the created Cesium layers.
- * @private
- */
-olcs.RasterSynchronizer.prototype.destroyAll_ = function() {
-  this.cesiumLayers_.removeAll(); // destroy
-  this.layerMap_ = {};
+  return cesiumObject;
 };
