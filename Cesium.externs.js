@@ -111,7 +111,7 @@ Cesium.BillboardCollection = function() {};
 
 /**
  * @typedef {{
- *   image: string,
+ *   image: (string|HTMLCanvasElement|Image),
  *   position: !Cesium.Cartesian3
  * }}
  */
@@ -758,6 +758,13 @@ Cesium.Globe = function(ellipsoid) {};
  * @type {Cesium.Ellipsoid}
  */
 Cesium.Globe.prototype.ellipsoid;
+
+
+/**
+ * @param {!Cesium.Cartographic} cartographic
+ * @return {number|undefined}
+ */
+Cesium.Globe.prototype.getHeight = function(cartographic) {};
 
 
 /**
@@ -1451,6 +1458,13 @@ Cesium.ImageryLayerCollection.prototype.length;
  * @return {Cesium.ImageryLayer} layer
  */
 Cesium.ImageryLayerCollection.prototype.get = function(index) {};
+
+
+/**
+ * @param {Cesium.ImageryLayer} layer
+ * @return {number} index
+ */
+Cesium.ImageryLayerCollection.prototype.indexOf = function(layer) {};
 
 
 /**

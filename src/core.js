@@ -288,8 +288,8 @@ goog.require('olcs.core.OLImageryProvider');
    */
   var extractLineWidthFromOlStyle = function(style) {
     if (olcs.core.glAliasedLineWidthRange == -1) {
-      throw 'olcs.core.glAliasedLineWidthRange must be initialized ' +
-          'using Cesium.Scene.maximumAliasedLineWidth';
+      throw new Error('olcs.core.glAliasedLineWidthRange must be initialized ' +
+          'using Cesium.Scene.maximumAliasedLineWidth');
     }
     var width = style.getStroke() ? style.getStroke().getWidth() : 1;
     return Math.min(width, olcs.core.glAliasedLineWidthRange);
@@ -514,16 +514,19 @@ goog.require('olcs.core.OLImageryProvider');
     geometry = olGeometryCloneTo4326(geometry, projection);
 
     var imageStyle = style.getImage();
-    var image = imageStyle.getImage();
+    var image = imageStyle.getImage(1); // get normal density
     var isImageLoaded = function(image) {
       return image.src != '' &&
           image.naturalHeight != 0 &&
           image.naturalWidth != 0 &&
           image.complete;
     };
-    goog.asserts.assert(image);
     var billboards = new Cesium.BillboardCollection();
     var reallyCreateBillboard = function() {
+      if (goog.isNull(image) ||
+          !(image instanceof HTMLCanvasElement || image instanceof Image)) {
+        return;
+      }
       var center = geometry.getCoordinates();
       var position = olcs.core.ol4326CoordinateToCesiumCartesian(center);
       billboards.add({
@@ -657,7 +660,7 @@ goog.require('olcs.core.OLImageryProvider');
           horizontalOrigin = Cesium.HorizontalOrigin.RIGHT;
           break;
         default:
-          throw 'unhandled text align ' + style.getTextAlign();
+          goog.asserts.fail('unhandled text align ' + style.getTextAlign());
       }
       options.horizontalOrigin = horizontalOrigin;
     }
@@ -681,7 +684,7 @@ goog.require('olcs.core.OLImageryProvider');
           verticalOrigin = Cesium.VerticalOrigin.BOTTOM;
           break;
         default:
-          throw 'unhandled text baseline ' + style.getTextBaseline();
+          goog.asserts.fail('unhandled baseline ' + style.getTextBaseline());
       }
       options.verticalOrigin = verticalOrigin;
     }
@@ -760,7 +763,7 @@ goog.require('olcs.core.OLImageryProvider');
     var featureStyle = feature.getStyleFunction();
     var style;
     if (goog.isDef(featureStyle)) {
-      style = featureStyle(resolution);
+      style = featureStyle.call(feature, resolution);
     }
     if (!goog.isDefAndNotNull(style) && goog.isDefAndNotNull(fallbackStyle)) {
       style = fallbackStyle(feature, resolution);
