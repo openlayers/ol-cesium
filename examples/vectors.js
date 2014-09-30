@@ -332,8 +332,16 @@ var oldStyle = new ol.style.Style({
     color: 'green'
   })
 });
+
 function toggleStyle() {
   var swap = theCircle.getStyle();
   theCircle.setStyle(oldStyle);
   oldStyle = swap;
+}
+
+function setNullViewThenNewOne() {
+  map.setView(null);
+  setTimeout(function() {
+    map.setView(new ol.View({'center': [0, 0], 'zoom': 3, 'rotation': 0}));
+  }, 2000);
 }
