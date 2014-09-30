@@ -152,10 +152,21 @@ olcs.AbstractSynchronizer.prototype.synchronizeSingle = function(olLayer) {
         this.synchronizeSingle(el);
       }, this);
     }
-    olLayer.on('change', function(e) {
-      // when some layers are added or removed inside the group
-      this.synchronize();
+
+    var listenAddRemove = goog.bind(function() {
+      var sublayers = olLayer.getLayers();
+      if (goog.isDef(sublayers)) {
+        sublayers.on(['add', 'remove'], function(e) {
+          this.synchronize();
+        }, this);
+      }
     }, this);
+    listenAddRemove();
+
+    olLayer.on('change:layers', function(e) {
+      listenAddRemove();
+    });
+
     return;
   } else if (!(olLayer instanceof ol.layer.Layer)) {
     return;
