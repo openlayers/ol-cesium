@@ -159,8 +159,12 @@ olcs.RasterSynchronizer.prototype.synchronize = function() {
         }, this);
 
         olLayer.on('change', function(e) {
-          // when the source changes, re-add the layers to force update
-          this.synchronize();
+          // when the source changes, re-add the layer to force update
+          var position = this.cesiumLayers_.indexOf(cesiumLayer);
+          if (position >= 0) {
+            this.cesiumLayers_.remove(cesiumLayer, false);
+            this.cesiumLayers_.add(cesiumLayer, position);
+          }
         }, this);
       }
       this.layerMap_[olLayerId] = cesiumLayer;
