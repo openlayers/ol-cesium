@@ -19,6 +19,7 @@
       "checkRegExp",
       "checkStructDictInheritance",
       "checkVars",
+      "checkTypes",
       "const",
       "constantProperty",
       "deprecated",
@@ -43,9 +44,6 @@
       "uselessCode",
       "violatedModuleDep",
       "visibility"
-    ],
-    "jscomp_warning": [
-      "checkTypes"
     ],
     "extra_annotation_name": [
       "api", "observable"
