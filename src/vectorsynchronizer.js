@@ -71,6 +71,9 @@ olcs.VectorSynchronizer.prototype.synchronize = function() {
           synchronizeLayer(el, view);
         });
       }
+      olLayer.on('change', function(e) {
+        this.synchronize();
+      }, this);
       return;
     } else if (!(olLayer instanceof ol.layer.Vector)) {
       return;
