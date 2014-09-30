@@ -514,16 +514,19 @@ goog.require('olcs.core.OLImageryProvider');
     geometry = olGeometryCloneTo4326(geometry, projection);
 
     var imageStyle = style.getImage();
-    var image = imageStyle.getImage();
+    var image = imageStyle.getImage(1); // get normal density
     var isImageLoaded = function(image) {
       return image.src != '' &&
           image.naturalHeight != 0 &&
           image.naturalWidth != 0 &&
           image.complete;
     };
-    goog.asserts.assert(image);
     var billboards = new Cesium.BillboardCollection();
     var reallyCreateBillboard = function() {
+      if (goog.isNull(image) ||
+          !(image instanceof HTMLCanvasElement || image instanceof Image)) {
+        return;
+      }
       var center = geometry.getCoordinates();
       var position = olcs.core.ol4326CoordinateToCesiumCartesian(center);
       billboards.add({
@@ -760,7 +763,7 @@ goog.require('olcs.core.OLImageryProvider');
     var featureStyle = feature.getStyleFunction();
     var style;
     if (goog.isDef(featureStyle)) {
-      style = featureStyle(resolution);
+      style = featureStyle.call(feature, resolution);
     }
     if (!goog.isDefAndNotNull(style) && goog.isDefAndNotNull(fallbackStyle)) {
       style = fallbackStyle(feature, resolution);
