@@ -288,8 +288,8 @@ goog.require('olcs.core.OLImageryProvider');
    */
   var extractLineWidthFromOlStyle = function(style) {
     if (olcs.core.glAliasedLineWidthRange == -1) {
-      throw 'olcs.core.glAliasedLineWidthRange must be initialized ' +
-          'using Cesium.Scene.maximumAliasedLineWidth';
+      throw new Error('olcs.core.glAliasedLineWidthRange must be initialized ' +
+          'using Cesium.Scene.maximumAliasedLineWidth');
     }
     var width = style.getStroke() ? style.getStroke().getWidth() : 1;
     return Math.min(width, olcs.core.glAliasedLineWidthRange);
@@ -660,7 +660,7 @@ goog.require('olcs.core.OLImageryProvider');
           horizontalOrigin = Cesium.HorizontalOrigin.RIGHT;
           break;
         default:
-          throw 'unhandled text align ' + style.getTextAlign();
+          goog.asserts.fail('unhandled text align ' + style.getTextAlign());
       }
       options.horizontalOrigin = horizontalOrigin;
     }
@@ -684,7 +684,7 @@ goog.require('olcs.core.OLImageryProvider');
           verticalOrigin = Cesium.VerticalOrigin.BOTTOM;
           break;
         default:
-          throw 'unhandled text baseline ' + style.getTextBaseline();
+          goog.asserts.fail('unhandled baseline ' + style.getTextBaseline());
       }
       options.verticalOrigin = verticalOrigin;
     }
