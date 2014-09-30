@@ -232,9 +232,7 @@ olcs.Camera.prototype.setPosition = function(position) {
     return;
   }
   var ll = this.toLonLat_(position);
-  if (!goog.isDefAndNotNull(ll)) {
-    return;
-  }
+  goog.asserts.assert(!goog.isNull(ll));
 
   var carto = new Cesium.Cartographic(goog.math.toRadians(ll[0]),
                                       goog.math.toRadians(ll[1]),
@@ -259,7 +257,8 @@ olcs.Camera.prototype.getPosition = function() {
 
   var pos = this.fromLonLat_([goog.math.toDegrees(carto.longitude),
                               goog.math.toDegrees(carto.latitude)]);
-  return goog.isNull(pos) ? undefined : pos;
+  goog.asserts.assert(!goog.isNull(pos));
+  return pos;
 };
 
 
@@ -299,9 +298,7 @@ olcs.Camera.prototype.lookAt = function(position) {
     return;
   }
   var ll = this.toLonLat_(position);
-  if (!goog.isDefAndNotNull(ll)) {
-    return;
-  }
+  goog.asserts.assert(!goog.isNull(ll));
 
   var carto = Cesium.Cartographic.fromDegrees(ll[0], ll[1]);
   olcs.core.lookAt(this.cam_, carto, this.scene_.globe);
@@ -324,9 +321,7 @@ olcs.Camera.prototype.updateCamera_ = function() {
     return;
   }
   var ll = this.toLonLat_(center);
-  if (!goog.isDefAndNotNull(ll)) {
-    return;
-  }
+  goog.asserts.assert(!goog.isNull(ll));
 
   var carto = new Cesium.Cartographic(goog.math.toRadians(ll[0]),
                                       goog.math.toRadians(ll[1]));
@@ -359,9 +354,7 @@ olcs.Camera.prototype.readFromView = function() {
     return;
   }
   var ll = this.toLonLat_(center);
-  if (!goog.isDefAndNotNull(ll)) {
-    return;
-  }
+  goog.asserts.assert(!goog.isNull(ll));
 
   var resolution = this.view_.getResolution();
   this.distance_ = this.calcDistanceForResolution_(
