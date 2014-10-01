@@ -98,7 +98,7 @@ olcs.VectorSynchronizer.prototype.createSingleCounterpart = function(olLayer) {
     onRemoveFeature(e.feature);
   }, this);
 
-  source.on('updatefeature', function(e) {
+  source.on('changefeature', function(e) {
     var feature = e.feature;
     goog.isDefAndNotNull(feature);
     onRemoveFeature(feature);
