@@ -116,7 +116,7 @@ olcs.AbstractSynchronizer.prototype.synchronize = function() {
     return;
   }
   this.unusedCesiumObjects_ = goog.object.transpose(this.layerMap);
-  this.removeAllCesiumObjects(false);
+  this.removeAllCesiumObjects(false); // only remove, don't destroy
 
   this.olLayers.forEach(function(el, i, arr) {
     this.synchronizeSingle(el);
