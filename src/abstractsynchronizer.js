@@ -18,7 +18,7 @@ olcs.AbstractSynchronizer = function(map, scene) {
   this.map = map;
 
   /**
-   * @type {?ol.View}
+   * @type {ol.View}
    * @protected
    */
   this.view = null;
@@ -30,7 +30,7 @@ olcs.AbstractSynchronizer = function(map, scene) {
   this.scene = scene;
 
   /**
-   * @type {?ol.Collection.<ol.layer.Base>}
+   * @type {ol.Collection.<ol.layer.Base>}
    * @protected
    */
   this.olLayers = null;
@@ -50,7 +50,7 @@ olcs.AbstractSynchronizer = function(map, scene) {
   this.layerMap = {};
 
   /**
-   * @type {?Object.<?T, number>}
+   * @type {Object.<?T, number>}
    * @private
    */
   this.unusedCesiumObjects_ = null;
@@ -68,7 +68,7 @@ olcs.AbstractSynchronizer = function(map, scene) {
 
 
 /**
- * @param {?ol.View} view New view to use.
+ * @param {ol.View} view New view to use.
  * @private
  */
 olcs.AbstractSynchronizer.prototype.setView_ = function(view) {
@@ -225,7 +225,7 @@ olcs.AbstractSynchronizer.prototype.removeAllCesiumObjects =
 
 /**
  * @param {!ol.layer.Layer} olLayer
- * @return {?T}
+ * @return {T}
  * @protected
  */
 olcs.AbstractSynchronizer.prototype.createSingleCounterpart =
