@@ -50,6 +50,19 @@ olcs.AbstractSynchronizer = function(map, scene) {
   this.layerMap = {};
 
   /**
+   * Map of listen keys for ol3 layer groups.
+   * @type {!Object.<!ol.layer.Group, !Array>}
+   * @private
+   */
+  this.olGroupListenKeys_ = {};
+
+  /**
+   * @type {Object.<!ol.layer.Group, !Array>}
+   * @private
+   */
+  this.unusedGroups_ = null;
+
+  /**
    * @type {Object.<?T, number>}
    * @private
    */
@@ -115,6 +128,7 @@ olcs.AbstractSynchronizer.prototype.synchronize = function() {
   if (goog.isNull(this.view) || goog.isNull(this.olLayers)) {
     return;
   }
+  this.unusedGroups_ = goog.object.clone(this.olGroupListenKeys_);
   this.unusedCesiumObjects_ = goog.object.transpose(this.layerMap);
   this.removeAllCesiumObjects(false); // only remove, don't destroy
 
@@ -135,6 +149,13 @@ olcs.AbstractSynchronizer.prototype.synchronize = function() {
         }
       }, this);
   this.unusedCesiumObjects_ = null;
+
+  // unlisten unused ol layer groups
+  goog.object.forEach(this.unusedGroups_, function(keys, group, obj) {
+    goog.array.forEach(keys, group.unByKey);
+    delete this.olGroupListenKeys_[group];
+  }, this);
+  this.unusedGroups_ = null;
 };
 
 
@@ -153,19 +174,37 @@ olcs.AbstractSynchronizer.prototype.synchronizeSingle = function(olLayer) {
       }, this);
     }
 
-    var listenAddRemove = goog.bind(function() {
-      var sublayers = olLayer.getLayers();
-      if (goog.isDef(sublayers)) {
-        sublayers.on(['add', 'remove'], function(e) {
-          this.synchronize();
-        }, this);
-      }
-    }, this);
-    listenAddRemove();
+    if (!goog.isDef(this.olGroupListenKeys_[olLayer])) {
+      var listenKeyArray = [];
+      this.olGroupListenKeys_[olLayer] = listenKeyArray;
 
-    olLayer.on('change:layers', function(e) {
+      // only the keys that need to be relistened when collection changes
+      var collection, contentKeys = [];
+      var listenAddRemove = goog.bind(function() {
+        collection = olLayer.getLayers();
+        if (goog.isDef(collection)) {
+          var handleContentChange_ = goog.bind(function(e) {
+            this.synchronize();
+          }, this);
+          contentKeys = [
+            collection.on('add', handleContentChange_),
+            collection.on('remove', handleContentChange_)
+          ];
+          listenKeyArray.push.apply(listenKeyArray, contentKeys);
+        }
+      }, this);
       listenAddRemove();
-    });
+
+      listenKeyArray.push(olLayer.on('change:layers', function(e) {
+        goog.array.forEach(contentKeys, function(el, i, arr) {
+          goog.array.remove(listenKeyArray, el);
+          collection.unByKey(el);
+        });
+        listenAddRemove();
+      }));
+    }
+
+    delete this.unusedGroups_[olLayer];
 
     return;
   } else if (!(olLayer instanceof ol.layer.Layer)) {
