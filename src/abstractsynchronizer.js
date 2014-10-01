@@ -50,14 +50,14 @@ olcs.AbstractSynchronizer = function(map, scene) {
   this.layerMap = {};
 
   /**
-   * Map of listen keys for ol3 layer groups.
-   * @type {!Object.<!ol.layer.Group, !Array>}
+   * Map of listen keys for ol3 layer groups ids (from goog.getUid).
+   * @type {!Object.<number, !Array>}
    * @private
    */
   this.olGroupListenKeys_ = {};
 
   /**
-   * @type {Object.<!ol.layer.Group, !Array>}
+   * @type {Object.<number, !Array>}
    * @private
    */
   this.unusedGroups_ = null;
@@ -151,9 +151,9 @@ olcs.AbstractSynchronizer.prototype.synchronize = function() {
   this.unusedCesiumObjects_ = null;
 
   // unlisten unused ol layer groups
-  goog.object.forEach(this.unusedGroups_, function(keys, group, obj) {
-    goog.array.forEach(keys, group.unByKey);
-    delete this.olGroupListenKeys_[group];
+  goog.object.forEach(this.unusedGroups_, function(keys, groupId, obj) {
+    goog.array.forEach(keys, this.map.unByKey);
+    delete this.olGroupListenKeys_[groupId];
   }, this);
   this.unusedGroups_ = null;
 };
@@ -165,6 +165,8 @@ olcs.AbstractSynchronizer.prototype.synchronize = function() {
  * @protected
  */
 olcs.AbstractSynchronizer.prototype.synchronizeSingle = function(olLayer) {
+  var olLayerId = goog.getUid(olLayer);
+
   // handle layer groups
   if (olLayer instanceof ol.layer.Group) {
     var sublayers = olLayer.getLayers();
@@ -174,9 +176,9 @@ olcs.AbstractSynchronizer.prototype.synchronizeSingle = function(olLayer) {
       }, this);
     }
 
-    if (!goog.isDef(this.olGroupListenKeys_[olLayer])) {
+    if (!goog.isDef(this.olGroupListenKeys_[olLayerId])) {
       var listenKeyArray = [];
-      this.olGroupListenKeys_[olLayer] = listenKeyArray;
+      this.olGroupListenKeys_[olLayerId] = listenKeyArray;
 
       // only the keys that need to be relistened when collection changes
       var collection, contentKeys = [];
@@ -204,14 +206,13 @@ olcs.AbstractSynchronizer.prototype.synchronizeSingle = function(olLayer) {
       }));
     }
 
-    delete this.unusedGroups_[olLayer];
+    delete this.unusedGroups_[olLayerId];
 
     return;
   } else if (!(olLayer instanceof ol.layer.Layer)) {
     return;
   }
 
-  var olLayerId = goog.getUid(olLayer);
   var cesiumObject = this.layerMap[olLayerId];
 
   // no mapping -> create new layer and set up synchronization
