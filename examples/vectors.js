@@ -345,3 +345,11 @@ function setNullViewThenNewOne() {
     map.setView(new ol.View({'center': [0, 0], 'zoom': 3, 'rotation': 0}));
   }, 2000);
 }
+
+function changeLayerGroup() {
+  var oldLayerGroup = map.getLayerGroup();
+  map.setLayerGroup(new ol.layer.Group());
+  setTimeout(function() {
+    map.setLayerGroup(oldLayerGroup);
+  }, 2000);
+}

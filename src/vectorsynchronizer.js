@@ -59,6 +59,10 @@ olcs.VectorSynchronizer.prototype.synchronize = function() {
     this.synchronize_();
   }, this);
 
+  this.map_.on('change:layergroup', function() {
+    this.synchronize_();
+  }, this);
+
   var createRootPrimitive = goog.bind(function() {
     if (this.csAllPrimitives_) {
       this.csAllPrimitives_.destroyPrimitives = true;
