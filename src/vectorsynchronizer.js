@@ -15,12 +15,16 @@ goog.require('olcs.core');
 olcs.VectorSynchronizer = function(map, scene) {
 
   /**
+   * @type {!Cesium.Scene}
+   * @private
+   */
+  this.scene_ = scene;
+
+  /**
    * @type {!Cesium.PrimitiveCollection}
    * @private
    */
-  this.csAllPrimitives_ = new Cesium.PrimitiveCollection();
-  scene.primitives.add(this.csAllPrimitives_);
-  this.csAllPrimitives_.destroyPrimitives = false;
+  this.csAllPrimitives_;
 
   // Initialize core library
   olcs.core.glAliasedLineWidthRange = scene.maximumAliasedLineWidth;
@@ -37,21 +41,56 @@ olcs.VectorSynchronizer = function(map, scene) {
    * @type {Object.<number, ?Cesium.PrimitiveCollection>}
    * @private
    */
-  this.layerMap_ = {};
-  var layers = map.getLayers(); // FIXME: listen for changes
-  layers.on(['change', 'add', 'remove'], function(e) {
-    this.synchronize();
+  this.layerMap_;
+};
+
+
+/**
+ * Enable synchronization of the vector layers.
+ */
+olcs.VectorSynchronizer.prototype.synchronize = function() {
+  if (this.csAllPrimitives_) {
+    return; // already active
+  }
+
+  // Do not handle add / remove here but in synchronizeLayer
+  var layers = this.map_.getLayers();
+  layers.on(['add', 'remove'], function(e) {
+    this.synchronize_();
   }, this);
+
+  this.map_.on('change:layergroup', function() {
+    this.synchronize_();
+  }, this);
+
+  var createRootPrimitive = goog.bind(function() {
+    if (this.csAllPrimitives_) {
+      this.csAllPrimitives_.destroyPrimitives = true;
+      this.scene_.primitives.remove(this.csAllPrimitives_);
+    }
+    this.csAllPrimitives_ = new Cesium.PrimitiveCollection();
+    this.scene_.primitives.add(this.csAllPrimitives_);
+    this.csAllPrimitives_.destroyPrimitives = false;
+    this.layerMap_ = {};
+    this.synchronize_();
+  }, this);
+
+  this.map_.on('change:view', function(e) {
+    createRootPrimitive();
+  }, this);
+
+  createRootPrimitive();
 };
 
 
 /**
  * Performs complete synchronization of the vector layers.
+ * @private
  */
-olcs.VectorSynchronizer.prototype.synchronize = function() {
+olcs.VectorSynchronizer.prototype.synchronize_ = function() {
   var view = this.map_.getView(); // reference might change
   if (!view) {
-    return; // FIXME: destroy everything?
+    return;
   }
   var olLayers = this.map_.getLayers();
   var unusedCesiumPrimitives = goog.object.transpose(this.layerMap_);
@@ -70,6 +109,7 @@ olcs.VectorSynchronizer.prototype.synchronize = function() {
         sublayers.forEach(function(el, i, arr) {
           synchronizeLayer(el, view);
         });
+        // FIXME handle add/remove of layer here
       }
       return;
     } else if (!(olLayer instanceof ol.layer.Vector)) {
