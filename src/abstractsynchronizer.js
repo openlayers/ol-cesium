@@ -161,10 +161,13 @@ olcs.AbstractSynchronizer.prototype.synchronize = function() {
 
 /**
  * Synchronizes single layer.
- * @param {!ol.layer.Base} olLayer
+ * @param {ol.layer.Base} olLayer
  * @protected
  */
 olcs.AbstractSynchronizer.prototype.synchronizeSingle = function(olLayer) {
+  if (goog.isNull(olLayer)) {
+    return;
+  }
   var olLayerId = goog.getUid(olLayer);
 
   // handle layer groups
