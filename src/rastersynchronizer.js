@@ -1,5 +1,7 @@
 goog.provide('olcs.RasterSynchronizer');
 
+goog.require('goog.events');
+goog.require('ol.layer.Tile');
 goog.require('olcs.AbstractSynchronizer');
 goog.require('olcs.core');
 

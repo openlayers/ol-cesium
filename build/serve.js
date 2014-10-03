@@ -31,7 +31,8 @@ var manager = new closure.Manager({
   closure: true, // use the bundled Closure Library
   lib: [
     'src/**/*.js'
-  ]
+  ],
+  ignoreRequires: '^ol\\.'
 });
 manager.on('error', function(e) {
   log.error('ol3-cesium', e.message);
