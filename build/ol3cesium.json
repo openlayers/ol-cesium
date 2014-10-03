@@ -1,6 +1,7 @@
 {
   "exports": ["*"],
   "src": ["src/**/*.js"],
+  "ignoreRequires": "^ol\\.",
   "compile": {
     "externs": [
       "ol3/build/ol-externs.js",
@@ -53,5 +54,5 @@
     "use_types_for_optimization": true,
     "create_source_map": "dist/ol3cesium.js.map",
     "source_map_format": "V3"
-    }
+  }
 }
