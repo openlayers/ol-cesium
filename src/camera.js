@@ -46,7 +46,7 @@ olcs.Camera = function(scene, map) {
   this.view_ = null;
 
   /**
-   * @type {?*}
+   * @type {?goog.events.Key}
    * @private
    */
   this.viewListenKey_ = null;
