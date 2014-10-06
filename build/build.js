@@ -119,6 +119,7 @@ function getDependencies(config, exports, callback) {
         cwd: root
       };
     }
+    options.ignoreRequires = config.ignoreRequires;
     closure.getDependencies(options, function(err, paths) {
       if (err) {
         callback(err);

@@ -2,6 +2,14 @@ goog.provide('olcs.core');
 
 goog.require('goog.array');
 goog.require('goog.asserts');
+goog.require('ol.extent');
+goog.require('ol.geom.SimpleGeometry');
+goog.require('ol.layer.Tile');
+goog.require('ol.layer.Vector');
+goog.require('ol.proj');
+goog.require('ol.source.TileImage');
+goog.require('ol.source.WMTS');
+goog.require('ol.style.Style');
 goog.require('olcs.core.OLImageryProvider');
 
 (function() {
@@ -802,7 +810,6 @@ goog.require('olcs.core.OLImageryProvider');
     goog.asserts.assert(style instanceof ol.style.Style);
 
     var id = function(primitives) {
-      feature.csPrimitive = primitives;
       primitives.olFeatureId = feature.getId();
       return primitives;
     };
@@ -872,12 +879,16 @@ goog.require('olcs.core.OLImageryProvider');
 
   /**
    * Convert an OpenLayers vector layer to Cesium primitive collection.
+   * For each feature, the associated primitive will be stored in
+   * `featurePrimitiveMap`.
    * @param {!ol.layer.Vector} olLayer
    * @param {!ol.View} olView
+   * @param {!Object.<!ol.Feature, !Cesium.Primitive>} featurePrimitiveMap
    * @return {!Cesium.PrimitiveCollection}
    * @api
    */
-  olcs.core.olVectorLayerToCesium = function(olLayer, olView) {
+  olcs.core.olVectorLayerToCesium = function(olLayer, olView,
+      featurePrimitiveMap) {
     goog.asserts.assert(olLayer instanceof ol.layer.Vector);
 
     var vectorLayer = olLayer;
@@ -903,6 +914,7 @@ goog.require('olcs.core.OLImageryProvider');
         continue;
       }
       var primitives = olcs.core.olFeatureToCesium(feature, layerStyle, proj);
+      featurePrimitiveMap[feature] = primitives;
       allPrimitives.add(primitives);
     }
 

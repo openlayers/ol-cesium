@@ -1,6 +1,7 @@
 goog.provide('olcs.Camera');
 
 goog.require('goog.events');
+goog.require('ol.proj');
 goog.require('olcs.core');
 
 
@@ -45,7 +46,7 @@ olcs.Camera = function(scene, map) {
   this.view_ = null;
 
   /**
-   * @type {?*}
+   * @type {?goog.events.Key}
    * @private
    */
   this.viewListenKey_ = null;

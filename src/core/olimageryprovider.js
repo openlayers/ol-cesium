@@ -1,6 +1,8 @@
 goog.provide('olcs.core.OLImageryProvider');
 
 goog.require('goog.events');
+goog.require('ol.proj');
+goog.require('ol.tilegrid.XYZ');
 
 
 

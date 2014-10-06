@@ -902,6 +902,14 @@ Cesium.optionsPrimitive;
 Cesium.Primitive = function(opt_opts) {};
 
 /**
+ * Workaround for finding the feature associated to a primitive.
+ * Required since the Primitive lacks a dedicated id property, as shown in:
+ * http://cesiumjs.org/Cesium/Apps/Sandcastle/index.html?src=Picking.html&label=Showcases
+ * @type {string|number|undefined}
+ */
+Cesium.Primitive.prototype.olFeatureId;
+
+/**
  * @constructor
  * @extends {Cesium.Primitive}
  */
