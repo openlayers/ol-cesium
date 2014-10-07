@@ -12,7 +12,8 @@ goog.require('olcs.core');
  * @param {!ol.Map} map
  * @param {!Cesium.Scene} scene
  * @constructor
- * @extends {olcs.AbstractSynchronizer.<Cesium.Polygon|Cesium.PolylineCollection|Cesium.Primitive>}
+ * @extends {olcs.AbstractSynchronizer.<Cesium.Primitive>}
+ * @api
  */
 olcs.VectorSynchronizer = function(map, scene) {
 
