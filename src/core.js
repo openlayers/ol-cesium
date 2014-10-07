@@ -514,10 +514,12 @@ goog.require('olcs.core.OLImageryProvider');
    * @param {!ol.geom.Point} geometry
    * @param {!ol.proj.ProjectionLike} projection
    * @param {!ol.style.Style} style
-   * @return {!Cesium.PrimitiveCollection} primitives
+   * @param {Cesium.BillboardCollection=} opt_billboards
+   * @return {!Cesium.Primitive} primitives
    * @api
    */
-  olcs.core.olPointGeometryToCesium = function(geometry, projection, style) {
+  olcs.core.olPointGeometryToCesium = function(geometry, projection, style,
+      opt_billboards) {
     goog.asserts.assert(geometry.getType() == 'Point');
     geometry = olGeometryCloneTo4326(geometry, projection);
 
@@ -529,7 +531,7 @@ goog.require('olcs.core.OLImageryProvider');
           image.naturalWidth != 0 &&
           image.complete;
     };
-    var billboards = new Cesium.BillboardCollection();
+    var billboards = opt_billboards || new Cesium.BillboardCollection();
     var reallyCreateBillboard = function() {
       if (goog.isNull(image) ||
           !(image instanceof HTMLCanvasElement || image instanceof Image)) {
@@ -555,7 +557,11 @@ goog.require('olcs.core.OLImageryProvider');
       reallyCreateBillboard();
     }
 
-    return addTextStyle(geometry, style, billboards);
+    if (style.getText()) {
+      return addTextStyle(geometry, style, billboards);
+    } else {
+      return billboards;
+    }
   };
 
 
@@ -564,7 +570,7 @@ goog.require('olcs.core.OLImageryProvider');
    * @param {!ol.geom.Geometry} geometry Ol3 geometry.
    * @param {!ol.proj.ProjectionLike} projection
    * @param {!ol.style.Style} olStyle
-   * @return {!Cesium.PrimitiveCollection} primitives
+   * @return {!Cesium.Primitive} primitives
    * @api
    */
   olcs.core.olMultiGeometryToCesium = function(geometry, projection,
@@ -586,7 +592,22 @@ goog.require('olcs.core.OLImageryProvider');
       case 'MultiPoint':
         geometry = /** @type {!ol.geom.MultiPoint} */ (geometry);
         subgeos = geometry.getPoints();
-        return accumulate(subgeos, olcs.core.olPointGeometryToCesium);
+        var fn = olcs.core.olPointGeometryToCesium;
+        var billboards = new Cesium.BillboardCollection();
+        if (olStyle.getText()) {
+          var primitives = new Cesium.PrimitiveCollection();
+          goog.array.forEach(subgeos, function(geometry) {
+            goog.asserts.assert(!goog.isNull(geometry));
+            primitives.add(fn(geometry, projection, olStyle, billboards));
+          });
+          return primitives;
+        } else {
+          goog.array.forEach(subgeos, function(geometry) {
+            goog.asserts.assert(!goog.isNull(geometry));
+            fn(geometry, projection, olStyle, billboards);
+          });
+          return billboards;
+        }
       case 'MultiLineString':
         geometry = /** @type {!ol.geom.MultiLineString} */ (geometry);
         subgeos = geometry.getLineStrings();
