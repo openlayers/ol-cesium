@@ -11,6 +11,7 @@ goog.require('ol.layer.Layer');
  * @param {!Cesium.Scene} scene
  * @constructor
  * @template T
+ * @api
  */
 olcs.AbstractSynchronizer = function(map, scene) {
   /**
@@ -125,6 +126,7 @@ olcs.AbstractSynchronizer.prototype.setLayers_ = function(layers) {
 
 /**
  * Performs complete synchronization of the layers.
+ * @api
  */
 olcs.AbstractSynchronizer.prototype.synchronize = function() {
   if (goog.isNull(this.view) || goog.isNull(this.olLayers)) {
