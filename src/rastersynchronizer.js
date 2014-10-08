@@ -22,6 +22,12 @@ olcs.RasterSynchronizer = function(map, scene) {
    */
   this.cesiumLayers_ = scene.imageryLayers;
 
+  /**
+   * @type {!Cesium.ImageryLayerCollection}
+   * @private
+   */
+  this.ourLayers_ = new Cesium.ImageryLayerCollection();
+
   goog.base(this, map, scene);
 };
 goog.inherits(olcs.RasterSynchronizer, olcs.AbstractSynchronizer);
@@ -32,6 +38,7 @@ goog.inherits(olcs.RasterSynchronizer, olcs.AbstractSynchronizer);
  */
 olcs.RasterSynchronizer.prototype.addCesiumObject = function(object) {
   this.cesiumLayers_.add(object);
+  this.ourLayers_.add(object);
 };
 
 
@@ -47,7 +54,10 @@ olcs.RasterSynchronizer.prototype.destroyCesiumObject = function(object) {
  * @inheritDoc
  */
 olcs.RasterSynchronizer.prototype.removeAllCesiumObjects = function(destroy) {
-  this.cesiumLayers_.removeAll(destroy);
+  for (var i = 0; i < this.ourLayers_.length; ++i) {
+    this.cesiumLayers_.remove(this.ourLayers_.get(i), destroy);
+  }
+  this.ourLayers_.removeAll(false);
 };
 
 
@@ -77,6 +87,7 @@ olcs.RasterSynchronizer.prototype.createSingleCounterpart = function(olLayer) {
     // we have to recreate when ol3 layer extent changes:
     olLayer.on('change:extent', function(e) {
       this.cesiumLayers_.remove(cesiumObject, true); // destroy
+      this.ourLayers_.remove(cesiumObject, false);
       delete this.layerMap[goog.getUid(olLayer)]; // invalidate the map entry
       this.synchronize();
     }, this);
