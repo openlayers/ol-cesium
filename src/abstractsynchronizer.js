@@ -188,7 +188,7 @@ olcs.AbstractSynchronizer.prototype.synchronizeSingle = function(olLayer) {
       // only the keys that need to be relistened when collection changes
       var collection, contentKeys = [];
       var listenAddRemove = goog.bind(function() {
-        collection = olLayer.getLayers();
+        collection = /** @type {ol.layer.Group} */ (olLayer).getLayers();
         if (goog.isDef(collection)) {
           var handleContentChange_ = goog.bind(function(e) {
             this.synchronize();
