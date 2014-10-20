@@ -4,6 +4,7 @@ goog.require('goog.events');
 goog.require('ol.layer.Vector');
 goog.require('olcs.AbstractSynchronizer');
 goog.require('olcs.core');
+goog.require('olcs.core.OlLayerPrimitive');
 
 
 
@@ -12,7 +13,7 @@ goog.require('olcs.core');
  * @param {!ol.Map} map
  * @param {!Cesium.Scene} scene
  * @constructor
- * @extends {olcs.AbstractSynchronizer.<Cesium.Primitive>}
+ * @extends {olcs.AbstractSynchronizer.<olcs.core.OlLayerPrimitive>}
  * @api
  */
 olcs.VectorSynchronizer = function(map, scene) {
@@ -82,7 +83,7 @@ olcs.VectorSynchronizer.prototype.createSingleCounterpart = function(olLayer) {
 
   var onAddFeature = function(feature) {
     goog.asserts.assertInstanceof(olLayer, ol.layer.Vector);
-    var prim = olcs.core.olFeatureToCesiumUsingView(olLayer, view, feature);
+    var prim = csPrimitives.convert(olLayer, view, feature);
     if (prim) {
       featurePrimitiveMap[feature] = prim;
       csPrimitives.add(prim);
