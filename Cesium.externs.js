@@ -126,6 +126,12 @@ Cesium.BillboardCollection.prototype.add = function(opt_opts) {};
 
 
 /**
+ * @type {number}
+ */
+Cesium.BillboardCollection.prototype.length;
+
+
+/**
  * @param {Cesium.Billboard} what .
  */
 Cesium.BillboardCollection.prototype.remove = function(what) {};
