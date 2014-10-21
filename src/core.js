@@ -11,6 +11,7 @@ goog.require('ol.source.TileImage');
 goog.require('ol.source.WMTS');
 goog.require('ol.style.Style');
 goog.require('olcs.core.OLImageryProvider');
+goog.require('olcs.core.OlLayerPrimitive');
 
 
 /**
@@ -527,12 +528,12 @@ olcs.core.OlFeatureToCesiumOptions;
    * @param {!ol.geom.Point} geometry
    * @param {!ol.proj.ProjectionLike} projection
    * @param {!ol.style.Style} style
-   * @param {Cesium.BillboardCollection=} opt_billboards
+   * @param {!Cesium.BillboardCollection} billboards
    * @return {!Cesium.Primitive} primitives
    * @api
    */
   olcs.core.olPointGeometryToCesium = function(geometry, projection, style,
-      opt_billboards) {
+      billboards) {
     goog.asserts.assert(geometry.getType() == 'Point');
     geometry = olGeometryCloneTo4326(geometry, projection);
 
@@ -544,7 +545,6 @@ olcs.core.OlFeatureToCesiumOptions;
           image.naturalWidth != 0 &&
           image.complete;
     };
-    var billboards = opt_billboards || new Cesium.BillboardCollection();
     var reallyCreateBillboard = function() {
       if (goog.isNull(image) ||
           !(image instanceof HTMLCanvasElement || image instanceof Image)) {
@@ -856,9 +856,17 @@ olcs.core.OlFeatureToCesiumOptions;
         return id(primitives);
       case 'Point':
         geom = /** @type {!ol.geom.Point} */ (geom);
-        var billboards = options.billboards;
-        return id(olcs.core.olPointGeometryToCesium(
-            geom, proj, style, billboards));
+        var bbs = options.billboards || new Cesium.BillboardCollection();
+        var result = olcs.core.olPointGeometryToCesium(geom, proj, style, bbs);
+        if (result === bbs) {
+          // no wrapping primitive
+          var bb = bbs.get(bbs.length - 1);
+          id(bb);
+          return;
+          // return nothing
+        } else {
+          return id(result);
+        }
       case 'Circle':
         geom = /** @type {!ol.geom.Circle} */ (geom);
         return id(olcs.core.olCircleGeometryToCesium(geom, proj, style));
@@ -921,46 +929,45 @@ olcs.core.OlFeatureToCesiumOptions;
    * @param {!ol.layer.Vector} olLayer
    * @param {!ol.View} olView
    * @param {!Object.<!ol.Feature, !Cesium.Primitive>} featurePrimitiveMap
-   * @return {!Cesium.PrimitiveCollection}
+   * @return {!olcs.core.OlLayerPrimitive}
    * @api
    */
   olcs.core.olVectorLayerToCesium = function(olLayer, olView,
       featurePrimitiveMap) {
-    goog.asserts.assert(olLayer instanceof ol.layer.Vector);
-
     var vectorLayer = olLayer;
     var features = vectorLayer.getSource().getFeatures();
     var proj = olView.getProjection();
     var resolution = olView.getResolution();
 
-    var allPrimitives = new Cesium.PrimitiveCollection();
-    if (!goog.isDef(resolution) || !goog.isDef(proj)) {
+    var allPrimitives = new olcs.core.OlLayerPrimitive();
+    if (!goog.isDef(resolution) || !goog.isDefAndNotNull(proj)) {
       return allPrimitives;
     }
-    proj = /** @type {!ol.proj.Projection} */ (proj);
-    resolution = (resolution);
-    var billboards = new Cesium.BillboardCollection();
     for (var i = 0; i < features.length; ++i) {
       var feature = features[i];
       if (!goog.isDefAndNotNull(feature)) {
         continue;
       }
       var layerStyle = vectorLayer.getStyleFunction();
-      layerStyle = olcs.core.computePlainStyle(feature, layerStyle, resolution);
-      if (!layerStyle) {
+      var style = olcs.core.computePlainStyle(feature, layerStyle, resolution);
+      if (!style) {
         // only 'render' features with a style
         continue;
       }
       var options = {
-        style: layerStyle,
+        style: style,
         projection: proj,
-        billboards: billboards
+        billboards: allPrimitives.billboards
       };
       var primitives = olcs.core.olFeatureToCesium(feature, options);
+      if (!primitives) continue;
       featurePrimitiveMap[feature] = primitives;
       allPrimitives.add(primitives);
     }
 
+    if (allPrimitives.billboards.length > 0) {
+      allPrimitives.add(allPrimitives.billboards);
+    }
     return allPrimitives;
   };
 
