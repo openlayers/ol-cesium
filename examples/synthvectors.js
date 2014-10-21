@@ -79,6 +79,25 @@ var terrainProvider = new Cesium.CesiumTerrainProvider({
 scene.terrainProvider = terrainProvider;
 ol3d.setEnabled(true);
 
+
+// Show off 3D feature picking
+var handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
+var lastPicked;
+handler.setInputAction(function(movement) {
+  var pickedObjects = scene.drillPick(movement.position);
+   if (Cesium.defined(pickedObjects)) {
+    for (i = 0; i < pickedObjects.length; ++i) {
+      var picked = pickedObjects[i].primitive;
+      if (picked.olFeatureId == lastPicked) continue;
+      var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(picked.position);
+      console.log('Picked feature', picked.olFeatureId, ' is at ', carto);
+      lastPicked = picked.olFeatureId;
+    }
+  } else {
+    lastPicked = undefined;
+  }
+}, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+
 function clearFeatures() {
   vectorArray.forEach(function(vector) {
     map.getLayers().remove(vector);

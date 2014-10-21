@@ -518,11 +518,11 @@ goog.require('olcs.core.OlLayerPrimitive');
    * @param {!ol.proj.ProjectionLike} projection
    * @param {!ol.style.Style} style
    * @param {!Cesium.BillboardCollection} billboards
-   * @return {!Cesium.Primitive} primitives
+   * @return {Cesium.Primitive} primitives
    * @api
    */
   olcs.core.olPointGeometryToCesium = function(geometry, projection, style,
-      billboards) {
+      billboards, featureId) {
     goog.asserts.assert(geometry.getType() == 'Point');
     geometry = olGeometryCloneTo4326(geometry, projection);
 
@@ -541,11 +541,12 @@ goog.require('olcs.core.OlLayerPrimitive');
       }
       var center = geometry.getCoordinates();
       var position = olcs.core.ol4326CoordinateToCesiumCartesian(center);
-      billboards.add({
+      var bb = billboards.add({
         // always update Cesium externs before adding a property
         image: image,
         position: position
       });
+      bb.olFeatureId = featureId;
     };
 
     if (image instanceof Image && !isImageLoaded(image)) {
@@ -562,7 +563,7 @@ goog.require('olcs.core.OlLayerPrimitive');
     if (style.getText()) {
       return addTextStyle(geometry, style, billboards);
     } else {
-      return billboards;
+      return null;
     }
   };
 
@@ -572,11 +573,12 @@ goog.require('olcs.core.OlLayerPrimitive');
    * @param {!ol.geom.Geometry} geometry Ol3 geometry.
    * @param {!ol.proj.ProjectionLike} projection
    * @param {!ol.style.Style} olStyle
+   * @param {?} featureId
    * @return {!Cesium.Primitive} primitives
    * @api
    */
   olcs.core.olMultiGeometryToCesium = function(geometry, projection,
-      olStyle) {
+      olStyle, featureId) {
     // Do not reproject to 4326 now because it will be done later.
 
     // FIXME: would be better to combine all child geometries in one primitive
@@ -599,14 +601,18 @@ goog.require('olcs.core.OlLayerPrimitive');
         if (olStyle.getText()) {
           var primitives = new Cesium.PrimitiveCollection();
           goog.array.forEach(subgeos, function(geometry) {
-            goog.asserts.assert(!goog.isNull(geometry));
-            primitives.add(fn(geometry, projection, olStyle, billboards));
+            goog.asserts.assert(geometry);
+            var result = fn(geometry, projection, olStyle, billboards,
+                featureId);
+            if (result) {
+              primitives.add(result);
+            }
           });
           return primitives;
         } else {
           goog.array.forEach(subgeos, function(geometry) {
             goog.asserts.assert(!goog.isNull(geometry));
-            fn(geometry, projection, olStyle, billboards);
+            fn(geometry, projection, olStyle, billboards, featureId);
           });
           return billboards;
         }
@@ -820,7 +826,7 @@ goog.require('olcs.core.OlLayerPrimitive');
    * @param {!ol.style.Style} style
    * @param {!olcs.core.OlFeatureToCesiumContext} context
    * @param {!ol.geom.Geometry=} opt_geom Geometry to be converted.
-   * @return {!Cesium.Primitive} primitives
+   * @return {Cesium.Primitive} primitives
    * @api
    */
   olcs.core.olFeatureToCesium = function(feature, style, context, opt_geom) {
@@ -840,20 +846,20 @@ goog.require('olcs.core.OlLayerPrimitive');
           if (geom) {
             var prims = olcs.core.olFeatureToCesium(feature, style, context,
                 geom);
-            primitives.add(prims);
+            if (prims) {
+              primitives.add(prims);
+            }
           }
         });
         return id(primitives);
       case 'Point':
         geom = /** @type {!ol.geom.Point} */ (geom);
         var bbs = context.billboards;
-        var result = olcs.core.olPointGeometryToCesium(geom, proj, style, bbs);
-        if (result === bbs) {
+        var result = olcs.core.olPointGeometryToCesium(geom, proj, style, bbs,
+            feature.getId());
+        if (!result) {
           // no wrapping primitive
-          var bb = bbs.get(bbs.length - 1);
-          id(bb);
-          return new Cesium.PrimitiveCollection(); // FIXME
-          // return nothing
+          return null;
         } else {
           return id(result);
         }
@@ -869,7 +875,8 @@ goog.require('olcs.core.OlLayerPrimitive');
       case 'MultiPoint':
       case 'MultiLineString':
       case 'MultiPolygon':
-        return id(olcs.core.olMultiGeometryToCesium(geom, proj, style));
+        return id(olcs.core.olMultiGeometryToCesium(geom, proj, style,
+            feature.getId()));
       case 'LinearRing':
         goog.asserts.fail('LinearRing should only be part of polygon.');
         break;
