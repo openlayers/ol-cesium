@@ -546,6 +546,7 @@ goog.require('olcs.core.OlLayerPrimitive');
       var bb = billboards.add({
         // always update Cesium externs before adding a property
         image: image,
+        verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
         position: position
       });
       bb.olFeatureId = featureId;
