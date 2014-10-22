@@ -1655,7 +1655,7 @@ Cesium.Ellipsoid = function(radii) {};
 
 
 /**
- * @type {Cesium.Ellipsoid}
+ * @type {!Cesium.Ellipsoid}
  */
 Cesium.Ellipsoid.WGS84;
 
@@ -2421,3 +2421,28 @@ Cesium.BingMapsStyle.AERIAL_WITH_LABELS;
 
 /** @type {!Cesium.BingMapsStyle} */
 Cesium.BingMapsStyle.ROAD;
+
+/** @constructor */
+Cesium.IntersectionTests = function() {};
+
+/**
+ * @typedef {{
+ *   start: number,
+ *   end: number
+ * }}
+ */
+Cesium.StartEndObject;
+
+/**
+ * @param {!Cesium.Ray} ray
+ * @param {!Cesium.Ellipsoid} ellipsoid
+ * @return {Cesium.StartEndObject}
+ */
+Cesium.IntersectionTests.rayEllipsoid = function(ray, ellipsoid) {};
+
+/**
+ * @param {!Cesium.Ray} ray
+ * @param {number} distance
+ * @return {!Cesium.Cartesian3}
+ */
+Cesium.Ray.getPoint = function(ray, distance) {};
