@@ -112,6 +112,8 @@ Cesium.BillboardCollection = function() {};
 /**
  * @typedef {{
  *   image: (string|HTMLCanvasElement|Image),
+ *   verticalOrigin: (Cesium.VerticalOrigin|undefined),
+ *   horizontalOrigin: (Cesium.HorizontalOrigin|undefined),
  *   position: !Cesium.Cartesian3
  * }}
  */
