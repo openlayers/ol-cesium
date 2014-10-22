@@ -56,6 +56,9 @@ olcs.OLCesium = function(map, opt_target) {
    */
   this.canvas_ = /** @type {!HTMLCanvasElement} */
       (goog.dom.createDom(goog.dom.TagName.CANVAS, {style: fillArea}));
+  this.canvas_.oncontextmenu = function() { return false; };
+  this.canvas_.onselectstart = function() { return false; };
+
   goog.dom.appendChild(this.container_, this.canvas_);
 
   /**
