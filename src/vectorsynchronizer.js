@@ -91,10 +91,21 @@ olcs.VectorSynchronizer.prototype.createSingleCounterpart = function(olLayer) {
   };
 
   var onRemoveFeature = function(feature) {
-    var csPrimitive = featurePrimitiveMap[feature];
-    delete featurePrimitiveMap[feature];
-    goog.asserts.assert(goog.isDefAndNotNull(csPrimitive));
-    csPrimitives.remove(csPrimitive);
+    var geometry = feature.getGeometry();
+    if (goog.isDefAndNotNull(geometry) && geometry.getType() == 'Point') {
+      var id = feature.getId();
+      var context = csPrimitives.context;
+      var bbs = context.billboards;
+      var bb = context.featureToCesiumMap[id];
+      delete context.featureToCesiumMap[id];
+      goog.asserts.assert(goog.isDefAndNotNull(bb));
+      bbs.remove(bb);
+    } else {
+      var csPrimitive = featurePrimitiveMap[feature];
+      delete featurePrimitiveMap[feature];
+      goog.asserts.assert(goog.isDefAndNotNull(csPrimitive));
+      csPrimitives.remove(csPrimitive);
+    }
   };
 
   source.on('addfeature', function(e) {

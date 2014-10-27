@@ -518,11 +518,12 @@ goog.require('olcs.core.OlLayerPrimitive');
    * @param {!ol.proj.ProjectionLike} projection
    * @param {!ol.style.Style} style
    * @param {!Cesium.BillboardCollection} billboards
+   * @param {Object.<!ol.Feature,!Cesium.Primitive|!Cesium.Billboard>=} opt_featureToCesiumMap
    * @return {Cesium.Primitive} primitives
    * @api
    */
   olcs.core.olPointGeometryToCesium = function(geometry, projection, style,
-      billboards, featureId) {
+      billboards, featureId, opt_featureToCesiumMap) {
     goog.asserts.assert(geometry.getType() == 'Point');
     geometry = olGeometryCloneTo4326(geometry, projection);
 
@@ -547,6 +548,9 @@ goog.require('olcs.core.OlLayerPrimitive');
         position: position
       });
       bb.olFeatureId = featureId;
+      if (goog.isDef(opt_featureToCesiumMap)) {
+        opt_featureToCesiumMap[featureId] = bb;
+      }
     };
 
     if (image instanceof Image && !isImageLoaded(image)) {
@@ -856,7 +860,7 @@ goog.require('olcs.core.OlLayerPrimitive');
         geom = /** @type {!ol.geom.Point} */ (geom);
         var bbs = context.billboards;
         var result = olcs.core.olPointGeometryToCesium(geom, proj, style, bbs,
-            feature.getId());
+            feature.getId(), context.featureToCesiumMap);
         if (!result) {
           // no wrapping primitive
           return null;
