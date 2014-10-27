@@ -929,10 +929,6 @@ goog.require('olcs.core.OlLayerPrimitive');
       allPrimitives.add(primitives);
     }
 
-    var bbs = allPrimitives.context.billboards;
-    if (bbs.length > 0) {
-      allPrimitives.add(bbs);
-    }
     return allPrimitives;
   };
 
