@@ -1,7 +1,11 @@
 var total = 0;
 var created = 0;
 var added = 0;
-var vectorArray = [];
+
+var vectorSource = new ol.source.Vector({});
+var vector = new ol.layer.Vector({
+  source: vectorSource,
+});
 var addFeatures = function() {
   var then = Date.now();
   var count = 1000;
@@ -36,14 +40,7 @@ var addFeatures = function() {
   created = now - then;
   then = now;
 
-  var vectorSource = new ol.source.Vector({});
-  var vector = new ol.layer.Vector({
-    source: vectorSource,
-  })
-  vectorArray.push(vector);
-
   vectorSource.addFeatures(features);
-  map.addLayer(vector);
   now = Date.now();
   added = now - then;
   total += count;
@@ -63,7 +60,7 @@ var tile = new ol.layer.Tile({
 });
 
 var map = new ol.Map({
-  layers: [ tile],
+  layers: [tile, vector],
   target: 'map2d',
   view: new ol.View({
     center: [0, 0],
@@ -99,10 +96,6 @@ handler.setInputAction(function(movement) {
 }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
 function clearFeatures() {
-  vectorArray.forEach(function(vector) {
-    map.getLayers().remove(vector);
-  });
-  goog.array.clear(vectorArray);
-  total = 0;
-  document.getElementById('total').innerHTML;
+  vectorSource.clear();
+  total = document.getElementById('total').innerHTML = 0;
 }
