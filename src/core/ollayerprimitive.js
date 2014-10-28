@@ -6,8 +6,8 @@ goog.provide('olcs.core.OlLayerPrimitive');
  * @typedef {{
  *  projection: (!ol.proj.ProjectionLike),
  *  primitives: (!Cesium.PrimitiveCollection),
- *  featureToCesiumMap: (!Object.<
- *    !ol.Feature,
+ *  featureToCesiumMap: (Object.<
+ *    number,
  *    !Cesium.Primitive|!Cesium.Billboard>),
  *  billboards: (!Cesium.BillboardCollection)
  * }}

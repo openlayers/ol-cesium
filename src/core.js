@@ -518,7 +518,8 @@ goog.require('olcs.core.OlLayerPrimitive');
    * @param {!ol.proj.ProjectionLike} projection
    * @param {!ol.style.Style} style
    * @param {!Cesium.BillboardCollection} billboards
-   * @param {Object.<!ol.Feature,!Cesium.Primitive|!Cesium.Billboard>=} opt_featureToCesiumMap
+   * @param {number} featureId
+   * @param {Object.<number,!Cesium.Primitive|!Cesium.Billboard>=} opt_featureToCesiumMap
    * @return {Cesium.Primitive} primitives
    * @api
    */
@@ -838,7 +839,7 @@ goog.require('olcs.core.OlLayerPrimitive');
     var proj = context.projection;
 
     var id = function(primitives) {
-      primitives.olFeatureId = feature.getId();
+      primitives.olFeatureId = goog.getUid(feature);
       return primitives;
     };
 
@@ -860,7 +861,7 @@ goog.require('olcs.core.OlLayerPrimitive');
         geom = /** @type {!ol.geom.Point} */ (geom);
         var bbs = context.billboards;
         var result = olcs.core.olPointGeometryToCesium(geom, proj, style, bbs,
-            feature.getId(), context.featureToCesiumMap);
+            goog.getUid(feature), context.featureToCesiumMap);
         if (!result) {
           // no wrapping primitive
           return null;
@@ -880,7 +881,7 @@ goog.require('olcs.core.OlLayerPrimitive');
       case 'MultiLineString':
       case 'MultiPolygon':
         return id(olcs.core.olMultiGeometryToCesium(geom, proj, style,
-            feature.getId()));
+            goog.getUid(feature)));
       case 'LinearRing':
         goog.asserts.fail('LinearRing should only be part of polygon.');
         break;
@@ -897,7 +898,7 @@ goog.require('olcs.core.OlLayerPrimitive');
    * `featurePrimitiveMap`.
    * @param {!ol.layer.Vector} olLayer
    * @param {!ol.View} olView
-   * @param {!Object.<!ol.Feature, !Cesium.Primitive>} featurePrimitiveMap
+   * @param {!Object.<number, !Cesium.Primitive>} featurePrimitiveMap
    * @return {!olcs.core.OlLayerPrimitive}
    * @api
    */
@@ -929,7 +930,7 @@ goog.require('olcs.core.OlLayerPrimitive');
       }
       var primitives = olcs.core.olFeatureToCesium(feature, style, context);
       if (!primitives) continue;
-      featurePrimitiveMap[feature] = primitives;
+      featurePrimitiveMap[goog.getUid(feature)] = primitives;
       allPrimitives.add(primitives);
     }
 

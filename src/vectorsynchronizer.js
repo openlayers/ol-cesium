@@ -85,7 +85,7 @@ olcs.VectorSynchronizer.prototype.createSingleCounterpart = function(olLayer) {
     goog.asserts.assertInstanceof(olLayer, ol.layer.Vector);
     var prim = csPrimitives.convert(olLayer, view, feature);
     if (prim) {
-      featurePrimitiveMap[feature] = prim;
+      featurePrimitiveMap[goog.getUid(feature)] = prim;
       csPrimitives.add(prim);
     }
   };
@@ -93,7 +93,7 @@ olcs.VectorSynchronizer.prototype.createSingleCounterpart = function(olLayer) {
   var onRemoveFeature = function(feature) {
     var geometry = feature.getGeometry();
     if (goog.isDefAndNotNull(geometry) && geometry.getType() == 'Point') {
-      var id = feature.getId();
+      var id = goog.getUid(feature);
       var context = csPrimitives.context;
       var bbs = context.billboards;
       var bb = context.featureToCesiumMap[id];
