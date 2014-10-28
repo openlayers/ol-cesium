@@ -99,6 +99,7 @@ olcs.VectorSynchronizer.prototype.createSingleCounterpart = function(olLayer) {
       var bb = context.featureToCesiumMap[id];
       delete context.featureToCesiumMap[id];
       if (goog.isDefAndNotNull(bb)) {
+        goog.asserts.assertInstanceof(bb, Cesium.Billboard);
         bbs.remove(bb);
       }
     }
