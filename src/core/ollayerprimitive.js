@@ -6,8 +6,8 @@ goog.provide('olcs.core.OlLayerPrimitive');
  * @typedef {{
  *  projection: (!ol.proj.ProjectionLike),
  *  primitives: (!Cesium.PrimitiveCollection),
- *  featureToCesiumMap: (!Object.<
- *    !ol.Feature,
+ *  featureToCesiumMap: (Object.<
+ *    number,
  *    !Cesium.Primitive|!Cesium.Billboard>),
  *  billboards: (!Cesium.BillboardCollection)
  * }}
@@ -26,15 +26,20 @@ olcs.core.OlFeatureToCesiumContext;
 olcs.core.OlLayerPrimitive = function(layerProjection) {
   goog.base(this);
 
+  var billboards = new Cesium.BillboardCollection();
+  var primitives = new Cesium.PrimitiveCollection();
+
   /**
-    * @type {!olcs.core.OlFeatureToCesiumContext}
-    */
+   * @type {!olcs.core.OlFeatureToCesiumContext}
+   */
   this.context = {
     projection: layerProjection,
-    billboards: new Cesium.BillboardCollection(),
+    billboards: billboards,
     featureToCesiumMap: {},
-    primitives: new Cesium.PrimitiveCollection()
+    primitives: primitives
   };
+
+  this.add(billboards);
 };
 goog.inherits(olcs.core.OlLayerPrimitive, Cesium.PrimitiveCollection);
 

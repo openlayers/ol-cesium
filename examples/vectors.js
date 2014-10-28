@@ -323,6 +323,15 @@ function addOrRemoveOneVectorLayer() {
   hasTheVectorLayer = !hasTheVectorLayer;
 }
 
+function addOrRemoveOneFeature() {
+  var count = vectorSource2.getFeatures().length;
+  if (count === 0) {
+    vectorSource2.addFeature(iconFeature);
+  } else {
+    vectorSource2.removeFeature(iconFeature);
+  }
+}
+
 var oldStyle = new ol.style.Style({
   stroke: new ol.style.Stroke({
     color: 'blue',
