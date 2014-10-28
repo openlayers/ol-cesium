@@ -566,7 +566,7 @@ goog.require('olcs.core.OlLayerPrimitive');
     }
 
     if (style.getText()) {
-      return addTextStyle(geometry, style, billboards);
+      return addTextStyle(geometry, style, new Cesium.Primitive());
     } else {
       return null;
     }
