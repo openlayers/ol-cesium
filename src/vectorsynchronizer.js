@@ -98,12 +98,13 @@ olcs.VectorSynchronizer.prototype.createSingleCounterpart = function(olLayer) {
       var bbs = context.billboards;
       var bb = context.featureToCesiumMap[id];
       delete context.featureToCesiumMap[id];
-      goog.asserts.assert(goog.isDefAndNotNull(bb));
-      bbs.remove(bb);
-    } else {
-      var csPrimitive = featurePrimitiveMap[feature];
-      delete featurePrimitiveMap[feature];
-      goog.asserts.assert(goog.isDefAndNotNull(csPrimitive));
+      if (goog.isDefAndNotNull(bb)) {
+        bbs.remove(bb);
+      }
+    }
+    var csPrimitive = featurePrimitiveMap[id];
+    delete featurePrimitiveMap[id];
+    if (goog.isDefAndNotNull(csPrimitive)) {
       csPrimitives.remove(csPrimitive);
     }
   };
