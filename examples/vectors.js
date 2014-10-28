@@ -188,8 +188,8 @@ var vectorSource = new ol.source.GeoJSON(
                   [-3e6, 8e6, 8e5],
                   [-3e6, 6e6, 8e5]
                 ]],
-                [[[-2e6, 6e6, 4e5], [-2e6, 8e6, 1e5], [0, 8e6], [0, 6e6]]],
-                [[[1e6, 6e6, 1e5], [1e6, 8e6], [3e6, 8e6], [3e6, 6e6]]]
+                [[[-2e6, 6e6, 4e5], [-2e6, 8e6, 1e5], [0, 8e6, 0], [0, 6e6, 0]]],
+                [[[1e6, 6e6, 1e5], [1e6, 8e6, 0], [3e6, 8e6, 0], [3e6, 6e6, 0]]]
               ]
             }
           },
@@ -321,6 +321,15 @@ function addOrRemoveOneVectorLayer() {
     map.getLayers().insertAt(1, vectorLayer);
   }
   hasTheVectorLayer = !hasTheVectorLayer;
+}
+
+function addOrRemoveOneFeature() {
+  var count = vectorSource2.getFeatures().length;
+  if (count === 0) {
+    vectorSource2.addFeature(iconFeature);
+  } else {
+    vectorSource2.removeFeature(iconFeature);
+  }
 }
 
 var oldStyle = new ol.style.Style({

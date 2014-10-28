@@ -126,6 +126,12 @@ Cesium.BillboardCollection.prototype.add = function(opt_opts) {};
 
 
 /**
+ * @type {number}
+ */
+Cesium.BillboardCollection.prototype.length;
+
+
+/**
  * @param {Cesium.Billboard} what .
  */
 Cesium.BillboardCollection.prototype.remove = function(what) {};
@@ -911,6 +917,11 @@ Cesium.Primitive.prototype.olFeatureId;
 
 /**
  * @constructor
+ */
+Cesium.Label = function() {};
+
+/**
+ * @constructor
  * @extends {Cesium.Primitive}
  */
 Cesium.LabelCollection = function() {};
@@ -974,6 +985,7 @@ Cesium.optionsLabelCollection.prototype.verticalOrigin;
 
 /**
  * @param {Cesium.optionsLabelCollection} opt
+ * @return {!Cesium.Label}
  */
 Cesium.LabelCollection.prototype.add = function(opt) {};
 

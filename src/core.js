@@ -11,6 +11,9 @@ goog.require('ol.source.TileImage');
 goog.require('ol.source.WMTS');
 goog.require('ol.style.Style');
 goog.require('olcs.core.OLImageryProvider');
+goog.require('olcs.core.OlLayerPrimitive');
+
+
 
 (function() {
 
@@ -514,10 +517,14 @@ goog.require('olcs.core.OLImageryProvider');
    * @param {!ol.geom.Point} geometry
    * @param {!ol.proj.ProjectionLike} projection
    * @param {!ol.style.Style} style
-   * @return {!Cesium.PrimitiveCollection} primitives
+   * @param {!Cesium.BillboardCollection} billboards
+   * @param {number} featureId
+   * @param {Object.<number,!Cesium.Primitive|!Cesium.Billboard>=} opt_featureToCesiumMap
+   * @return {Cesium.Primitive} primitives
    * @api
    */
-  olcs.core.olPointGeometryToCesium = function(geometry, projection, style) {
+  olcs.core.olPointGeometryToCesium = function(geometry, projection, style,
+      billboards, featureId, opt_featureToCesiumMap) {
     goog.asserts.assert(geometry.getType() == 'Point');
     geometry = olGeometryCloneTo4326(geometry, projection);
 
@@ -529,7 +536,6 @@ goog.require('olcs.core.OLImageryProvider');
           image.naturalWidth != 0 &&
           image.complete;
     };
-    var billboards = new Cesium.BillboardCollection();
     var reallyCreateBillboard = function() {
       if (goog.isNull(image) ||
           !(image instanceof HTMLCanvasElement || image instanceof Image)) {
@@ -537,11 +543,15 @@ goog.require('olcs.core.OLImageryProvider');
       }
       var center = geometry.getCoordinates();
       var position = olcs.core.ol4326CoordinateToCesiumCartesian(center);
-      billboards.add({
+      var bb = billboards.add({
         // always update Cesium externs before adding a property
         image: image,
         position: position
       });
+      bb.olFeatureId = featureId;
+      if (goog.isDef(opt_featureToCesiumMap)) {
+        opt_featureToCesiumMap[featureId] = bb;
+      }
     };
 
     if (image instanceof Image && !isImageLoaded(image)) {
@@ -555,7 +565,11 @@ goog.require('olcs.core.OLImageryProvider');
       reallyCreateBillboard();
     }
 
-    return addTextStyle(geometry, style, billboards);
+    if (style.getText()) {
+      return addTextStyle(geometry, style, new Cesium.Primitive());
+    } else {
+      return null;
+    }
   };
 
 
@@ -564,11 +578,12 @@ goog.require('olcs.core.OLImageryProvider');
    * @param {!ol.geom.Geometry} geometry Ol3 geometry.
    * @param {!ol.proj.ProjectionLike} projection
    * @param {!ol.style.Style} olStyle
-   * @return {!Cesium.PrimitiveCollection} primitives
+   * @param {?} featureId
+   * @return {!Cesium.Primitive} primitives
    * @api
    */
   olcs.core.olMultiGeometryToCesium = function(geometry, projection,
-      olStyle) {
+      olStyle, featureId) {
     // Do not reproject to 4326 now because it will be done later.
 
     // FIXME: would be better to combine all child geometries in one primitive
@@ -586,7 +601,26 @@ goog.require('olcs.core.OLImageryProvider');
       case 'MultiPoint':
         geometry = /** @type {!ol.geom.MultiPoint} */ (geometry);
         subgeos = geometry.getPoints();
-        return accumulate(subgeos, olcs.core.olPointGeometryToCesium);
+        var fn = olcs.core.olPointGeometryToCesium;
+        var billboards = new Cesium.BillboardCollection();
+        if (olStyle.getText()) {
+          var primitives = new Cesium.PrimitiveCollection();
+          goog.array.forEach(subgeos, function(geometry) {
+            goog.asserts.assert(geometry);
+            var result = fn(geometry, projection, olStyle, billboards,
+                featureId);
+            if (result) {
+              primitives.add(result);
+            }
+          });
+          return primitives;
+        } else {
+          goog.array.forEach(subgeos, function(geometry) {
+            goog.asserts.assert(!goog.isNull(geometry));
+            fn(geometry, projection, olStyle, billboards, featureId);
+          });
+          return billboards;
+        }
       case 'MultiLineString':
         geometry = /** @type {!ol.geom.MultiLineString} */ (geometry);
         subgeos = geometry.getLineStrings();
@@ -794,23 +828,18 @@ goog.require('olcs.core.OLImageryProvider');
   /**
    * Convert one OpenLayers feature up to a collection of Cesium primitives.
    * @param {!ol.Feature} feature Ol3 feature.
-   * @param {ol.style.Style} style Ol3 plain style.
-   * @param {!ol.proj.ProjectionLike} projection
-   * @param {ol.geom.Geometry=} opt_geometry
-   * @return {!Cesium.Primitive} primitives
+   * @param {!ol.style.Style} style
+   * @param {!olcs.core.OlFeatureToCesiumContext} context
+   * @param {!ol.geom.Geometry=} opt_geom Geometry to be converted.
+   * @return {Cesium.Primitive} primitives
    * @api
    */
-  olcs.core.olFeatureToCesium = function(feature, style, projection,
-      opt_geometry) {
-    var geom = feature.getGeometry();
-    if (goog.isDef(opt_geometry)) geom = opt_geometry;
-
-    var proj = projection;
-
-    goog.asserts.assert(style instanceof ol.style.Style);
+  olcs.core.olFeatureToCesium = function(feature, style, context, opt_geom) {
+    var geom = opt_geom || feature.getGeometry();
+    var proj = context.projection;
 
     var id = function(primitives) {
-      primitives.olFeatureId = feature.getId();
+      primitives.olFeatureId = goog.getUid(feature);
       return primitives;
     };
 
@@ -819,13 +848,26 @@ goog.require('olcs.core.OLImageryProvider');
         var primitives = new Cesium.PrimitiveCollection();
         var collection = /** @type {!ol.geom.GeometryCollection} */ (geom);
         goog.array.forEach(collection.getGeometries(), function(geom) {
-          var prims = olcs.core.olFeatureToCesium(feature, style, proj, geom);
-          primitives.add(prims);
+          if (geom) {
+            var prims = olcs.core.olFeatureToCesium(feature, style, context,
+                geom);
+            if (prims) {
+              primitives.add(prims);
+            }
+          }
         });
         return id(primitives);
       case 'Point':
         geom = /** @type {!ol.geom.Point} */ (geom);
-        return id(olcs.core.olPointGeometryToCesium(geom, proj, style));
+        var bbs = context.billboards;
+        var result = olcs.core.olPointGeometryToCesium(geom, proj, style, bbs,
+            goog.getUid(feature), context.featureToCesiumMap);
+        if (!result) {
+          // no wrapping primitive
+          return null;
+        } else {
+          return id(result);
+        }
       case 'Circle':
         geom = /** @type {!ol.geom.Circle} */ (geom);
         return id(olcs.core.olCircleGeometryToCesium(geom, proj, style));
@@ -838,7 +880,8 @@ goog.require('olcs.core.OLImageryProvider');
       case 'MultiPoint':
       case 'MultiLineString':
       case 'MultiPolygon':
-        return id(olcs.core.olMultiGeometryToCesium(geom, proj, style));
+        return id(olcs.core.olMultiGeometryToCesium(geom, proj, style,
+            goog.getUid(feature)));
       case 'LinearRing':
         goog.asserts.fail('LinearRing should only be part of polygon.');
         break;
@@ -850,71 +893,44 @@ goog.require('olcs.core.OLImageryProvider');
 
 
   /**
-   * Convert an OpenLayers feature to Cesium primitive collection.
-   * @param {!ol.layer.Vector} layer
-   * @param {!ol.View} view
-   * @param {!ol.Feature} feature
-   * @return {Cesium.Primitive}
-   * @api
-   */
-  olcs.core.olFeatureToCesiumUsingView = function(layer, view, feature) {
-    var proj = view.getProjection();
-    var resolution = view.getResolution();
-
-    if (!resolution || !proj || !feature) {
-      return null;
-    }
-
-    var layerStyle = layer.getStyleFunction();
-    layerStyle = olcs.core.computePlainStyle(feature, layerStyle, resolution);
-
-    if (!layerStyle) {
-      // only 'render' features with a style
-      return null;
-    }
-
-    return olcs.core.olFeatureToCesium(feature, layerStyle, proj);
-  };
-
-
-  /**
    * Convert an OpenLayers vector layer to Cesium primitive collection.
    * For each feature, the associated primitive will be stored in
    * `featurePrimitiveMap`.
    * @param {!ol.layer.Vector} olLayer
    * @param {!ol.View} olView
-   * @param {!Object.<!ol.Feature, !Cesium.Primitive>} featurePrimitiveMap
-   * @return {!Cesium.PrimitiveCollection}
+   * @param {!Object.<number, !Cesium.Primitive>} featurePrimitiveMap
+   * @return {!olcs.core.OlLayerPrimitive}
    * @api
    */
   olcs.core.olVectorLayerToCesium = function(olLayer, olView,
       featurePrimitiveMap) {
-    goog.asserts.assert(olLayer instanceof ol.layer.Vector);
-
     var vectorLayer = olLayer;
     var features = vectorLayer.getSource().getFeatures();
     var proj = olView.getProjection();
     var resolution = olView.getResolution();
 
-    var allPrimitives = new Cesium.PrimitiveCollection();
-    if (!goog.isDef(resolution) || !goog.isDef(proj)) {
-      return allPrimitives;
+    if (!goog.isDef(resolution) || !proj) {
+      goog.asserts.fail('View not ready');
+      // an assertion is not enough for closure to assume resolution and proj
+      // are defined
+      throw new Error('View not ready');
     }
-    proj = /** @type {!ol.proj.Projection} */ (proj);
-    resolution = (resolution);
+    var allPrimitives = new olcs.core.OlLayerPrimitive(proj);
+    var context = allPrimitives.context;
     for (var i = 0; i < features.length; ++i) {
       var feature = features[i];
       if (!goog.isDefAndNotNull(feature)) {
         continue;
       }
       var layerStyle = vectorLayer.getStyleFunction();
-      layerStyle = olcs.core.computePlainStyle(feature, layerStyle, resolution);
-      if (!layerStyle) {
+      var style = olcs.core.computePlainStyle(feature, layerStyle, resolution);
+      if (!style) {
         // only 'render' features with a style
         continue;
       }
-      var primitives = olcs.core.olFeatureToCesium(feature, layerStyle, proj);
-      featurePrimitiveMap[feature] = primitives;
+      var primitives = olcs.core.olFeatureToCesium(feature, style, context);
+      if (!primitives) continue;
+      featurePrimitiveMap[goog.getUid(feature)] = primitives;
       allPrimitives.add(primitives);
     }
 
