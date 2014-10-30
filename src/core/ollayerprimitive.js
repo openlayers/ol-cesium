@@ -4,7 +4,7 @@ goog.provide('olcs.core.OlLayerPrimitive');
 /**
  * Context for feature conversion.
  * @typedef {{
- *  projection: (!ol.proj.ProjectionLike),
+ *  projection: (!(ol.proj.Projection|string)),
  *  primitives: (!Cesium.PrimitiveCollection),
  *  featureToCesiumMap: (Object.<
  *    number,
@@ -20,7 +20,7 @@ olcs.core.OlFeatureToCesiumContext;
 /**
  * Result of the conversion of an OpenLayers layer to Cesium.
  * @constructor
- * @param {!ol.proj.ProjectionLike} layerProjection
+ * @param {!(ol.proj.Projection|string)} layerProjection
  * @extends {Cesium.PrimitiveCollection}
  */
 olcs.core.OlLayerPrimitive = function(layerProjection) {
