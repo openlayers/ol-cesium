@@ -11,6 +11,7 @@ goog.require('ol.layer.Layer');
  * @param {!Cesium.Scene} scene
  * @constructor
  * @template T
+ * @api
  */
 olcs.AbstractSynchronizer = function(map, scene) {
   /**
@@ -125,6 +126,7 @@ olcs.AbstractSynchronizer.prototype.setLayers_ = function(layers) {
 
 /**
  * Performs complete synchronization of the layers.
+ * @api
  */
 olcs.AbstractSynchronizer.prototype.synchronize = function() {
   if (goog.isNull(this.view) || goog.isNull(this.olLayers)) {
@@ -188,7 +190,7 @@ olcs.AbstractSynchronizer.prototype.synchronizeSingle = function(olLayer) {
       // only the keys that need to be relistened when collection changes
       var collection, contentKeys = [];
       var listenAddRemove = goog.bind(function() {
-        collection = olLayer.getLayers();
+        collection = /** @type {ol.layer.Group} */ (olLayer).getLayers();
         if (goog.isDef(collection)) {
           var handleContentChange_ = goog.bind(function(e) {
             this.synchronize();

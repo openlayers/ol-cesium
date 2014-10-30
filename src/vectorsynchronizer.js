@@ -4,6 +4,7 @@ goog.require('goog.events');
 goog.require('ol.layer.Vector');
 goog.require('olcs.AbstractSynchronizer');
 goog.require('olcs.core');
+goog.require('olcs.core.OlLayerPrimitive');
 
 
 
@@ -12,7 +13,8 @@ goog.require('olcs.core');
  * @param {!ol.Map} map
  * @param {!Cesium.Scene} scene
  * @constructor
- * @extends {olcs.AbstractSynchronizer.<Cesium.Polygon|Cesium.PolylineCollection|Cesium.Primitive>}
+ * @extends {olcs.AbstractSynchronizer.<olcs.core.OlLayerPrimitive>}
+ * @api
  */
 olcs.VectorSynchronizer = function(map, scene) {
 
@@ -81,18 +83,31 @@ olcs.VectorSynchronizer.prototype.createSingleCounterpart = function(olLayer) {
 
   var onAddFeature = function(feature) {
     goog.asserts.assertInstanceof(olLayer, ol.layer.Vector);
-    var prim = olcs.core.olFeatureToCesiumUsingView(olLayer, view, feature);
+    var prim = csPrimitives.convert(olLayer, view, feature);
     if (prim) {
-      featurePrimitiveMap[feature] = prim;
+      featurePrimitiveMap[goog.getUid(feature)] = prim;
       csPrimitives.add(prim);
     }
   };
 
   var onRemoveFeature = function(feature) {
-    var csPrimitive = featurePrimitiveMap[feature];
-    delete featurePrimitiveMap[feature];
-    goog.asserts.assert(goog.isDefAndNotNull(csPrimitive));
-    csPrimitives.remove(csPrimitive);
+    var geometry = feature.getGeometry();
+    if (goog.isDefAndNotNull(geometry) && geometry.getType() == 'Point') {
+      var id = goog.getUid(feature);
+      var context = csPrimitives.context;
+      var bbs = context.billboards;
+      var bb = context.featureToCesiumMap[id];
+      delete context.featureToCesiumMap[id];
+      if (goog.isDefAndNotNull(bb)) {
+        goog.asserts.assertInstanceof(bb, Cesium.Billboard);
+        bbs.remove(bb);
+      }
+    }
+    var csPrimitive = featurePrimitiveMap[id];
+    delete featurePrimitiveMap[id];
+    if (goog.isDefAndNotNull(csPrimitive)) {
+      csPrimitives.remove(csPrimitive);
+    }
   };
 
   source.on('addfeature', function(e) {
