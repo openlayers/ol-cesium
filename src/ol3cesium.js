@@ -98,6 +98,11 @@ olcs.OLCesium = function(map, opt_target) {
     'modifier': Cesium.KeyboardEventModifier.SHIFT
   });
 
+  sscc.tiltEventTypes.push({
+    'eventType': Cesium.CameraEventType.LEFT_DRAG,
+    'modifier': Cesium.KeyboardEventModifier.ALT
+  });
+
   sscc.enableLook = false;
 
   this.scene_.camera.constrainedAxis = Cesium.Cartesian3.UNIT_Z;
