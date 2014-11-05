@@ -1659,6 +1659,11 @@ Cesium.Ellipsoid = function(radii) {};
  */
 Cesium.Ellipsoid.WGS84;
 
+/**
+ * @param {Cesium.Cartesian3} cartesian
+ * @param {Cesium.Cartesian3} opt_result
+ */
+Cesium.Ellipsoid.prototype.scaleToGeodeticSurface = function(cartesian, opt_result) {};
 
 /**
  * @param {Cesium.Cartographic} cartographic
