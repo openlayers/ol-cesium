@@ -60,6 +60,124 @@ goog.require('olcs.core.OlLayerPrimitive');
     return target;
   };
 
+
+  /**
+   * Compute the signed tilt angle on globe, between the opposite of the
+   * camera direction and the target normal. Return undefined if there is no
+   * intersection of the camera direction with the globe.
+   * @param {!Cesium.Scene} scene
+   * @return {number|undefined}
+   * @api
+   */
+  olcs.core.computeSignedTiltAngleOnGlobe = function(scene) {
+    var camera = scene.camera;
+    var ray = new Cesium.Ray(camera.position, camera.direction);
+    var target = scene.globe.pick(ray, scene);
+
+    if (!target) {
+      // no tiles in the area were loaded?
+      var ellipsoid = Cesium.Ellipsoid.WGS84;
+      var obj = Cesium.IntersectionTests.rayEllipsoid(ray, ellipsoid);
+      if (obj) {
+        target = Cesium.Ray.getPoint(ray, obj.start);
+      }
+    }
+
+    if (!target) {
+      return undefined;
+    }
+
+    var normal = new Cesium.Cartesian3();
+    Cesium.Ellipsoid.WGS84.geocentricSurfaceNormal(target, normal);
+
+    var angleBetween = olcs.core.signedAngleBetween;
+    var angle = angleBetween(camera.direction, normal, camera.right) - Math.PI;
+    return Cesium.Math.convertLongitudeRange(angle);
+  };
+
+
+  /**
+   * Compute the ray from the camera to the bottom-center of the screen.
+   * @param {!Cesium.Scene} scene
+   * @return {!Cesium.Ray}
+   */
+  olcs.core.bottomFovRay = function(scene) {
+    var camera = scene.camera;
+    var fovy2 = camera.frustum.fovy / 2;
+    var direction = camera.direction;
+    var rotation = Cesium.Quaternion.fromAxisAngle(camera.right, fovy2);
+    var matrix = Cesium.Matrix3.fromQuaternion(rotation);
+    var vector = new Cesium.Cartesian3();
+    Cesium.Matrix3.multiplyByVector(matrix, direction, vector);
+    return new Cesium.Ray(camera.position, vector);
+  };
+
+
+  /**
+   * Compute the angle between two Cartesian3.
+   * @param {!Cesium.Cartesian3} first
+   * @param {!Cesium.Cartesian3} second
+   * @param {!Cesium.Cartesian3} normal Normal to test orientation against.
+   * @return {number}
+   */
+  olcs.core.signedAngleBetween = function(first, second, normal) {
+    // We are using the dot for the angle.
+    // Then the cross and the dot for the sign.
+    var a = new Cesium.Cartesian3();
+    var b = new Cesium.Cartesian3();
+    var c = new Cesium.Cartesian3();
+    Cesium.Cartesian3.normalize(first, a);
+    Cesium.Cartesian3.normalize(second, b);
+    Cesium.Cartesian3.cross(a, b, c);
+
+    var cosine = Cesium.Cartesian3.dot(a, b);
+    var sine = Cesium.Cartesian3.magnitude(c);
+
+    // Sign of the vector product and the orientation normal
+    var sign = Cesium.Cartesian3.dot(normal, c);
+    var angle = Math.atan2(sine, cosine);
+    return sign >= 0 ? angle : -angle;
+  };
+
+
+  /**
+   * Compute the rotation angle around a given point, needed to reach the
+   * zenith position.
+   * At a zenith position, the camera direction is going througth the earth
+   * center and the frustrum bottom ray is going through the chosen pivot
+   * point.
+   * The bottom-center of the screen is a good candidate for the pivot point.
+   * @param {!Cesium.Scene} scene
+   * @param {!Cesium.Cartesian3} pivot Point around which the camera rotates.
+   * @return {number}
+   * @api
+   */
+  olcs.core.computeAngleToZenith = function(scene, pivot) {
+    // This angle is the sum of the angles 'fy' and 'a', which are defined
+    // using the pivot point and its surface normal.
+    //        Zenith |    camera
+    //           \   |   /
+    //            \fy|  /
+    //             \ |a/
+    //              \|/pivot
+    var camera = scene.camera;
+    var fy = camera.frustum.fovy / 2;
+    var ray = olcs.core.bottomFovRay(scene);
+    var direction = Cesium.Cartesian3.clone(ray.direction);
+    Cesium.Cartesian3.negate(direction, direction);
+
+    var normal = new Cesium.Cartesian3();
+    Cesium.Ellipsoid.WGS84.geocentricSurfaceNormal(pivot, normal);
+
+    var left = new Cesium.Cartesian3();
+    Cesium.Cartesian3.negate(camera.right, left);
+
+    var a = olcs.core.signedAngleBetween(normal, direction, left);
+    return a + fy;
+  };
+
+
+
   /**
    * Rotate the camera so that its direction goes through the target point.
    * If a globe is given, the target height is first interpolated from terrain.
