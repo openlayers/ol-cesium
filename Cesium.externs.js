@@ -597,6 +597,14 @@ Cesium.Cartesian3.prototype.z;
 
 
 /**
+ * @param {!Cesium.Cartesian3} start
+ * @param {!Cesium.Cartesian3} end
+ * @param {number} t
+ * @param {!Cesium.Cartesian3} result
+ */
+Cesium.Cartesian3.lerp = function(start, end, t, result) {};
+
+/**
  * @param {Cesium.Cartesian3} left
  * @return {number}
  */
