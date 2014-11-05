@@ -1806,7 +1806,11 @@ Cesium.Math.PI_OVER_TWO;
  */
 Cesium.Math.TWO_PI;
 
-
+/**
+ * @param {number} rad
+ * @return {number} angle in degrees
+ */
+Cesium.Math.toDegrees = function(rad) {};
 
 /**
  * @constructor
