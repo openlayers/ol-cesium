@@ -146,8 +146,7 @@ olcs.OLCesium = function(map, opt_target) {
   this.cesiumRenderingDelay_ = new goog.async.AnimationDelay(function(time) {
     this.scene_.initializeFrame();
     this.scene_.render();
-    this.camera_.checkCameraChange();
-
+    this.enabled_ && this.camera_.checkCameraChange();
     this.cesiumRenderingDelay_.start();
   }, undefined, this);
 };
@@ -243,4 +242,31 @@ olcs.OLCesium.prototype.setEnabled = function(opt_enable) {
     this.camera_.updateView();
     this.cesiumRenderingDelay_.stop();
   }
+};
+
+
+/**
+* Preload Cesium so that it is ready when transitioning from 2D to 3D.
+* @param {number} height Target height of the camera
+* @param {number} timeout Milliseconds after which the warming will stop
+* @api
+*/
+olcs.OLCesium.prototype.warmUp = function(height, timeout) {
+  if (this.enabled_) {
+    // already enabled
+    return;
+  }
+  this.camera_.readFromView();
+  var ellipsoid = this.globe_.ellipsoid;
+  var csCamera = this.scene_.camera;
+  var position = ellipsoid.cartesianToCartographic(csCamera.position);
+  if (position.height < height) {
+    position.height = height;
+    csCamera.position = ellipsoid.cartographicToCartesian(position);
+  }
+  this.cesiumRenderingDelay_.start();
+  var that = this;
+  setTimeout(
+      function() { !that.enabled_ && that.cesiumRenderingDelay_.stop(); },
+      timeout);
 };
