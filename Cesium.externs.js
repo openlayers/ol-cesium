@@ -795,7 +795,7 @@ Cesium.Globe.prototype.getHeight = function(cartographic) {};
  * @param {!Cesium.Ray} ray
  * @param {!Cesium.Scene} scene
  * @param {Cesium.Cartesian3=} opt_result
- * @return {Cesium.Cartesian3|undefined}
+ * @return {!Cesium.Cartesian3|undefined}
  */
 Cesium.Globe.prototype.pick = function(ray, scene, opt_result) {};
 
