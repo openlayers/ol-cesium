@@ -235,7 +235,7 @@ Cesium.Camera = function() {};
 
 
 /**
- * @type {Cesium.Cartesian3}
+ * @type {!Cesium.Cartesian3}
  */
 Cesium.Camera.prototype.direction;
 
@@ -247,13 +247,13 @@ Cesium.Camera.prototype.frustum;
 
 
 /**
- * @type {Cesium.Cartesian3}
+ * @type {!Cesium.Cartesian3}
  */
 Cesium.Camera.prototype.position;
 
 
 /**
- * @type {Cesium.Cartesian3}
+ * @type {!Cesium.Cartesian3}
  */
 Cesium.Camera.prototype.right;
 
@@ -265,7 +265,7 @@ Cesium.Camera.prototype.transform;
 
 
 /**
- * @type {Cesium.Cartesian3}
+ * @type {!Cesium.Cartesian3}
  */
 Cesium.Camera.prototype.up;
 
