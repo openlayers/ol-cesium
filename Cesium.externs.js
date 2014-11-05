@@ -657,6 +657,14 @@ Cesium.Cartesian3.cross = function(left, right, opt_result) {};
 
 
 /**
+ * @param {!Cesium.Cartesian3} cartesian
+ * @param {Cesium.Cartesian3=} opt_result
+ * @return {!Cesium.Cartesian3}
+ */
+Cesium.Cartesian3.clone = function(cartesian, opt_result) {};
+
+
+/**
  * @param {Cesium.Cartesian3} left
  * @param {Cesium.Cartesian3} right
  * @return {number}
