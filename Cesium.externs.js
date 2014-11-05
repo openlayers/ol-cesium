@@ -767,9 +767,15 @@ Cesium.Cartographic.fromDegrees = function(lat, lng) {};
 
 /**
  * @constructor
+ * @param {!Cesium.Cartesian3|undefined} opt_origin
+ * @param {!Cesium.Cartesian3|undefined} opt_direction
  */
-Cesium.Ray = function() {};
+Cesium.Ray = function(opt_origin, opt_direction) {};
 
+/**
+ * @type {!Cesium.Cartesian3}
+ */
+Cesium.Ray.prototype.direction;
 
 /**
  * @constructor
