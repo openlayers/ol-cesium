@@ -791,6 +791,12 @@ Cesium.Globe.prototype.ellipsoid;
 
 
 /**
+ * @type {boolean}
+ */
+Cesium.Globe.prototype.depthTestAgainstTerrain;
+
+
+/**
  * @param {!Cesium.Cartographic} cartographic
  * @return {number|undefined}
  */
