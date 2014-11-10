@@ -2090,6 +2090,12 @@ Cesium.Scene.prototype.render = function() {};
  */
 Cesium.Scene.prototype.screenSpaceCameraController;
 
+/**
+ * @type {Cesium.TerrainProvider}
+ */
+Cesium.Scene.prototype.terrainProvider;
+
+
 
 /**
  */
@@ -2475,3 +2481,26 @@ Cesium.IntersectionTests.rayEllipsoid = function(ray, ellipsoid) {};
  * @return {!Cesium.Cartesian3}
  */
 Cesium.Ray.getPoint = function(ray, distance) {};
+
+
+/**
+ * @typedef {{
+ *   url: (!string|undefined),
+ *   credit: (!string|undefined)
+ *   }}
+ */
+Cesium.CesiumTerrainProviderOptions;
+
+
+/**
+ * @constructor
+ */
+Cesium.TerrainProvider = function() {};
+
+
+/**
+ * @param {!Cesium.CesiumTerrainProviderOptions} opt_options
+ * @extends {Cesium.TerrainProvider}
+ * @constructor
+ */
+Cesium.CesiumTerrainProvider = function(opt_options) {};
