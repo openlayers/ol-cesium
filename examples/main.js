@@ -17,3 +17,9 @@ var ol2d = new ol.Map({
 });
 
 var ol3d = new olcs.OLCesium(ol2d);
+var scene = ol3d.getCesiumScene();
+var terrainProvider = new Cesium.CesiumTerrainProvider({
+    url : '//cesiumjs.org/stk-terrain/tilesets/world/tiles'
+});
+scene.terrainProvider = terrainProvider;
+

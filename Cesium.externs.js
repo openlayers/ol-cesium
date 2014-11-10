@@ -112,6 +112,8 @@ Cesium.BillboardCollection = function() {};
 /**
  * @typedef {{
  *   image: (string|HTMLCanvasElement|Image),
+ *   verticalOrigin: (Cesium.VerticalOrigin|undefined),
+ *   horizontalOrigin: (Cesium.HorizontalOrigin|undefined),
  *   position: !Cesium.Cartesian3
  * }}
  */
@@ -233,7 +235,7 @@ Cesium.Camera = function() {};
 
 
 /**
- * @type {Cesium.Cartesian3}
+ * @type {!Cesium.Cartesian3}
  */
 Cesium.Camera.prototype.direction;
 
@@ -245,13 +247,13 @@ Cesium.Camera.prototype.frustum;
 
 
 /**
- * @type {Cesium.Cartesian3}
+ * @type {!Cesium.Cartesian3}
  */
 Cesium.Camera.prototype.position;
 
 
 /**
- * @type {Cesium.Cartesian3}
+ * @type {!Cesium.Cartesian3}
  */
 Cesium.Camera.prototype.right;
 
@@ -263,7 +265,7 @@ Cesium.Camera.prototype.transform;
 
 
 /**
- * @type {Cesium.Cartesian3}
+ * @type {!Cesium.Cartesian3}
  */
 Cesium.Camera.prototype.up;
 
@@ -597,6 +599,14 @@ Cesium.Cartesian3.prototype.z;
 
 
 /**
+ * @param {!Cesium.Cartesian3} start
+ * @param {!Cesium.Cartesian3} end
+ * @param {number} t
+ * @param {!Cesium.Cartesian3} result
+ */
+Cesium.Cartesian3.lerp = function(start, end, t, result) {};
+
+/**
  * @param {Cesium.Cartesian3} left
  * @return {number}
  */
@@ -644,6 +654,14 @@ Cesium.Cartesian3.negate = function(cartesian, result) {};
  * @return {!Cesium.Cartesian3}
  */
 Cesium.Cartesian3.cross = function(left, right, opt_result) {};
+
+
+/**
+ * @param {!Cesium.Cartesian3} cartesian
+ * @param {Cesium.Cartesian3=} opt_result
+ * @return {!Cesium.Cartesian3}
+ */
+Cesium.Cartesian3.clone = function(cartesian, opt_result) {};
 
 
 /**
@@ -749,9 +767,15 @@ Cesium.Cartographic.fromDegrees = function(lat, lng) {};
 
 /**
  * @constructor
+ * @param {!Cesium.Cartesian3|undefined} opt_origin
+ * @param {!Cesium.Cartesian3|undefined} opt_direction
  */
-Cesium.Ray = function() {};
+Cesium.Ray = function(opt_origin, opt_direction) {};
 
+/**
+ * @type {!Cesium.Cartesian3}
+ */
+Cesium.Ray.prototype.direction;
 
 /**
  * @constructor
@@ -767,6 +791,12 @@ Cesium.Globe.prototype.ellipsoid;
 
 
 /**
+ * @type {boolean}
+ */
+Cesium.Globe.prototype.depthTestAgainstTerrain;
+
+
+/**
  * @param {!Cesium.Cartographic} cartographic
  * @return {number|undefined}
  */
@@ -777,7 +807,7 @@ Cesium.Globe.prototype.getHeight = function(cartographic) {};
  * @param {!Cesium.Ray} ray
  * @param {!Cesium.Scene} scene
  * @param {Cesium.Cartesian3=} opt_result
- * @return {Cesium.Cartesian3|undefined}
+ * @return {!Cesium.Cartesian3|undefined}
  */
 Cesium.Globe.prototype.pick = function(ray, scene, opt_result) {};
 
@@ -1647,10 +1677,15 @@ Cesium.Ellipsoid = function(radii) {};
 
 
 /**
- * @type {Cesium.Ellipsoid}
+ * @type {!Cesium.Ellipsoid}
  */
 Cesium.Ellipsoid.WGS84;
 
+/**
+ * @param {Cesium.Cartesian3} cartesian
+ * @param {Cesium.Cartesian3} opt_result
+ */
+Cesium.Ellipsoid.prototype.scaleToGeodeticSurface = function(cartesian, opt_result) {};
 
 /**
  * @param {Cesium.Cartographic} cartographic
@@ -1774,6 +1809,13 @@ Cesium.Math = function() {};
 
 
 /**
+ * @param {number} angle Angle in radians.
+ * @return {number} angle in range [-Pi, Pi].
+ */
+Cesium.Math.convertLongitudeRange = function(angle) {};
+
+
+/**
  * @param {number} value
  * @param {number} min
  * @param {number} max
@@ -1793,7 +1835,11 @@ Cesium.Math.PI_OVER_TWO;
  */
 Cesium.Math.TWO_PI;
 
-
+/**
+ * @param {number} rad
+ * @return {number} angle in degrees
+ */
+Cesium.Math.toDegrees = function(rad) {};
 
 /**
  * @constructor
@@ -2043,6 +2089,12 @@ Cesium.Scene.prototype.render = function() {};
  * @type {Cesium.ScreenSpaceCameraController}
  */
 Cesium.Scene.prototype.screenSpaceCameraController;
+
+/**
+ * @type {Cesium.TerrainProvider}
+ */
+Cesium.Scene.prototype.terrainProvider;
+
 
 
 /**
@@ -2404,3 +2456,51 @@ Cesium.BingMapsStyle.AERIAL_WITH_LABELS;
 
 /** @type {!Cesium.BingMapsStyle} */
 Cesium.BingMapsStyle.ROAD;
+
+/** @constructor */
+Cesium.IntersectionTests = function() {};
+
+/**
+ * @typedef {{
+ *   start: number,
+ *   end: number
+ * }}
+ */
+Cesium.StartEndObject;
+
+/**
+ * @param {!Cesium.Ray} ray
+ * @param {!Cesium.Ellipsoid} ellipsoid
+ * @return {Cesium.StartEndObject}
+ */
+Cesium.IntersectionTests.rayEllipsoid = function(ray, ellipsoid) {};
+
+/**
+ * @param {!Cesium.Ray} ray
+ * @param {number} distance
+ * @return {!Cesium.Cartesian3}
+ */
+Cesium.Ray.getPoint = function(ray, distance) {};
+
+
+/**
+ * @typedef {{
+ *   url: (!string|undefined),
+ *   credit: (!string|undefined)
+ *   }}
+ */
+Cesium.CesiumTerrainProviderOptions;
+
+
+/**
+ * @constructor
+ */
+Cesium.TerrainProvider = function() {};
+
+
+/**
+ * @param {!Cesium.CesiumTerrainProviderOptions} opt_options
+ * @extends {Cesium.TerrainProvider}
+ * @constructor
+ */
+Cesium.CesiumTerrainProvider = function(opt_options) {};
