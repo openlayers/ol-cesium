@@ -349,7 +349,7 @@ goog.require('olcs.core.OlLayerPrimitive');
   var addTextStyle = function(geometry, style, primitive) {
     var primitives;
     if (!(primitive instanceof Cesium.PrimitiveCollection)) {
-      var primitives = new Cesium.PrimitiveCollection();
+      primitives = new Cesium.PrimitiveCollection();
       primitives.add(primitive);
     } else {
       primitives = primitive;
@@ -546,6 +546,7 @@ goog.require('olcs.core.OlLayerPrimitive');
       var bb = billboards.add({
         // always update Cesium externs before adding a property
         image: image,
+        verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
         position: position
       });
       bb.olFeatureId = featureId;
@@ -883,11 +884,9 @@ goog.require('olcs.core.OlLayerPrimitive');
         return id(olcs.core.olMultiGeometryToCesium(geom, proj, style,
             goog.getUid(feature)));
       case 'LinearRing':
-        goog.asserts.fail('LinearRing should only be part of polygon.');
-        break;
+        throw new Error('LinearRing should only be part of polygon.');
       default:
-        goog.asserts.fail('ol geom type not handled : ' + geom.getType());
-        break;
+        throw new Error('Ol geom type not handled : ' + geom.getType());
     }
   };
 

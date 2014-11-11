@@ -76,7 +76,7 @@ cleanall: clean
 	cp -R examples dist/
 	for f in dist/examples/*.html; do sed 'sY/@loaderY../ol3cesium.jsY' -i $$f; done
 	for f in dist/examples/*.html; do sed 'sY../ol3/build/ol.jsY../ol3/ol-debug.jsY' -i $$f; done
-	for f in dist/examples/*.html; do sed 'sY../cesium/Build/Cesium/Cesium.jsY../Cesium/Cesium.jsY' -i $$f; done
+	for f in dist/examples/*.html; do sed 'sY../cesium/Build/Y../Y' -i $$f; done
 	touch $@
 
 .build/python-venv:
