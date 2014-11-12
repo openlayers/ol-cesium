@@ -34,6 +34,7 @@ dist: dist/ol3cesium.js
 
 .PHONY: dist-examples
 dist-examples: .build/dist-examples.timestamp
+	node build/parse-examples.js
 
 .PHONY: lint
 lint: .build/python-venv/bin/gjslint .build/gjslint.timestamp
