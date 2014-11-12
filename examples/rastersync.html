@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="index, all" />
+    <title>olcesium raster layer synchronization example</title>
+    <link rel="stylesheet" href="../ol.css" type="text/css">
+    <style>
+      fieldset {display:inline-block;float:left;}
+      label {display:block;}
+      body.hideLayerInputs fieldset {display:none;}
+    </style>
+  </head>
+  <body>
+    <div id="map2d" style="width:600px;height:400px;float:left;"></div>
+    <div id="map3d" style="width:600px;height:400px;float:left;position:relative;"></div>
+    <input type="button" value="Remove all layers" onclick="ol2d.getLayers().clear();document.body.className='hideLayerInputs';" />
+    <input type="button" value="Remove last layer" onclick="removeLastLayer();document.body.className='hideLayerInputs';" />
+    <br />
+    <input type="button" value="Add Stamen" onclick="addStamen();" />
+    <input type="button" value="Add TileWMS" onclick="addTileWMS();" />
+    <input type="button" value="Add TileJSON" onclick="addTileJSON();" />
+    <br /><br />
+    <input type="button" value="TileWMS change" onclick="changeTileWMSParams();" />
+
+    <fieldset id="layer0">
+      <label class="checkbox">
+        <input class="visible" type="checkbox" onchange="layer0.setVisible(this.checked)" checked/>OpenAerial layer
+      </label>
+      <label>opacity</label>
+      <input class="opacity" type="range" min="0" max="1" step="0.01" value="1" oninput="layer0.setOpacity(this.value)"/>
+      <label>Z-index</label>
+      <input type="range" min="-10" max="10" step="1" oninput="layer0.setZIndex(this.value)" />
+    </fieldset>
+    <fieldset id="layer1">
+      <label class="checkbox">
+        <input class="visible" type="checkbox" onchange="layer1.setVisible(this.checked)" checked/>Grand Canyon overlay
+      </label>
+      <label>opacity</label>
+      <input class="opacity" type="range" min="0" max="1" step="0.01" value="1" oninput="layer1.setOpacity(this.value)"/>
+      <label>Z-index</label>
+      <input type="range" min="-10" max="10" step="1" oninput="layer1.setZIndex(this.value)" />
+    </fieldset>
+    <fieldset id="layer2">
+      <label class="checkbox">
+        <input class="visible" type="checkbox" onchange="layer2.setVisible(this.checked)" checked/>World borders
+      </label>
+      <label>opacity</label>
+      <input class="opacity" type="range" min="0" max="1" step="0.01" value="1" oninput="layer2.setOpacity(this.value)"/>
+      <label>Z-index</label>
+      <input type="range" min="-10" max="10" step="1" oninput="layer2.setZIndex(this.value)" />
+    </fieldset>
+    <script src="inject_ol_cesium.js"></script>
+    <script src="rastersync.js"></script>
+  </body>
+</html>

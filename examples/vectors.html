@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="index, all" />
+    <title>olcesium vectors example</title>
+    <link rel="stylesheet" href="../ol.css" type="text/css"></link>
+    <style>.cesium-credit-textContainer { display: inline-block; font-size: 50%; line-height: 100%;}</style>
+  </head>
+  <body>
+    <div id="map2d" style="width:600px;height:400px;float:left;"></div>
+    <div id="map3d" style="width:600px;height:400px;float:left;position:relative;"></div>
+    <div><input type="button" value="Enable/disable Cesium"
+      onclick="javascript:ol3d.setEnabled(!ol3d.getEnabled())" /></div>
+    <div><input type="button" value="Toggle depth test"
+      onclick="javascript:scene.globe.depthTestAgainstTerrain = !scene.globe.depthTestAgainstTerrain; ol3d.getAutoRenderLoop().restartRenderLoop()" /></div>
+    <div><input type="button" value="Toggle circle style"
+      onclick="javascript:toggleStyle()" /></div>
+    <div><input type="button" value="Add/remove one vector layer"
+      onclick="javascript:addOrRemoveOneVectorLayer()" /></div>
+    <div><input type="button" value="Add/remove one feature"
+      onclick="javascript:addOrRemoveOneFeature()" /></div>
+    <div><input type="button" value="Toggle clampToGround mode"
+      onclick="javascript:toggleClampToGround(); ol3d.getAutoRenderLoop().restartRenderLoop()" /></div>
+    <div>
+      <input id="framerate" type="number" min="0" step="10" value="10"/>
+      <input type="button" value="Set the target rendering frame rate"
+        onclick="javascript:setTargetFrameRate()" />
+    </div>
+    <div>Vectors are synchronized from the OpenLayers map to the Cesium scene.
+      <br/>3D positioning and some styling is supported.<br />The render loop is automatically stopped when idle.</div>
+    <script src="inject_ol_cesium.js"></script>
+    <script src="vectors.js"></script>
+  </body>
+</html>
+
