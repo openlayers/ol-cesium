@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Ol3-Cesium by openlayers</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Ol3-Cesium</h1>
+        <h2>OpenLayers - Cesium integration library</h2>
+        <a href="https://github.com/openlayers/ol3-cesium" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <p>Create your map using <a href="http://openlayers.org/">OpenLayers 3</a>, and visualize it on a globe with <a href="http://cesiumjs.org">Cesium</a>.</p>
+
+<h2>
+<a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span class="octicon octicon-link"></span></a>Getting started</h2>
+
+<p>To obtain OL3-Cesium, either download a release from <a href="https://github.com/openlayers/ol3-cesium/releases">https://github.com/openlayers/ol3-cesium/releases</a>, or clone the repository and build it yourself (see below).</p>
+
+<p>Applications using this OL3-Cesium distribution also need to load OpenLayers and Cesium resources (all included in the distribution):</p>
+
+<div class="highlight highlight-html"><pre>&lt;<span class="pl-ent">link</span> <span class="pl-eoa">rel</span>=<span class="pl-s1"><span class="pl-pds">"</span>stylesheet<span class="pl-pds">"</span></span> <span class="pl-eoa">href</span>=<span class="pl-s1"><span class="pl-pds">"</span>ol3/css/ol.css<span class="pl-pds">"</span></span> <span class="pl-eoa">type</span>=<span class="pl-s1"><span class="pl-pds">"</span>text/css<span class="pl-pds">"</span></span>&gt;
+&lt;<span class="pl-ent">script</span> <span class="pl-eoa">src</span>=<span class="pl-s1"><span class="pl-pds">"</span>ol3/ol.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;
+&lt;<span class="pl-ent">script</span> <span class="pl-eoa">src</span>=<span class="pl-s1"><span class="pl-pds">"</span>Cesium/Cesium.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;
+&lt;<span class="pl-ent">script</span> <span class="pl-eoa">src</span>=<span class="pl-s1"><span class="pl-pds">"</span>ol3cesium.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
+
+<p>Any OpenLayers map can be switched to a 3d globe view by running the code below after the map has been created:</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-s">var</span> ol3d <span class="pl-ko">=</span> <span class="pl-ko">new</span> <span class="pl-enti">olcs.OLCesium</span>(map); <span class="pl-c"><span class="pl-pdc">//</span> map is the ol.Map instance</span>
+ol3d.setEnabled(<span class="pl-c1">true</span>);</pre></div>
+
+<p>The above will use a flat surface all around the globe. To use terrain, simply add a terrain provider (can be your own, but in the snippet below it's one that ships with Cesium):</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-s">var</span> ol3d <span class="pl-ko">=</span> <span class="pl-ko">new</span> <span class="pl-enti">olcs.OLCesium</span>(map); <span class="pl-c"><span class="pl-pdc">//</span> map is the ol.Map instance</span>
+<span class="pl-s">var</span> scene <span class="pl-ko">=</span> ol3d.getCesiumScene();
+<span class="pl-s">var</span> terrainProvider <span class="pl-ko">=</span> <span class="pl-ko">new</span> <span class="pl-enti">Cesium.CesiumTerrainProvider</span>({
+  url<span class="pl-ko">:</span> <span class="pl-s1"><span class="pl-pds">'</span>//cesiumjs.org/stk-terrain/tilesets/world/tiles<span class="pl-pds">'</span></span>
+});
+scene.terrainProvider <span class="pl-ko">=</span> terrainProvider;
+ol3d.setEnabled(<span class="pl-c1">true</span>);</pre></div>
+
+<h2>
+<a id="building-the-library" class="anchor" href="#building-the-library" aria-hidden="true"><span class="octicon octicon-link"></span></a>Building the library</h2>
+
+<p>Requirements for building OL3-Cesium:</p>
+
+<ul>
+<li><a href="http://www.gnu.org/software/make/">GNU Make</a></li>
+<li><a href="http://nodejs.org/">Node.js</a></li>
+<li><a href="http://python.org/">Python</a></li>
+<li><a href="http://ant.apache.org/">Ant</a></li>
+</ul>
+
+<p>To get started, clone the <a href="https://github.com/openlayers/ol3-cesium">OL3-Cesium repository</a>, and simply invoke</p>
+
+<pre><code>$ make dist
+</code></pre>
+
+<p>from the root of the repository. You will then be able to use <code>dist/ol3cesium.js</code> for your applications.</p>
+
+<h2>
+<a id="running-the-examples-in-debug-mode" class="anchor" href="#running-the-examples-in-debug-mode" aria-hidden="true"><span class="octicon octicon-link"></span></a>Running the examples in debug mode</h2>
+
+<p>This is useful for contributing to OL3-Cesium, because it loads the
+source files instead of a minified build:</p>
+
+<pre><code>$ make serve
+</code></pre>
+
+<p>will make the distribution examples available at http://localhost:3000/</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/openlayers/ol3-cesium/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/openlayers/ol3-cesium/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/openlayers/ol3-cesium"></a> is maintained by <a href="https://github.com/openlayers">openlayers</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
