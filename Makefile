@@ -78,10 +78,11 @@ cleanall: clean
 	.build/python-venv/bin/gjslint --jslint_error=all --strict --custom_jsdoc_tags=api $?
 	touch $@
 
-.build/dist-examples.timestamp: ol3/build/ol-debug.js ol3/build/ol.css cesium/Build/Cesium/Cesium.js dist/ol3cesium.js $(EXAMPLES_JS_FILES) $(EXAMPLES_HTML_FILES)
+.build/dist-examples.timestamp: ol3/build/ol-debug.js ol3/build/ol.js ol3/build/ol.css cesium/Build/Cesium/Cesium.js dist/ol3cesium.js $(EXAMPLES_JS_FILES) $(EXAMPLES_HTML_FILES)
 	mkdir -p $(dir $@)
 	mkdir -p dist/ol3
 	cp ol3/build/ol-debug.js dist/ol3/
+	cp ol3/build/ol.js dist/ol3/
 	mkdir -p dist/ol3/css
 	cp ol3/build/ol.css dist/ol3/css/
 	cp -R cesium/Build/Cesium dist/
