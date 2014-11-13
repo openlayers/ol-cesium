@@ -92,8 +92,8 @@ olcs.VectorSynchronizer.prototype.createSingleCounterpart = function(olLayer) {
 
   var onRemoveFeature = function(feature) {
     var geometry = feature.getGeometry();
+    var id = goog.getUid(feature);
     if (goog.isDefAndNotNull(geometry) && geometry.getType() == 'Point') {
-      var id = goog.getUid(feature);
       var context = csPrimitives.context;
       var bbs = context.billboards;
       var bb = context.featureToCesiumMap[id];
