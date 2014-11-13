@@ -198,3 +198,24 @@ olcs.DragBox.prototype.setScene = function(scene) {
   }
   this.scene_ = scene;
 };
+
+
+/**
+ * Adds an event listener. A listener can only be added once to an
+ * object and if it is added again the key for the listener is
+ * returned. Note that if the existing listener is a one-off listener
+ * (registered via listenOnce), it will no longer be a one-off
+ * listener after a call to listen().
+ *
+ * @param {string|!goog.events.EventId.<EVENTOBJ>} type The event type id.
+ * @param {function(this:SCOPE, EVENTOBJ):(boolean|undefined)} listener Callback
+ *     method.
+ * @param {boolean=} opt_useCapture Whether to fire in capture phase
+ *     (defaults to false).
+ * @param {SCOPE=} opt_listenerScope Object in whose scope to call the
+ *     listener.
+ * @return {goog.events.ListenableKey} Unique key for the listener.
+ * @template SCOPE,EVENTOBJ
+ * @api
+ */
+olcs.DragBox.prototype.listen;
