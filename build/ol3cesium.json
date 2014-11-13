@@ -5,11 +5,14 @@
   "compile": {
     "externs": [
       "ol3/build/ol-externs.js",
+      "externs/olcsx.js",
       "Cesium.externs.js"
     ],
     "define": [
       "goog.array.ASSUME_NATIVE_FUNCTIONS=true",
       "goog.DEBUG=true"
+    ],
+    "js": [
     ],
     "jscomp_error": [
       "accessControls",

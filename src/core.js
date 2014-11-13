@@ -983,7 +983,7 @@ goog.require('olcs.core.OlLayerPrimitive');
    * Convert one OpenLayers feature up to a collection of Cesium primitives.
    * @param {!ol.Feature} feature Ol3 feature.
    * @param {!ol.style.Style} style
-   * @param {!olcs.core.OlFeatureToCesiumContext} context
+   * @param {!olcsx.core.OlFeatureToCesiumContext} context
    * @param {!ol.geom.Geometry=} opt_geom Geometry to be converted.
    * @return {Cesium.Primitive} primitives
    * @api
