@@ -1849,8 +1849,10 @@ Cesium.Matrix3 = function() {};
 
 /**
  * @param {Cesium.Quaternion} quaternion
+ * @param {Cesium.Matrix3=} opt_result
+ * @return !Cesium.Matrix3
  */
-Cesium.Matrix3.fromQuaternion = function(quaternion) {};
+Cesium.Matrix3.fromQuaternion = function(quaternion, opt_result) {};
 
 
 /**
