@@ -1891,7 +1891,7 @@ Cesium.Matrix4 = function(opt_a00, opt_a10, opt_a20, opt_a30,
 /**
  * @param {Cesium.Cartesian3} translation .
  * @param {Cesium.Matrix4=} opt_result .
- * @return {Cesium.Matrix4} .
+ * @return {!Cesium.Matrix4} .
  */
 Cesium.Matrix4.fromTranslation = function(translation, opt_result) {};
 
