@@ -5,11 +5,11 @@
   "scripts": {},
   "repository": {
     "type": "git",
-    "url": "git://github.com/boundless/ol3-cesium.git"
+    "url": "git://github.com/openlayers/ol3-cesium.git"
   },
   "license": "BSD",
   "bugs": {
-    "url": "https://github.com/boundless/ol3-cesium/issues"
+    "url": "https://github.com/openlayers/ol3-cesium/issues"
   },
   "dependencies": {
     "async": "~0.2.10",
