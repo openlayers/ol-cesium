@@ -16,7 +16,7 @@ Applications using this OL3-Cesium distribution also need to load OpenLayers and
 <script src="ol3cesium.js"></script>
 ```
 
-Any OpenLayers map can be switched to a 3d globe view by running the code below after the map has been created:
+An OpenLayers map can be switched to a 3d globe view by running the code below after the map has been created:
 ```js
 var ol3d = new olcs.OLCesium(map); // map is the ol.Map instance
 ol3d.setEnabled(true);
