@@ -94,7 +94,7 @@ cleanall: clean
 	touch $@
 
 # A sourcemap is prepared, the source is exected to be deployed in 'source' directory
-dist/ol3cesium.js: build/ol3cesium.json $(SRC_JS_FILES) ol3/build/ol-externs.js Cesium.externs.js build/build.js
+dist/ol3cesium.js: build/ol3cesium.json $(SRC_JS_FILES) ol3/build/ol-externs.js Cesium.externs.js build/build.js npm-install
 	mkdir -p $(dir $@)
 	node build/build.js $< $@
 	$(SEDI) 's!$(shell pwd)/dist!source!g' dist/ol3cesium.js.map
