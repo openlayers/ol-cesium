@@ -1205,7 +1205,8 @@ Cesium.optionsPolygonHierarchy;
 
 /**
  * @typedef {{
- * width: number,
+ * width: (number|undefined),
+ * perPositionHeight: (boolean|undefined),
  * polygonHierarchy: !Cesium.optionsPolygonHierarchy
  * }}
  */
@@ -2225,6 +2226,11 @@ Cesium.ScreenSpaceCameraController.prototype.enableTilt;
  * @type {boolean}
  */
 Cesium.ScreenSpaceCameraController.prototype.enableZoom;
+
+/**
+ * @type {boolean}
+ */
+Cesium.ScreenSpaceCameraController.prototype.enableInputs;
 
 /**
  * @type {number}
