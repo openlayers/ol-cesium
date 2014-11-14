@@ -325,6 +325,12 @@ Cesium.Camera.prototype.worldToCameraCoordinatesPoint = function(cartesian, opt_
 
 
 /**
+ * @param {!Cesium.Matrix4} transform
+ */
+Cesium.Camera.prototype.setTransform = function(transform) {};
+
+
+/**
  * @type {!Cesium.Matrix4}
  */
 Cesium.Camera.prototype.viewMatrix;
@@ -1205,7 +1211,8 @@ Cesium.optionsPolygonHierarchy;
 
 /**
  * @typedef {{
- * width: number,
+ * width: (number|undefined),
+ * perPositionHeight: (boolean|undefined),
  * polygonHierarchy: !Cesium.optionsPolygonHierarchy
  * }}
  */
@@ -1849,8 +1856,10 @@ Cesium.Matrix3 = function() {};
 
 /**
  * @param {Cesium.Quaternion} quaternion
+ * @param {Cesium.Matrix3=} opt_result
+ * @return !Cesium.Matrix3
  */
-Cesium.Matrix3.fromQuaternion = function(quaternion) {};
+Cesium.Matrix3.fromQuaternion = function(quaternion, opt_result) {};
 
 
 /**
@@ -1891,7 +1900,7 @@ Cesium.Matrix4 = function(opt_a00, opt_a10, opt_a20, opt_a30,
 /**
  * @param {Cesium.Cartesian3} translation .
  * @param {Cesium.Matrix4=} opt_result .
- * @return {Cesium.Matrix4} .
+ * @return {!Cesium.Matrix4} .
  */
 Cesium.Matrix4.fromTranslation = function(translation, opt_result) {};
 
@@ -2223,6 +2232,11 @@ Cesium.ScreenSpaceCameraController.prototype.enableTilt;
  * @type {boolean}
  */
 Cesium.ScreenSpaceCameraController.prototype.enableZoom;
+
+/**
+ * @type {boolean}
+ */
+Cesium.ScreenSpaceCameraController.prototype.enableInputs;
 
 /**
  * @type {number}
