@@ -24,6 +24,24 @@ goog.require('olcs.core.OlLayerPrimitive');
    */
   olcs.core.glAliasedLineWidthRange = -1;
 
+  /**
+   *
+   * @param {!ol.geom.Geometry} geometry
+   * @param {number} height
+   * @api
+   */
+  olcs.core.applyHeightOffsetToGeometry = function(geometry, height) {
+    geometry.applyTransform(function(input, output, stride) {
+      goog.asserts.assert(input === output);
+      if (goog.isDef(stride) && stride >= 3) {
+        for (var i = 0; i < output.length; i += stride) {
+          output[i + 2] = output[i + 2] + height;
+        }
+      }
+      return output;
+    });
+  };
+
 
   /**
    * Get 3D positiion of the point at the bottom-center of the screen.
