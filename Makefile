@@ -41,6 +41,7 @@ dist: dist/ol3cesium.js
 
 .PHONY: dist-examples
 dist-examples: .build/dist-examples.timestamp
+	node build/parse-examples.js
 
 .PHONY: dist-apidoc
 dist-apidoc:
