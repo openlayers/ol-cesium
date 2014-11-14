@@ -21,7 +21,7 @@ An OpenLayers map can be switched to a 3d globe view by running the code below a
 var ol3d = new olcs.OLCesium(map); // map is the ol.Map instance
 ol3d.setEnabled(true);
 ```
-The above will use a flat surface all around the globe. To use terrain, simply add a terrain provider (can be your own, but in the snippet below it's one that ships with Cesium):
+The above will use the WGS84 ellipsoid all around the globe. To use terrain, simply add a [terrain provider](http://cesiumjs.org/Cesium/Build/Documentation/TerrainProvider.html) using the Cesium API (can be your own, but in the snippet below it's one that ships with Cesium):
 ```js
 var ol3d = new olcs.OLCesium(map); // map is the ol.Map instance
 var scene = ol3d.getCesiumScene();
@@ -42,7 +42,11 @@ Requirements for building OL3-Cesium:
 * [Python](http://python.org/)
 * [Ant](http://ant.apache.org/)
 
-To get started, clone the [OL3-Cesium repository](https://github.com/openlayers/ol3-cesium), and simply invoke
+To get started, clone the [OL3-Cesium repository](https://github.com/openlayers/ol3-cesium) with its submodules:
+
+    $ git clone --recursive https://github.com/openlayers/ol3-cesium.git
+    
+Change into the clone directory, and invoke
 
     $ make dist
 
