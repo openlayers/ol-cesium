@@ -22,7 +22,8 @@ help:
 	@echo "- check                   Perform a number of checks on the code (lint, compile, etc.)"
 	@echo "- lint                    Check the code with the linter"
 	@echo "- serve                   Run a development web server for running the examples"
-	@echo "- dist-examples           Create a "distribution" for the examples (in dist)"
+	@echo "- dist-examples           Create a "distribution" for the examples (dist/examples/)"
+	@echo "- dist-apidoc             Create a "distribution" for the api docs (dist/apidoc/)"
 	@echo "- clean                   Remove generated files"
 	@echo "- cleanall                Remove all the build artefacts"
 	@echo "- help                    Display this help message"
@@ -40,6 +41,10 @@ dist: dist/ol3cesium.js
 
 .PHONY: dist-examples
 dist-examples: .build/dist-examples.timestamp
+
+.PHONY: dist-apidoc
+dist-apidoc:
+	node node_modules/.bin/jsdoc -c build/jsdoc/api/conf.json -d dist/apidoc
 
 .PHONY: lint
 lint: .build/python-venv/bin/gjslint .build/gjslint.timestamp
