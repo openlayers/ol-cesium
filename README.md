@@ -3,6 +3,15 @@ OL3-Cesium
 
 OpenLayers - Cesium integration library. Create your map using [OpenLayers 3](http://openlayers.org/), and visualize it on a globe with [Cesium](http://cesiumjs.org).
 
+Features
+--------
+Switch smoothly between 2D and 3D and synchronize:
+
+- Map context (bounding box and zoom level);
+- Raster data sources;
+- Vector data sources in 2D and 3D;
+- Map selection (selected items).
+
 Getting started
 ---------------
 
