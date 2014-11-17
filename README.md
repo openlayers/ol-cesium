@@ -12,6 +12,8 @@ Switch smoothly between 2D and 3D and synchronize:
 - Vector data sources in 2D and 3D;
 - Map selection (selected items).
 
+Stay tuned for more exciting features like animated transitions between map and globe view, and synchronization of maps in projections other than EPSG:4326 and EPSG:3857.
+
 Getting started
 ---------------
 
