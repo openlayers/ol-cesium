@@ -1849,6 +1849,12 @@ Cesium.Math.TWO_PI;
 Cesium.Math.toDegrees = function(rad) {};
 
 /**
+ * @param {number} degrees
+ * @return {number} angle in radians
+ */
+Cesium.Math.toRadians = function(degrees) {};
+
+/**
  * @constructor
  */
 Cesium.Matrix3 = function() {};
