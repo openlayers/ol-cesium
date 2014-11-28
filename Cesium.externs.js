@@ -275,6 +275,11 @@ Cesium.Camera.prototype.up;
  */
 Cesium.Camera.prototype.constrainedAxis;
 
+/**
+ * @type {number|undefined}
+ */
+Cesium.Camera.prototype.constrainedAxisAngle;
+
 
 /**
  * @type {Cesium.Cartographic} .
