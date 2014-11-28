@@ -2232,6 +2232,12 @@ Cesium.ScreenSpaceCameraController = function() {};
 
 
 /**
+ * @type {number}
+ */
+Cesium.ScreenSpaceCameraController.prototype.minimumZoomDistance;
+
+
+/**
  * @type {boolean}
  */
 Cesium.ScreenSpaceCameraController.prototype.enableRotate;
