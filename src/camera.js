@@ -22,12 +22,6 @@ olcs.Camera = function(scene, map) {
   this.scene_ = scene;
 
   /**
-   * @type {!HTMLCanvasElement}
-   * @private
-   */
-  this.canvas_ = scene.canvas;
-
-  /**
    * @type {!Cesium.Camera}
    * @private
    */
@@ -318,7 +312,7 @@ olcs.Camera.prototype.updateCamera_ = function() {
     return;
   }
   var center = this.view_.getCenter();
-  if (!goog.isDefAndNotNull(center)) {
+  if (!center) {
     return;
   }
   var ll = this.toLonLat_(center);
@@ -377,24 +371,21 @@ olcs.Camera.prototype.updateView = function() {
   this.viewUpdateInProgress_ = true;
 
   // target & distance
-  var center = new Cesium.Cartesian2(this.canvas_.width / 2,
-                                     this.canvas_.height / 2);
-  var target = this.scene_.globe.pick(this.cam_.getPickRay(center),
-                                      this.scene_);
+  var ellipsoid = Cesium.Ellipsoid.WGS84;
+  var scene = this.scene_;
+  var target = olcs.core.pickCenterPoint(scene);
 
   var bestTarget = target;
   if (!bestTarget) {
     //TODO: how to handle this properly ?
+    var globe = scene.globe;
     var carto = this.cam_.positionCartographic.clone();
-    if (this.scene_.globe) {
-      var height = this.scene_.globe.getHeight(carto);
-      carto.height = goog.isDef(height) ? height : 0;
-    }
+    var height = globe.getHeight(carto);
+    carto.height = goog.isDef(height) ? height : 0;
     bestTarget = Cesium.Ellipsoid.WGS84.cartographicToCartesian(carto);
   }
   this.distance_ = Cesium.Cartesian3.distance(bestTarget, this.cam_.position);
-  var bestTargetCartographic =
-      Cesium.Ellipsoid.WGS84.cartesianToCartographic(bestTarget);
+  var bestTargetCartographic = ellipsoid.cartesianToCartographic(bestTarget);
   this.view_.setCenter(this.fromLonLat_([
     goog.math.toDegrees(bestTargetCartographic.longitude),
     goog.math.toDegrees(bestTargetCartographic.latitude)]));
@@ -414,7 +405,7 @@ olcs.Camera.prototype.updateView = function() {
 
     // normal to the ellipsoid at the target
     var targetNormal = new Cesium.Cartesian3();
-    this.scene_.globe.ellipsoid.geocentricSurfaceNormal(target, targetNormal);
+    ellipsoid.geocentricSurfaceNormal(target, targetNormal);
 
     // vector from the target to the camera
     var targetToCamera = new Cesium.Cartesian3();
@@ -423,10 +414,12 @@ olcs.Camera.prototype.updateView = function() {
 
 
     // HEADING
-    var normal = new Cesium.Cartesian3(-target.y, target.x, 0);
-    var heading = Cesium.Cartesian3.angleBetween(this.cam_.right, normal);
-    var orientation = Cesium.Cartesian3.cross(target, this.cam_.up,
-                                              new Cesium.Cartesian3()).z;
+    var up = this.cam_.up;
+    var right = this.cam_.right;
+    var normal = new Cesium.Cartesian3(-target.y, target.x, 0); // what is it?
+    var heading = Cesium.Cartesian3.angleBetween(right, normal);
+    var cross = Cesium.Cartesian3.cross(target, up, new Cesium.Cartesian3());
+    var orientation = cross.z;
 
     this.view_.setRotation((orientation < 0 ? heading : -heading));
 
@@ -468,11 +461,12 @@ olcs.Camera.prototype.checkCameraChange = function(opt_dontSync) {
  */
 olcs.Camera.prototype.calcDistanceForResolution_ = function(resolution,
                                                             latitude) {
+  var canvas = this.scene_.canvas;
   var fovy = this.cam_.frustum.fovy; // vertical field of view
   var metersPerUnit = this.view_.getProjection().getMetersPerUnit();
 
   // number of "map units" visible in 2D (vertically)
-  var visibleMapUnits = resolution * this.canvas_.height;
+  var visibleMapUnits = resolution * canvas.height;
 
   // The metersPerUnit does not take latitude into account, but it should
   // be lower with increasing latitude -- we have to compensate.
@@ -508,13 +502,14 @@ olcs.Camera.prototype.calcDistanceForResolution_ = function(resolution,
 olcs.Camera.prototype.calcResolutionForDistance_ = function(distance,
                                                             latitude) {
   // See the reverse calculation (calcDistanceForResolution_) for details
+  var canvas = this.scene_.canvas;
   var fovy = this.cam_.frustum.fovy;
   var metersPerUnit = this.view_.getProjection().getMetersPerUnit();
 
   var visibleMeters = 2 * distance * Math.tan(fovy / 2);
   var relativeCircumference = Math.cos(Math.abs(latitude));
   var visibleMapUnits = visibleMeters / metersPerUnit / relativeCircumference;
-  var resolution = visibleMapUnits / this.canvas_.height;
+  var resolution = visibleMapUnits / canvas.height;
 
   return resolution;
 };
