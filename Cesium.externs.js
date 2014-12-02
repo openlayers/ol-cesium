@@ -108,6 +108,15 @@ Cesium.VerticalOrigin.CENTER;
 Cesium.VerticalOrigin.BOTTOM;
 
 
+/**
+ * @param {number} near
+ * @param {number} nearValue
+ * @param {number} far
+ * @param {number} farValue
+ * @constructor
+ */
+Cesium.NearFarScalar = function(near, nearValue, far, farValue) {};
+
 
 /**
  * @constructor
@@ -122,6 +131,7 @@ Cesium.BillboardCollection = function() {};
  *   color: (Cesium.Color|undefined),
  *   verticalOrigin: (Cesium.VerticalOrigin|undefined),
  *   horizontalOrigin: (Cesium.HorizontalOrigin|undefined),
+ *   scaleByDistance: (Cesium.NearFarScalar|undefined),
  *   position: !Cesium.Cartesian3
  * }}
  */
