@@ -44,6 +44,79 @@ goog.require('olcs.core.OlLayerPrimitive');
 
 
   /**
+   * @param {!Cesium.Camera} camera
+   * @param {number} angle
+   * @param {!Cesium.Cartesian3} axis
+   * @param {!Cesium.Matrix4} transform
+   * @param {olcsx.core.RotateAroundAxisOption=} opt_options
+   * @api
+   */
+  olcs.core.rotateAroundAxis = function(camera, angle, axis, transform,
+      opt_options) {
+    var clamp = Cesium.Math.clamp;
+    var defaultValue = Cesium.defaultValue;
+
+    var options = opt_options || {};
+    var duration = defaultValue(options.duration, 500); // ms
+    var easing = defaultValue(options.easing, ol.easing.linear);
+    var callback = options.callback;
+
+    var start = goog.now();
+    var lastProgress = 0;
+    var oldTransform = new Cesium.Matrix4();
+
+    var animation = new goog.async.AnimationDelay(function(millis) {
+      var progress = easing(clamp((millis - start) / duration, 0, 1));
+      goog.asserts.assert(progress > lastProgress);
+
+      camera.transform.clone(oldTransform);
+      var stepAngle = (progress - lastProgress) * angle;
+      lastProgress = progress;
+      camera.setTransform(transform);
+      camera.rotate(axis, stepAngle);
+      camera.setTransform(oldTransform);
+
+      if (progress < 1) {
+        animation.start();
+      } else if (callback) {
+        callback();
+      }
+    });
+    animation.start();
+  };
+
+
+  /**
+   * @param {!Cesium.Scene} scene
+   * @param {number} heading
+   * @param {!Cesium.Cartesian3} bottomCenter
+   * @api
+   */
+  olcs.core.setHeadingUsingBottomCenter = function(scene, heading,
+      bottomCenter) {
+    var camera = scene.camera;
+    // Compute the camera position to zenith quaternion
+    var angleToZenith = olcs.core.computeAngleToZenith(scene, bottomCenter);
+    var axis = camera.right;
+    var quaternion = Cesium.Quaternion.fromAxisAngle(axis, angleToZenith);
+    var rotation = Cesium.Matrix3.fromQuaternion(quaternion);
+
+    // Get the zenith point from the rotation of the position vector
+    var vector = new Cesium.Cartesian3();
+    Cesium.Cartesian3.subtract(camera.position, bottomCenter, vector);
+    var zenith = new Cesium.Cartesian3();
+    Cesium.Matrix3.multiplyByVector(rotation, vector, zenith);
+    Cesium.Cartesian3.add(zenith, bottomCenter, zenith);
+
+    // Actually rotate around the zenith normal
+    var transform = Cesium.Matrix4.fromTranslation(zenith);
+    var rotateAroundAxis = olcs.core.rotateAroundAxis;
+    rotateAroundAxis(camera, heading, zenith, transform);
+  };
+
+
+
+  /**
    * Get 3D positiion of the point at the bottom-center of the screen.
    * @param {!Cesium.Scene} scene
    * @return {!Cesium.Cartesian3|undefined}

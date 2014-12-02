@@ -25,3 +25,15 @@ olcsx.core;
  * @api
  */
 olcsx.core.OlFeatureToCesiumContext;
+
+
+/**
+ * Options for rotate around axis core function.
+ * @typedef {{
+ *   duration: (number|undefined),
+ *   easing: (function(number):number|undefined),
+ *   callback: (function()|undefined)
+ * }}
+ * @api
+ */
+olcsx.core.RotateAroundAxisOption;
