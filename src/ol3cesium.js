@@ -179,6 +179,15 @@ olcs.OLCesium.prototype.getCamera = function() {
 
 
 /**
+ * @return {!ol.Map}
+ * @api
+ */
+olcs.OLCesium.prototype.getOlMap = function() {
+  return this.map_;
+};
+
+
+/**
  * @return {!Cesium.Scene}
  * @api
  */
