@@ -275,6 +275,11 @@ Cesium.Camera.prototype.up;
  */
 Cesium.Camera.prototype.constrainedAxis;
 
+/**
+ * @type {number|undefined}
+ */
+Cesium.Camera.prototype.constrainedAxisAngle;
+
 
 /**
  * @type {Cesium.Cartographic} .
@@ -668,6 +673,13 @@ Cesium.Cartesian3.cross = function(left, right, opt_result) {};
  * @return {!Cesium.Cartesian3}
  */
 Cesium.Cartesian3.clone = function(cartesian, opt_result) {};
+
+/**
+ * @param {Cesium.Cartesian3=} opt_result
+ * @return {!Cesium.Cartesian3}
+ */
+Cesium.Cartesian3.prototype.clone = function(opt_result) {};
+
 
 
 /**
@@ -1849,6 +1861,12 @@ Cesium.Math.TWO_PI;
 Cesium.Math.toDegrees = function(rad) {};
 
 /**
+ * @param {number} degrees
+ * @return {number} angle in radians
+ */
+Cesium.Math.toRadians = function(degrees) {};
+
+/**
  * @constructor
  */
 Cesium.Matrix3 = function() {};
@@ -2211,6 +2229,12 @@ Cesium.UniformState.prototype.modelViewProjection;
  * @constructor
  */
 Cesium.ScreenSpaceCameraController = function() {};
+
+
+/**
+ * @type {number}
+ */
+Cesium.ScreenSpaceCameraController.prototype.minimumZoomDistance;
 
 
 /**
