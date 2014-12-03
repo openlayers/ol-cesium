@@ -52,7 +52,7 @@ var addFeatures = function() {
 
 var tile = new ol.layer.Tile({
   source: new ol.source.TileWMS({
-    url: 'http://demo.opengeo.org/geoserver/wms',
+    url: 'http://demo.boundlessgeo.com/geoserver/wms',
     params: {
       'LAYERS': 'ne:NE1_HR_LC_SR_W_DR'
     }

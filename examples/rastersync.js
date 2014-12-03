@@ -62,7 +62,7 @@ var addStamen = function() {
 };
 
 var tileWMSSource = new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
-      url: 'http://demo.opengeo.org/geoserver/wms',
+      url: 'http://demo.boundlessgeo.com/geoserver/wms',
       params: {'LAYERS': 'topp:states', 'TILED': true},
       serverType: 'geoserver',
       crossOrigin: 'anonymous'

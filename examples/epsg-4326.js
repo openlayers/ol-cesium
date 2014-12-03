@@ -6,7 +6,7 @@ var view = new ol.View({
 
 var layer = new ol.layer.Tile({
   source: new ol.source.TileWMS({
-    url: 'http://demo.opengeo.org/geoserver/wms',
+    url: 'http://demo.boundlessgeo.com/geoserver/wms',
     params: {
       'LAYERS': 'ne:NE1_HR_LC_SR_W_DR'
     }
@@ -16,7 +16,7 @@ var overlay = new ol.layer.Tile({
   opacity: 0.7,
   extent: [-124.74, 24.96, -66.96, 49.38],
   source: new ol.source.TileWMS(/** @type {olx.source.TileWMSOptions} */ ({
-    url: 'http://demo.opengeo.org/geoserver/wms',
+    url: 'http://demo.boundlessgeo.com/geoserver/wms',
     params: {'LAYERS': 'topp:states', 'TILED': true},
     serverType: 'geoserver',
     crossOrigin: 'anonymous'
