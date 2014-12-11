@@ -1835,6 +1835,13 @@ Cesium.Math.convertLongitudeRange = function(angle) {};
 
 
 /**
+ * @param {number} angle Angle in radians.
+ * @return {number} in the range [-Pi, Pi].
+ */
+Cesium.Math.negativePiToPi = function(angle) {};
+
+
+/**
  * @param {number} value
  * @param {number} min
  * @param {number} max
