@@ -122,7 +122,7 @@ Cesium.optionsBillboardCollectionAdd;
 
 /**
  * @param {Cesium.optionsBillboardCollectionAdd} opt_opts .
- * @return {Cesium.Billboard} .
+ * @return {!Cesium.Billboard} .
  */
 Cesium.BillboardCollection.prototype.add = function(opt_opts) {};
 
@@ -956,12 +956,11 @@ Cesium.optionsPrimitive;
 Cesium.Primitive = function(opt_opts) {};
 
 /**
- * Workaround for finding the feature associated to a primitive.
- * Required since the Primitive lacks a dedicated id property, as shown in:
+ * Custom property for storing the associated Ol3 feature.
  * http://cesiumjs.org/Cesium/Apps/Sandcastle/index.html?src=Picking.html&label=Showcases
- * @type {string|number|undefined}
+ * @type {ol.Feature}
  */
-Cesium.Primitive.prototype.olFeatureId;
+Cesium.Primitive.prototype.olFeature;
 
 /**
  * @constructor
