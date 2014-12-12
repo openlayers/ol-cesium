@@ -122,7 +122,7 @@ Cesium.optionsBillboardCollectionAdd;
 
 /**
  * @param {Cesium.optionsBillboardCollectionAdd} opt_opts .
- * @return {Cesium.Billboard} .
+ * @return {!Cesium.Billboard} .
  */
 Cesium.BillboardCollection.prototype.add = function(opt_opts) {};
 
