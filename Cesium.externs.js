@@ -956,12 +956,22 @@ Cesium.optionsPrimitive;
 Cesium.Primitive = function(opt_opts) {};
 
 /**
+ * The feature id (not the uuid).
  * Workaround for finding the feature associated to a primitive.
  * Required since the Primitive lacks a dedicated id property, as shown in:
  * http://cesiumjs.org/Cesium/Apps/Sandcastle/index.html?src=Picking.html&label=Showcases
  * @type {string|number|undefined}
  */
 Cesium.Primitive.prototype.olFeatureId;
+
+/**
+ * The feature goog uuid.
+ * Workaround for finding the feature associated to a primitive.
+ * Required since the Primitive lacks a dedicated id property, as shown in:
+ * http://cesiumjs.org/Cesium/Apps/Sandcastle/index.html?src=Picking.html&label=Showcases
+ * @type {string}
+ */
+Cesium.Primitive.prototype.olFeatureUid;
 
 /**
  * @constructor
