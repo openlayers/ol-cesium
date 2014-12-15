@@ -145,6 +145,7 @@ olcs.OLCesium = function(map, opt_target) {
 
   this.cesiumRenderingDelay_ = new goog.async.AnimationDelay(function(time) {
     this.scene_.initializeFrame();
+    this.handleResize_();
     this.scene_.render();
     this.enabled_ && this.camera_.checkCameraChange();
     this.cesiumRenderingDelay_.start();
@@ -231,7 +232,6 @@ olcs.OLCesium.prototype.setEnabled = function(opt_enable) {
         this.hiddenRootGroup_.setVisible(false);
       }
     }
-    this.handleResize_();
     this.camera_.readFromView();
     this.cesiumRenderingDelay_.start();
   } else {
