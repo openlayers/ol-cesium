@@ -37,7 +37,7 @@ serve: npm-install ol3/build/ol.js ol3/build/ol.css cesium/Build/Cesium/Cesium.j
 	node build/serve.js
 
 .PHONY: dist
-dist: dist/ol3cesium.js
+dist: dist/ol3cesium.js dist/ol3cesium-debug.js
 
 .PHONY: dist-examples
 dist-examples: .build/dist-examples.timestamp
@@ -99,6 +99,10 @@ cleanall: clean
 .build/python-venv/bin/gjslint: .build/python-venv
 	.build/python-venv/bin/pip install "http://closure-linter.googlecode.com/files/closure_linter-latest.tar.gz"
 	touch $@
+
+dist/ol3cesium-debug.js: build/ol3cesium-debug.json $(SRC_JS_FILES) ol3/build/ol-externs.js Cesium.externs.js build/build.js npm-install
+	mkdir -p $(dir $@)
+	node build/build.js $< $@
 
 # A sourcemap is prepared, the source is exected to be deployed in 'source' directory
 dist/ol3cesium.js: build/ol3cesium.json $(SRC_JS_FILES) ol3/build/ol-externs.js Cesium.externs.js build/build.js npm-install
