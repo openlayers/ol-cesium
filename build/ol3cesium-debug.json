@@ -1,0 +1,4 @@
+{
+  "ignoreRequires": "^ol\\.",
+  "exports": ["*"]
+}
