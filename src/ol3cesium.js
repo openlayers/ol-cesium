@@ -11,12 +11,24 @@ goog.require('olcs.VectorSynchronizer');
 
 
 /**
- * @param {!ol.Map} map
+ * @param {!(olcsx.OLCesiumOptions|ol.Map)} options Options.
  * @param {Element|string=} opt_target Target element for the Cesium container.
+ *   Use the `target` option in `options` instead.
  * @constructor
  * @api
  */
-olcs.OLCesium = function(map, opt_target) {
+olcs.OLCesium = function(options, opt_target) {
+
+  var map, createSynchronizers;
+  var target = opt_target;
+  if (options instanceof ol.Map) {
+    map = options;
+  } else {
+    map = options.map;
+    target = options.target;
+    createSynchronizers = options.createSynchronizers;
+  }
+
   /**
    * @type {!ol.Map}
    * @private
@@ -32,7 +44,7 @@ olcs.OLCesium = function(map, opt_target) {
   this.container_ = goog.dom.createDom(goog.dom.TagName.DIV,
       {style: fillArea + 'visibility:hidden;'});
 
-  var targetElement = goog.dom.getElement(opt_target || null);
+  var targetElement = goog.dom.getElement(target || null);
   if (targetElement) {
     goog.dom.appendChild(targetElement, this.container_);
   } else {
@@ -121,17 +133,16 @@ olcs.OLCesium = function(map, opt_target) {
   this.scene_.globe = this.globe_;
   this.scene_.skyAtmosphere = new Cesium.SkyAtmosphere();
 
-  /**
-   * @type {!olcs.RasterSynchronizer}
-   * @private
-   */
-  this.rasterSynchronizer_ = new olcs.RasterSynchronizer(this.map_,
-      this.scene_);
-  this.rasterSynchronizer_.synchronize();
+  var synchronizers = goog.isDef(createSynchronizers) ?
+      createSynchronizers(this.map_, this.scene_) :
+      [
+        new olcs.RasterSynchronizer(this.map_, this.scene_),
+        new olcs.VectorSynchronizer(this.map_, this.scene_)
+      ];
 
-  this.vectorSynchronizer_ = new olcs.VectorSynchronizer(this.map_,
-      this.scene_);
-  this.vectorSynchronizer_.synchronize();
+  for (var i = synchronizers.length - 1; i >= 0; --i) {
+    synchronizers[i].synchronize();
+  }
 
   if (this.isOverMap_) {
     // if in "stacked mode", hide everything except canvas (including credits)
