@@ -1,10 +1,10 @@
 /*
- * Converts olcsx.js @type annotations into properties of the previous @typedef.
+ * Converts olx.js @type annotations into properties of the previous @typedef.
  * Changes @enum annotations into @typedef.
  */
 
-var lastOlcsxTypedef = null;
-var olcsxTypes = {};
+var lastOlxTypedef = null;
+var olxTypes = {};
 
 function addSubparams(params) {
   for (var j = 0, jj = params.length; j < jj; ++j) {
@@ -12,8 +12,8 @@ function addSubparams(params) {
     var types = param.type.names;
     for (var k = 0, kk = types.length; k < kk; ++k) {
       var name = types[k];
-      if (name in olcsxTypes) {
-        param.subparams = olcsxTypes[name];
+      if (name in olxTypes) {
+        param.subparams = olxTypes[name];
         // TODO addSubparams(param.subparams);
         // TODO Do we need to support multiple object literal types per
         // param?
@@ -27,20 +27,20 @@ exports.handlers = {
 
   newDoclet: function(e) {
     var doclet = e.doclet;
-    if (doclet.meta.filename == 'olcsx.js') {
+    if (doclet.meta.filename == 'olx.js') {
       // do nothing if not marked @api
       if (!doclet.stability) {
         return;
       }
       if (doclet.kind == 'typedef') {
-        lastOlcsxTypedef = doclet;
-        olcsxTypes[doclet.longname] = [];
+        lastOlxTypedef = doclet;
+        olxTypes[doclet.longname] = [];
         doclet.properties = [];
-      } else if (lastOlcsxTypedef && doclet.memberof == lastOlcsxTypedef.longname) {
-        lastOlcsxTypedef.properties.push(doclet);
-        olcsxTypes[lastOlcsxTypedef.longname].push(doclet);
+      } else if (lastOlxTypedef && doclet.memberof == lastOlxTypedef.longname) {
+        lastOlxTypedef.properties.push(doclet);
+        olxTypes[lastOlxTypedef.longname].push(doclet);
       } else {
-        lastOlcsxTypedef = null;
+        lastOlxTypedef = null;
       }
     } else if (doclet.isEnum) {
       // We never export enums, so we document them like typedefs
