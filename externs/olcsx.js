@@ -5,6 +5,45 @@
  */
 var olcsx;
 
+
+/**
+ * @typedef {{
+ *   map: (!ol.Map),
+ *   target: (Element|string|undefined),
+ *   createSynchronizers: ((function(!ol.Map, !Cesium.Scene): Array.<olcs.AbstractSynchronizer>)|undefined)
+ * }}
+ * @api
+ */
+olcsx.OLCesiumOptions;
+
+
+/**
+ * The OpenLayers map we want to show on a Cesium scene.
+ * @type {!ol.Map}
+ * @api
+ */
+olcsx.OLCesiumOptions.prototype.map;
+
+
+/**
+ * Target element for the Cesium scene.
+ * @type {Element|string|undefined}
+ * @api
+ */
+olcsx.OLCesiumOptions.prototype.target;
+
+
+/**
+ * Callback function which will be called by the {@link olcs.OLCesium}
+ * constructor to create custom synchronizers. Receives an `ol.Map` and a
+ * `Cesium.Scene` as arguments, and needs to return an array of
+ * {@link olcs.AbstractSynchronizer}.
+ * @type {undefined|function(!ol.Map, !Cesium.Scene): Array.<olcs.AbstractSynchronizer>}
+ * @api
+ */
+olcsx.OLCesiumOptions.prototype.createSynchronizers;
+
+
 /**
  * Core namespace.
  * @type {Object}
