@@ -11,17 +11,17 @@ goog.require('olcs.VectorSynchronizer');
 
 
 /**
- * @param {!ol.Map} map
- * @param {Element|string=} opt_target Target element for the Cesium container.
+ * @param {!olcsx.OLCesiumOptions} options Options.
  * @constructor
  * @api
  */
-olcs.OLCesium = function(map, opt_target) {
+olcs.OLCesium = function(options) {
+
   /**
    * @type {!ol.Map}
    * @private
    */
-  this.map_ = map;
+  this.map_ = options.map;
 
   var fillArea = 'position:absolute;top:0;left:0;width:100%;height:100%;';
 
@@ -32,7 +32,7 @@ olcs.OLCesium = function(map, opt_target) {
   this.container_ = goog.dom.createDom(goog.dom.TagName.DIV,
       {style: fillArea + 'visibility:hidden;'});
 
-  var targetElement = goog.dom.getElement(opt_target || null);
+  var targetElement = goog.dom.getElement(options.target || null);
   if (targetElement) {
     goog.dom.appendChild(targetElement, this.container_);
   } else {
@@ -121,17 +121,16 @@ olcs.OLCesium = function(map, opt_target) {
   this.scene_.globe = this.globe_;
   this.scene_.skyAtmosphere = new Cesium.SkyAtmosphere();
 
-  /**
-   * @type {!olcs.RasterSynchronizer}
-   * @private
-   */
-  this.rasterSynchronizer_ = new olcs.RasterSynchronizer(this.map_,
-      this.scene_);
-  this.rasterSynchronizer_.synchronize();
+  var synchronizers = goog.isDef(options.createSynchronizers) ?
+      options.createSynchronizers(this.map_, this.scene_) :
+      [
+        new olcs.RasterSynchronizer(this.map_, this.scene_),
+        new olcs.VectorSynchronizer(this.map_, this.scene_)
+      ];
 
-  this.vectorSynchronizer_ = new olcs.VectorSynchronizer(this.map_,
-      this.scene_);
-  this.vectorSynchronizer_.synchronize();
+  for (var i = synchronizers.length - 1; i >= 0; --i) {
+    synchronizers[i].synchronize();
+  }
 
   if (this.isOverMap_) {
     // if in "stacked mode", hide everything except canvas (including credits)
