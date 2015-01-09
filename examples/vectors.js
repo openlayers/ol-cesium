@@ -295,7 +295,7 @@ dragAndDropInteraction.on('addfeatures', function(event) {
 });
 
 
-var ol3d = new olcs.OLCesium(map, 'map3d');
+var ol3d = new olcs.OLCesium({map: map, target: 'map3d'});
 var scene = ol3d.getCesiumScene();
 var terrainProvider = new Cesium.CesiumTerrainProvider({
   url: '//cesiumjs.org/stk-terrain/tilesets/world/tiles'
