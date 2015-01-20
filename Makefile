@@ -37,7 +37,8 @@ serve: npm-install ol3/build/ol.js ol3/build/ol.css cesium/Build/Cesium/Cesium.j
 	node build/serve.js
 
 .PHONY: dist
-dist: dist/ol3cesium.js dist/ol3cesium-debug.js
+dist: dist/ol3cesium.js dist/ol3cesium-debug.js CHANGES.md
+	cp CHANGES.md dist/
 
 .PHONY: dist-examples
 dist-examples: .build/dist-examples.timestamp
