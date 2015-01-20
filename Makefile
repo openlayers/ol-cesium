@@ -110,8 +110,8 @@ dist/ol3cesium.js: build/ol3cesium.json $(SRC_JS_FILES) ol3/build/ol-externs.js 
 	node build/build.js $< $@
 	$(SEDI) 's!$(shell pwd)/dist!source!g' dist/ol3cesium.js.map
 	$(SEDI) 's!$(shell pwd)!source!g' dist/ol3cesium.js.map
-	echo '//# sourceMappingURL=ol3cesium.js.map' >> dist/ol3cesium.js
-	-ln -s .. dist/source
+#	echo '//# sourceMappingURL=ol3cesium.js.map' >> dist/ol3cesium.js
+#	-ln -s .. dist/source
 
 .PHONY: ol3/build/ol-externs.js
 ol3/build/ol-externs.js:
