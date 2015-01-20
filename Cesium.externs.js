@@ -112,6 +112,7 @@ Cesium.BillboardCollection = function() {};
 /**
  * @typedef {{
  *   image: (string|HTMLCanvasElement|Image),
+ *   color: (Cesium.Color|undefined),
  *   verticalOrigin: (Cesium.VerticalOrigin|undefined),
  *   horizontalOrigin: (Cesium.HorizontalOrigin|undefined),
  *   position: !Cesium.Cartesian3
@@ -471,7 +472,7 @@ Cesium.CameraEventAggregator.prototype.isDestroyed = function() {};
 
 
 /**
- */
+*/
 Cesium.CameraEventAggregator.prototype.destroy = function() {};
 
 

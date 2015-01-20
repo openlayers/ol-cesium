@@ -787,9 +787,15 @@ goog.require('olcs.core.OlLayerPrimitive');
       }
       var center = geometry.getCoordinates();
       var position = olcs.core.ol4326CoordinateToCesiumCartesian(center);
+      var color;
+      var opacity = imageStyle.getOpacity();
+      if (goog.isDef(opacity)) {
+        color = new Cesium.Color(1.0, 1.0, 1.0, opacity);
+      }
       var bb = billboards.add({
         // always update Cesium externs before adding a property
         image: image,
+        color: color,
         verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
         position: position
       });
