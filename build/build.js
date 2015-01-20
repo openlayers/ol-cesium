@@ -184,7 +184,8 @@ function build(config, paths, callback) {
  */
 function addHeader(compiledSource, callback) {
   exec('git describe --tags', function(error, stdout, stderr) {
-    var header = '// OpenLayers 3. See http://ol3.js.org/\n';
+    var header = '// Ol3-Cesium. See https://github.com/openlayers/ol3-cesium/\n';
+    header += '// License: https://github.com/openlayers/ol3-cesium/blob/master/LICENSE\n';
     if (stdout !== '') {
       header += '// Version: ' + stdout + '\n';
     }
@@ -205,8 +206,8 @@ function main(config, callback) {
     assertValidConfig.bind(null, config),
     generateExports.bind(null, config),
     getDependencies.bind(null, config),
-    build.bind(null, config)
-    //addHeader
+    build.bind(null, config),
+    addHeader
   ], callback);
 }
 
