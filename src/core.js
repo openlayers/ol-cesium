@@ -1089,6 +1089,11 @@ goog.require('olcs.core.OlLayerPrimitive');
   olcs.core.olFeatureToCesium = function(feature, style, context, opt_geom) {
     var geom = opt_geom || feature.getGeometry();
     var proj = context.projection;
+    if (!geom) {
+      // Ol3 features may not have a geometry
+      // See http://geojson.org/geojson-spec.html#feature-objects
+      return null;
+    }
 
     var id = function(object) {
       object.olFeature = feature;
