@@ -106,7 +106,9 @@ var styles = {
 };
 
 var styleFunction = function(feature, resolution) {
-  return styles[feature.getGeometry().getType()];
+  var geo = feature.getGeometry();
+  // always assign a style to prevent feature skipping
+  return geo ? styles[geo.getType()] : styles['Point'];
 };
 
 var vectorSource = new ol.source.GeoJSON(
@@ -120,6 +122,13 @@ var vectorSource = new ol.source.GeoJSON(
           }
         },
         'features': [
+          {
+            'type': 'Feature',
+            'geometry': null,
+            'properties': {
+              'type': 'without geometry as allowed in spec',
+            }
+          },
           {
             'type': 'Feature',
             'geometry': {
