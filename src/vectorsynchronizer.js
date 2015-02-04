@@ -81,6 +81,11 @@ olcs.VectorSynchronizer.prototype.createSingleCounterpart = function(olLayer) {
     csPrimitives.show = olLayer.getVisible();
   });
 
+  olLayer.on('change:opacity', function(e) {
+    olcs.core.updateCesiumPrimitives(olLayer, csPrimitives);
+  });
+  olcs.core.updateCesiumPrimitives(olLayer, csPrimitives);
+
   var onAddFeature = function(feature) {
     goog.asserts.assertInstanceof(olLayer, ol.layer.Vector);
     var prim = csPrimitives.convert(olLayer, view, feature);
