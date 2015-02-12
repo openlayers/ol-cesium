@@ -475,11 +475,21 @@ Cesium.CameraEventAggregator.prototype.isDestroyed = function() {};
 */
 Cesium.CameraEventAggregator.prototype.destroy = function() {};
 
+/**
+ * @typedef {{
+ *  position: (Cesium.Cartesian3|undefined),
+ *  positionCartographic: (Cesium.Cartographic|undefined),
+ *  heading: (number|undefined),
+ *  pitch: (number|undefined),
+ *  roll: (number|undefined)
+ * }}
+ */
+Cesium.optionsCameraSetView;
 
 /**
- * @param {Cesium.Cartographic} carto
+ * @param {Cesium.optionsCameraSetView} options
  */
-Cesium.Camera.prototype.setPositionCartographic = function(carto) {};
+Cesium.Camera.prototype.setView = function(options) {};
 
 
 /**
