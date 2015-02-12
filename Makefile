@@ -61,7 +61,8 @@ clean:
 	rm -f ol3/build/ol-debug.js
 	rm -f ol3/build/ol.css
 	rm -f ol3/build/ol-externs.js
-	rm -f cesium/Build/Cesium/Cesium.js
+	rm -rf cesium/Build/Cesium
+	rm -rf cesium/Build/CesiumUnminified
 	rm -rf dist/ol3
 	rm -rf dist/examples
 	rm -rf dist/Cesium
