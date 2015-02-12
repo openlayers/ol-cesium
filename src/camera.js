@@ -324,10 +324,12 @@ olcs.Camera.prototype.updateCamera_ = function() {
     var height = this.scene_.globe.getHeight(carto);
     carto.height = goog.isDef(height) ? height : 0;
   }
-  this.cam_.setPositionCartographic(carto);
+  this.cam_.setView({
+    positionCartographic: carto,
+    pitch: -Cesium.Math.PI_OVER_TWO,
+    heading: this.view_.getRotation()
+  });
 
-  var rotation = this.view_.getRotation();
-  this.cam_.twistLeft(goog.isDef(rotation) ? rotation : 0);
   if (this.tilt_) {
     this.cam_.lookUp(this.tilt_);
   }
