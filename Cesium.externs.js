@@ -1199,6 +1199,8 @@ Cesium.optionsRenderState;
 /**
  * @typedef {{
  * flat: (boolean| undefined),
+ * close: (boolean| undefined),
+ * translucent: (boolean| undefined),
  * renderState: (Cesium.optionsRenderState | undefined)
  * }}
  */
@@ -1212,6 +1214,16 @@ Cesium.optionsPerInstanceColorAppearance;
 Cesium.PerInstanceColorAppearance = function(object) {};
 
 
+/**
+ * @constructor
+ * @param {Object} options
+ */
+Cesium.VertexFormat = function(options) {};
+
+/**
+ * @type {Cesium.VertexFormat}
+ */
+Cesium.PerInstanceColorAppearance.VERTEX_FORMAT;
 
 /**
  * @typedef {{
@@ -1244,6 +1256,8 @@ Cesium.optionsPolygonOutlineGeometry;
 /**
  * @typedef {{
  * positions: !Array.<Cesium.Cartesian3>,
+ * height: (number|undefined),
+ * extrudedHeight: (number|undefined),
  * polygonHierarchy: !Cesium.optionsPolygonHierarchy
  * }}
  */
@@ -1262,6 +1276,8 @@ Cesium.PolygonGeometry = function(object) {};
 /**
  * @typedef {{
  * positions: !Array.<Cesium.Cartesian3>,
+ * height: (number|undefined),
+ * extrudedHeight: (number|undefined),
  * vertexFormat: number
  * }}
  */
