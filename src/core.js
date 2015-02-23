@@ -649,6 +649,7 @@ goog.require('olcs.core.OlLayerPrimitive');
       // always update Cesium externs before adding a property
       center: center,
       radius: radius,
+      extrudedHeight: height,
       height: height
     });
 

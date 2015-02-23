@@ -1081,6 +1081,8 @@ Cesium.Geometry = function() {};
 /**
  * @typedef {{
  * center: !Cesium.Cartesian3,
+ * height: (number|undefined),
+ * extrudedHeight: (number|undefined),
  * radius: number
  * }}
  */
@@ -1096,6 +1098,8 @@ Cesium.CircleGeometry = function(opt_opts) {};
 /**
  * @typedef {{
  * center: !Cesium.Cartesian3,
+ * height: (number|undefined),
+ * extrudedHeight: (number|undefined),
  * radius: number
  * }}
  */
