@@ -307,6 +307,13 @@ Cesium.Camera.prototype.tilt;
 
 
 /**
+ * @type {number}
+ * @const
+ */
+Cesium.Camera.prototype.pitch;
+
+
+/**
  * @param {!Cesium.Cartesian2} windowPosition
  * @param {Cesium.Ray=} opt_result
  * @return {!Cesium.Ray}
