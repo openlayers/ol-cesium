@@ -324,15 +324,13 @@ olcs.Camera.prototype.updateCamera_ = function() {
     var height = this.scene_.globe.getHeight(carto);
     carto.height = goog.isDef(height) ? height : 0;
   }
+
   this.cam_.setView({
     positionCartographic: carto,
-    pitch: -Cesium.Math.PI_OVER_TWO,
-    heading: this.view_.getRotation()
+    pitch: this.tilt_ - Cesium.Math.PI_OVER_TWO,
+    heading: -this.view_.getRotation()
   });
 
-  if (this.tilt_) {
-    this.cam_.lookUp(this.tilt_);
-  }
   this.cam_.moveBackward(this.distance_);
 
   this.checkCameraChange(true);
@@ -432,7 +430,7 @@ olcs.Camera.prototype.updateView = function() {
   } else {
     // fallback when there is no target
     this.view_.setRotation(this.cam_.heading);
-    this.tilt_ = -this.cam_.tilt + Math.PI / 2;
+    this.tilt_ = -this.cam_.pitch + Math.PI / 2;
   }
 
   this.viewUpdateInProgress_ = false;

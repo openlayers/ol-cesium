@@ -5,6 +5,13 @@
 var Cesium = {};
 
 /**
+ * Prevent using a removed API.
+ * @constructor
+ */
+Cesium.RemovedAPI = function() {};
+
+
+/**
  * @constructor
  * @param {number=} opt_r .
  * @param {number=} opt_g .
@@ -301,9 +308,16 @@ Cesium.Camera.prototype.heading;
 
 
 /**
- * @type {number}
+ * @type {!Cesium.RemovedAPI}
  */
 Cesium.Camera.prototype.tilt;
+
+
+/**
+ * @type {number}
+ * @const
+ */
+Cesium.Camera.prototype.pitch;
 
 
 /**
@@ -474,6 +488,13 @@ Cesium.CameraEventAggregator.prototype.isDestroyed = function() {};
 /**
 */
 Cesium.CameraEventAggregator.prototype.destroy = function() {};
+
+
+/**
+ * @type{!Cesium.RemovedAPI}
+ */
+Cesium.Camera.prototype.setPositionCartographic;
+
 
 /**
  * @typedef {{
