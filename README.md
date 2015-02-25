@@ -29,12 +29,12 @@ Applications using this OL3-Cesium distribution also need to load OpenLayers and
 
 An OpenLayers map can be switched to a 3d globe view by running the code below after the map has been created:
 ```js
-var ol3d = new olcs.OLCesium(map); // map is the ol.Map instance
+var ol3d = new olcs.OLCesium({map: map}); // map is the ol.Map instance
 ol3d.setEnabled(true);
 ```
 The above will use the WGS84 ellipsoid all around the globe. To use terrain, simply add a [terrain provider](http://cesiumjs.org/Cesium/Build/Documentation/TerrainProvider.html) using the Cesium API (can be your own, but in the snippet below it's one that ships with Cesium):
 ```js
-var ol3d = new olcs.OLCesium(map); // map is the ol.Map instance
+var ol3d = new olcs.OLCesium({map: map}); // map is the ol.Map instance
 var scene = ol3d.getCesiumScene();
 var terrainProvider = new Cesium.CesiumTerrainProvider({
   url: '//cesiumjs.org/stk-terrain/tilesets/world/tiles'
