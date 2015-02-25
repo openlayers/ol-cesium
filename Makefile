@@ -42,7 +42,6 @@ dist: dist/ol3cesium.js dist/ol3cesium-debug.js CHANGES.md
 
 .PHONY: dist-examples
 dist-examples: .build/dist-examples.timestamp
-	node build/parse-examples.js
 
 .PHONY: dist-apidoc
 dist-apidoc:
@@ -81,6 +80,7 @@ cleanall: clean
 	touch $@
 
 .build/dist-examples.timestamp: ol3/build/ol-debug.js ol3/build/ol.js ol3/build/ol.css cesium/Build/Cesium/Cesium.js dist/ol3cesium.js $(EXAMPLES_JS_FILES) $(EXAMPLES_HTML_FILES)
+	node build/parse-examples.js
 	mkdir -p $(dir $@)
 	mkdir -p dist/ol3
 	cp ol3/build/ol-debug.js dist/ol3/
