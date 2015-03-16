@@ -345,7 +345,7 @@ Cesium.Camera.prototype.worldToCameraCoordinatesPoint = function(cartesian, opt_
 
 
 /**
- * @param {!Cesium.Matrix4} transform
+ * @param {!Cesium.RemovedAPI} transform
  */
 Cesium.Camera.prototype.setTransform = function(transform) {};
 
