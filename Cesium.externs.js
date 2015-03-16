@@ -522,6 +522,12 @@ Cesium.Camera.prototype.lookAt = function(eye, target, up) {};
 
 
 /**
+ * @param {Cesium.Matrix4} transform
+ */
+Cesium.Camera.prototype.lookAtTransform = function(transform) {};
+
+
+/**
  * @param {number} amount .
  */
 Cesium.Camera.prototype.twistLeft = function(amount) {};

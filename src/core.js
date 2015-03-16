@@ -72,9 +72,9 @@ goog.require('olcs.core.OlLayerPrimitive');
       camera.transform.clone(oldTransform);
       var stepAngle = (progress - lastProgress) * angle;
       lastProgress = progress;
-      camera.setTransform(transform);
+      camera.lookAtTransform(transform);
       camera.rotate(axis, stepAngle);
-      camera.setTransform(oldTransform);
+      camera.lookAtTransform(oldTransform);
 
       if (progress < 1) {
         animation.start();
