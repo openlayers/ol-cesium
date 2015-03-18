@@ -1772,11 +1772,19 @@ Cesium.Ellipsoid.prototype.cartographicToCartesian = function(cartographic, opt_
 
 
 /**
- * @param {!Array.<Cesium.Cartographic>} cartographic
+ * @param {!Array.<Cesium.Cartographic>} cartographics
  * @param {!Array.<Cesium.Cartesian3>=} opt_result
  * @return {!Array.<Cesium.Cartesian3>}
  */
-Cesium.Ellipsoid.prototype.cartographicArrayToCartesianArray = function(cartographic, opt_result) {};
+Cesium.Ellipsoid.prototype.cartographicArrayToCartesianArray = function(cartographics, opt_result) {};
+
+
+/**
+ * @param {!Array.<Cesium.Cartesian3>} cartesians
+ * @param {!Array.<Cesium.Cartographic>=} opt_result
+ * @return {!Array.<Cesium.Cartographic>}
+ */
+Cesium.Ellipsoid.prototype.cartesianArrayToCartographicArray = function(cartesians, opt_result) {};
 
 
 /**
