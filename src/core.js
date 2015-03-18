@@ -115,9 +115,22 @@ goog.require('olcs.core.OlLayerPrimitive');
   };
 
 
+  /**
+   * Get the 3D position of the given pixel of the canvas.
+   * @param {!Cesium.Scene} scene
+   * @param {!Cesium.Cartesian2} pixel
+   * @return {!Cesium.Cartesian3|undefined}
+   * @api
+   */
+  olcs.core.pickOnTerrainOrEllipsoid = function(scene, pixel) {
+    var ray = scene.camera.getPickRay(pixel);
+    var target = scene.globe.pick(ray, scene);
+    return target || scene.camera.pickEllipsoid(pixel);
+  };
+
 
   /**
-   * Get 3D positiion of the point at the bottom-center of the screen.
+   * Get the 3D position of the point at the bottom-center of the screen.
    * @param {!Cesium.Scene} scene
    * @return {!Cesium.Cartesian3|undefined}
    * @api
@@ -125,30 +138,20 @@ goog.require('olcs.core.OlLayerPrimitive');
   olcs.core.pickBottomPoint = function(scene) {
     var canvas = scene.canvas;
     var bottom = new Cesium.Cartesian2(canvas.width / 2, canvas.height);
-    var ray = scene.camera.getPickRay(bottom);
-    var target = scene.globe.pick(ray, scene);
-    if (!target) {
-      target = scene.camera.pickEllipsoid(bottom);
-    }
-    return target;
+    return olcs.core.pickOnTerrainOrEllipsoid(scene, bottom);
   };
 
 
   /**
-   * Get 3D positiion of the point at the center of the screen.
+   * Get the 3D position of the point at the center of the screen.
    * @param {!Cesium.Scene} scene
    * @return {!Cesium.Cartesian3|undefined}
    * @api
    */
   olcs.core.pickCenterPoint = function(scene) {
     var canvas = scene.canvas;
-    var bottom = new Cesium.Cartesian2(canvas.width / 2, canvas.height / 2);
-    var ray = scene.camera.getPickRay(bottom);
-    var target = scene.globe.pick(ray, scene);
-    if (!target) {
-      target = scene.camera.pickEllipsoid(bottom);
-    }
-    return target;
+    var center = new Cesium.Cartesian2(canvas.width / 2, canvas.height / 2);
+    return olcs.core.pickOnTerrainOrEllipsoid(scene, center);
   };
 
 
