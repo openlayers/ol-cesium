@@ -1772,11 +1772,19 @@ Cesium.Ellipsoid.prototype.cartographicToCartesian = function(cartographic, opt_
 
 
 /**
- * @param {!Array.<Cesium.Cartographic>} cartographic
+ * @param {!Array.<Cesium.Cartographic>} cartographics
  * @param {!Array.<Cesium.Cartesian3>=} opt_result
  * @return {!Array.<Cesium.Cartesian3>}
  */
-Cesium.Ellipsoid.prototype.cartographicArrayToCartesianArray = function(cartographic, opt_result) {};
+Cesium.Ellipsoid.prototype.cartographicArrayToCartesianArray = function(cartographics, opt_result) {};
+
+
+/**
+ * @param {!Array.<Cesium.Cartesian3>} cartesians
+ * @param {!Array.<Cesium.Cartographic>=} opt_result
+ * @return {!Array.<Cesium.Cartographic>}
+ */
+Cesium.Ellipsoid.prototype.cartesianArrayToCartographicArray = function(cartesians, opt_result) {};
 
 
 /**
@@ -1836,6 +1844,14 @@ Cesium.Rectangle.MAX_VALUE;
  * @return {!Cesium.Rectangle}
  */
 Cesium.Rectangle.fromDegrees = function(west, south, east, north, opt_result) {};
+
+
+/**
+ * @param {Array.<Cesium.Cartographic>} cartographics
+ * @param {Cesium.Rectangle=} opt_result
+ * @return {Cesium.Rectangle}
+ */
+Cesium.Rectangle.fromCartographicArray = function(cartographics, opt_result) {};
 
 
 /**
@@ -1990,10 +2006,10 @@ Cesium.Matrix4.fromTranslation = function(translation, opt_result) {};
 /**
  * @param {Cesium.Matrix4} left .
  * @param {Cesium.Matrix4} right .
- * @param {Cesium.Matrix4=} opt_result .
+ * @param {Cesium.Matrix4} result .
  * @return {Cesium.Matrix4} .
  */
-Cesium.Matrix4.multiply = function(left, right, opt_result) {};
+Cesium.Matrix4.multiply = function(left, right, result) {};
 
 
 /**
@@ -2012,19 +2028,19 @@ Cesium.Matrix4.prototype.clone = function(opt_result) {};
 /**
  * @param {Cesium.Matrix4} matrix .
  * @param {Cesium.Cartesian3} point .
- * @param {Cesium.Cartesian3=} opt_result .
+ * @param {Cesium.Cartesian3} result .
  * @return {Cesium.Cartesian3} .
  */
-Cesium.Matrix4.multiplyByPoint = function(matrix, point, opt_result) {};
+Cesium.Matrix4.multiplyByPoint = function(matrix, point, result) {};
 
 
 /**
  * @param {Cesium.Matrix4} matrix .
  * @param {Cesium.Cartesian4} point .
- * @param {Cesium.Cartesian4=} opt_result .
+ * @param {Cesium.Cartesian4} result .
  * @return {Cesium.Cartesian4} .
  */
-Cesium.Matrix4.multiplyByVector = function(matrix, point, opt_result) {};
+Cesium.Matrix4.multiplyByVector = function(matrix, point, result) {};
 
 
 /**
