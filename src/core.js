@@ -413,6 +413,48 @@ goog.require('olcs.core.OlLayerPrimitive');
 
 
   /**
+   * Synchronizes the vector layer rendering properties (currently only
+   * 'opacity') to the given Cesium primitives.
+   * @param {!ol.layer.Vector} olLayer
+   * @param {!Cesium.PrimitiveCollection} csPrimitives
+   * @api
+   */
+  olcs.core.updateCesiumPrimitives = function(olLayer, csPrimitives) {
+    var opacity = olLayer.getOpacity();
+    if (!goog.isDef(opacity)) {
+      opacity = 1;
+    }
+    csPrimitives.olLayerOpacity = opacity;
+    var i, bb, j, prim, geoms, geom, color;
+    for (i = csPrimitives.length - 1; i >= 0; --i) {
+      prim = csPrimitives.get(i);
+      if (prim instanceof Cesium.PrimitiveCollection) {
+        olcs.core.updateCesiumPrimitives(olLayer, prim);
+      } else {
+        if (!prim.ready) continue;
+        var attrs = prim.getGeometryInstanceAttributes("id");
+        if (!attrs) continue;
+        color = attrs.color;
+        if (color) {
+          //FIXME This currently overrides style opacity with layer opacity
+          color[3] = Cesium.Color.floatToByte(opacity);
+          attrs.color = color;
+        }
+      }
+    }
+    if (csPrimitives instanceof olcs.core.OlLayerPrimitive) {
+      var bbs = csPrimitives.context.billboards;
+      bbs.olLayerOpacity = opacity;
+      for (i = bbs.length - 1; i >= 0; --i) {
+        bb = bbs.get(i);
+        //FIXME Use Cesium.Color.fromAlpha after the next Cesium update
+        bb.color = new Cesium.Color(1.0, 1.0, 1.0, bb.olStyleOpacity * opacity);
+      }
+    }
+  };
+
+
+  /**
    * Convert a 2D or 3D OpenLayers coordinate to Cesium.
    * @param {ol.Coordinate} coordinate Ol3 coordinate.
    * @return {!Cesium.Cartesian3} Cesium cartesian coordinate
@@ -480,7 +522,8 @@ goog.require('olcs.core.OlLayerPrimitive');
         geometry: geometry,
         attributes: {
           color: Cesium.ColorGeometryInstanceAttribute.fromColor(color)
-        }
+        },
+        id: "id"
       });
     };
 
@@ -502,7 +545,7 @@ goog.require('olcs.core.OlLayerPrimitive');
     }
     var appearance = new Cesium.PerInstanceColorAppearance(options);
 
-    var instances = createInstance(geometry, color);
+    var instances = [createInstance(geometry, color)];
 
     var primitive = new Cesium.Primitive({
       // always update Cesium externs before adding a property
@@ -691,9 +734,10 @@ goog.require('olcs.core.OlLayerPrimitive');
 
     var outlinePrimitive = new Cesium.Primitive({
       // always update Cesium externs before adding a property
-      geometryInstances: new Cesium.GeometryInstance({
-        geometry: outlineGeometry
-      }),
+      geometryInstances: [new Cesium.GeometryInstance({
+        geometry: outlineGeometry,
+        id: "id"
+      })],
       appearance: appearance
     });
 
@@ -790,9 +834,12 @@ goog.require('olcs.core.OlLayerPrimitive');
       var position = olcs.core.ol4326CoordinateToCesiumCartesian(center);
       var color;
       var opacity = imageStyle.getOpacity();
-      if (goog.isDef(opacity)) {
-        color = new Cesium.Color(1.0, 1.0, 1.0, opacity);
+      if (!goog.isDef(opacity)) {
+        opacity = 1;
       }
+      //FIXME Use Cesium.Color.fromAlpha after the next Cesium update
+      color = new Cesium.Color(1.0, 1.0, 1.0,
+          opacity * billboards.olLayerOpacity);
       var bb = billboards.add({
         // always update Cesium externs before adding a property
         image: image,
@@ -800,6 +847,7 @@ goog.require('olcs.core.OlLayerPrimitive');
         verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
         position: position
       });
+      bb.olStyleOpacity = opacity;
       if (opt_newBillboardCallback) {
         opt_newBillboardCallback(bb);
       }
