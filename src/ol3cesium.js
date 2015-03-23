@@ -208,11 +208,14 @@ olcs.OLCesium.prototype.getEnabled = function() {
 /**
  * Enables/disables the Cesium.
  * This modifies the visibility style of the container element.
- * @param {boolean=} opt_enable
+ * @param {boolean} enable
  * @api
  */
-olcs.OLCesium.prototype.setEnabled = function(opt_enable) {
-  this.enabled_ = opt_enable !== false;
+olcs.OLCesium.prototype.setEnabled = function(enable) {
+  if (this.enabled_ == enable) {
+    return;
+  }
+  this.enabled_ = enable;
 
   // some Cesium operations are operating with canvas.clientWidth,
   // so we can't remove it from DOM or even make display:none;
