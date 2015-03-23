@@ -1,9 +1,10 @@
 # Changelog
 
-* Port to Cesium 1.7.1 and Ol 3.3.0
+## v1.3 - 2015-03-23
 
-# Breaking changes
+* Breaking changes
   * The `enable` argument to `olcs.OLCesium#setEnabled()` is no longer optional.
+* Port to Cesium 1.7.1 and Ol 3.3.0
 
 ## v1.2 - 2015-02-25
 
