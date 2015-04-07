@@ -794,12 +794,10 @@ goog.require('olcs.core.OlLayerPrimitive');
       perPositionHeight: true
     });
 
-    var width = extractLineWidthFromOlStyle(olStyle);
     var outlineGeometry = new Cesium.PolygonOutlineGeometry({
       // always update Cesium externs before adding a property
       polygonHierarchy: hierarchy,
-      perPositionHeight: true,
-      width: width
+      perPositionHeight: true
     });
 
     var primitives = wrapFillAndOutlineGeometries(
