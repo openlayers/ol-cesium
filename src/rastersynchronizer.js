@@ -14,6 +14,7 @@ goog.require('olcs.core');
  * @param {!Cesium.Scene} scene
  * @constructor
  * @extends {olcs.AbstractSynchronizer.<Cesium.ImageryLayer>}
+ * @api
  */
 olcs.RasterSynchronizer = function(map, scene) {
   /**
