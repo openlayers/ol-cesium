@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.4 - 2015-04-30
+
+  * Port to Cesium 1.8 and Ol 3.4.0
+  * Mark `olcs.RasterSynchronizer` @api
+
 ## v1.3 - 2015-03-23
 
 * Breaking changes
