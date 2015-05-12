@@ -118,7 +118,7 @@ Cesium.BillboardCollection = function() {};
 
 /**
  * @typedef {{
- *   image: (string|HTMLCanvasElement|Image),
+ *   image: (string|HTMLCanvasElement|HTMLImageElement|Image),
  *   color: (Cesium.Color|undefined),
  *   verticalOrigin: (Cesium.VerticalOrigin|undefined),
  *   horizontalOrigin: (Cesium.HorizontalOrigin|undefined),
@@ -1277,6 +1277,8 @@ Cesium.optionsPolygonHierarchy;
 /**
  * @typedef {{
  * width: (number|undefined),
+ * height: (number|undefined),
+ * extrudedHeight: (number|undefined),
  * perPositionHeight: (boolean|undefined),
  * polygonHierarchy: !Cesium.optionsPolygonHierarchy
  * }}
@@ -1289,6 +1291,7 @@ Cesium.optionsPolygonOutlineGeometry;
  * positions: !Array.<Cesium.Cartesian3>,
  * height: (number|undefined),
  * extrudedHeight: (number|undefined),
+ * perPositionHeight: (boolean|undefined),
  * polygonHierarchy: !Cesium.optionsPolygonHierarchy
  * }}
  */

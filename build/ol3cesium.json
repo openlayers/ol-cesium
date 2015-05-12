@@ -5,6 +5,7 @@
   "compile": {
     "externs": [
       "ol3/build/ol-externs.js",
+      "ol3/externs/esrijson.js",
       "externs/olcsx.js",
       "Cesium.externs.js"
     ],

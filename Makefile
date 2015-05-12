@@ -7,6 +7,7 @@ UNAME := $(shell uname)
 SRC_JS_FILES := $(shell find src -type f -name '*.js')
 EXAMPLES_JS_FILES := $(shell find examples -type f -name '*.js')
 EXAMPLES_HTML_FILES := $(shell find examples -type f -name '*.html')
+EXAMPLES_GEOJSON_FILES := $(shell find examples/data/ -name '*.geojson')
 
 
 .PHONY: all
@@ -33,7 +34,7 @@ help:
 npm-install: .build/node_modules.timestamp
 
 .PHONY: serve
-serve: npm-install ol3/build/ol.js ol3/build/ol.css cesium/Build/Cesium/Cesium.js
+serve: npm-install ol3/build/olX cesium/Build/Cesium/Cesium.js
 	node build/serve.js
 
 .PHONY: dist
@@ -50,8 +51,12 @@ dist-apidoc:
 .PHONY: lint
 lint: .build/python-venv/bin/gjslint .build/gjslint.timestamp
 
+.build/geojsonhint.timestamp: $(EXAMPLES_GEOJSON_FILES)
+	$(foreach file,$?, echo $(file); node_modules/geojsonhint/bin/geojsonhint $(file);)
+	touch $@
+
 .PHONY: check
-check: lint dist
+check: lint dist .build/geojsonhint.timestamp
 
 .PHONY: clean
 clean:
@@ -79,7 +84,7 @@ cleanall: clean
 	.build/python-venv/bin/gjslint --jslint_error=all --strict --custom_jsdoc_tags=api $?
 	touch $@
 
-.build/dist-examples.timestamp: ol3/build/ol-debug.js ol3/build/ol.js ol3/build/ol.css cesium/Build/Cesium/Cesium.js dist/ol3cesium.js $(EXAMPLES_JS_FILES) $(EXAMPLES_HTML_FILES)
+.build/dist-examples.timestamp: ol3/build/olX cesium/Build/Cesium/Cesium.js dist/ol3cesium.js $(EXAMPLES_JS_FILES) $(EXAMPLES_HTML_FILES)
 	node build/parse-examples.js
 	mkdir -p $(dir $@)
 	mkdir -p dist/ol3
@@ -119,17 +124,9 @@ dist/ol3cesium.js: build/ol3cesium.json $(SRC_JS_FILES) ol3/build/ol-externs.js 
 ol3/build/ol-externs.js:
 	(cd ol3 && npm install && node tasks/generate-externs.js build/ol-externs.js)
 
-.PHONY: ol3/build/ol.js
-ol3/build/ol.js:
-	(cd ol3 && npm install && python build.py build/ol.js)
-
-.PHONY: ol3/build/ol-debug.js
-ol3/build/ol-debug.js:
-	(cd ol3 && npm install && python build.py build/ol-debug.js)
-
-.PHONY: ol3/build/ol.css
-ol3/build/ol.css:
-	(cd ol3 && npm install && python build.py build/ol.css)
+.PHONY: ol3/build/olX
+ol3/build/olX:
+	(cd ol3 && npm install && make build)
 
 # Only generated when cesium/Build/Cesium/Cesium.js does not exist
 cesium/Build/Cesium/Cesium.js:
