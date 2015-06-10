@@ -2,7 +2,7 @@ goog.provide('olcs.core.OLImageryProvider');
 
 goog.require('goog.events');
 goog.require('ol.proj');
-goog.require('ol.tilegrid.XYZ');
+goog.require('ol.tilegrid');
 
 
 
@@ -42,6 +42,13 @@ olcs.core.OLImageryProvider = function(source, opt_fallbackProj) {
   this.emptyCanvas_ = goog.dom.createElement(goog.dom.TagName.CANVAS);
   this.emptyCanvas_.width = 1;
   this.emptyCanvas_.height = 1;
+
+  /**
+   * @type {function(ol.TileCoord, ol.proj.Projection, ol.TileCoord=):
+   * ol.TileCoord}
+   * @private
+   */
+  this.transform_ = goog.functions.identity;
 
   this.source_.on(goog.events.EventType.CHANGE, function(e) {
     this.handleSourceChanged_();
@@ -148,6 +155,16 @@ olcs.core.OLImageryProvider.prototype.handleSourceChanged_ = function() {
         olcs.core.OLImageryProvider.createCreditForSource(this.source_);
     this.credit_ = !goog.isNull(credit) ? credit : undefined;
 
+    var tilegrid = this.source_.getTileGrid();
+    if (goog.isNull(tilegrid)) {
+      this.transform_ = goog.functions.identity;
+    } else {
+      this.transform_ = /** @type {
+          function(ol.TileCoord, ol.proj.Projection, ol.TileCoord=):
+          ol.TileCoord} */ (
+          tilegrid.createTileCoordTransform());
+    }
+
     this.ready_ = true;
   }
 };
@@ -208,12 +225,14 @@ olcs.core.OLImageryProvider.prototype.requestImage = function(x, y, level) {
   var tileUrlFunction = this.source_.getTileUrlFunction();
   if (!goog.isNull(tileUrlFunction) && !goog.isNull(this.projection_)) {
     // perform mapping of Cesium tile coordinates to ol3 tile coordinates
-    var z_ = (this.tilingScheme_ instanceof Cesium.GeographicTilingScheme) ?
-             (level + 1) : level;
-    var y_ = (this.source_.getTileGrid() instanceof ol.tilegrid.XYZ) ?
-             y : (y - (1 << level));
-    y_ = -y_ - 1; // opposite indexing
-    var url = tileUrlFunction([z_, x, y_], 1, this.projection_);
+    var tileCoord = [level, x, y];
+    if (!goog.isNull(this.transform_)) {
+      tileCoord = this.transform_(tileCoord, this.projection_);
+    }
+    if (this.tilingScheme_ instanceof Cesium.GeographicTilingScheme) {
+      tileCoord[0] = level + 1; // Why do we need this?
+    }
+    var url = tileUrlFunction(tileCoord, 1, this.projection_);
     return goog.isDef(url) ?
            Cesium.ImageryProvider.loadImage(this, url) : this.emptyCanvas_;
   } else {
