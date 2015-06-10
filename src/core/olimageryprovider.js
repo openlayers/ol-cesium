@@ -43,13 +43,6 @@ olcs.core.OLImageryProvider = function(source, opt_fallbackProj) {
   this.emptyCanvas_.width = 1;
   this.emptyCanvas_.height = 1;
 
-  /**
-   * @type {function(ol.TileCoord, ol.proj.Projection, ol.TileCoord=):
-   * ol.TileCoord}
-   * @private
-   */
-  this.transform_ = goog.functions.identity;
-
   this.source_.on(goog.events.EventType.CHANGE, function(e) {
     this.handleSourceChanged_();
   }, this);
@@ -155,16 +148,6 @@ olcs.core.OLImageryProvider.prototype.handleSourceChanged_ = function() {
         olcs.core.OLImageryProvider.createCreditForSource(this.source_);
     this.credit_ = !goog.isNull(credit) ? credit : undefined;
 
-    var tilegrid = this.source_.getTileGrid();
-    if (goog.isNull(tilegrid)) {
-      this.transform_ = goog.functions.identity;
-    } else {
-      this.transform_ = /** @type {
-          function(ol.TileCoord, ol.proj.Projection, ol.TileCoord=):
-          ol.TileCoord} */ (
-          tilegrid.createTileCoordTransform());
-    }
-
     this.ready_ = true;
   }
 };
@@ -224,12 +207,15 @@ goog.exportProperty(olcs.core.OLImageryProvider.prototype, 'getTileCredits',
 olcs.core.OLImageryProvider.prototype.requestImage = function(x, y, level) {
   var tileUrlFunction = this.source_.getTileUrlFunction();
   if (!goog.isNull(tileUrlFunction) && !goog.isNull(this.projection_)) {
-    // perform mapping of Cesium tile coordinates to ol3 tile coordinates
-    var z_ = (this.tilingScheme_ instanceof Cesium.GeographicTilingScheme) ?
-             (level + 1) : level;
-    var y_ = (this.transform_ === goog.functions.identity) ?
-             y : (y - (1 << level));
-    y_ = -y_ - 1; // opposite indexing
+
+    // Perform mapping of Cesium tile coordinates to ol3 tile coordinates:
+    // 1) Cesium zoom level 0 is ol3 zoom level 1 for EPSG:4326
+    var z_ = this.tilingScheme_ instanceof Cesium.GeographicTilingScheme ?
+        level + 1 : level;
+    // 2) ol.source.TileWMS uses bottom-left origin tile coordinates
+    var y_ = this.source_ instanceof ol.source.TileWMS ?
+        this.tilingScheme_.getNumberOfYTilesAtLevel(level) - y - 1 : y;
+
     var url = tileUrlFunction([z_, x, y_], 1, this.projection_);
     return goog.isDef(url) ?
            Cesium.ImageryProvider.loadImage(this, url) : this.emptyCanvas_;
