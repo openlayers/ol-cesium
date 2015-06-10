@@ -225,14 +225,12 @@ olcs.core.OLImageryProvider.prototype.requestImage = function(x, y, level) {
   var tileUrlFunction = this.source_.getTileUrlFunction();
   if (!goog.isNull(tileUrlFunction) && !goog.isNull(this.projection_)) {
     // perform mapping of Cesium tile coordinates to ol3 tile coordinates
-    var tileCoord = [level, x, y];
-    if (!goog.isNull(this.transform_)) {
-      tileCoord = this.transform_(tileCoord, this.projection_);
-    }
-    if (this.tilingScheme_ instanceof Cesium.GeographicTilingScheme) {
-      tileCoord[0] = level + 1; // Why do we need this?
-    }
-    var url = tileUrlFunction(tileCoord, 1, this.projection_);
+    var z_ = (this.tilingScheme_ instanceof Cesium.GeographicTilingScheme) ?
+             (level + 1) : level;
+    var y_ = (this.transform_ === goog.functions.identity) ?
+             y : (y - (1 << level));
+    y_ = -y_ - 1; // opposite indexing
+    var url = tileUrlFunction([z_, x, y_], 1, this.projection_);
     return goog.isDef(url) ?
            Cesium.ImageryProvider.loadImage(this, url) : this.emptyCanvas_;
   } else {
