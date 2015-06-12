@@ -9,7 +9,7 @@ var log = closure.log;
 var options = nomnom.options({
   port: {
     abbr: 'p',
-    'default': 3000,
+    'default': 4000,
     help: 'Port for incoming connections',
     metavar: 'PORT'
   },
