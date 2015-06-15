@@ -454,8 +454,8 @@ olcs.Camera.prototype.checkCameraChange = function(opt_dontSync) {
 
 
 /**
- * @param {number} resolution
- * @param {number} latitude
+ * @param {number} resolution Number of map units per pixel.
+ * @param {number} latitude Latitude in radians.
  * @return {number} The calculated distance.
  * @private
  */
