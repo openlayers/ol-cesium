@@ -820,6 +820,7 @@ goog.require('olcs.core.OlLayerPrimitive');
    */
   olcs.core.olPointGeometryToCesium = function(geometry, projection, style,
       billboards, opt_newBillboardCallback) {
+    var altitudeMode = geometry.get('altitudeMode');
     goog.asserts.assert(geometry.getType() == 'Point');
     geometry = olGeometryCloneTo4326(geometry, projection);
 
@@ -847,10 +848,18 @@ goog.require('olcs.core.OlLayerPrimitive');
       if (goog.isDef(opacity)) {
         color = new Cesium.Color(1.0, 1.0, 1.0, opacity);
       }
+
+      var heightReference = Cesium.HeightReference.NONE;
+      if (altitudeMode === 'clampToGround') {
+        heightReference = Cesium.HeightReference.CLAMP_TO_GROUND;
+      } else if (altitudeMode === 'relativeToGround') {
+        heightReference = Cesium.HeightReference.RELATIVE_TO_GROUND;
+      }
       var bb = billboards.add({
         // always update Cesium externs before adding a property
         image: image,
         color: color,
+        heightReference: heightReference,
         verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
         position: position
       });
