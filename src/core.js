@@ -832,8 +832,12 @@ goog.require('olcs.core.OlLayerPrimitive');
           image.complete;
     };
     var reallyCreateBillboard = function() {
-      if (goog.isNull(image) ||
-          !(image instanceof HTMLCanvasElement || image instanceof Image)) {
+      if (goog.isNull(image)) {
+        return;
+      }
+      if (!(image instanceof HTMLCanvasElement ||
+          image instanceof Image ||
+          image instanceof HTMLImageElement)) {
         return;
       }
       var center = geometry.getCoordinates();
