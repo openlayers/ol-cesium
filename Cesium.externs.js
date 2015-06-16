@@ -121,8 +121,9 @@ Cesium.NearFarScalar = function(near, nearValue, far, farValue) {};
 /**
  * @constructor
  * @extends {Cesium.Primitive} // as it can be added to PrimitiveCollection...
+ * @param {{scene: Cesium.Scene }=} opt_options
  */
-Cesium.BillboardCollection = function() {};
+Cesium.BillboardCollection = function(opt_options) {};
 
 
 /**
