@@ -1564,10 +1564,11 @@ Cesium.ImageryLayer.prototype.rectangle;
 
 
 /**
- * @param {string} url .
- * @return {Object} .
+ * @param {string} url
+ * @param {boolean=} opt_anonymous
+ * @return {Promise}
  */
-Cesium.ImageryLayer.prototype.loadImage = function(url) {};
+Cesium.ImageryLayer.prototype.loadImage = function(url, opt_anonymous) {};
 
 
 /**
