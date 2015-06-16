@@ -129,6 +129,7 @@ Cesium.BillboardCollection = function() {};
  * @typedef {{
  *   image: (string|HTMLCanvasElement|HTMLImageElement|Image),
  *   color: (Cesium.Color|undefined),
+ *   heightReference: (Cesium.HeightReference|undefined),
  *   verticalOrigin: (Cesium.VerticalOrigin|undefined),
  *   horizontalOrigin: (Cesium.HorizontalOrigin|undefined),
  *   scaleByDistance: (Cesium.NearFarScalar|undefined),
@@ -2654,3 +2655,28 @@ Cesium.Matrix2.multiplyByVector = function(matrix, vector, result) {};
  * @return {!Cesium.Matrix2}
  */
 Cesium.Matrix2.fromRotation = function(angle) {};
+
+
+
+/**
+ * @constructor
+ */
+Cesium.HeightReference = function() {};
+
+
+/**
+ * @type {Cesium.HeightReference}
+ */
+Cesium.HeightReference.CLAMP_TO_GROUND;
+
+
+/**
+ * @type {Cesium.HeightReference}
+ */
+Cesium.HeightReference.NONE;
+
+
+/**
+ * @type {Cesium.HeightReference}
+ */
+Cesium.HeightReference.RELATIVE_TO_GROUND;
