@@ -32,9 +32,7 @@ var iconStyle = new ol.style.Style({
 
 iconFeature.setStyle(iconStyle);
 
-cervinFeature.setStyle(new ol.style.Style({
-  image: iconStyle.getImage()
-}));
+cervinFeature.setStyle(iconStyle);
 
 
 var image = new ol.style.Circle({

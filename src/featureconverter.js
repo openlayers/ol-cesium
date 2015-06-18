@@ -328,6 +328,24 @@ olcs.FeatureConverter.prototype.olPolygonGeometryToCesium =
 
 
 /**
+ * @param {!ol.geom.Geometry} geometry
+ * @return {!Cesium.HeightReference}
+ * @api
+ */
+olcs.FeatureConverter.prototype.getHeightReference =
+    function(geometry) {
+  var altitudeMode = geometry.get('altitudeMode');
+  var heightReference = Cesium.HeightReference.NONE;
+  if (altitudeMode === 'clampToGround') {
+    heightReference = Cesium.HeightReference.CLAMP_TO_GROUND;
+  } else if (altitudeMode === 'relativeToGround') {
+    heightReference = Cesium.HeightReference.RELATIVE_TO_GROUND;
+  }
+  return heightReference;
+};
+
+
+/**
  * Convert a point geometry to a Cesium BillboardCollection.
  * @param {!ol.geom.Point} geometry
  * @param {!ol.proj.ProjectionLike} projection
@@ -341,7 +359,6 @@ olcs.FeatureConverter.prototype.olPolygonGeometryToCesium =
 olcs.FeatureConverter.prototype.olPointGeometryToCesium =
     function(geometry, projection, style, billboards,
     opt_newBillboardCallback) {
-  var altitudeMode = geometry.get('altitudeMode');
   goog.asserts.assert(geometry.getType() == 'Point');
   geometry = olcs.core.olGeometryCloneTo4326(geometry, projection);
 
@@ -353,7 +370,7 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium =
         image.naturalWidth != 0 &&
         image.complete;
   };
-  var reallyCreateBillboard = function() {
+  var reallyCreateBillboard = goog.bind(function() {
     if (goog.isNull(image)) {
       return;
     }
@@ -370,12 +387,7 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium =
       color = new Cesium.Color(1.0, 1.0, 1.0, opacity);
     }
 
-    var heightReference = Cesium.HeightReference.NONE;
-    if (altitudeMode === 'clampToGround') {
-      heightReference = Cesium.HeightReference.CLAMP_TO_GROUND;
-    } else if (altitudeMode === 'relativeToGround') {
-      heightReference = Cesium.HeightReference.RELATIVE_TO_GROUND;
-    }
+    var heightReference = this.getHeightReference(geometry);
     var bb = billboards.add({
       // always update Cesium externs before adding a property
       image: image,
@@ -387,7 +399,7 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium =
     if (opt_newBillboardCallback) {
       opt_newBillboardCallback(bb);
     }
-  };
+  }, this);
 
   if (image instanceof Image && !isImageLoaded(image)) {
     // Cesium requires the image to be loaded
@@ -485,7 +497,7 @@ olcs.FeatureConverter.prototype.olGeometry4326TextPartToCesium =
   goog.asserts.assert(goog.isDef(text));
 
 
-  var primitives = new Cesium.LabelCollection();
+  var primitives = new Cesium.LabelCollection({scene: this.scene});
   // TODO: export and use the text draw position from ol3 .
   // See src/ol/render/vector.js
   var extentCenter = ol.extent.getCenter(geometry.getExtent());
@@ -493,12 +505,13 @@ olcs.FeatureConverter.prototype.olGeometry4326TextPartToCesium =
     var first = geometry.getFirstCoordinate();
     extentCenter[2] = first.length == 3 ? first[2] : 0.0;
   }
-  var position = olcs.core.ol4326CoordinateToCesiumCartesian(extentCenter);
-
-  primitives.modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(
-      position);
   var options = /** @type {Cesium.optionsLabelCollection} */ ({});
+
+  options.position = olcs.core.ol4326CoordinateToCesiumCartesian(extentCenter);
+
   options.text = text;
+
+  options.heightReference = this.getHeightReference(geometry);
 
   var offsetX = style.getOffsetX();
   var offsetY = style.getOffsetY();
