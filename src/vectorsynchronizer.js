@@ -72,10 +72,11 @@ olcs.VectorSynchronizer.prototype.createSingleCounterpart = function(olLayer) {
   goog.asserts.assert(!goog.isNull(this.view));
 
   var view = this.view;
+  var scene = this.scene;
   var source = olLayer.getSource();
   var featurePrimitiveMap = {};
   var csPrimitives = olcs.core.olVectorLayerToCesium(olLayer, view,
-      featurePrimitiveMap);
+      featurePrimitiveMap, scene);
 
   olLayer.on('change:visible', function(e) {
     csPrimitives.show = olLayer.getVisible();

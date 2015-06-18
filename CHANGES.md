@@ -2,6 +2,13 @@
 
 ## v1.6 -
 
+  * Breaking changes
+    * The `olcs.core.olVectorLayerToCesium()` function now takes a `scene`
+      parameter. The `olcs.core.OlLayerPrimitive` constructor now takes a
+      `scene` parameter.
+  * Position point geometries on terrain.
+    With 2D coordinates, use `pointFeature.getGeometry().set('altitudeMode', 'clampToGround');`
+    With 3D relative coordinates, use `pointFeature.getGeometry().set('altitudeMode', 'relativeToGround');`
   * Port to Cesium 1.10
 
 ## v1.5 - 2015-05-29
