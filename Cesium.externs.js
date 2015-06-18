@@ -1019,9 +1019,10 @@ Cesium.Label = function() {};
 
 /**
  * @constructor
+ * @param {{scene: Cesium.Scene }=} opt_options
  * @extends {Cesium.Primitive}
  */
-Cesium.LabelCollection = function() {};
+Cesium.LabelCollection = function(opt_options) {};
 
 /**
  * @constructor
@@ -1078,6 +1079,11 @@ Cesium.optionsLabelCollection.prototype.horizontalOrigin;
  * @type {Cesium.VerticalOrigin | undefined}
  */
 Cesium.optionsLabelCollection.prototype.verticalOrigin;
+
+/**
+ * @type {Cesium.HeightReference | undefined}
+ */
+Cesium.optionsLabelCollection.prototype.heightReference;
 
 
 /**
