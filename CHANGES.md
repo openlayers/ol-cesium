@@ -6,10 +6,19 @@
     * The `olcs.core.olVectorLayerToCesium()` function now takes a `scene`
       parameter. The `olcs.core.OlLayerPrimitive` constructor now takes a
       `scene` parameter.
+    * Core static functions for converting from OL3 features to Cesium primitives
+      have been moved into a class designed for inheritance.
+      The `olcs.FeatureConverter` may be extended and passed as a parameter of
+      the `olcs.VectorSynchronizer` constructor. See the synchronizer function 
+      parameter of the `olcs.OLCesium` constructor. Subclassing requires that
+      the subclass and the library code be compiled together.
+      One way of migrating existing code is to define a global variable:
+      `app.converter = new olcs.FeatureConverter({scene: scene});` and call
+      the methods through it: `app.converter.olLineStringGeometryToCesium()`.
   * Position point geometries on terrain.
-    With 2D coordinates, use `pointFeature.getGeometry().set('altitudeMode', 'clampToGround');`
-    With 3D relative coordinates, use `pointFeature.getGeometry().set('altitudeMode', 'relativeToGround');`
-  * Port to Cesium 1.10
+    With 2D coordinates, use `pointFeature.getGeometry().set('altitudeMode', 'clampToGround')`.
+    With 3D relative coordinates, use `pointFeature.getGeometry().set('altitudeMode', 'relativeToGround')`.
+  * Port to Cesium 1.10.
 
 ## v1.5 - 2015-05-29
 

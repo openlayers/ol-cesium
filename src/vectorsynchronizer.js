@@ -3,6 +3,7 @@ goog.provide('olcs.VectorSynchronizer');
 goog.require('goog.events');
 goog.require('ol.layer.Vector');
 goog.require('olcs.AbstractSynchronizer');
+goog.require('olcs.FeatureConverter');
 goog.require('olcs.core');
 goog.require('olcs.core.OlLayerPrimitive');
 
@@ -12,22 +13,24 @@ goog.require('olcs.core.OlLayerPrimitive');
  * Unidirectionally synchronize OpenLayers vector layers to Cesium.
  * @param {!ol.Map} map
  * @param {!Cesium.Scene} scene
+ * @param {olcs.FeatureConverter=} opt_converter
  * @constructor
  * @extends {olcs.AbstractSynchronizer.<olcs.core.OlLayerPrimitive>}
  * @api
  */
-olcs.VectorSynchronizer = function(map, scene) {
+olcs.VectorSynchronizer = function(map, scene, opt_converter) {
 
   /**
-   * @type {!Cesium.PrimitiveCollection}
+   * @protected
+   */
+  this.converter = opt_converter || new olcs.FeatureConverter(scene);
+
+  /**
    * @private
    */
   this.csAllPrimitives_ = new Cesium.PrimitiveCollection();
   scene.primitives.add(this.csAllPrimitives_);
   this.csAllPrimitives_.destroyPrimitives = false;
-
-  // Initialize core library
-  olcs.core.glAliasedLineWidthRange = scene.maximumAliasedLineWidth;
 
   goog.base(this, map, scene);
 };
@@ -72,26 +75,26 @@ olcs.VectorSynchronizer.prototype.createSingleCounterpart = function(olLayer) {
   goog.asserts.assert(!goog.isNull(this.view));
 
   var view = this.view;
-  var scene = this.scene;
   var source = olLayer.getSource();
   var featurePrimitiveMap = {};
-  var csPrimitives = olcs.core.olVectorLayerToCesium(olLayer, view,
-      featurePrimitiveMap, scene);
+  var csPrimitives = this.converter.olVectorLayerToCesium(olLayer, view,
+      featurePrimitiveMap);
 
   olLayer.on('change:visible', function(e) {
     csPrimitives.show = olLayer.getVisible();
   });
 
-  var onAddFeature = function(feature) {
+  var onAddFeature = goog.bind(function(feature) {
     goog.asserts.assertInstanceof(olLayer, ol.layer.Vector);
-    var prim = csPrimitives.convert(olLayer, view, feature);
+    var context = csPrimitives.context;
+    var prim = this.converter.convert(olLayer, view, feature, context);
     if (prim) {
       featurePrimitiveMap[goog.getUid(feature)] = prim;
       csPrimitives.add(prim);
     }
-  };
+  }, this);
 
-  var onRemoveFeature = function(feature) {
+  var onRemoveFeature = goog.bind(function(feature) {
     var geometry = feature.getGeometry();
     var id = goog.getUid(feature);
     if (goog.isDefAndNotNull(geometry) && geometry.getType() == 'Point') {
@@ -109,7 +112,7 @@ olcs.VectorSynchronizer.prototype.createSingleCounterpart = function(olLayer) {
     if (goog.isDefAndNotNull(csPrimitive)) {
       csPrimitives.remove(csPrimitive);
     }
-  };
+  }, this);
 
   source.on('addfeature', function(e) {
     goog.asserts.assert(goog.isDefAndNotNull(e.feature));
