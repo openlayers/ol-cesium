@@ -209,12 +209,11 @@ olcs.core.OLImageryProvider.prototype.requestImage = function(x, y, level) {
   if (!goog.isNull(tileUrlFunction) && !goog.isNull(this.projection_)) {
 
     // Perform mapping of Cesium tile coordinates to ol3 tile coordinates:
-    // 1) Cesium zoom level 0 is ol3 zoom level 1 for EPSG:4326
+    // 1) Cesium zoom level 0 is OpenLayers zoom level 1 for EPSG:4326
     var z_ = this.tilingScheme_ instanceof Cesium.GeographicTilingScheme ?
         level + 1 : level;
-    // 2) ol.source.TileWMS uses bottom-left origin tile coordinates
-    var y_ = this.source_ instanceof ol.source.TileWMS ?
-        this.tilingScheme_.getNumberOfYTilesAtLevel(level) - y - 1 : y;
+    // 2) OpenLayers tile coordinates increase from bottom to top
+    var y_ = -y - 1;
 
     var url = tileUrlFunction([z_, x, y_], 1, this.projection_);
     return goog.isDef(url) ?
