@@ -499,6 +499,7 @@ goog.require('olcs.core.OlLayerPrimitive');
   /**
    * Convert an OpenLayers geometry to 4326 projection.
    * The geometry will be cloned only when reprojection is required.
+   * The properties will be shallow copied.
    * @param {!T} geometry
    * @param {!ol.proj.ProjectionLike} projection
    * @return {!T}
@@ -510,8 +511,10 @@ goog.require('olcs.core.OlLayerPrimitive');
     var proj4326 = ol.proj.get('EPSG:4326');
     var proj = ol.proj.get(projection);
     if (proj !== proj4326) {
+      var properties = geometry.getProperties();
       geometry = geometry.clone();
       geometry.transform(proj, proj4326);
+      geometry.setProperties(properties);
     }
     return geometry;
   };
