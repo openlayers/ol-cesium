@@ -108,20 +108,32 @@ Cesium.VerticalOrigin.CENTER;
 Cesium.VerticalOrigin.BOTTOM;
 
 
+/**
+ * @param {number} near
+ * @param {number} nearValue
+ * @param {number} far
+ * @param {number} farValue
+ * @constructor
+ */
+Cesium.NearFarScalar = function(near, nearValue, far, farValue) {};
+
 
 /**
  * @constructor
  * @extends {Cesium.Primitive} // as it can be added to PrimitiveCollection...
+ * @param {{scene: Cesium.Scene }=} opt_options
  */
-Cesium.BillboardCollection = function() {};
+Cesium.BillboardCollection = function(opt_options) {};
 
 
 /**
  * @typedef {{
  *   image: (string|HTMLCanvasElement|HTMLImageElement|Image),
  *   color: (Cesium.Color|undefined),
+ *   heightReference: (Cesium.HeightReference|undefined),
  *   verticalOrigin: (Cesium.VerticalOrigin|undefined),
  *   horizontalOrigin: (Cesium.HorizontalOrigin|undefined),
+ *   scaleByDistance: (Cesium.NearFarScalar|undefined),
  *   position: !Cesium.Cartesian3
  * }}
  */
@@ -577,8 +589,8 @@ Cesium.Camera.prototype.pickEllipsoid = function(windowPos, opt_ellipsoid) {};
 
 /**
  * @constructor
- * @param {number} x
- * @param {number} y
+ * @param {number=} x
+ * @param {number=} y
  */
 Cesium.Cartesian2 = function(x, y) {};
 
@@ -1552,10 +1564,11 @@ Cesium.ImageryLayer.prototype.rectangle;
 
 
 /**
- * @param {string} url .
- * @return {Object} .
+ * @param {string} url
+ * @param {boolean=} opt_anonymous
+ * @return {Promise}
  */
-Cesium.ImageryLayer.prototype.loadImage = function(url) {};
+Cesium.ImageryLayer.prototype.loadImage = function(url, opt_anonymous) {};
 
 
 /**
@@ -2625,3 +2638,47 @@ Cesium.TerrainProvider = function() {};
  * @constructor
  */
 Cesium.CesiumTerrainProvider = function(opt_options) {};
+
+/**
+ * @constructor
+ */
+Cesium.Matrix2 = function() {};
+
+/**
+ * @param {!Cesium.Matrix2} matrix
+ * @param {!Cesium.Cartesian2} vector
+ * @param {!Cesium.Cartesian2} result
+ * @return !Cesium.Cartesian2
+ */
+Cesium.Matrix2.multiplyByVector = function(matrix, vector, result) {};
+
+/**
+ * @param {number} angle
+ * @return {!Cesium.Matrix2}
+ */
+Cesium.Matrix2.fromRotation = function(angle) {};
+
+
+
+/**
+ * @constructor
+ */
+Cesium.HeightReference = function() {};
+
+
+/**
+ * @type {Cesium.HeightReference}
+ */
+Cesium.HeightReference.CLAMP_TO_GROUND;
+
+
+/**
+ * @type {Cesium.HeightReference}
+ */
+Cesium.HeightReference.NONE;
+
+
+/**
+ * @type {Cesium.HeightReference}
+ */
+Cesium.HeightReference.RELATIVE_TO_GROUND;
