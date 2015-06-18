@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.6 -
+
+  * Port to Cesium 1.10
+
 ## v1.5 - 2015-05-29
 
   * Port to Cesium 1.9 and Ol 3.5.0
