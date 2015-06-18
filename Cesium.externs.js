@@ -2673,18 +2673,21 @@ Cesium.HeightReference = function() {};
 
 
 /**
- * @type {Cesium.HeightReference}
+ * @const
+ * @type {!Cesium.HeightReference}
  */
 Cesium.HeightReference.CLAMP_TO_GROUND;
 
 
 /**
- * @type {Cesium.HeightReference}
+ * @const
+ * @type {!Cesium.HeightReference}
  */
 Cesium.HeightReference.NONE;
 
 
 /**
- * @type {Cesium.HeightReference}
+ * @const
+ * @type {!Cesium.HeightReference}
  */
 Cesium.HeightReference.RELATIVE_TO_GROUND;
