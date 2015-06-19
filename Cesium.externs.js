@@ -1019,9 +1019,10 @@ Cesium.Label = function() {};
 
 /**
  * @constructor
+ * @param {{scene: Cesium.Scene }=} opt_options
  * @extends {Cesium.Primitive}
  */
-Cesium.LabelCollection = function() {};
+Cesium.LabelCollection = function(opt_options) {};
 
 /**
  * @constructor
@@ -1078,6 +1079,11 @@ Cesium.optionsLabelCollection.prototype.horizontalOrigin;
  * @type {Cesium.VerticalOrigin | undefined}
  */
 Cesium.optionsLabelCollection.prototype.verticalOrigin;
+
+/**
+ * @type {Cesium.HeightReference | undefined}
+ */
+Cesium.optionsLabelCollection.prototype.heightReference;
 
 
 /**
@@ -2667,18 +2673,21 @@ Cesium.HeightReference = function() {};
 
 
 /**
- * @type {Cesium.HeightReference}
+ * @const
+ * @type {!Cesium.HeightReference}
  */
 Cesium.HeightReference.CLAMP_TO_GROUND;
 
 
 /**
- * @type {Cesium.HeightReference}
+ * @const
+ * @type {!Cesium.HeightReference}
  */
 Cesium.HeightReference.NONE;
 
 
 /**
- * @type {Cesium.HeightReference}
+ * @const
+ * @type {!Cesium.HeightReference}
  */
 Cesium.HeightReference.RELATIVE_TO_GROUND;

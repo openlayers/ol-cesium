@@ -2,6 +2,12 @@ var iconFeature = new ol.Feature({
   geometry: new ol.geom.Point([700000, 200000, 100000]),
 });
 
+var cervinFeature = new ol.Feature({
+  geometry: new ol.geom.Point([852541, 5776649])
+});
+cervinFeature.getGeometry().set('altitudeMode', 'clampToGround');
+
+
 var iconStyle = new ol.style.Style({
   image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
     anchor: [0.5, 46],
@@ -25,6 +31,10 @@ var iconStyle = new ol.style.Style({
 });
 
 iconFeature.setStyle(iconStyle);
+
+cervinFeature.setStyle(new ol.style.Style({
+  image: iconStyle.getImage()
+}));
 
 
 var image = new ol.style.Circle({
@@ -125,7 +135,7 @@ var vectorLayer = new ol.layer.Vector({
 
 
 var vectorSource2 = new ol.source.Vector({
-  features: [iconFeature]
+  features: [iconFeature, cervinFeature]
 });
 
 var vectorLayer2 = new ol.layer.Vector({
@@ -212,8 +222,8 @@ function addOrRemoveOneVectorLayer() {
 }
 
 function addOrRemoveOneFeature() {
-  var count = vectorSource2.getFeatures().length;
-  if (count === 0) {
+  var found = vectorSource2.getFeatures().indexOf(iconFeature);
+  if (found === -1) {
     vectorSource2.addFeature(iconFeature);
   } else {
     vectorSource2.removeFeature(iconFeature);

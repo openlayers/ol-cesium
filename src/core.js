@@ -499,6 +499,7 @@ goog.require('olcs.core.OlLayerPrimitive');
   /**
    * Convert an OpenLayers geometry to 4326 projection.
    * The geometry will be cloned only when reprojection is required.
+   * The properties will be shallow copied.
    * @param {!T} geometry
    * @param {!ol.proj.ProjectionLike} projection
    * @return {!T}
@@ -510,8 +511,10 @@ goog.require('olcs.core.OlLayerPrimitive');
     var proj4326 = ol.proj.get('EPSG:4326');
     var proj = ol.proj.get(projection);
     if (proj !== proj4326) {
+      var properties = geometry.getProperties();
       geometry = geometry.clone();
       geometry.transform(proj, proj4326);
+      geometry.setProperties(properties);
     }
     return geometry;
   };
@@ -820,6 +823,7 @@ goog.require('olcs.core.OlLayerPrimitive');
    */
   olcs.core.olPointGeometryToCesium = function(geometry, projection, style,
       billboards, opt_newBillboardCallback) {
+    var altitudeMode = geometry.get('altitudeMode');
     goog.asserts.assert(geometry.getType() == 'Point');
     geometry = olGeometryCloneTo4326(geometry, projection);
 
@@ -847,10 +851,18 @@ goog.require('olcs.core.OlLayerPrimitive');
       if (goog.isDef(opacity)) {
         color = new Cesium.Color(1.0, 1.0, 1.0, opacity);
       }
+
+      var heightReference = Cesium.HeightReference.NONE;
+      if (altitudeMode === 'clampToGround') {
+        heightReference = Cesium.HeightReference.CLAMP_TO_GROUND;
+      } else if (altitudeMode === 'relativeToGround') {
+        heightReference = Cesium.HeightReference.RELATIVE_TO_GROUND;
+      }
       var bb = billboards.add({
         // always update Cesium externs before adding a property
         image: image,
         color: color,
+        heightReference: heightReference,
         verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
         position: position
       });
@@ -883,13 +895,14 @@ goog.require('olcs.core.OlLayerPrimitive');
    * @param {!ol.geom.Geometry} geometry Ol3 geometry.
    * @param {!ol.proj.ProjectionLike} projection
    * @param {!ol.style.Style} olStyle
+   * @param {!Cesium.BillboardCollection} billboards
    * @param {function(!Cesium.Billboard)=} opt_newBillboardCallback Called when
    * the new billboard is added.
-   * @return {!Cesium.Primitive} primitives
+   * @return {Cesium.Primitive} primitives
    * @api
    */
   olcs.core.olMultiGeometryToCesium = function(geometry, projection,
-      olStyle, opt_newBillboardCallback) {
+      olStyle, billboards, opt_newBillboardCallback) {
     // Do not reproject to 4326 now because it will be done later.
 
     // FIXME: would be better to combine all child geometries in one primitive
@@ -908,7 +921,6 @@ goog.require('olcs.core.OlLayerPrimitive');
         geometry = /** @type {!ol.geom.MultiPoint} */ (geometry);
         subgeos = geometry.getPoints();
         var fn = olcs.core.olPointGeometryToCesium;
-        var billboards = new Cesium.BillboardCollection();
         if (olStyle.getText()) {
           var primitives = new Cesium.PrimitiveCollection();
           goog.array.forEach(subgeos, function(geometry) {
@@ -926,7 +938,7 @@ goog.require('olcs.core.OlLayerPrimitive');
             fn(geometry, projection, olStyle, billboards,
                 opt_newBillboardCallback);
           });
-          return billboards;
+          return null;
         }
       case 'MultiLineString':
         geometry = /** @type {!ol.geom.MultiLineString} */ (geometry);
@@ -1197,8 +1209,14 @@ goog.require('olcs.core.OlLayerPrimitive');
       case 'MultiPoint':
       case 'MultiLineString':
       case 'MultiPolygon':
-        return id(olcs.core.olMultiGeometryToCesium(geom, proj, style,
-            newBillboardAddedCallback));
+        var result = olcs.core.olMultiGeometryToCesium(geom, proj, style,
+            context.billboards, newBillboardAddedCallback);
+        if (!result) {
+          // no wrapping primitive
+          return null;
+        } else {
+          return id(result);
+        }
       case 'LinearRing':
         throw new Error('LinearRing should only be part of polygon.');
       default:
@@ -1214,11 +1232,12 @@ goog.require('olcs.core.OlLayerPrimitive');
    * @param {!ol.layer.Vector} olLayer
    * @param {!ol.View} olView
    * @param {!Object.<number, !Cesium.Primitive>} featurePrimitiveMap
+   * @param {!Cesium.Scene} scene
    * @return {!olcs.core.OlLayerPrimitive}
    * @api
    */
   olcs.core.olVectorLayerToCesium = function(olLayer, olView,
-      featurePrimitiveMap) {
+      featurePrimitiveMap, scene) {
     var vectorLayer = olLayer;
     var features = vectorLayer.getSource().getFeatures();
     var proj = olView.getProjection();
@@ -1230,7 +1249,7 @@ goog.require('olcs.core.OlLayerPrimitive');
       // are defined
       throw new Error('View not ready');
     }
-    var allPrimitives = new olcs.core.OlLayerPrimitive(proj);
+    var allPrimitives = new olcs.core.OlLayerPrimitive(proj, scene);
     var context = allPrimitives.context;
     for (var i = 0; i < features.length; ++i) {
       var feature = features[i];
