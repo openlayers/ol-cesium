@@ -339,20 +339,35 @@ olcs.FeatureConverter.prototype.olPolygonGeometryToCesium =
 
 
 /**
+ * @param {ol.layer.Vector} layer
  * @param {ol.Feature} feature Ol3 feature..
  * @param {!ol.geom.Geometry} geometry
  * @return {!Cesium.HeightReference}
  * @api
  */
 olcs.FeatureConverter.prototype.getHeightReference =
-    function(feature, geometry) {
+    function(layer, feature, geometry) {
+
+  // Read from the geometry
   var altitudeMode = geometry.get('altitudeMode');
+
+  // Or from the feature
+  if (!goog.isDef(altitudeMode)) {
+    altitudeMode = feature.get('altitudeMode');
+  }
+
+  // Or from the layer
+  if (!goog.isDef(altitudeMode)) {
+    altitudeMode = layer.get('altitudeMode');
+  }
+
   var heightReference = Cesium.HeightReference.NONE;
   if (altitudeMode === 'clampToGround') {
     heightReference = Cesium.HeightReference.CLAMP_TO_GROUND;
   } else if (altitudeMode === 'relativeToGround') {
     heightReference = Cesium.HeightReference.RELATIVE_TO_GROUND;
   }
+
   return heightReference;
 };
 
@@ -401,7 +416,7 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium =
       color = new Cesium.Color(1.0, 1.0, 1.0, opacity);
     }
 
-    var heightReference = this.getHeightReference(feature, geometry);
+    var heightReference = this.getHeightReference(layer, feature, geometry);
     var bb = billboards.add({
       // always update Cesium externs before adding a property
       image: image,
@@ -530,7 +545,7 @@ olcs.FeatureConverter.prototype.olGeometry4326TextPartToCesium =
 
   options.text = text;
 
-  options.heightReference = this.getHeightReference(feature, geometry);
+  options.heightReference = this.getHeightReference(layer, feature, geometry);
 
   var offsetX = style.getOffsetX();
   var offsetY = style.getOffsetY();
