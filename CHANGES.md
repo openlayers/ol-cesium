@@ -3,6 +3,8 @@
 ## v1.6 -
 
   * Breaking changes
+    * The layer is now passed to the conversion methods of `ol.FeatureConverter`.
+    * The feature is now passed to the conversion methods of `ol.FeatureConverter`.
     * The `olcs.core.olVectorLayerToCesium()` function now takes a `scene`
       parameter. The `olcs.core.OlLayerPrimitive` constructor now takes a
       `scene` parameter.
