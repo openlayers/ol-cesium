@@ -1013,6 +1013,13 @@ Cesium.Primitive = function(opt_opts) {};
 Cesium.Primitive.prototype.olFeature;
 
 /**
+ * Custom property for storing the associated Ol3 layer.
+ * http://cesiumjs.org/Cesium/Apps/Sandcastle/index.html?src=Picking.html&label=Showcases
+ * @type {ol.layer.Layer}
+ */
+Cesium.Primitive.prototype.olLayer;
+
+/**
  * @constructor
  */
 Cesium.Label = function() {};

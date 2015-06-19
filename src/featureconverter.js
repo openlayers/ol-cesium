@@ -701,6 +701,7 @@ olcs.FeatureConverter.prototype.olFeatureToCesium =
 
   var id = function(object) {
     object.olFeature = feature;
+    object.olLayer = layer;
     return object;
   };
 

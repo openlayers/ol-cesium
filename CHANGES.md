@@ -17,6 +17,9 @@
       One way of migrating existing code is to define a global variable:
       `app.converter = new olcs.FeatureConverter({scene: scene});` and call
       the methods through it: `app.converter.olLineStringGeometryToCesium()`.
+  * The layer is now stored together with the feature in the Cesium counterpart.
+    They may be retrieved using `pickedCesiumPrimitive.olLayer` and
+    `pickedCesiumPrimitive.olFeature`.
   * Position point geometries on terrain.
     With 2D coordinates, use `pointFeature.getGeometry().set('altitudeMode', 'clampToGround')`.
     With 3D relative coordinates, use `pointFeature.getGeometry().set('altitudeMode', 'relativeToGround')`.
