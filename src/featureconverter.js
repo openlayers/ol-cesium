@@ -266,6 +266,7 @@ olcs.FeatureConverter.prototype.olLineStringGeometryToCesium =
   var outlineGeometry = new Cesium.PolylineGeometry({
     // always update Cesium externs before adding a property
     positions: positions,
+    width: this.extractLineWidthFromOlStyle(olStyle),
     vertexFormat: appearance.vertexFormat
   });
 
