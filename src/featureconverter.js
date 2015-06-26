@@ -188,6 +188,25 @@ olcs.FeatureConverter.prototype.addTextStyle =
 
 
 /**
+ * Add a billboard to a Cesium.BillboardCollection.
+ * Overriding this wrapper allows manipulating the billboard options.
+ * @param {!Cesium.BillboardCollection} billboards
+ * @param {!Cesium.optionsBillboardCollectionAdd} bbOptions
+ * @param {ol.layer.Vector} layer
+ * @param {!ol.Feature} feature Ol3 feature.
+ * @param {!ol.geom.Point} geometry
+ * @param {!ol.style.Style} style
+ * @return {!Cesium.Billboard} newly created billboard
+ * @api
+ */
+olcs.FeatureConverter.prototype.csAddBillboard =
+    function(billboards, bbOptions, layer, feature, geometry, style) {
+  var bb = billboards.add(bbOptions);
+  return bb;
+};
+
+
+/**
  * Convert an OpenLayers circle geometry to Cesium.
  * @param {ol.layer.Vector} layer
  * @param {!ol.Feature} feature Ol3 feature..
@@ -418,7 +437,8 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium =
     }
 
     var heightReference = this.getHeightReference(layer, feature, geometry);
-    var bb = billboards.add({
+
+    var bbOptions = /** @type {Cesium.optionsBillboardCollectionAdd} */ ({
       // always update Cesium externs before adding a property
       image: image,
       color: color,
@@ -426,6 +446,8 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium =
       verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
       position: position
     });
+    var bb = this.csAddBillboard(billboards, bbOptions, layer, feature,
+        geometry, style);
     if (opt_newBillboardCallback) {
       opt_newBillboardCallback(bb);
     }

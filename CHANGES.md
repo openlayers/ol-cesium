@@ -17,6 +17,9 @@
       One way of migrating existing code is to define a global variable:
       `app.converter = new olcs.FeatureConverter({scene: scene});` and call
       the methods through it: `app.converter.olLineStringGeometryToCesium()`.
+  * Compiled code may override the new `olcs.FeatureConverter.csAddBillboard`
+    method in order to manipulate the option before the Cesium billboard is
+    actually created.
   * The layer is now stored together with the feature in the Cesium counterpart.
     They may be retrieved using `pickedCesiumPrimitive.olLayer` and
     `pickedCesiumPrimitive.olFeature`.
