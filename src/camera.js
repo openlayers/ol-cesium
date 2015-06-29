@@ -46,16 +46,16 @@ olcs.Camera = function(scene, map) {
   this.viewListenKey_ = null;
 
   /**
-   * @type {?ol.TransformFunction}
+   * @type {!ol.TransformFunction}
    * @private
    */
-  this.toLonLat_ = null;
+  this.toLonLat_ = olcs.Camera.identityProjection;
 
   /**
-   * @type {?ol.TransformFunction}
+   * @type {!ol.TransformFunction}
    * @private
    */
-  this.fromLonLat_ = null;
+  this.fromLonLat_ = olcs.Camera.identityProjection;
 
   /**
    * 0 -- topdown, PI/2 -- the horizon
@@ -91,6 +91,23 @@ olcs.Camera = function(scene, map) {
 
 
 /**
+ * @param {Array.<number>} input Input coordinate array.
+ * @param {Array.<number>=} opt_output Output array of coordinate values.
+ * @param {number=} opt_dimension Dimension.
+ * @return {Array.<number>} Input coordinate array (same array as input).
+ */
+olcs.Camera.identityProjection = function(input, opt_output, opt_dimension) {
+  var dim = opt_dimension || input.length;
+  if (opt_output) {
+    for (var i = 0; i < dim; ++i) {
+      opt_output[i] = input[i];
+    }
+  }
+  return input;
+};
+
+
+/**
  * @param {?ol.View} view New view to use.
  * @private
  */
@@ -102,15 +119,19 @@ olcs.Camera.prototype.setView_ = function(view) {
 
   this.view_ = view;
   if (!goog.isNull(view)) {
-    this.toLonLat_ = ol.proj.getTransform(view.getProjection(), 'EPSG:4326');
-    this.fromLonLat_ = ol.proj.getTransform('EPSG:4326', view.getProjection());
+    var toLonLat = ol.proj.getTransform(view.getProjection(), 'EPSG:4326');
+    var fromLonLat = ol.proj.getTransform('EPSG:4326', view.getProjection());
+    goog.asserts.assert(toLonLat && fromLonLat);
+
+    this.toLonLat_ = toLonLat;
+    this.fromLonLat_ = fromLonLat;
 
     this.viewListenKey_ = view.on('propertychange',
                                   this.handleViewEvent_, this);
     this.readFromView();
   } else {
-    this.toLonLat_ = null;
-    this.fromLonLat_ = null;
+    this.toLonLat_ = olcs.Camera.identityProjection;
+    this.fromLonLat_ = olcs.Camera.identityProjection;
   }
 };
 

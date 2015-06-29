@@ -133,6 +133,7 @@ Cesium.BillboardCollection = function(opt_options) {};
  *   heightReference: (Cesium.HeightReference|undefined),
  *   verticalOrigin: (Cesium.VerticalOrigin|undefined),
  *   horizontalOrigin: (Cesium.HorizontalOrigin|undefined),
+ *   pixelOffsetScaleByDistance : (Cesium.NearFarScalar|undefined),
  *   scaleByDistance: (Cesium.NearFarScalar|undefined),
  *   position: !Cesium.Cartesian3
  * }}
@@ -1011,6 +1012,13 @@ Cesium.Primitive = function(opt_opts) {};
  * @type {ol.Feature}
  */
 Cesium.Primitive.prototype.olFeature;
+
+/**
+ * Custom property for storing the associated Ol3 layer.
+ * http://cesiumjs.org/Cesium/Apps/Sandcastle/index.html?src=Picking.html&label=Showcases
+ * @type {ol.layer.Layer}
+ */
+Cesium.Primitive.prototype.olLayer;
 
 /**
  * @constructor
