@@ -504,7 +504,7 @@ Cesium.CameraEventAggregator.prototype.destroy = function() {};
 
 
 /**
- * @type{!Cesium.RemovedAPI}
+ * @type {!Cesium.RemovedAPI}
  */
 Cesium.Camera.prototype.setPositionCartographic;
 
@@ -1002,7 +1002,7 @@ Cesium.optionsPrimitive;
 
 /**
  * @constructor
- * @param {Cesium.optionsPrimitive=} opt_opts 
+ * @param {Cesium.optionsPrimitive=} opt_opts
  */
 Cesium.Primitive = function(opt_opts) {};
 
@@ -1190,13 +1190,13 @@ Cesium.optionsGeometryInstance = function() {};
  */
 Cesium.optionsGeometryInstance.prototype.geometry;
 
- 
+
 /**
  * @constructor
  * @struct {Cesium.GeometryInstanceAttribute}
  */
 Cesium.GeometryInstanceAttribute;
- 
+
 /**
  * @type {Cesium.GeometryInstanceAttribute| undefined}
  */
@@ -1328,7 +1328,7 @@ Cesium.optionsPolygonGeometry;
 /**
  * @constructor
  * @param {Object=} object
- * @extends{Cesium.Geometry}
+ * @extends {Cesium.Geometry}
  */
 Cesium.PolygonGeometry = function(object) {};
 
@@ -1348,7 +1348,7 @@ Cesium.optionsPolylineGeometry;
 /**
  * @constructor
  * @param {Object=} object
- * @extends{Cesium.Geometry}
+ * @extends {Cesium.Geometry}
  */
 Cesium.PolygonOutlineGeometry = function(object) {};
 
@@ -1365,7 +1365,7 @@ Cesium.optionsPolylineGeometry;
 /**
  * @constructor
  * @param {Object=} object
- * @extends{Cesium.Geometry}
+ * @extends {Cesium.Geometry}
  */
 Cesium.PolylineGeometry = function(object) {};
 
@@ -1409,7 +1409,7 @@ Cesium.Transforms.eastNorthUpToFixedFrame = function(origin, opt_ellipsoid, opt_
 
 /**
  * @constructor
- * @extends{Cesium.Primitive}
+ * @extends {Cesium.Primitive}
  */
 Cesium.PrimitiveCollection = function() {};
 
@@ -1985,7 +1985,7 @@ Cesium.Matrix3 = function() {};
 /**
  * @param {Cesium.Quaternion} quaternion
  * @param {Cesium.Matrix3=} opt_result
- * @return !Cesium.Matrix3
+ * @return {!Cesium.Matrix3}
  */
 Cesium.Matrix3.fromQuaternion = function(quaternion, opt_result) {};
 
@@ -2342,7 +2342,6 @@ Cesium.SceneMode.SCENE2D;
 Cesium.SceneMode.SCENE3D;
 
 
-
 /**
  * @constructor
  */
@@ -2683,7 +2682,7 @@ Cesium.Matrix2 = function() {};
  * @param {!Cesium.Matrix2} matrix
  * @param {!Cesium.Cartesian2} vector
  * @param {!Cesium.Cartesian2} result
- * @return !Cesium.Cartesian2
+ * @return {!Cesium.Cartesian2}
  */
 Cesium.Matrix2.multiplyByVector = function(matrix, vector, result) {};
 
