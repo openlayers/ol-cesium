@@ -18,7 +18,7 @@ Contributor License Agreement](https://raw.github.com/openlayers/cla/master/ccla
 making your contribution as an individual, you can submit a digital [Individual
 Contributor License Agreement](https://docs.google.com/spreadsheet/viewform?formkey=dGNNVUJEMXF2dERTU0FXM3JjNVBQblE6MQ).
 
-i## Setting up development environment
+## Setting up development environment
 
 You will obviously start by
 [forking](https://github.com/openlayers/ol3-cesium/fork) the ol3-cesium repository.
