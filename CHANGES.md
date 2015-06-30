@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.6 -
+## v1.6 - 2015-06-30
 
   * Breaking changes
     * The layer is now passed to the conversion methods of `ol.FeatureConverter`.
