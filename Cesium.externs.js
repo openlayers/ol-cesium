@@ -2292,6 +2292,27 @@ Cesium.Scene.prototype.skyAtmosphere;
 Cesium.Scene.prototype.maximumAliasedLineWidth;
 
 /**
+ * @typedef {{
+ *  primitive: Cesium.Primitive
+ * }}
+ */
+Cesium.DrillObject;
+
+
+/**
+ * @type {Cesium.Primitive}
+ */
+Cesium.DrillObject.prototype.primitive;
+
+
+/**
+ * @param {!Cesium.Cartesian2} windowPosition
+ * @return {Array.<Cesium.DrillObject>}
+ */
+Cesium.Scene.prototype.drillPick = function(windowPosition) {};
+
+
+/**
  * @constructor
  */
 Cesium.SceneMode = function() {};
