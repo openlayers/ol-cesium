@@ -1,6 +1,5 @@
 goog.provide('olcs.AbstractSynchronizer');
 
-goog.require('goog.events');
 goog.require('ol.layer.Group');
 goog.require('ol.layer.Layer');
 

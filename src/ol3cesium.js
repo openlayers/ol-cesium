@@ -2,8 +2,6 @@ goog.provide('olcs.OLCesium');
 
 goog.require('goog.async.AnimationDelay');
 goog.require('goog.dom');
-goog.require('goog.events');
-
 goog.require('olcs.Camera');
 goog.require('olcs.RasterSynchronizer');
 goog.require('olcs.VectorSynchronizer');
