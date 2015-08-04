@@ -360,6 +360,7 @@ olcs.Camera.prototype.updateCamera_ = function() {
 
 /**
  * Calculates the values of the properties from the current ol.View state.
+ * @api
  */
 olcs.Camera.prototype.readFromView = function() {
   if (goog.isNull(this.view_) || goog.isNull(this.toLonLat_)) {
