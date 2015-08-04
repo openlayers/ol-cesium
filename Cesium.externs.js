@@ -1497,6 +1497,13 @@ Cesium.TilingScheme.prototype.rectangle;
 
 
 /**
+ * @param {number} level
+ * @return {number}
+ */
+Cesium.TilingScheme.prototype.getNumberOfYTilesAtLevel = function(level) {};
+
+
+/**
  * @constructor
  * @extends {Cesium.TilingScheme}
  */

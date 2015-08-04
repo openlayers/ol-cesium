@@ -2,7 +2,7 @@ goog.provide('olcs.core.OLImageryProvider');
 
 goog.require('goog.events');
 goog.require('ol.proj');
-goog.require('ol.tilegrid.XYZ');
+goog.require('ol.tilegrid');
 
 
 
@@ -207,12 +207,14 @@ goog.exportProperty(olcs.core.OLImageryProvider.prototype, 'getTileCredits',
 olcs.core.OLImageryProvider.prototype.requestImage = function(x, y, level) {
   var tileUrlFunction = this.source_.getTileUrlFunction();
   if (!goog.isNull(tileUrlFunction) && !goog.isNull(this.projection_)) {
-    // perform mapping of Cesium tile coordinates to ol3 tile coordinates
-    var z_ = (this.tilingScheme_ instanceof Cesium.GeographicTilingScheme) ?
-             (level + 1) : level;
-    var y_ = (this.source_.getTileGrid() instanceof ol.tilegrid.XYZ) ?
-             y : (y - (1 << level));
-    y_ = -y_ - 1; // opposite indexing
+
+    // Perform mapping of Cesium tile coordinates to ol3 tile coordinates:
+    // 1) Cesium zoom level 0 is OpenLayers zoom level 1 for EPSG:4326
+    var z_ = this.tilingScheme_ instanceof Cesium.GeographicTilingScheme ?
+        level + 1 : level;
+    // 2) OpenLayers tile coordinates increase from bottom to top
+    var y_ = -y - 1;
+
     var url = tileUrlFunction([z_, x, y_], 1, this.projection_);
     return goog.isDef(url) ?
            Cesium.ImageryProvider.loadImage(this, url) : this.emptyCanvas_;
