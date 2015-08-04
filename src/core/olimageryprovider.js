@@ -123,6 +123,10 @@ Object.defineProperties(olcs.core.OLImageryProvider.prototype, {
 
   hasAlphaChannel: {
     get: function() {return true;}
+  },
+
+  pickFeatures: {
+    get: function() {return undefined;}
   }
 });
 
