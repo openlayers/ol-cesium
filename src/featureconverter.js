@@ -2,14 +2,11 @@ goog.provide('olcs.FeatureConverter');
 
 goog.require('goog.array');
 goog.require('goog.asserts');
-goog.require('goog.async.AnimationDelay');
 goog.require('ol.extent');
 goog.require('ol.geom.SimpleGeometry');
-goog.require('ol.layer.Tile');
 goog.require('ol.layer.Vector');
 goog.require('ol.proj');
 goog.require('ol.source.TileImage');
-goog.require('ol.source.WMTS');
 goog.require('ol.style.Style');
 goog.require('olcs.core.OlLayerPrimitive');
 
