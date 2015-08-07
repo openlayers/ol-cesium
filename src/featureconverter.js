@@ -431,6 +431,11 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium =
   geometry = olcs.core.olGeometryCloneTo4326(geometry, projection);
 
   var imageStyle = style.getImage();
+  if (imageStyle instanceof ol.style.Icon) {
+    // make sure the image is scheduled for load
+    imageStyle.load();
+  }
+
   var image = imageStyle.getImage(1); // get normal density
   var isImageLoaded = function(image) {
     return image.src != '' &&
