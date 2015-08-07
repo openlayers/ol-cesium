@@ -211,7 +211,7 @@ olcs.FeatureConverter.prototype.addTextStyle =
  * @param {!Cesium.optionsBillboardCollectionAdd} bbOptions
  * @param {ol.layer.Vector} layer
  * @param {!ol.Feature} feature Ol3 feature.
- * @param {!ol.geom.Point} geometry
+ * @param {!ol.geom.Geometry} geometry
  * @param {!ol.style.Style} style
  * @return {!Cesium.Billboard} newly created billboard
  * @api
