@@ -122,10 +122,11 @@ olcs.core.rotateAroundAxis = function(camera, angle, axis, transform,
  * @param {!Cesium.Scene} scene
  * @param {number} heading
  * @param {!Cesium.Cartesian3} bottomCenter
+ * @param {olcsx.core.RotateAroundAxisOption=} opt_options
  * @api
  */
 olcs.core.setHeadingUsingBottomCenter = function(scene, heading,
-    bottomCenter) {
+    bottomCenter, opt_options) {
   var camera = scene.camera;
   // Compute the camera position to zenith quaternion
   var angleToZenith = olcs.core.computeAngleToZenith(scene, bottomCenter);
@@ -143,7 +144,7 @@ olcs.core.setHeadingUsingBottomCenter = function(scene, heading,
   // Actually rotate around the zenith normal
   var transform = Cesium.Matrix4.fromTranslation(zenith);
   var rotateAroundAxis = olcs.core.rotateAroundAxis;
-  rotateAroundAxis(camera, heading, zenith, transform);
+  rotateAroundAxis(camera, heading, zenith, transform, opt_options);
 };
 
 
