@@ -57,6 +57,12 @@ Cesium.Billboard = function() {};
 /**
  * @type {!Cesium.Cartesian3}
  */
+Cesium.Billboard.prototype.eyeOffset;
+
+
+/**
+ * @type {!Cesium.Cartesian3}
+ */
 Cesium.Billboard.prototype.position;
 
 
