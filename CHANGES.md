@@ -7,6 +7,9 @@
     overriden. As usual, subclassing requires that the subclass and the
     library code be compiled together by Closure. This change notably allows
     application code to handle projections not supported by Cesium.
+  * Allow application developers to easily compile plugin code together with
+    the library by putting their files in the src/plugins directory. See
+    src/plugins/README.md for details and instructions.
 
 ## v1.7 - 2015-08-07
 
