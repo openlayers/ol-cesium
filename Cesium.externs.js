@@ -1542,7 +1542,7 @@ Cesium.GeographicTilingSchemeOptions.prototype.ellipsoid;
 
 
 /**
- * @type Cesium.Rectangle{}
+ * @type {Cesium.Rectangle}
  */
 Cesium.GeographicTilingSchemeOptions.prototype.rectangle;
 
@@ -2775,3 +2775,63 @@ Cesium.HeightReference.NONE;
  * @type {!Cesium.HeightReference}
  */
 Cesium.HeightReference.RELATIVE_TO_GROUND;
+
+
+
+/**
+ * @param {!Cesium.WebMapTileServiceImageryProviderOptions} options
+ * @extends {Cesium.ImageryProvider}
+ * @constructor
+ */
+Cesium.WebMapTileServiceImageryProvider = function(options) {};
+
+
+
+/**
+ * @typedef {{
+ *   url: string,
+ *   layer: string,
+ *   format: string,
+ *   style: string,
+ *   tileMatrixSetID: string,
+ *   tilingScheme: (Cesium.TilingScheme|undefined),
+ *   maximumLevel: (number|undefined)
+ * }}
+ */
+Cesium.WebMapTileServiceImageryProviderOptions;
+
+
+/**
+ * @type {number}
+ */
+Cesium.WebMapTileServiceImageryProviderOptions.prototype.maximumLevel;
+
+
+/**
+ * @type {Cesium.TilingScheme}
+ */
+Cesium.WebMapTileServiceImageryProviderOptions.prototype.tilingScheme;
+
+
+/**
+ * @type {string}
+ */
+Cesium.WebMapTileServiceImageryProviderOptions.prototype.tileMatrixSetID;
+
+
+/**
+ * @type {string}
+ */
+Cesium.WebMapTileServiceImageryProviderOptions.prototype.format;
+
+
+/**
+ * @type {string}
+ */
+Cesium.WebMapTileServiceImageryProviderOptions.prototype.layer;
+
+
+/**
+ * @type {string}
+ */
+Cesium.WebMapTileServiceImageryProviderOptions.prototype.url;
