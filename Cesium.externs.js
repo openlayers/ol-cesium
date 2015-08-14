@@ -1506,14 +1506,57 @@ Cesium.TilingScheme.prototype.rectangle;
  * @param {number} level
  * @return {number}
  */
+Cesium.TilingScheme.prototype.getNumberOfXTilesAtLevel = function(level) {};
+
+
+/**
+ * @param {number} level
+ * @return {number}
+ */
 Cesium.TilingScheme.prototype.getNumberOfYTilesAtLevel = function(level) {};
 
 
 /**
  * @constructor
+ * @param {Cesium.GeographicTilingSchemeOptions=} opt_options
  * @extends {Cesium.TilingScheme}
  */
-Cesium.GeographicTilingScheme = function() {};
+Cesium.GeographicTilingScheme = function(opt_options) {};
+
+
+/**
+ * @typedef {{
+ *   ellipsoid: (Cesium.Ellipsoid|undefined),
+ *   rectangle: (Cesium.Rectangle|undefined),
+ *   numberOfLevelZeroTilesX: (number|undefined),
+ *   numberOfLevelZeroTilesY: (number|undefined)
+ * }}
+ */
+Cesium.GeographicTilingSchemeOptions;
+
+
+/**
+ * @type {Cesium.Ellipsoid}
+ */
+Cesium.GeographicTilingSchemeOptions.prototype.ellipsoid;
+
+
+/**
+ * @type Cesium.Rectangle{}
+ */
+Cesium.GeographicTilingSchemeOptions.prototype.rectangle;
+
+
+/**
+ * @type {number}
+ */
+Cesium.GeographicTilingSchemeOptions.prototype.numberOfLevelZeroTilesX;
+
+
+/**
+ * @type {number}
+ */
+Cesium.GeographicTilingSchemeOptions.prototype.numberOfLevelZeroTilesY;
 
 
 /**
