@@ -1506,14 +1506,57 @@ Cesium.TilingScheme.prototype.rectangle;
  * @param {number} level
  * @return {number}
  */
+Cesium.TilingScheme.prototype.getNumberOfXTilesAtLevel = function(level) {};
+
+
+/**
+ * @param {number} level
+ * @return {number}
+ */
 Cesium.TilingScheme.prototype.getNumberOfYTilesAtLevel = function(level) {};
 
 
 /**
  * @constructor
+ * @param {Cesium.GeographicTilingSchemeOptions=} opt_options
  * @extends {Cesium.TilingScheme}
  */
-Cesium.GeographicTilingScheme = function() {};
+Cesium.GeographicTilingScheme = function(opt_options) {};
+
+
+/**
+ * @typedef {{
+ *   ellipsoid: (Cesium.Ellipsoid|undefined),
+ *   rectangle: (Cesium.Rectangle|undefined),
+ *   numberOfLevelZeroTilesX: (number|undefined),
+ *   numberOfLevelZeroTilesY: (number|undefined)
+ * }}
+ */
+Cesium.GeographicTilingSchemeOptions;
+
+
+/**
+ * @type {Cesium.Ellipsoid}
+ */
+Cesium.GeographicTilingSchemeOptions.prototype.ellipsoid;
+
+
+/**
+ * @type {Cesium.Rectangle}
+ */
+Cesium.GeographicTilingSchemeOptions.prototype.rectangle;
+
+
+/**
+ * @type {number}
+ */
+Cesium.GeographicTilingSchemeOptions.prototype.numberOfLevelZeroTilesX;
+
+
+/**
+ * @type {number}
+ */
+Cesium.GeographicTilingSchemeOptions.prototype.numberOfLevelZeroTilesY;
 
 
 /**
@@ -2732,3 +2775,63 @@ Cesium.HeightReference.NONE;
  * @type {!Cesium.HeightReference}
  */
 Cesium.HeightReference.RELATIVE_TO_GROUND;
+
+
+
+/**
+ * @param {!Cesium.WebMapTileServiceImageryProviderOptions} options
+ * @extends {Cesium.ImageryProvider}
+ * @constructor
+ */
+Cesium.WebMapTileServiceImageryProvider = function(options) {};
+
+
+
+/**
+ * @typedef {{
+ *   url: string,
+ *   layer: string,
+ *   format: string,
+ *   style: string,
+ *   tileMatrixSetID: string,
+ *   tilingScheme: (Cesium.TilingScheme|undefined),
+ *   maximumLevel: (number|undefined)
+ * }}
+ */
+Cesium.WebMapTileServiceImageryProviderOptions;
+
+
+/**
+ * @type {number}
+ */
+Cesium.WebMapTileServiceImageryProviderOptions.prototype.maximumLevel;
+
+
+/**
+ * @type {Cesium.TilingScheme}
+ */
+Cesium.WebMapTileServiceImageryProviderOptions.prototype.tilingScheme;
+
+
+/**
+ * @type {string}
+ */
+Cesium.WebMapTileServiceImageryProviderOptions.prototype.tileMatrixSetID;
+
+
+/**
+ * @type {string}
+ */
+Cesium.WebMapTileServiceImageryProviderOptions.prototype.format;
+
+
+/**
+ * @type {string}
+ */
+Cesium.WebMapTileServiceImageryProviderOptions.prototype.layer;
+
+
+/**
+ * @type {string}
+ */
+Cesium.WebMapTileServiceImageryProviderOptions.prototype.url;
