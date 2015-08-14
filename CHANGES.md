@@ -10,6 +10,7 @@
   * Allow application developers to easily compile plugin code together with
     the library by putting their files in the src/plugins directory. See
     src/plugins/README.md for details and instructions.
+  * Allow lazy loading of the Cesium script (experimental feature).
 
 ## v1.7 - 2015-08-07
 

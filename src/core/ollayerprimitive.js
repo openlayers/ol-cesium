@@ -10,7 +10,15 @@ goog.provide('olcs.core.OlLayerPrimitive');
  * @extends {Cesium.PrimitiveCollection}
  */
 olcs.core.OlLayerPrimitive = function(layerProjection, scene) {
-  goog.base(this);
+  if (!olcs.core.OlLayerPrimitive.initialized_) {
+    olcs.core.OlLayerPrimitive.initialized_ = true;
+    goog.inherits(olcs.core.OlLayerPrimitive, Cesium.PrimitiveCollection);
+  }
+
+  // Directly call the super constructor instead of using
+  // goog.base to avoid a check for goog.inherits() by the compiler.
+  // This matches the code produced by the compiler.
+  Cesium.PrimitiveCollection.call(this);
 
   var billboards = new Cesium.BillboardCollection({scene: scene});
   var primitives = new Cesium.PrimitiveCollection();
@@ -27,4 +35,3 @@ olcs.core.OlLayerPrimitive = function(layerProjection, scene) {
 
   this.add(billboards);
 };
-goog.inherits(olcs.core.OlLayerPrimitive, Cesium.PrimitiveCollection);

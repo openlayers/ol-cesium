@@ -97,6 +97,7 @@ cleanall: clean
 	for f in dist/examples/*.html; do $(SEDI) 'sY/@loaderY../ol3cesium.jsY' $$f; done
 	for f in dist/examples/*.html; do $(SEDI) 'sY../ol3/build/ol.jsY../ol3/ol-debug.jsY' $$f; done
 	for f in dist/examples/*.html; do $(SEDI) 'sY../cesium/Build/Y../Y' $$f; done
+	for f in dist/examples/*.js; do $(SEDI) 'sY../cesium/Build/Y../Y' $$f; done
 	touch $@
 
 .build/python-venv:
