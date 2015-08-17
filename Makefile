@@ -130,4 +130,8 @@ ol3/build/olX:
 
 # Only generated when cesium/Build/Cesium/Cesium.js does not exist
 cesium/Build/Cesium/Cesium.js:
+ifndef NO_CESIUM
 	(cd cesium && ./Tools/apache-ant-1.8.2/bin/ant minify)
+else
+	mkdir -p cesium/Build/Cesium/
+endif
