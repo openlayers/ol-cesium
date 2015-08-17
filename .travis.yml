@@ -1,0 +1,18 @@
+language: python
+sudo: false
+cache:
+  directories:
+    - node_modules
+
+git:
+  submodules: false
+
+before_install:
+  - git submodule update --init ol3
+  - pip install -r ol3/requirements.txt
+  - npm install -g npm && npm install
+
+script:
+  - NO_CESIUM=1 make dist
+  - NO_CESIUM=1 make check
+  - NO_CESIUM=1 make dist-examples
