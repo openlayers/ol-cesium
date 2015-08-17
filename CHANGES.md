@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.8 -
+
+* Changes
+  * `olcs.RasterSynchronizer.prototype.convertLayerToCesiumImagery` may be
+    overriden. As usual, subclassing requires that the subclass and the
+    library code be compiled together by Closure. This change notably allows
+    application code to handle projections not supported by Cesium.
+
 ## v1.7 - 2015-08-07
 
   * Port to Cesium 1.12 and Ol 3.8.1
