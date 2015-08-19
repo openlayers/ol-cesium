@@ -8,7 +8,7 @@ goog.require('ol.layer.Vector');
 goog.require('ol.proj');
 goog.require('ol.source.TileImage');
 goog.require('ol.style.Style');
-goog.require('olcs.core.OlLayerPrimitive');
+goog.require('olcs.core.VectorLayerCounterpart');
 
 
 
@@ -829,7 +829,7 @@ olcs.FeatureConverter.prototype.olFeatureToCesium =
  * @param {!ol.layer.Vector} olLayer
  * @param {!ol.View} olView
  * @param {!Object.<number, !Cesium.Primitive>} featurePrimitiveMap
- * @return {!olcs.core.OlLayerPrimitive}
+ * @return {!olcs.core.VectorLayerCounterpart}
  * @api
  */
 olcs.FeatureConverter.prototype.olVectorLayerToCesium =
@@ -844,8 +844,8 @@ olcs.FeatureConverter.prototype.olVectorLayerToCesium =
     // are defined
     throw new Error('View not ready');
   }
-  var allPrimitives = new olcs.core.OlLayerPrimitive(proj, this.scene);
-  var context = allPrimitives.context;
+  var counterpart = new olcs.core.VectorLayerCounterpart(proj, this.scene);
+  var context = counterpart.context;
   for (var i = 0; i < features.length; ++i) {
     var feature = features[i];
     if (!goog.isDefAndNotNull(feature)) {
@@ -861,10 +861,10 @@ olcs.FeatureConverter.prototype.olVectorLayerToCesium =
     var primitives = this.olFeatureToCesium(olLayer, feature, style, context);
     if (!primitives) continue;
     featurePrimitiveMap[goog.getUid(feature)] = primitives;
-    allPrimitives.add(primitives);
+    counterpart.getRootPrimitive().add(primitives);
   }
 
-  return allPrimitives;
+  return counterpart;
 };
 
 

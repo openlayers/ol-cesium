@@ -1,4 +1,4 @@
-goog.provide('olcs.core.OlLayerPrimitive');
+goog.provide('olcs.core.VectorLayerCounterpart');
 
 
 
@@ -7,14 +7,12 @@ goog.provide('olcs.core.OlLayerPrimitive');
  * @constructor
  * @param {!(ol.proj.Projection|string)} layerProjection
  * @param {!Cesium.Scene} scene
- * @extends {Cesium.PrimitiveCollection}
  */
-olcs.core.OlLayerPrimitive = function(layerProjection, scene) {
-  goog.base(this);
-
+olcs.core.VectorLayerCounterpart = function(layerProjection, scene) {
   var billboards = new Cesium.BillboardCollection({scene: scene});
   var primitives = new Cesium.PrimitiveCollection();
 
+  this.rootCollection_ = new Cesium.PrimitiveCollection();
   /**
    * @type {!olcsx.core.OlFeatureToCesiumContext}
    */
@@ -25,6 +23,14 @@ olcs.core.OlLayerPrimitive = function(layerProjection, scene) {
     primitives: primitives
   };
 
-  this.add(billboards);
+  this.rootCollection_.add(billboards);
+  this.rootCollection_.add(primitives);
 };
-goog.inherits(olcs.core.OlLayerPrimitive, Cesium.PrimitiveCollection);
+
+
+/**
+ * @return {!Cesium.Primitive}
+ */
+olcs.core.VectorLayerCounterpart.prototype.getRootPrimitive = function() {
+  return this.rootCollection_;
+};

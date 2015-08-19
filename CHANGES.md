@@ -2,6 +2,11 @@
 
 ## v1.8 -
 
+* Breaking changes
+  * Rename `olcs.core.OlLayerPrimitive` to `olcs.core.VectorLayerCounterpart`
+    and stop inheriting from `Cesium.PrimitiveCollection`. The underlying
+    primitive collection may be retrieved with the `getRootPrimitive()` method.
+
 * Changes
   * `olcs.RasterSynchronizer.prototype.convertLayerToCesiumImagery` may be
     overriden. As usual, subclassing requires that the subclass and the
@@ -10,6 +15,7 @@
   * Allow application developers to easily compile plugin code together with
     the library by putting their files in the src/plugins directory. See
     src/plugins/README.md for details and instructions.
+  * Allow lazy loading of the Cesium script (experimental feature).
 
 ## v1.7 - 2015-08-07
 
