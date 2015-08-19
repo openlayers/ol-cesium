@@ -2,6 +2,11 @@
 
 ## v1.8 -
 
+* Breaking changes
+  * Rename `olcs.core.OlLayerPrimitive` to `olcs.core.VectorLayerCounterpart`
+    and stop inheriting from `Cesium.PrimitiveCollection`. The underlying
+    primitive collection may be retrieved with the `getRootPrimitive()` method.
+
 * Changes
   * `olcs.RasterSynchronizer.prototype.convertLayerToCesiumImagery` may be
     overriden. As usual, subclassing requires that the subclass and the
