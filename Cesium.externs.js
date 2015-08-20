@@ -577,14 +577,39 @@ Cesium.Camera.prototype.lookUp = function(amount) {};
 Cesium.Camera.prototype.lookDown = function(amount) {};
 
 /**
- * @param {number} amount .
+ * @param {!Cesium.Cartesian3} direction
+ * @param {number} amount
+ */
+Cesium.Camera.prototype.move = function(direction, amount) {};
+
+/**
+ * @param {number} amount
+ */
+Cesium.Camera.prototype.moveDown = function(amount) {};
+
+/**
+ * @param {number} amount
+ */
+Cesium.Camera.prototype.moveBackward = function(amount) {};
+
+/**
+ * @param {number} amount
  */
 Cesium.Camera.prototype.moveForward = function(amount) {};
 
 /**
- * @param {number} amount .
+ * @param {number} amount
  */
-Cesium.Camera.prototype.moveBackward = function(amount) {};
+Cesium.Camera.prototype.moveLeft = function(amount) {};
+/**
+ * @param {number} amount
+ */
+Cesium.Camera.prototype.moveRight = function(amount) {};
+
+/**
+ * @param {number} amount
+ */
+Cesium.Camera.prototype.moveUp = function(amount) {};
 
 /**
  * @param {!Cesium.Cartesian2} windowPos .
