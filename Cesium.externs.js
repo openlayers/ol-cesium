@@ -2394,6 +2394,14 @@ Cesium.Scene.prototype.drillPick = function(windowPosition) {};
 
 
 /**
+ * @param {Cesium.Cartesian2} windowPosition
+ * @param {Cesium.Cartesian3=} opt_result
+ * @return {Cesium.Cartesian3}
+ */
+Cesium.Scene.prototype.pickPosition = function(windowPosition, opt_result) {};
+
+
+/**
  * @constructor
  */
 Cesium.SceneMode = function() {};
@@ -2421,6 +2429,22 @@ Cesium.SceneMode.SCENE2D;
  * @type {Cesium.SceneMode}
  */
 Cesium.SceneMode.SCENE3D;
+
+
+
+/**
+ * @constructor
+ */
+Cesium.SceneTransforms = function() {};
+
+
+/**
+ * @param {Cesium.Scene} scene
+ * @param {Cesium.Cartesian3} position
+ * @param {Cesium.Cartesian2=} opt_result
+ * @return {Cesium.Cartesian2}
+ */
+Cesium.SceneTransforms.wgs84ToWindowCoordinates = function(scene, position, opt_result) {};
 
 
 /**
