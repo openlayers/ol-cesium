@@ -8,6 +8,8 @@
     primitive collection may be retrieved with the `getRootPrimitive()` method.
 
 * Changes
+  * The `build/generate-info.js` tool now follows symlinks to properly
+    generate exports.
   * `olcs.RasterSynchronizer.prototype.convertLayerToCesiumImagery` may be
     overriden. As usual, subclassing requires that the subclass and the
     library code be compiled together by Closure. This change notably allows
