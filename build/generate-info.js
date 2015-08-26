@@ -43,7 +43,7 @@ function getNewer(date, callback) {
   var paths = [];
   var newer = false;
 
-  var walker = walk(sourceDir);
+  var walker = walk(sourceDir, {followLinks: true});
   walker.on('file', function(root, stats, next) {
     var sourcePath = path.join(root, stats.name);
     if (/\.js$/.test(sourcePath)) {
