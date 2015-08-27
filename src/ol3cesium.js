@@ -141,12 +141,19 @@ olcs.OLCesium = function(options) {
   this.camera_.readFromView();
 
   this.cesiumRenderingDelay_ = new goog.async.AnimationDelay(function(time) {
-    this.scene_.initializeFrame();
-    this.handleResize_();
-    this.scene_.render();
-    this.enabled_ && this.camera_.checkCameraChange();
+    if (!this.blockCesiumRendering_) {
+      this.scene_.initializeFrame();
+      this.handleResize_();
+      this.scene_.render();
+      this.enabled_ && this.camera_.checkCameraChange();
+    }
     this.cesiumRenderingDelay_.start();
   }, undefined, this);
+
+  /**
+   * @private
+   */
+  this.blockCesiumRendering_ = false;
 };
 
 
@@ -278,4 +285,14 @@ olcs.OLCesium.prototype.warmUp = function(height, timeout) {
   setTimeout(
       function() { !that.enabled_ && that.cesiumRenderingDelay_.stop(); },
       timeout);
+};
+
+
+/**
+ * Block Cesium rendering to save resources.
+ * @param {boolean} block True to block.
+ * @api
+*/
+olcs.OLCesium.prototype.setBlockCesiumRendering = function(block) {
+  this.blockCesiumRendering_ = block;
 };
