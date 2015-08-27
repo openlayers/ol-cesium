@@ -255,10 +255,10 @@ olcs.OLCesium.prototype.setEnabled = function(enable) {
 
 
 /**
-* Preload Cesium so that it is ready when transitioning from 2D to 3D.
-* @param {number} height Target height of the camera
-* @param {number} timeout Milliseconds after which the warming will stop
-* @api
+ * Preload Cesium so that it is ready when transitioning from 2D to 3D.
+ * @param {number} height Target height of the camera
+ * @param {number} timeout Milliseconds after which the warming will stop
+ * @api
 */
 olcs.OLCesium.prototype.warmUp = function(height, timeout) {
   if (this.enabled_) {
