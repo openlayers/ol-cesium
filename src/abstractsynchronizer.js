@@ -38,7 +38,7 @@ olcs.AbstractSynchronizer = function(map, scene) {
   this.olLayers = null;
 
   /**
-   * @type {!Array}
+   * @type {!Array.<goog.events.Key>}
    * @private
    */
   this.olLayersListenKeys_ = [];
@@ -53,13 +53,13 @@ olcs.AbstractSynchronizer = function(map, scene) {
 
   /**
    * Map of listen keys for ol3 layer groups ids (from goog.getUid).
-   * @type {!Object.<number, !Array>}
+   * @type {!Object.<number, !Array.<goog.events.Key>>}
    * @private
    */
   this.olGroupListenKeys_ = {};
 
   /**
-   * @type {Object.<number, !Array>}
+   * @type {Object.<number, !Array.<goog.events.Key>>}
    * @private
    */
   this.unusedGroups_ = null;
