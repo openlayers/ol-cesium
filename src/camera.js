@@ -1,6 +1,7 @@
 goog.provide('olcs.Camera');
 
 goog.require('goog.events');
+goog.require('ol.Observable');
 goog.require('ol.proj');
 goog.require('olcs.core');
 
@@ -113,7 +114,7 @@ olcs.Camera.identityProjection = function(input, opt_output, opt_dimension) {
  */
 olcs.Camera.prototype.setView_ = function(view) {
   if (!goog.isNull(this.view_)) {
-    this.view_.unByKey(this.viewListenKey_);
+    ol.Observable.unByKey(this.viewListenKey_);
     this.viewListenKey_ = null;
   }
 

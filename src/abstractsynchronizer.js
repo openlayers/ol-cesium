@@ -1,5 +1,6 @@
 goog.provide('olcs.AbstractSynchronizer');
 
+goog.require('ol.Observable');
 goog.require('ol.layer.Group');
 goog.require('ol.layer.Layer');
 
@@ -101,7 +102,7 @@ olcs.AbstractSynchronizer.prototype.setView_ = function(view) {
  */
 olcs.AbstractSynchronizer.prototype.setLayers_ = function(layers) {
   if (!goog.isNull(this.olLayers)) {
-    goog.array.forEach(this.olLayersListenKeys_, this.olLayers.unByKey);
+    goog.array.forEach(this.olLayersListenKeys_, ol.Observable.unByKey);
   }
 
   this.olLayers = layers;
@@ -155,7 +156,7 @@ olcs.AbstractSynchronizer.prototype.synchronize = function() {
 
   // unlisten unused ol layer groups
   goog.object.forEach(this.unusedGroups_, function(keys, groupId, obj) {
-    goog.array.forEach(keys, this.map.unByKey);
+    goog.array.forEach(keys, ol.Observable.unByKey);
     delete this.olGroupListenKeys_[groupId];
   }, this);
   this.unusedGroups_ = null;
@@ -206,7 +207,7 @@ olcs.AbstractSynchronizer.prototype.synchronizeSingle = function(olLayer) {
       listenKeyArray.push(olLayer.on('change:layers', function(e) {
         goog.array.forEach(contentKeys, function(el, i, arr) {
           goog.array.remove(listenKeyArray, el);
-          collection.unByKey(el);
+          ol.Observable.unByKey(el);
         });
         listenAddRemove();
       }));
