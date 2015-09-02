@@ -6,7 +6,6 @@ goog.require('ol.extent');
 goog.require('ol.geom.SimpleGeometry');
 goog.require('ol.layer.Vector');
 goog.require('ol.proj');
-goog.require('ol.source.TileImage');
 goog.require('ol.style.Style');
 goog.require('olcs.core.VectorLayerCounterpart');
 
