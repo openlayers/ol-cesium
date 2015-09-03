@@ -74,6 +74,7 @@ clean:
 .PHONY: cleanall
 cleanall: clean
 	rm -rf .build
+	rm -rf node_modules
 
 .build/node_modules.timestamp: package.json
 	npm install
