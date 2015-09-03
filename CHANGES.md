@@ -8,6 +8,8 @@
     primitive collection may be retrieved with the `getRootPrimitive()` method.
 
 * Changes
+  * Allow blocking Cesium rendering to save resources using
+    `olcs.OLCesium#setBlockCesiumRendering(true)`.
   * The `build/generate-info.js` tool now follows symlinks to properly
     generate exports.
   * `olcs.RasterSynchronizer.prototype.convertLayerToCesiumImagery` may be
