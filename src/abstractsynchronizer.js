@@ -119,16 +119,25 @@ olcs.AbstractSynchronizer.prototype.setLayers_ = function(layers) {
     this.olLayersListenKeys_ = [];
   }
 
-  this.destroyAll();
   this.synchronize();
 };
 
 
 /**
- * Performs complete synchronization of the layers.
+ * Remove all and perform complete synchronization of the layers.
  * @api
  */
 olcs.AbstractSynchronizer.prototype.synchronize = function() {
+  this.destroyAll();
+  this.synchronize_();
+};
+
+
+/**
+ * Perform complete synchronization of the layers.
+ * @private
+ */
+olcs.AbstractSynchronizer.prototype.synchronize_ = function() {
   if (goog.isNull(this.view) || goog.isNull(this.olLayers)) {
     return;
   }
