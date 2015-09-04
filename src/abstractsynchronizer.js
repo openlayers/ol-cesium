@@ -140,7 +140,6 @@ olcs.AbstractSynchronizer.prototype.unlistenSingleGroup_ =
   }
   var uid = goog.getUid(group);
   var keys = this.olGroupListenKeys_[uid];
-  keys = keys || []; // FIXME: why+
   keys.forEach(function(key) {
     ol.Observable.unByKey(key);
   });
@@ -251,7 +250,9 @@ olcs.AbstractSynchronizer.prototype.synchronizeSingle = function(olLayer) {
  * @protected
  */
 olcs.AbstractSynchronizer.prototype.destroyAll = function() {
-  this.removeLayer_(this.mapLayerGroup);
+  this.removeAllCesiumObjects(true); // destroy
+  goog.object.forEach(this.olGroupListenKeys, ol.Observable.unByKey);
+  this.olGroupListenKeys = {};
   this.layerMap = {};
 };
 
