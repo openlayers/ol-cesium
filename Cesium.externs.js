@@ -155,6 +155,12 @@ Cesium.BillboardCollection.prototype.add = function(opt_opts) {};
 
 
 /**
+ * @return {boolean} .
+ */
+Cesium.BillboardCollection.prototype.isDestroyed = function() {};
+
+
+/**
  * @type {number}
  */
 Cesium.BillboardCollection.prototype.length;
