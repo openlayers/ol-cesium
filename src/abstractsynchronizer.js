@@ -66,7 +66,7 @@ olcs.AbstractSynchronizer = function(map, scene) {
  */
 olcs.AbstractSynchronizer.prototype.synchronize = function() {
   this.destroyAll();
-  this.synchronize_();
+  this.synchronize_(this.mapLayerGroup);
 };
 
 
@@ -94,12 +94,13 @@ olcs.AbstractSynchronizer.flattenLayers_ =
 
 /**
  * Perform complete synchronization of the layers.
+ * @param {ol.layer.Base} root
  * @private
  */
-olcs.AbstractSynchronizer.prototype.synchronize_ = function() {
+olcs.AbstractSynchronizer.prototype.synchronize_ = function(root) {
   var layers = [];
   var groups = [];
-  olcs.AbstractSynchronizer.flattenLayers_(this.mapLayerGroup, layers, groups);
+  olcs.AbstractSynchronizer.flattenLayers_(root, layers, groups);
 
   layers.forEach(function(el) {
     this.synchronizeSingle(el);
@@ -187,13 +188,10 @@ olcs.AbstractSynchronizer.prototype.listenForGroupChanges_ = function(group) {
     var listenAddRemove = goog.bind(function() {
       var collection = group.getLayers();
       if (goog.isDef(collection)) {
-        var handleContentChange_ = goog.bind(function(e) {
-          // TODO: should remove the subtree
-          // should synchronize the subtree
-          this.synchronize_();
-        }, this);
         contentKeys = [
-          collection.on('add', handleContentChange_),
+          collection.on('add', function(event) {
+            this.synchronize_(event.element);
+          }, this),
           collection.on('remove', function(event) {
             this.removeLayer_(event.element);
           }, this)
@@ -211,7 +209,6 @@ olcs.AbstractSynchronizer.prototype.listenForGroupChanges_ = function(group) {
       listenAddRemove();
     }));
   }
-
 };
 
 
