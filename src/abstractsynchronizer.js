@@ -195,7 +195,7 @@ olcs.AbstractSynchronizer.prototype.listenForGroupChanges_ = function(group) {
         contentKeys = [
           collection.on('add', handleContentChange_),
           collection.on('remove', function(event) {
-            this.removeAndDestroySingleLayer_(event.element);
+            this.removeLayer_(event.element);
           }, this)
         ];
         listenKeyArray.push.apply(listenKeyArray, contentKeys);
