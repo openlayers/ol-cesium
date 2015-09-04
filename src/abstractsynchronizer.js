@@ -24,7 +24,7 @@ olcs.AbstractSynchronizer = function(map, scene) {
    * @type {ol.View}
    * @protected
    */
-  this.view = null;
+  this.view = map.getView();
 
   /**
    * @type {!Cesium.Scene}
@@ -36,18 +36,12 @@ olcs.AbstractSynchronizer = function(map, scene) {
    * @type {ol.Collection.<ol.layer.Base>}
    * @protected
    */
-  this.olLayers = null;
+  this.olLayers = map.getLayerGroup().getLayers();
 
   /**
    * @type {ol.layer.Group}
    */
-  this.mapLayerGroup = null;
-
-  /**
-   * @type {!Array.<goog.events.Key>}
-   * @private
-   */
-  this.olLayersListenKeys_ = [];
+  this.mapLayerGroup = map.getLayerGroup();
 
   /**
    * Map of ol3 layer ids (from goog.getUid) to the Cesium ImageryLayers.
@@ -63,47 +57,6 @@ olcs.AbstractSynchronizer = function(map, scene) {
    * @private
    */
   this.olGroupListenKeys_ = {};
-
-  this.map.on('change:view', function(e) {
-    this.setView_(this.map.getView());
-  }, this);
-  this.setView_(this.map.getView());
-
-  this.map.on('change:layergroup', function(e) {
-    this.setLayerGroup_(this.map.getLayerGroup());
-  }, this);
-  this.setLayerGroup_(this.map.getLayerGroup());
-};
-
-
-/**
- * @param {ol.View} view New view to use.
- * @private
- */
-olcs.AbstractSynchronizer.prototype.setView_ = function(view) {
-  this.view = view;
-
-  // destroy all, the change of view can affect which layers are synced
-  this.synchronize();
-};
-
-
-/**
- * @param {ol.layer.Group} layerGroup New layers to use.
- * @private
- */
-olcs.AbstractSynchronizer.prototype.setLayerGroup_ = function(layerGroup) {
-  this.mapLayerGroup = layerGroup;
-  var layers = layerGroup.getLayers();
-  if (!goog.isNull(this.olLayers)) {
-    goog.array.forEach(this.olLayersListenKeys_, ol.Observable.unByKey);
-  }
-
-  this.olLayers = layers;
-
-  this.listenForGroupChanges_(layerGroup);
-
-  this.synchronize();
 };
 
 
@@ -144,10 +97,6 @@ olcs.AbstractSynchronizer.flattenLayers_ =
  * @private
  */
 olcs.AbstractSynchronizer.prototype.synchronize_ = function() {
-  if (goog.isNull(this.view) || goog.isNull(this.olLayers)) {
-    return;
-  }
-
   var layers = [];
   var groups = [];
   olcs.AbstractSynchronizer.flattenLayers_(this.mapLayerGroup, layers, groups);
