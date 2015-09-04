@@ -68,7 +68,7 @@ olcs.AbstractSynchronizer = function(map, scene) {
    * @type {Object.<number, !Array.<goog.events.Key>>}
    * @private
    */
-  this.unusedGroups_ = null;
+  this.unusedGroups_ = {};
 
   /**
    * @type {Object.<?T, number>}
@@ -105,7 +105,6 @@ olcs.AbstractSynchronizer.prototype.setView_ = function(view) {
  * @private
  */
 olcs.AbstractSynchronizer.prototype.setLayerGroup_ = function(layerGroup) {
-
   this.mapLayerGroup = layerGroup;
   var layers = layerGroup.getLayers();
   if (!goog.isNull(this.olLayers)) {
@@ -113,18 +112,8 @@ olcs.AbstractSynchronizer.prototype.setLayerGroup_ = function(layerGroup) {
   }
 
   this.olLayers = layers;
-  if (!goog.isNull(layers)) {
-    var handleCollectionEvent_ = goog.bind(function(e) {
-      this.synchronize_();
-    }, this);
 
-    this.olLayersListenKeys_ = [
-      layers.on('add', handleCollectionEvent_),
-      layers.on('remove', handleCollectionEvent_)
-    ];
-  } else {
-    this.olLayersListenKeys_ = [];
-  }
+  this.listenForGroupChanges_(layerGroup);
 
   this.synchronize();
 };
