@@ -79,10 +79,11 @@ olcs.VectorSynchronizer.prototype.createSingleCounterpart = function(olLayer) {
   var counterpart = this.converter.olVectorLayerToCesium(olLayer, view,
       featurePrimitiveMap);
   var csPrimitives = counterpart.getRootPrimitive();
+  var olListenKeys = counterpart.olListenKeys;
 
-  olLayer.on('change:visible', function(e) {
+  olListenKeys.push(olLayer.on('change:visible', function(e) {
     csPrimitives.show = olLayer.getVisible();
-  });
+  }));
 
   var onAddFeature = goog.bind(function(feature) {
     goog.asserts.assertInstanceof(olLayer, ol.layer.Vector);
@@ -112,22 +113,22 @@ olcs.VectorSynchronizer.prototype.createSingleCounterpart = function(olLayer) {
     }
   }, this);
 
-  source.on('addfeature', function(e) {
+  olListenKeys.push(source.on('addfeature', function(e) {
     goog.asserts.assert(goog.isDefAndNotNull(e.feature));
     onAddFeature(e.feature);
-  }, this);
+  }, this));
 
-  source.on('removefeature', function(e) {
+  olListenKeys.push(source.on('removefeature', function(e) {
     goog.asserts.assert(goog.isDefAndNotNull(e.feature));
     onRemoveFeature(e.feature);
-  }, this);
+  }, this));
 
-  source.on('changefeature', function(e) {
+  olListenKeys.push(source.on('changefeature', function(e) {
     var feature = e.feature;
     goog.asserts.assert(goog.isDefAndNotNull(feature));
     onRemoveFeature(feature);
     onAddFeature(feature);
-  }, this);
+  }, this));
 
   return counterpart;
 };
