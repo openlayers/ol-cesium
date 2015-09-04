@@ -41,6 +41,7 @@ goog.inherits(olcs.VectorSynchronizer, olcs.AbstractSynchronizer);
  */
 olcs.VectorSynchronizer.prototype.addCesiumObject = function(counterpart) {
   goog.asserts.assert(!goog.isNull(counterpart));
+  counterpart.getRootPrimitive()['counterpart'] = counterpart;
   this.csAllPrimitives_.add(counterpart.getRootPrimitive());
 };
 
@@ -56,8 +57,25 @@ olcs.VectorSynchronizer.prototype.destroyCesiumObject = function(object) {
 /**
  * @inheritDoc
  */
+olcs.VectorSynchronizer.prototype.removeSingleCesiumObject =
+    function(object, destroy) {
+  object.destroy();
+  this.csAllPrimitives_.destroyPrimitives = destroy;
+  this.csAllPrimitives_.remove(object.getRootPrimitive());
+  this.csAllPrimitives_.destroyPrimitives = false;
+};
+
+
+/**
+ * @inheritDoc
+ */
 olcs.VectorSynchronizer.prototype.removeAllCesiumObjects = function(destroy) {
   this.csAllPrimitives_.destroyPrimitives = destroy;
+  if (destroy) {
+    for (var i = 0; i < this.csAllPrimitives_.length; ++i) {
+      this.csAllPrimitives_.get(i)['counterpart'].destroy();
+    }
+  }
   this.csAllPrimitives_.removeAll();
   this.csAllPrimitives_.destroyPrimitives = false;
 };

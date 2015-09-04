@@ -312,6 +312,16 @@ olcs.AbstractSynchronizer.prototype.destroyCesiumObject = goog.abstractMethod;
 
 
 /**
+ * Remove single Cesium object from the collection.
+ * @param {!T} object
+ * @param {boolean} destroy
+ * @protected
+ */
+olcs.AbstractSynchronizer.prototype.removeSingleCesiumObject =
+    goog.abstractMethod;
+
+
+/**
  * Remove all Cesium objects from the collection.
  * @param {boolean} destroy
  * @protected

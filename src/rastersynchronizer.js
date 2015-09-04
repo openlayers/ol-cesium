@@ -52,6 +52,16 @@ olcs.RasterSynchronizer.prototype.destroyCesiumObject = function(object) {
 /**
  * @inheritDoc
  */
+olcs.RasterSynchronizer.prototype.removeSingleCesiumObject =
+    function(object, destroy) {
+  this.cesiumLayers_.remove(object, destroy);
+  this.ourLayers_.remove(object, false);
+};
+
+
+/**
+ * @inheritDoc
+ */
 olcs.RasterSynchronizer.prototype.removeAllCesiumObjects = function(destroy) {
   for (var i = 0; i < this.ourLayers_.length; ++i) {
     this.cesiumLayers_.remove(this.ourLayers_.get(i), destroy);
