@@ -96,7 +96,6 @@ olcs.AbstractSynchronizer.prototype.setView_ = function(view) {
   this.view = view;
 
   // destroy all, the change of view can affect which layers are synced
-  this.destroyAll();
   this.synchronize();
 };
 
@@ -186,28 +185,66 @@ olcs.AbstractSynchronizer.prototype.synchronize_ = function() {
   groups.forEach(function(el) {
     this.listenForGroupChanges_(el);
   }, this);
+};
 
 
-  // destroy unused Cesium Objects
-  goog.array.forEach(goog.object.getValues(this.unusedCesiumObjects_),
-      function(el, i, arr) {
-        var layerId = el;
-        var object = this.layerMap[layerId];
-        if (goog.isDef(object)) {
-          delete this.layerMap[layerId];
-          if (!goog.isNull(object)) {
-            this.destroyCesiumObject(object);
-          }
-        }
-      }, this);
-  this.unusedCesiumObjects_ = null;
+/**
+ * Destroy single layer.
+ * @param {ol.layer.Layer} layer
+ * @private
+ */
+olcs.AbstractSynchronizer.prototype.removeAndDestroySingleLayer_ =
+    function(layer) {
+  var uid = goog.getUid(layer);
+  var counterpart = this.layerMap[uid];
+  if (!!counterpart) {
+    this.removeSingleCesiumObject(counterpart, false);
+    this.destroyCesiumObject(counterpart);
+  }
+  delete this.layerMap[uid];
+};
 
-  // unlisten unused ol layer groups
-  goog.object.forEach(this.unusedGroups_, function(keys, groupId, obj) {
-    goog.array.forEach(keys, ol.Observable.unByKey);
-    delete this.olGroupListenKeys_[groupId];
+
+/**
+ * Destroy single group.
+ * @param {ol.layer.Group} group
+ * @private
+ */
+olcs.AbstractSynchronizer.prototype.unlistenSingleGroup_ =
+    function(group) {
+  if (group === this.mapLayerGroup) {
+    return;
+  }
+  var uid = goog.getUid(group);
+  var keys = this.olGroupListenKeys_[uid];
+  keys = keys || []; // FIXME: why+
+  keys.forEach(function(key) {
+    ol.Observable.unByKey(key);
+  });
+  delete this.olGroupListenKeys_[uid];
+};
+
+
+/**
+ * Remove layer.
+ * @param {ol.layer.Base} removeRoot
+ * @private
+ */
+olcs.AbstractSynchronizer.prototype.removeLayer_ = function(removeRoot) {
+  if (!removeRoot) {
+    return;
+  }
+  var layers = [];
+  var groups = [];
+  olcs.AbstractSynchronizer.flattenLayers_(removeRoot, layers, groups);
+
+  layers.forEach(function(el) {
+    this.removeAndDestroySingleLayer_(el);
   }, this);
-  this.unusedGroups_ = null;
+
+  groups.forEach(function(el) {
+    this.unlistenSingleGroup_(el);
+  }, this);
 };
 
 
@@ -235,7 +272,9 @@ olcs.AbstractSynchronizer.prototype.listenForGroupChanges_ = function(group) {
         }, this);
         contentKeys = [
           collection.on('add', handleContentChange_),
-          collection.on('remove', handleContentChange_)
+          collection.on('remove', function(event) {
+            this.removeAndDestroySingleLayer_(event.element);
+          }, this)
         ];
         listenKeyArray.push.apply(listenKeyArray, contentKeys);
       }
@@ -291,7 +330,7 @@ olcs.AbstractSynchronizer.prototype.synchronizeSingle = function(olLayer) {
  * @protected
  */
 olcs.AbstractSynchronizer.prototype.destroyAll = function() {
-  this.removeAllCesiumObjects(true); // destroy
+  this.removeLayer_(this.mapLayerGroup);
   this.layerMap = {};
 };
 
