@@ -64,18 +64,6 @@ olcs.AbstractSynchronizer = function(map, scene) {
    */
   this.olGroupListenKeys_ = {};
 
-  /**
-   * @type {Object.<number, !Array.<goog.events.Key>>}
-   * @private
-   */
-  this.unusedGroups_ = {};
-
-  /**
-   * @type {Object.<?T, number>}
-   * @private
-   */
-  this.unusedCesiumObjects_ = null;
-
   this.map.on('change:view', function(e) {
     this.setView_(this.map.getView());
   }, this);
@@ -159,9 +147,6 @@ olcs.AbstractSynchronizer.prototype.synchronize_ = function() {
   if (goog.isNull(this.view) || goog.isNull(this.olLayers)) {
     return;
   }
-  this.unusedGroups_ = goog.object.clone(this.olGroupListenKeys_);
-  this.unusedCesiumObjects_ = goog.object.transpose(this.layerMap);
-  this.removeAllCesiumObjects(false); // only remove, don't destroy
 
   var layers = [];
   var groups = [];
@@ -279,7 +264,6 @@ olcs.AbstractSynchronizer.prototype.listenForGroupChanges_ = function(group) {
     }));
   }
 
-  delete this.unusedGroups_[uuid];
 };
 
 
@@ -309,7 +293,6 @@ olcs.AbstractSynchronizer.prototype.synchronizeSingle = function(olLayer) {
   // add Cesium layers
   if (goog.isDefAndNotNull(cesiumObject)) {
     this.addCesiumObject(cesiumObject);
-    delete this.unusedCesiumObjects_[cesiumObject];
   }
 };
 
