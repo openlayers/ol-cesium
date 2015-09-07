@@ -102,8 +102,29 @@ olcs.AbstractSynchronizer.prototype.synchronize_ = function(root) {
   var groups = [];
   olcs.AbstractSynchronizer.flattenLayers_(root, layers, groups);
 
-  layers.forEach(function(el) {
-    this.synchronizeSingle(el);
+  layers.forEach(function(olLayer) {
+    if (goog.isNull(olLayer)) {
+      return;
+    }
+    var olLayerId = goog.getUid(olLayer);
+
+    // handle layer groups
+    goog.asserts.assert(!(olLayer instanceof ol.layer.Group));
+    goog.asserts.assert(olLayer instanceof ol.layer.Layer);
+
+    var cesiumObject = this.layerMap[olLayerId];
+    goog.asserts.assert(!goog.isDef(cesiumObject));
+
+    // no mapping -> create new layer and set up synchronization
+    if (!goog.isDef(cesiumObject)) {
+      cesiumObject = this.createSingleCounterpart(olLayer);
+    }
+
+    // add Cesium layers
+    if (goog.isDefAndNotNull(cesiumObject)) {
+      this.addCesiumObject(cesiumObject);
+      this.layerMap[olLayerId] = cesiumObject;
+    }
   }, this);
 
   groups.forEach(function(el) {
@@ -208,36 +229,6 @@ olcs.AbstractSynchronizer.prototype.listenForGroupChanges_ = function(group) {
       });
       listenAddRemove();
     }));
-  }
-};
-
-
-/**
- * Synchronizes single layer.
- * @param {ol.layer.Base} olLayer
- * @protected
- */
-olcs.AbstractSynchronizer.prototype.synchronizeSingle = function(olLayer) {
-  if (goog.isNull(olLayer)) {
-    return;
-  }
-  var olLayerId = goog.getUid(olLayer);
-
-  // handle layer groups
-  goog.asserts.assert(!(olLayer instanceof ol.layer.Group));
-  goog.asserts.assert(olLayer instanceof ol.layer.Layer);
-
-  var cesiumObject = this.layerMap[olLayerId];
-
-  // no mapping -> create new layer and set up synchronization
-  if (!goog.isDef(cesiumObject)) {
-    cesiumObject = this.createSingleCounterpart(olLayer);
-    this.layerMap[olLayerId] = cesiumObject;
-  }
-
-  // add Cesium layers
-  if (goog.isDefAndNotNull(cesiumObject)) {
-    this.addCesiumObject(cesiumObject);
   }
 };
 
