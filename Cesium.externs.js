@@ -1719,6 +1719,12 @@ Cesium.ImageryLayerCollection.prototype.remove = function(layer, opt_destroy) {}
 
 
 /**
+ * @param {Cesium.ImageryLayer} layer
+ */
+Cesium.ImageryLayerCollection.prototype.raiseToTop = function(layer) {};
+
+
+/**
  * @param {boolean=} opt_destroy
  */
 Cesium.ImageryLayerCollection.prototype.removeAll = function(opt_destroy) {};
