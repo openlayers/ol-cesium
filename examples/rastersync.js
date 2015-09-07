@@ -12,12 +12,14 @@ var layer1 = new ol.layer.Tile({
     crossOrigin: 'anonymous'
   })
 });
+
+var tileJsonSource = new ol.source.TileJSON({
+  url: 'http://api.tiles.mapbox.com/v3/mapbox.world-borders-light.jsonp',
+  crossOrigin: 'anonymous'
+});
+
 var layer2 = new ol.layer.Tile({
-  source: new ol.source.TileJSON({
-    url: 'http://api.tiles.mapbox.com/v3/' +
-        'mapbox.world-borders-light.jsonp',
-    crossOrigin: 'anonymous'
-  })
+  source: tileJsonSource
 });
 var ol2d = new ol.Map({
   layers: [layer0, new ol.layer.Group({layers: [layer1, layer2]})],
@@ -84,5 +86,14 @@ var changeTileWMSParams = function() {
 };
 
 var addTileJSON = function() {
-  ol2d.addLayer(layer2);
+  ol2d.addLayer(new ol.layer.Tile({
+    source: tileJsonSource
+  }));
+};
+
+var removeLastLayer = function() {
+  var length = ol2d.getLayers().getLength();
+  if (length >  0) {
+    ol2d.getLayers().removeAt(length - 1);
+  }
 };
