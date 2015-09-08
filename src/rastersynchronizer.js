@@ -52,6 +52,16 @@ olcs.RasterSynchronizer.prototype.destroyCesiumObject = function(object) {
 /**
  * @inheritDoc
  */
+olcs.RasterSynchronizer.prototype.removeSingleCesiumObject =
+    function(object, destroy) {
+  this.cesiumLayers_.remove(object, destroy);
+  this.ourLayers_.remove(object, false);
+};
+
+
+/**
+ * @inheritDoc
+ */
 olcs.RasterSynchronizer.prototype.removeAllCesiumObjects = function(destroy) {
   for (var i = 0; i < this.ourLayers_.length; ++i) {
     this.cesiumLayers_.remove(this.ourLayers_.get(i), destroy);
@@ -112,4 +122,38 @@ olcs.RasterSynchronizer.prototype.createSingleCounterpart = function(olLayer) {
   }
 
   return cesiumObject;
+};
+
+
+/**
+ * Order counterparts using the same algorithm as the Openlayers renderer:
+ * z-index then original sequence order.
+ * @protected
+ */
+olcs.RasterSynchronizer.prototype.orderLayers = function() {
+  var layers = [];
+  var groups = [];
+  var zIndices = {};
+  olcs.AbstractSynchronizer.flattenLayers(this.mapLayerGroup, layers, groups,
+      zIndices);
+
+  goog.array.stableSort(layers, function(layer1, layer2) {
+    return zIndices[goog.getUid(layer1)] - zIndices[goog.getUid(layer2)];
+  });
+
+  layers.forEach(function(olLayer) {
+    var olLayerId = goog.getUid(olLayer);
+    var cesiumObject = this.layerMap[olLayerId];
+    if (cesiumObject) {
+      this.raiseToTop(cesiumObject);
+    }
+  }, this);
+};
+
+
+/**
+ * @param {Cesium.ImageryLayer} counterpart
+ */
+olcs.RasterSynchronizer.prototype.raiseToTop = function(counterpart) {
+  this.cesiumLayers_.raiseToTop(counterpart);
 };

@@ -41,6 +41,7 @@ goog.inherits(olcs.VectorSynchronizer, olcs.AbstractSynchronizer);
  */
 olcs.VectorSynchronizer.prototype.addCesiumObject = function(counterpart) {
   goog.asserts.assert(!goog.isNull(counterpart));
+  counterpart.getRootPrimitive()['counterpart'] = counterpart;
   this.csAllPrimitives_.add(counterpart.getRootPrimitive());
 };
 
@@ -56,8 +57,25 @@ olcs.VectorSynchronizer.prototype.destroyCesiumObject = function(object) {
 /**
  * @inheritDoc
  */
+olcs.VectorSynchronizer.prototype.removeSingleCesiumObject =
+    function(object, destroy) {
+  object.destroy();
+  this.csAllPrimitives_.destroyPrimitives = destroy;
+  this.csAllPrimitives_.remove(object.getRootPrimitive());
+  this.csAllPrimitives_.destroyPrimitives = false;
+};
+
+
+/**
+ * @inheritDoc
+ */
 olcs.VectorSynchronizer.prototype.removeAllCesiumObjects = function(destroy) {
   this.csAllPrimitives_.destroyPrimitives = destroy;
+  if (destroy) {
+    for (var i = 0; i < this.csAllPrimitives_.length; ++i) {
+      this.csAllPrimitives_.get(i)['counterpart'].destroy();
+    }
+  }
   this.csAllPrimitives_.removeAll();
   this.csAllPrimitives_.destroyPrimitives = false;
 };
@@ -79,10 +97,11 @@ olcs.VectorSynchronizer.prototype.createSingleCounterpart = function(olLayer) {
   var counterpart = this.converter.olVectorLayerToCesium(olLayer, view,
       featurePrimitiveMap);
   var csPrimitives = counterpart.getRootPrimitive();
+  var olListenKeys = counterpart.olListenKeys;
 
-  olLayer.on('change:visible', function(e) {
+  olListenKeys.push(olLayer.on('change:visible', function(e) {
     csPrimitives.show = olLayer.getVisible();
-  });
+  }));
 
   var onAddFeature = goog.bind(function(feature) {
     goog.asserts.assertInstanceof(olLayer, ol.layer.Vector);
@@ -112,22 +131,22 @@ olcs.VectorSynchronizer.prototype.createSingleCounterpart = function(olLayer) {
     }
   }, this);
 
-  source.on('addfeature', function(e) {
+  olListenKeys.push(source.on('addfeature', function(e) {
     goog.asserts.assert(goog.isDefAndNotNull(e.feature));
     onAddFeature(e.feature);
-  }, this);
+  }, this));
 
-  source.on('removefeature', function(e) {
+  olListenKeys.push(source.on('removefeature', function(e) {
     goog.asserts.assert(goog.isDefAndNotNull(e.feature));
     onRemoveFeature(e.feature);
-  }, this);
+  }, this));
 
-  source.on('changefeature', function(e) {
+  olListenKeys.push(source.on('changefeature', function(e) {
     var feature = e.feature;
     goog.asserts.assert(goog.isDefAndNotNull(feature));
     onRemoveFeature(feature);
     onAddFeature(feature);
-  }, this);
+  }, this));
 
   return counterpart;
 };

@@ -16,6 +16,8 @@
     <div id="map2d" style="width:600px;height:400px;float:left;"></div>
     <div id="map3d" style="width:600px;height:400px;float:left;position:relative;"></div>
     <input type="button" value="Remove all layers" onclick="ol2d.getLayers().clear();document.body.className='hideLayerInputs';" />
+    <input type="button" value="Remove last layer" onclick="removeLastLayer();document.body.className='hideLayerInputs';" />
+    <br />
     <input type="button" value="Add Bing Maps" onclick="addBingMaps();" />
     <input type="button" value="Add OSM" onclick="addOSM();" />
     <input type="button" value="Add Stamen" onclick="addStamen();" />
@@ -36,6 +38,8 @@
       <input class="contrast" type="range" min="0" max="2" step="0.01" oninput="layer0.setContrast(this.value)"/>
       <label>brightness</label>
       <input class="brightness" type="range" min="-1" max="1" step="0.01" oninput="layer0.setBrightness(this.value)"/>
+      <label>Z-index</label>
+      <input type="range" min="-10" max="10" step="1" oninput="layer0.setZIndex(this.value)" />
     </fieldset>
     <fieldset id="layer1">
       <label class="checkbox" for="visible10">
@@ -49,6 +53,8 @@
       <input class="contrast" type="range" min="0" max="2" step="0.01" oninput="layer1.setContrast(this.value)"/>
       <label>brightness</label>
       <input class="brightness" type="range" min="-1" max="1" step="0.01" oninput="layer1.setBrightness(this.value)"/>
+      <label>Z-index</label>
+      <input type="range" min="-10" max="10" step="1" oninput="layer1.setZIndex(this.value)" />
     </fieldset>
     <fieldset id="layer2">
       <label class="checkbox" for="visible10">
@@ -62,6 +68,8 @@
       <input class="contrast" type="range" min="0" max="2" step="0.01" oninput="layer2.setContrast(this.value)"/>
       <label>brightness</label>
       <input class="brightness" type="range" min="-1" max="1" step="0.01" oninput="layer2.setBrightness(this.value)"/>
+      <label>Z-index</label>
+      <input type="range" min="-10" max="10" step="1" oninput="layer2.setZIndex(this.value)" />
     </fieldset>
     <script src="../ol3/build/ol.js"></script>
     <script src="../cesium/Build/Cesium/Cesium.js"></script>

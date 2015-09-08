@@ -476,7 +476,9 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium =
   if (image instanceof Image && !isImageLoaded(image)) {
     // Cesium requires the image to be loaded
     var listener = function() {
-      reallyCreateBillboard();
+      if (!billboards.isDestroyed()) {
+        reallyCreateBillboard();
+      }
     };
 
     goog.events.listenOnce(image, 'load', listener);

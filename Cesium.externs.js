@@ -155,6 +155,12 @@ Cesium.BillboardCollection.prototype.add = function(opt_opts) {};
 
 
 /**
+ * @return {boolean} .
+ */
+Cesium.BillboardCollection.prototype.isDestroyed = function() {};
+
+
+/**
  * @type {number}
  */
 Cesium.BillboardCollection.prototype.length;
@@ -1451,6 +1457,12 @@ Cesium.PrimitiveCollection = function() {};
 Cesium.PrimitiveCollection.prototype.add = function(poly) {};
 
 /**
+ * @param {number} index
+ * @return {!Cesium.Primitive}
+ */
+Cesium.PrimitiveCollection.prototype.get = function(index) {};
+
+/**
  * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.Primitive} poly .
  * @return {boolean}
  */
@@ -1716,6 +1728,12 @@ Cesium.ImageryLayerCollection.prototype.add = function(layer, opt_index) {};
  * @param {boolean=} opt_destroy
  */
 Cesium.ImageryLayerCollection.prototype.remove = function(layer, opt_destroy) {};
+
+
+/**
+ * @param {Cesium.ImageryLayer} layer
+ */
+Cesium.ImageryLayerCollection.prototype.raiseToTop = function(layer) {};
 
 
 /**
