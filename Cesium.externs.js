@@ -1457,6 +1457,12 @@ Cesium.PrimitiveCollection = function() {};
 Cesium.PrimitiveCollection.prototype.add = function(poly) {};
 
 /**
+ * @param {number} index
+ * @return {!Cesium.Primitive}
+ */
+Cesium.PrimitiveCollection.prototype.get = function(index) {};
+
+/**
  * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.Primitive} poly .
  * @return {boolean}
  */
