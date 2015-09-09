@@ -133,11 +133,9 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
     }
     var olLayerId = goog.getUid(olLayer);
 
-    var cesiumObject = this.layerMap[olLayerId];
-    goog.asserts.assert(!goog.isDef(cesiumObject));
-
-    // no mapping -> create new layer and set up synchronization
-    cesiumObject = this.createSingleCounterpart(olLayer);
+    // create new layer and set up synchronization
+    goog.asserts.assert(!goog.isDef(this.layerMap[olLayerId]));
+    var cesiumObject = this.createSingleCounterpart(olLayer);
 
     // add Cesium layers
     if (!goog.isNull(cesiumObject)) {
