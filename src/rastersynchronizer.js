@@ -121,7 +121,7 @@ olcs.RasterSynchronizer.prototype.createSingleCounterpart = function(olLayer) {
     }, this);
   }
 
-  return cesiumObject;
+  return cesiumObject ? [cesiumObject] : null;
 };
 
 
@@ -143,9 +143,9 @@ olcs.RasterSynchronizer.prototype.orderLayers = function() {
 
   layers.forEach(function(olLayer) {
     var olLayerId = goog.getUid(olLayer);
-    var cesiumObject = this.layerMap[olLayerId];
-    if (cesiumObject) {
-      this.raiseToTop(cesiumObject);
+    var cesiumObjects = this.layerMap[olLayerId];
+    if (cesiumObjects) {
+      cesiumObjects.forEach(this.raiseToTop, this);
     }
   }, this);
 };

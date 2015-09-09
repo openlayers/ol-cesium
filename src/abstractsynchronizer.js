@@ -46,8 +46,8 @@ olcs.AbstractSynchronizer = function(map, scene) {
 
   /**
    * Map of ol3 layer ids (from goog.getUid) to the Cesium ImageryLayers.
-   * null value means, that we are unable to create equivalent layer.
-   * @type {Object.<number, ?T>}
+   * Null value means, that we are unable to create equivalent layers.
+   * @type {Object.<number, ?Array.<T>>}
    * @protected
    */
   this.layerMap = {};
@@ -132,15 +132,16 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
 
     // create new layer and set up synchronization
     goog.asserts.assert(!goog.isDef(this.layerMap[olLayerId]));
-    var cesiumObject = this.createSingleCounterpart(olLayer);
+    var cesiumObjects = this.createSingleCounterpart(olLayer);
 
     // add Cesium layers
-    if (!goog.isNull(cesiumObject)) {
-      cesiumObject.zIndex = olLayer.getZIndex();
-      this.addCesiumObject(cesiumObject);
-      this.layerMap[olLayerId] = cesiumObject;
+    if (!goog.isNull(cesiumObjects)) {
+      this.layerMap[olLayerId] = cesiumObjects;
       this.olLayerListenKeys_[olLayerId] = olLayer.on('change:zIndex',
           this.orderLayers, this);
+      cesiumObjects.forEach(function(cesiumObject) {
+        this.addCesiumObject(cesiumObject);
+      }, this);
     }
   }, this);
 
@@ -160,10 +161,12 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
 olcs.AbstractSynchronizer.prototype.removeAndDestroySingleLayer_ =
     function(layer) {
   var uid = goog.getUid(layer);
-  var counterpart = this.layerMap[uid];
-  if (!!counterpart) {
-    this.removeSingleCesiumObject(counterpart, false);
-    this.destroyCesiumObject(counterpart);
+  var counterparts = this.layerMap[uid];
+  if (!!counterparts) {
+    counterparts.forEach(function(counterpart) {
+      this.removeSingleCesiumObject(counterpart, false);
+      this.destroyCesiumObject(counterpart);
+    }, this);
     ol.Observable.unByKey(this.olLayerListenKeys_[uid]);
     delete this.olLayerListenKeys_[uid];
   }
@@ -310,7 +313,7 @@ olcs.AbstractSynchronizer.prototype.removeAllCesiumObjects =
 
 /**
  * @param {!ol.layer.Base} olLayer
- * @return {T}
+ * @return {?Array.<T>}
  * @protected
  */
 olcs.AbstractSynchronizer.prototype.createSingleCounterpart =
