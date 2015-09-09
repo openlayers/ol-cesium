@@ -128,9 +128,6 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
   olcs.AbstractSynchronizer.flattenLayers(root, layers, groups);
 
   layers.forEach(function(olLayer) {
-    if (goog.isNull(olLayer)) {
-      return;
-    }
     var olLayerId = goog.getUid(olLayer);
 
     // create new layer and set up synchronization
