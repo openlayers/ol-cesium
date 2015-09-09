@@ -309,7 +309,7 @@ olcs.AbstractSynchronizer.prototype.removeAllCesiumObjects =
 
 
 /**
- * @param {!ol.layer.Layer} olLayer
+ * @param {!ol.layer.Base} olLayer
  * @return {T}
  * @protected
  */

@@ -349,7 +349,7 @@ olcs.core.extentToRectangle = function(extent, projection) {
 /**
  * Creates Cesium.ImageryLayer best corresponding to the given ol.layer.Layer.
  * Only supports raster layers
- * @param {!ol.layer.Layer} olLayer
+ * @param {!ol.layer.Base} olLayer
  * @param {?ol.proj.Projection} viewProj Projection of the view.
  * @return {?Cesium.ImageryLayer} null if not possible (or supported)
  * @api
@@ -406,7 +406,7 @@ olcs.core.tileLayerToImageryLayer = function(olLayer, viewProj) {
 /**
  * Synchronizes the layer rendering properties (brightness, contrast, hue,
  * opacity, saturation, visible) to the given Cesium ImageryLayer.
- * @param {!ol.layer.Layer} olLayer
+ * @param {!ol.layer.Base} olLayer
  * @param {!Cesium.ImageryLayer} csLayer
  * @api
  */
