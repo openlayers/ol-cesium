@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.8 -
+## v1.8 - 2015-09-10
 
 * Breaking changes
   * Rename `olcs.core.OlLayerPrimitive` to `olcs.core.VectorLayerCounterpart`
