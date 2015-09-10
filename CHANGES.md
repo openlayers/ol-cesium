@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.8 -
+## v1.8 - 2015-09-10
 
 * Breaking changes
   * Rename `olcs.core.OlLayerPrimitive` to `olcs.core.VectorLayerCounterpart`
@@ -8,6 +8,7 @@
     primitive collection may be retrieved with the `getRootPrimitive()` method.
 
 * Changes
+  * Port to Cesium 1.13 and OL 3.9.0.
   * Allow blocking Cesium rendering to save resources using
     `olcs.OLCesium#setBlockCesiumRendering(true)`.
   * The `build/generate-info.js` tool now follows symlinks to properly
