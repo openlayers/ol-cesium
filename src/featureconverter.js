@@ -730,7 +730,7 @@ olcs.FeatureConverter.prototype.computePlainStyle =
     return null;
   }
 
-  goog.asserts.assert(goog.isArray(style));
+  goog.asserts.assert(Array.isArray(style));
   // FIXME combine materials as in cesium-materials-pack?
   // then this function must return a custom material
   // More simply, could blend the colors like described in

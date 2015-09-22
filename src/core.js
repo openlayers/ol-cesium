@@ -512,7 +512,7 @@ olcs.core.olGeometryCloneTo4326 = function(geometry, projection) {
  */
 olcs.core.convertColorToCesium = function(olColor) {
   olColor = olColor || 'black';
-  if (goog.isArray(olColor)) {
+  if (Array.isArray(olColor)) {
     return new Cesium.Color(
         Cesium.Color.byteToFloat(olColor[0]),
         Cesium.Color.byteToFloat(olColor[1]),
