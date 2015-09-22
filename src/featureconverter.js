@@ -438,7 +438,7 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium =
         image.naturalWidth != 0 &&
         image.complete;
   };
-  var reallyCreateBillboard = goog.bind(function() {
+  var reallyCreateBillboard = (function() {
     if (goog.isNull(image)) {
       return;
     }
@@ -470,7 +470,7 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium =
     if (opt_newBillboardCallback) {
       opt_newBillboardCallback(bb);
     }
-  }, this);
+  }).bind(this);
 
   if (image instanceof Image && !isImageLoaded(image)) {
     // Cesium requires the image to be loaded

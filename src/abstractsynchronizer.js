@@ -233,7 +233,7 @@ olcs.AbstractSynchronizer.prototype.listenForGroupChanges_ = function(group) {
 
   // only the keys that need to be relistened when collection changes
   var contentKeys = [];
-  var listenAddRemove = goog.bind(function() {
+  var listenAddRemove = (function() {
     var collection = group.getLayers();
     if (goog.isDef(collection)) {
       contentKeys = [
@@ -246,7 +246,7 @@ olcs.AbstractSynchronizer.prototype.listenForGroupChanges_ = function(group) {
       ];
       listenKeyArray.push.apply(listenKeyArray, contentKeys);
     }
-  }, this);
+  }).bind(this);
 
   listenAddRemove();
 

@@ -84,17 +84,17 @@ olcs.DragBox.prototype.handleMouseDown = function(event) {
   var ray = this.scene_.camera.getPickRay(event.position);
   var intersection = this.scene_.globe.pick(ray, this.scene_);
   if (goog.isDef(intersection)) {
-    this.handler_.setInputAction(goog.bind(this.handleMouseMove, this),
+    this.handler_.setInputAction(this.handleMouseMove.bind(this),
         Cesium.ScreenSpaceEventType.MOUSE_MOVE);
-    this.handler_.setInputAction(goog.bind(this.handleMouseUp, this),
+    this.handler_.setInputAction(this.handleMouseUp.bind(this),
         Cesium.ScreenSpaceEventType.LEFT_UP);
 
     if (goog.isDef(this.modifier_)) {
       // listen to the event with and without the modifier to be able to start
       // a box with the key pressed and finish it without.
-      this.handler_.setInputAction(goog.bind(this.handleMouseMove, this),
+      this.handler_.setInputAction(this.handleMouseMove.bind(this),
           Cesium.ScreenSpaceEventType.MOUSE_MOVE, this.modifier_);
-      this.handler_.setInputAction(goog.bind(this.handleMouseUp, this),
+      this.handler_.setInputAction(this.handleMouseUp.bind(this),
           Cesium.ScreenSpaceEventType.LEFT_UP, this.modifier_);
     }
     var cartographic = ellipsoid.cartesianToCartographic(intersection);
@@ -193,7 +193,7 @@ olcs.DragBox.prototype.setScene = function(scene) {
   } else {
     goog.asserts.assert(scene.canvas);
     this.handler_ = new Cesium.ScreenSpaceEventHandler(scene.canvas);
-    this.handler_.setInputAction(goog.bind(this.handleMouseDown, this),
+    this.handler_.setInputAction(this.handleMouseDown.bind(this),
         Cesium.ScreenSpaceEventType.LEFT_DOWN, this.modifier_);
   }
   this.scene_ = scene;
