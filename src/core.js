@@ -519,7 +519,7 @@ olcs.core.convertColorToCesium = function(olColor) {
         Cesium.Color.byteToFloat(olColor[2]),
         olColor[3]
     );
-  } else if (goog.isString(olColor)) {
+  } else if (typeof olColor == 'string') {
     return Cesium.Color.fromCssColorString(olColor);
   }
   goog.asserts.fail('impossible');
