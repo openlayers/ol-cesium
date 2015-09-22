@@ -1,6 +1,5 @@
 goog.provide('olcs.FeatureConverter');
 
-goog.require('goog.array');
 goog.require('goog.asserts');
 goog.require('ol.extent');
 goog.require('ol.geom.SimpleGeometry');
@@ -517,7 +516,7 @@ olcs.FeatureConverter.prototype.olMultiGeometryToCesium =
   // instead we create n primitives for simplicity.
   var accumulate = function(geometries, functor) {
     var primitives = new Cesium.PrimitiveCollection();
-    goog.array.forEach(geometries, function(geometry) {
+    geometries.forEach(function(geometry) {
       primitives.add(functor(layer, feature, geometry, projection, olStyle));
     });
     return primitives;
@@ -530,7 +529,7 @@ olcs.FeatureConverter.prototype.olMultiGeometryToCesium =
       subgeos = geometry.getPoints();
       if (olStyle.getText()) {
         var primitives = new Cesium.PrimitiveCollection();
-        goog.array.forEach(subgeos, function(geometry) {
+        subgeos.forEach(function(geometry) {
           goog.asserts.assert(geometry);
           var result = this.olPointGeometryToCesium(layer, feature, geometry,
               projection, olStyle, billboards, opt_newBillboardCallback);
@@ -540,7 +539,7 @@ olcs.FeatureConverter.prototype.olMultiGeometryToCesium =
         }.bind(this));
         return primitives;
       } else {
-        goog.array.forEach(subgeos, function(geometry) {
+        subgeos.forEach(function(geometry) {
           goog.asserts.assert(!goog.isNull(geometry));
           this.olPointGeometryToCesium(layer, feature, geometry, projection,
               olStyle, billboards, opt_newBillboardCallback);
@@ -768,7 +767,8 @@ olcs.FeatureConverter.prototype.olFeatureToCesium =
     case 'GeometryCollection':
       var primitives = new Cesium.PrimitiveCollection();
       var collection = /** @type {!ol.geom.GeometryCollection} */ (geom);
-      goog.array.forEach(collection.getGeometries(), function(geom) {
+      // TODO: use getGeometriesArray() instead
+      collection.getGeometries().forEach(function(geom) {
         if (geom) {
           var prims = this.olFeatureToCesium(layer, feature, style, context,
               geom);

@@ -252,7 +252,7 @@ olcs.AbstractSynchronizer.prototype.listenForGroupChanges_ = function(group) {
   listenAddRemove();
 
   listenKeyArray.push(group.on('change:layers', function(e) {
-    goog.array.forEach(contentKeys, function(el) {
+    contentKeys.forEach(function(el) {
       goog.array.remove(listenKeyArray, el);
       ol.Observable.unByKey(el);
     });
