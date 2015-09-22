@@ -169,7 +169,7 @@ olcs.core.OLImageryProvider.createCreditForSource = function(source) {
   var text = '';
   var attributions = source.getAttributions();
   if (!goog.isNull(attributions)) {
-    goog.array.forEach(attributions, function(el, i, arr) {
+    attributions.forEach(function(el) {
       // strip html tags (not supported in Cesium)
       text += el.getHTML().replace(/<\/?[^>]+(>|$)/g, '') + ' ';
     });
