@@ -438,7 +438,7 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium =
         image.naturalWidth != 0 &&
         image.complete;
   };
-  var reallyCreateBillboard = goog.bind(function() {
+  var reallyCreateBillboard = (function() {
     if (goog.isNull(image)) {
       return;
     }
@@ -470,7 +470,7 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium =
     if (opt_newBillboardCallback) {
       opt_newBillboardCallback(bb);
     }
-  }, this);
+  }).bind(this);
 
   if (image instanceof Image && !isImageLoaded(image)) {
     // Cesium requires the image to be loaded
@@ -730,7 +730,7 @@ olcs.FeatureConverter.prototype.computePlainStyle =
     return null;
   }
 
-  goog.asserts.assert(goog.isArray(style));
+  goog.asserts.assert(Array.isArray(style));
   // FIXME combine materials as in cesium-materials-pack?
   // then this function must return a custom material
   // More simply, could blend the colors like described in

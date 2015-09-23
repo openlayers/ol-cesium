@@ -512,14 +512,14 @@ olcs.core.olGeometryCloneTo4326 = function(geometry, projection) {
  */
 olcs.core.convertColorToCesium = function(olColor) {
   olColor = olColor || 'black';
-  if (goog.isArray(olColor)) {
+  if (Array.isArray(olColor)) {
     return new Cesium.Color(
         Cesium.Color.byteToFloat(olColor[0]),
         Cesium.Color.byteToFloat(olColor[1]),
         Cesium.Color.byteToFloat(olColor[2]),
         olColor[3]
     );
-  } else if (goog.isString(olColor)) {
+  } else if (typeof olColor == 'string') {
     return Cesium.Color.fromCssColorString(olColor);
   }
   goog.asserts.fail('impossible');

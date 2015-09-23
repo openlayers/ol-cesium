@@ -1,6 +1,5 @@
 goog.provide('olcs.AbstractSynchronizer');
 
-goog.require('goog.array');
 goog.require('goog.object');
 
 goog.require('ol.Observable');
@@ -234,7 +233,7 @@ olcs.AbstractSynchronizer.prototype.listenForGroupChanges_ = function(group) {
 
   // only the keys that need to be relistened when collection changes
   var contentKeys = [];
-  var listenAddRemove = goog.bind(function() {
+  var listenAddRemove = (function() {
     var collection = group.getLayers();
     if (goog.isDef(collection)) {
       contentKeys = [
@@ -247,13 +246,16 @@ olcs.AbstractSynchronizer.prototype.listenForGroupChanges_ = function(group) {
       ];
       listenKeyArray.push.apply(listenKeyArray, contentKeys);
     }
-  }, this);
+  }).bind(this);
 
   listenAddRemove();
 
   listenKeyArray.push(group.on('change:layers', function(e) {
     contentKeys.forEach(function(el) {
-      goog.array.remove(listenKeyArray, el);
+      var i = listenKeyArray.indexOf(el);
+      if (i >= 0) {
+        listenKeyArray.splice(i, 1);
+      }
       ol.Observable.unByKey(el);
     });
     listenAddRemove();

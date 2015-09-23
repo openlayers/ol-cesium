@@ -182,7 +182,7 @@ olcs.core.OLImageryProvider.createCreditForSource = function(source) {
     // "The text to be displayed on the screen if no imageUrl is specified."
     var logo = source.getLogo();
     if (goog.isDef(logo)) {
-      if (goog.isString(logo)) {
+      if (typeof logo == 'string') {
         imageUrl = logo;
       } else {
         imageUrl = logo.src;
