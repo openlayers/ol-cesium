@@ -42,7 +42,8 @@ olcs.FeatureConverter.prototype.setReferenceForPicking =
  * Basics primitive creation using a color attribute.
  * Note that Cesium has 'interior' and outline geometries.
  * @param {ol.layer.Vector} layer
- * @param {!ol.Feature} feature Ol3 feature..
+ * @param {!ol.Feature} feature Ol3 feature.
+ * @param {!ol.geom.Geometry} olGeometry Ol3 geometry.
  * @param {!Cesium.Geometry} geometry
  * @param {!Cesium.Color} color
  * @param {number=} opt_lineWidth
@@ -50,7 +51,7 @@ olcs.FeatureConverter.prototype.setReferenceForPicking =
  * @protected
  */
 olcs.FeatureConverter.prototype.createColoredPrimitive =
-    function(layer, feature, geometry, color, opt_lineWidth) {
+    function(layer, feature, olGeometry, geometry, color, opt_lineWidth) {
   var createInstance = function(geometry, color) {
     return new Cesium.GeometryInstance({
       // always update Cesium externs before adding a property
@@ -77,15 +78,26 @@ olcs.FeatureConverter.prototype.createColoredPrimitive =
     }
     options.renderState.lineWidth = opt_lineWidth;
   }
-  var appearance = new Cesium.PerInstanceColorAppearance(options);
 
   var instances = createInstance(geometry, color);
 
-  var primitive = new Cesium.Primitive({
-    // always update Cesium externs before adding a property
-    geometryInstances: instances,
-    appearance: appearance
-  });
+  var heightReference = this.getHeightReference(layer, feature, olGeometry);
+
+  var primitive;
+
+  if (heightReference == Cesium.HeightReference.CLAMP_TO_GROUND) {
+    primitive = new Cesium.GroundPrimitive({
+      // always update Cesium externs before adding a property
+      geometryInstance: instances
+    });
+  } else {
+    var appearance = new Cesium.PerInstanceColorAppearance(options);
+    primitive = new Cesium.Primitive({
+      // always update Cesium externs before adding a property
+      geometryInstances: instances,
+      appearance: appearance
+    });
+  }
 
   this.setReferenceForPicking(layer, feature, primitive);
   return primitive;
@@ -133,7 +145,8 @@ olcs.FeatureConverter.prototype.extractLineWidthFromOlStyle =
  * Create a primitive collection out of two Cesium geometries.
  * Only the OpenLayers style colors will be used.
  * @param {ol.layer.Vector} layer
- * @param {!ol.Feature} feature Ol3 feature..
+ * @param {!ol.Feature} feature Ol3 feature.
+ * @param {!ol.geom.Geometry} olGeometry Ol3 geometry.
  * @param {!Cesium.Geometry} fillGeometry
  * @param {!Cesium.Geometry} outlineGeometry
  * @param {!ol.style.Style} olStyle
@@ -141,21 +154,22 @@ olcs.FeatureConverter.prototype.extractLineWidthFromOlStyle =
  * @protected
  */
 olcs.FeatureConverter.prototype.wrapFillAndOutlineGeometries =
-    function(layer, feature, fillGeometry, outlineGeometry, olStyle) {
+    function(layer, feature, olGeometry, fillGeometry, outlineGeometry,
+        olStyle) {
   var fillColor = this.extractColorFromOlStyle(olStyle, false);
   var outlineColor = this.extractColorFromOlStyle(olStyle, true);
 
   var primitives = new Cesium.PrimitiveCollection();
   if (olStyle.getFill()) {
-    var p = this.createColoredPrimitive(layer, feature, fillGeometry,
-        fillColor);
+    var p = this.createColoredPrimitive(layer, feature, olGeometry,
+        fillGeometry, fillColor);
     primitives.add(p);
   }
 
   if (olStyle.getStroke()) {
     var width = this.extractLineWidthFromOlStyle(olStyle);
-    var p = this.createColoredPrimitive(layer, feature, outlineGeometry,
-        outlineColor, width);
+    var p = this.createColoredPrimitive(layer, feature, olGeometry,
+        outlineGeometry, outlineColor, width);
     primitives.add(p);
   }
 
@@ -264,7 +278,7 @@ olcs.FeatureConverter.prototype.olCircleGeometryToCesium =
   });
 
   var primitives = this.wrapFillAndOutlineGeometries(
-      layer, feature, fillGeometry, outlineGeometry, olStyle);
+      layer, feature, olGeometry, fillGeometry, outlineGeometry, olStyle);
 
   return this.addTextStyle(layer, feature, olGeometry, olStyle, primitives);
 };
@@ -366,7 +380,7 @@ olcs.FeatureConverter.prototype.olPolygonGeometryToCesium =
   });
 
   var primitives = this.wrapFillAndOutlineGeometries(
-      layer, feature, fillGeometry, outlineGeometry, olStyle);
+      layer, feature, olGeometry, fillGeometry, outlineGeometry, olStyle);
 
   return this.addTextStyle(layer, feature, olGeometry, olStyle, primitives);
 };
@@ -410,7 +424,7 @@ olcs.FeatureConverter.prototype.getHeightReference =
  * Convert a point geometry to a Cesium BillboardCollection.
  * @param {ol.layer.Vector} layer
  * @param {!ol.Feature} feature Ol3 feature..
- * @param {!ol.geom.Point} geometry
+ * @param {!ol.geom.Point} olGeometry Ol3 point geometry.
  * @param {!ol.proj.ProjectionLike} projection
  * @param {!ol.style.Style} style
  * @param {!Cesium.BillboardCollection} billboards
@@ -420,10 +434,10 @@ olcs.FeatureConverter.prototype.getHeightReference =
  * @api
  */
 olcs.FeatureConverter.prototype.olPointGeometryToCesium =
-    function(layer, feature, geometry, projection, style, billboards,
+    function(layer, feature, olGeometry, projection, style, billboards,
     opt_newBillboardCallback) {
-  goog.asserts.assert(geometry.getType() == 'Point');
-  geometry = olcs.core.olGeometryCloneTo4326(geometry, projection);
+  goog.asserts.assert(olGeometry.getType() == 'Point');
+  olGeometry = olcs.core.olGeometryCloneTo4326(olGeometry, projection);
 
   var imageStyle = style.getImage();
   if (imageStyle instanceof ol.style.Icon) {
@@ -447,7 +461,7 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium =
         image instanceof HTMLImageElement)) {
       return;
     }
-    var center = geometry.getCoordinates();
+    var center = olGeometry.getCoordinates();
     var position = olcs.core.ol4326CoordinateToCesiumCartesian(center);
     var color;
     var opacity = imageStyle.getOpacity();
@@ -455,7 +469,7 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium =
       color = new Cesium.Color(1.0, 1.0, 1.0, opacity);
     }
 
-    var heightReference = this.getHeightReference(layer, feature, geometry);
+    var heightReference = this.getHeightReference(layer, feature, olGeometry);
 
     var bbOptions = /** @type {Cesium.optionsBillboardCollectionAdd} */ ({
       // always update Cesium externs before adding a property
@@ -466,7 +480,7 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium =
       position: position
     });
     var bb = this.csAddBillboard(billboards, bbOptions, layer, feature,
-        geometry, style);
+        olGeometry, style);
     if (opt_newBillboardCallback) {
       opt_newBillboardCallback(bb);
     }
@@ -486,7 +500,7 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium =
   }
 
   if (style.getText()) {
-    return this.addTextStyle(layer, feature, geometry, style,
+    return this.addTextStyle(layer, feature, olGeometry, style,
         new Cesium.Primitive());
   } else {
     return null;

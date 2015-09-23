@@ -1057,6 +1057,21 @@ Cesium.Primitive.prototype.olFeature;
  */
 Cesium.Primitive.prototype.olLayer;
 
+
+/**
+ * @typedef {{
+ *   geometryInstance: !Cesium.GeometryInstance
+ * }}
+ */
+Cesium.optionsGroundPrimitive;
+
+/**
+ * @constructor
+ * @param {Cesium.optionsGroundPrimitive=} opt_opts
+ * @extends {Cesium.Primitive}
+ */
+Cesium.GroundPrimitive = function(opt_opts) {};
+
 /**
  * @constructor
  */
