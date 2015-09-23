@@ -123,16 +123,22 @@ olcs.AbstractSynchronizer.prototype.orderLayers = function() {
  * @private
  */
 olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
-  var layers = [];
-  var groups = [];
-  olcs.AbstractSynchronizer.flattenLayers(root, layers, groups);
-
-  layers.forEach(function(olLayer) {
+  var fifo = [root];
+  while (fifo.length > 0) {
+    var olLayer = fifo.splice(0, 1)[0];
     var olLayerId = goog.getUid(olLayer);
-
-    // create new layer and set up synchronization
     goog.asserts.assert(!goog.isDef(this.layerMap[olLayerId]));
-    var cesiumObjects = this.createSingleCounterpart(olLayer);
+
+    var cesiumObjects = null;
+    if (olLayer instanceof ol.layer.Group) {
+      this.listenForGroupChanges_(olLayer);
+      cesiumObjects = this.createSingleCounterpart(olLayer);
+      if (!cesiumObjects) {
+        olLayer.getLayers().forEach(fifo.push.bind(fifo));
+      }
+    } else {
+      cesiumObjects = this.createSingleCounterpart(olLayer);
+    }
 
     // add Cesium layers
     if (!goog.isNull(cesiumObjects)) {
@@ -143,11 +149,7 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
         this.addCesiumObject(cesiumObject);
       }, this);
     }
-  }, this);
-
-  groups.forEach(function(el) {
-    this.listenForGroupChanges_(el);
-  }, this);
+  }
 
   this.orderLayers();
 };
