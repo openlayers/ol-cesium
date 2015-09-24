@@ -6,6 +6,10 @@
   * Change `olcs.AbstractSynchronizer.prototype.createSingleCounterpart` to
     return an array of counterparts instead of a unique object. This allows
     one OL3 layer to be transformed in several Cesium layers.
+  * Rename `olcs.AbstractSynchronizer.prototype.createSingleCounterpart` to
+    `olcs.AbstractSynchronizer.prototype.createSingleLayerCounterparts`.
+  * Rename `olcs.RasterSynchronizer.prototype.convertLayerToCesiumImagery` to
+    `olcs.RasterSynchronizer.prototype.convertLayerToCesiumImageries`.
 
 * Changes
   * The `olcs.AbstractSynchronizer` now tries to synchronize the layer groups.

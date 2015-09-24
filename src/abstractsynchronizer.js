@@ -133,14 +133,14 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
     var cesiumObjects = null;
     if (olLayer instanceof ol.layer.Group) {
       this.listenForGroupChanges_(olLayer);
-      cesiumObjects = this.createSingleCounterpart(olLayer);
+      cesiumObjects = this.createSingleLayerCounterparts(olLayer);
       if (!cesiumObjects) {
         olLayer.getLayers().forEach(function(l) {
           fifo.push(l);
         });
       }
     } else {
-      cesiumObjects = this.createSingleCounterpart(olLayer);
+      cesiumObjects = this.createSingleLayerCounterparts(olLayer);
     }
 
     // add Cesium layers
@@ -321,5 +321,5 @@ olcs.AbstractSynchronizer.prototype.removeAllCesiumObjects =
  * @return {?Array.<T>}
  * @protected
  */
-olcs.AbstractSynchronizer.prototype.createSingleCounterpart =
+olcs.AbstractSynchronizer.prototype.createSingleLayerCounterparts =
     goog.abstractMethod;
