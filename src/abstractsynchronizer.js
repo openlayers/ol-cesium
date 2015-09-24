@@ -46,8 +46,8 @@ olcs.AbstractSynchronizer = function(map, scene) {
 
   /**
    * Map of ol3 layer ids (from goog.getUid) to the Cesium ImageryLayers.
-   * null value means, that we are unable to create equivalent layer.
-   * @type {Object.<number, ?T>}
+   * Null value means, that we are unable to create equivalent layers.
+   * @type {Object.<number, ?Array.<T>>}
    * @protected
    */
   this.layerMap = {};
@@ -123,35 +123,33 @@ olcs.AbstractSynchronizer.prototype.orderLayers = function() {
  * @private
  */
 olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
-  var layers = [];
-  var groups = [];
-  olcs.AbstractSynchronizer.flattenLayers(root, layers, groups);
-
-  layers.forEach(function(olLayer) {
-    if (goog.isNull(olLayer)) {
-      return;
-    }
+  var fifo = [root];
+  while (fifo.length > 0) {
+    var olLayer = fifo.splice(0, 1)[0];
     var olLayerId = goog.getUid(olLayer);
+    goog.asserts.assert(!goog.isDef(this.layerMap[olLayerId]));
 
-    var cesiumObject = this.layerMap[olLayerId];
-    goog.asserts.assert(!goog.isDef(cesiumObject));
-
-    // no mapping -> create new layer and set up synchronization
-    cesiumObject = this.createSingleCounterpart(olLayer);
+    var cesiumObjects = null;
+    if (olLayer instanceof ol.layer.Group) {
+      this.listenForGroupChanges_(olLayer);
+      cesiumObjects = this.createSingleCounterpart(olLayer);
+      if (!cesiumObjects) {
+        olLayer.getLayers().forEach(fifo.push.bind(fifo));
+      }
+    } else {
+      cesiumObjects = this.createSingleCounterpart(olLayer);
+    }
 
     // add Cesium layers
-    if (!goog.isNull(cesiumObject)) {
-      cesiumObject.zIndex = olLayer.getZIndex();
-      this.addCesiumObject(cesiumObject);
-      this.layerMap[olLayerId] = cesiumObject;
+    if (!goog.isNull(cesiumObjects)) {
+      this.layerMap[olLayerId] = cesiumObjects;
       this.olLayerListenKeys_[olLayerId] = olLayer.on('change:zIndex',
           this.orderLayers, this);
+      cesiumObjects.forEach(function(cesiumObject) {
+        this.addCesiumObject(cesiumObject);
+      }, this);
     }
-  }, this);
-
-  groups.forEach(function(el) {
-    this.listenForGroupChanges_(el);
-  }, this);
+  }
 
   this.orderLayers();
 };
@@ -165,10 +163,12 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
 olcs.AbstractSynchronizer.prototype.removeAndDestroySingleLayer_ =
     function(layer) {
   var uid = goog.getUid(layer);
-  var counterpart = this.layerMap[uid];
-  if (!!counterpart) {
-    this.removeSingleCesiumObject(counterpart, false);
-    this.destroyCesiumObject(counterpart);
+  var counterparts = this.layerMap[uid];
+  if (!!counterparts) {
+    counterparts.forEach(function(counterpart) {
+      this.removeSingleCesiumObject(counterpart, false);
+      this.destroyCesiumObject(counterpart);
+    }, this);
     ol.Observable.unByKey(this.olLayerListenKeys_[uid]);
     delete this.olLayerListenKeys_[uid];
   }
@@ -314,8 +314,8 @@ olcs.AbstractSynchronizer.prototype.removeAllCesiumObjects =
 
 
 /**
- * @param {!ol.layer.Layer} olLayer
- * @return {T}
+ * @param {!ol.layer.Base} olLayer
+ * @return {?Array.<T>}
  * @protected
  */
 olcs.AbstractSynchronizer.prototype.createSingleCounterpart =

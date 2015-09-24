@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.9
+
+* Breaking changes
+  * Change `olcs.AbstractSynchronizer.prototype.createSingleCounterpart` to
+    return an array of counterparts instead of a unique object. This allows
+    one OL3 layer to be transformed in several Cesium layers.
+
+* Changes
+  * The `olcs.AbstractSynchronizer` now tries to synchronize the layer groups.
+    Only if null is returned will it synchronize each of its children. This
+    allows more synchronization strategies in user applications.
+
 ## v1.8 - 2015-09-10
 
 * Breaking changes

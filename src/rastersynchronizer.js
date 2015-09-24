@@ -75,7 +75,7 @@ olcs.RasterSynchronizer.prototype.removeAllCesiumObjects = function(destroy) {
  * May be overriden by child classes to implement custom behavior.
  * The default implementation handles tiled imageries in EPSG:4326 or
  * EPSG:3859.
- * @param {!ol.layer.Layer} olLayer
+ * @param {!ol.layer.Base} olLayer
  * @param {?ol.proj.Projection} viewProj Projection of the view.
  * @return {?Cesium.ImageryLayer} null if not possible (or supported)
  * @protected
@@ -121,7 +121,7 @@ olcs.RasterSynchronizer.prototype.createSingleCounterpart = function(olLayer) {
     }, this);
   }
 
-  return cesiumObject;
+  return cesiumObject ? [cesiumObject] : null;
 };
 
 
@@ -143,9 +143,9 @@ olcs.RasterSynchronizer.prototype.orderLayers = function() {
 
   layers.forEach(function(olLayer) {
     var olLayerId = goog.getUid(olLayer);
-    var cesiumObject = this.layerMap[olLayerId];
-    if (cesiumObject) {
-      this.raiseToTop(cesiumObject);
+    var cesiumObjects = this.layerMap[olLayerId];
+    if (cesiumObjects) {
+      cesiumObjects.forEach(this.raiseToTop, this);
     }
   }, this);
 };

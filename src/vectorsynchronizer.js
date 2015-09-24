@@ -148,5 +148,5 @@ olcs.VectorSynchronizer.prototype.createSingleCounterpart = function(olLayer) {
     onAddFeature(feature);
   }, this));
 
-  return counterpart;
+  return counterpart ? [counterpart] : null;
 };
