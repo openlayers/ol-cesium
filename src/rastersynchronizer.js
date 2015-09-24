@@ -71,57 +71,70 @@ olcs.RasterSynchronizer.prototype.removeAllCesiumObjects = function(destroy) {
 
 
 /**
- * Creates a Cesium.ImageryLayer.
+ * Creates an array of Cesium.ImageryLayer.
  * May be overriden by child classes to implement custom behavior.
  * The default implementation handles tiled imageries in EPSG:4326 or
  * EPSG:3859.
  * @param {!ol.layer.Base} olLayer
  * @param {?ol.proj.Projection} viewProj Projection of the view.
- * @return {?Cesium.ImageryLayer} null if not possible (or supported)
+ * @return {?Array.<!Cesium.ImageryLayer>} array or null if not possible
+ * (or supported)
  * @protected
  */
-olcs.RasterSynchronizer.prototype.convertLayerToCesiumImagery =
-    olcs.core.tileLayerToImageryLayer;
+olcs.RasterSynchronizer.prototype.convertLayerToCesiumImageries =
+    function(olLayer, viewProj) {
+  var result = olcs.core.tileLayerToImageryLayer(olLayer, viewProj);
+  return result ? [result] : null;
+};
 
 
 /**
  * @inheritDoc
  */
-olcs.RasterSynchronizer.prototype.createSingleCounterpart = function(olLayer) {
+olcs.RasterSynchronizer.prototype.createSingleLayerCounterparts =
+    function(olLayer) {
   var viewProj = this.view.getProjection();
-  var cesiumObject = this.convertLayerToCesiumImagery(olLayer, viewProj);
-  if (!goog.isNull(cesiumObject)) {
+  var cesiumObjects = this.convertLayerToCesiumImageries(olLayer, viewProj);
+  if (!goog.isNull(cesiumObjects)) {
     olLayer.on(
         ['change:brightness', 'change:contrast', 'change:hue',
          'change:opacity', 'change:saturation', 'change:visible'],
         function(e) {
           // the compiler does not seem to be able to infer this
-          if (!goog.isNull(cesiumObject)) {
-            olcs.core.updateCesiumLayerProperties(olLayer, cesiumObject);
+          goog.asserts.assert(!goog.isNull(cesiumObjects));
+          for (var i = 0; i < cesiumObjects.length; ++i) {
+            olcs.core.updateCesiumLayerProperties(olLayer, cesiumObjects[i]);
           }
         });
-    olcs.core.updateCesiumLayerProperties(olLayer, cesiumObject);
+
+    for (var i = 0; i < cesiumObjects.length; ++i) {
+      olcs.core.updateCesiumLayerProperties(olLayer, cesiumObjects[i]);
+    }
 
     // there is no way to modify Cesium layer extent,
     // we have to recreate when ol3 layer extent changes:
     olLayer.on('change:extent', function(e) {
-      this.cesiumLayers_.remove(cesiumObject, true); // destroy
-      this.ourLayers_.remove(cesiumObject, false);
+      for (var i = 0; i < cesiumObjects.length; ++i) {
+        this.cesiumLayers_.remove(cesiumObjects[i], true); // destroy
+        this.ourLayers_.remove(cesiumObjects[i], false);
+      }
       delete this.layerMap[goog.getUid(olLayer)]; // invalidate the map entry
       this.synchronize();
     }, this);
 
     olLayer.on('change', function(e) {
       // when the source changes, re-add the layer to force update
-      var position = this.cesiumLayers_.indexOf(cesiumObject);
-      if (position >= 0) {
-        this.cesiumLayers_.remove(cesiumObject, false);
-        this.cesiumLayers_.add(cesiumObject, position);
+      for (var i = 0; i < cesiumObjects.length; ++i) {
+        var position = this.cesiumLayers_.indexOf(cesiumObjects[i]);
+        if (position >= 0) {
+          this.cesiumLayers_.remove(cesiumObjects[i], false);
+          this.cesiumLayers_.add(cesiumObjects[i], position);
+        }
       }
     }, this);
   }
 
-  return cesiumObject ? [cesiumObject] : null;
+  return Array.isArray(cesiumObjects) ? cesiumObjects : null;
 };
 
 
