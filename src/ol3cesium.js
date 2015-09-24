@@ -244,7 +244,9 @@ olcs.OLCesium.prototype.setEnabled = function(enable) {
   } else {
     if (this.isOverMap_) {
       var interactions = this.map_.getInteractions();
-      this.pausedInteractions_.forEach(interactions.push);
+      this.pausedInteractions_.forEach(function(interaction) {
+        interactions.push(interaction);
+      });
       this.pausedInteractions_.length = 0;
 
       if (!goog.isNull(this.hiddenRootGroup_)) {
