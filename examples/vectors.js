@@ -151,7 +151,6 @@ var dragAndDropInteraction = new ol.interaction.DragAndDrop({
 });
 
 
-
 var map = new ol.Map({
   interactions: ol.interaction.defaults().extend([dragAndDropInteraction]),
   layers: [
@@ -241,4 +240,17 @@ function toggleStyle() {
   var swap = theCircle.getStyle();
   theCircle.setStyle(oldStyle);
   oldStyle = swap;
+}
+
+function toggleClampToGround() {
+  var altitudeMode;
+  if (!vectorLayer.get('altitudeMode')) {
+    altitudeMode = 'clampToGround';
+  }
+  vectorLayer.set('altitudeMode', altitudeMode);
+  vectorLayer2.set('altitudeMode', altitudeMode);
+  map.removeLayer(vectorLayer);
+  map.removeLayer(vectorLayer2);
+  map.addLayer(vectorLayer);
+  map.addLayer(vectorLayer2);
 }
