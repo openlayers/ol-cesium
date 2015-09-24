@@ -50,6 +50,7 @@ dist-apidoc:
 
 .PHONY: lint
 lint: .build/python-venv/bin/gjslint .build/gjslint.timestamp
+	@build/check-no-goog.sh
 
 .build/geojsonhint.timestamp: $(EXAMPLES_GEOJSON_FILES)
 	$(foreach file,$?, echo $(file); node_modules/geojsonhint/bin/geojsonhint $(file);)
