@@ -8,7 +8,7 @@ SRC_JS_FILES := $(shell find src -type f -name '*.js')
 EXAMPLES_JS_FILES := $(shell find examples -type f -name '*.js')
 EXAMPLES_HTML_FILES := $(shell find examples -type f -name '*.html')
 EXAMPLES_GEOJSON_FILES := $(shell find examples/data/ -name '*.geojson')
-
+CESIUM_COMPILE_TARGET = minify
 
 .PHONY: all
 all: help
@@ -134,7 +134,7 @@ ol3/build/olX:
 # Only generated when cesium/Build/Cesium/Cesium.js does not exist
 cesium/Build/Cesium/Cesium.js:
 ifndef NO_CESIUM
-	(cd cesium && ./Tools/apache-ant-1.8.2/bin/ant minify)
+	(cd cesium && ./Tools/apache-ant-1.8.2/bin/ant $(CESIUM_COMPILE_TARGET))
 else
 	mkdir -p cesium/Build/Cesium/
 endif
