@@ -2346,9 +2346,19 @@ Cesium.Scene.prototype.initializeFrame = function() {};
 
 
 /**
- * @param {number|undefined} time The simulation time.
+ * @param {number=} opt_date
  */
-Cesium.Scene.prototype.render = function(time) {};
+Cesium.Scene.prototype.render = function(opt_date) {};
+
+/**
+ * @type {Cesium.Event}
+ */
+Cesium.Scene.prototype.preRender;
+
+/**
+ * @type {Cesium.Event}
+ */
+Cesium.Scene.prototype.postRender;
 
 
 /**
