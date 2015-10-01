@@ -3006,3 +3006,14 @@ Cesium.WebMapTileServiceImageryProviderOptions.prototype.layer;
  * @type {string}
  */
 Cesium.WebMapTileServiceImageryProviderOptions.prototype.url;
+
+
+/**
+ * @type {function(Object=)}
+ */
+Cesium.loadWithXhr;
+
+/**
+ * @type {function(...)}
+ */
+Cesium.loadWithXhr.load;
