@@ -1531,6 +1531,12 @@ Cesium.DefaultProxy = function(proxy) {};
  */
 Cesium.Event = function() {};
 
+/**
+ * @param {function(...)} listener
+ * @param {Object=} opt_scope
+ * @return {function()}
+ */
+Cesium.Event.prototype.addEventListener = function(listener, opt_scope) {};
 
 
 /**
