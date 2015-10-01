@@ -119,6 +119,12 @@ olcs.OLCesium = function(options) {
   this.scene_.globe = this.globe_;
   this.scene_.skyAtmosphere = new Cesium.SkyAtmosphere();
 
+  this.dataSourceCollection_ = new Cesium.DataSourceCollection();
+  this.dataSourceDisplay_ = new Cesium.DataSourceDisplay({
+    scene: this.scene_,
+    dataSourceCollection: this.dataSourceCollection_
+  });
+
   var synchronizers = goog.isDef(options.createSynchronizers) ?
       options.createSynchronizers(this.map_, this.scene_) :
       [
@@ -144,7 +150,8 @@ olcs.OLCesium = function(options) {
     if (!this.blockCesiumRendering_) {
       this.scene_.initializeFrame();
       this.handleResize_();
-      this.scene_.render();
+      this.dataSourceDisplay_.update(time);
+      this.scene_.render(time);
       this.enabled_ && this.camera_.checkCameraChange();
     }
     this.cesiumRenderingDelay_.start();
@@ -198,6 +205,15 @@ olcs.OLCesium.prototype.getOlMap = function() {
  */
 olcs.OLCesium.prototype.getCesiumScene = function() {
   return this.scene_;
+};
+
+
+/**
+ * @return {!Cesium.DataSourceCollection}
+ * @api
+ */
+olcs.OLCesium.prototype.getDataSources = function() {
+  return this.dataSourceCollection_;
 };
 
 
