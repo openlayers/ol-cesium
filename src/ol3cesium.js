@@ -126,6 +126,9 @@ olcs.OLCesium = function(options) {
         new olcs.VectorSynchronizer(this.map_, this.scene_)
       ];
 
+  // Assures correct canvas size after initialisation
+  this.handleResize_();
+
   for (var i = synchronizers.length - 1; i >= 0; --i) {
     synchronizers[i].synchronize();
   }
@@ -137,8 +140,6 @@ olcs.OLCesium = function(options) {
       credits.style.display = 'none';
     }
   }
-
-  this.camera_.readFromView();
 
   this.cesiumRenderingDelay_ = new goog.async.AnimationDelay(function(time) {
     if (!this.blockCesiumRendering_) {
