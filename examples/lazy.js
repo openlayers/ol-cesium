@@ -48,7 +48,7 @@ function init3D() {
   ol3d = new olcs.OLCesium({map: ol2d});
   var scene = ol3d.getCesiumScene();
   var terrainProvider = new Cesium.CesiumTerrainProvider({
-      url : '//cesiumjs.org/stk-terrain/tilesets/world/tiles'
+      url : '//assets.agi.com/stk-terrain/world'
   });
   scene.terrainProvider = terrainProvider;
 }
