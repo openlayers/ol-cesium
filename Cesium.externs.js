@@ -3034,3 +3034,16 @@ Cesium.loadWithXhr;
  * @type {function(...)}
  */
 Cesium.loadWithXhr.load;
+
+
+/**
+ * @param {string} workerName
+ * @param {number=} opt_maximumActiveTasks
+ * @constructor
+ */
+Cesium.TaskProcessor = function(workerName, opt_maximumActiveTasks) {};
+
+/**
+ * @return {boolean}
+ */
+Cesium.TaskProcessor.prototype.isDestroyed = function() {};
