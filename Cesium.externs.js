@@ -2502,6 +2502,11 @@ Cesium.ScreenSpaceCameraController = function() {};
 /**
  * @type {number}
  */
+Cesium.ScreenSpaceCameraController.prototype.maximumZoomDistance;
+
+/**
+ * @type {number}
+ */
 Cesium.ScreenSpaceCameraController.prototype.minimumZoomDistance;
 
 
