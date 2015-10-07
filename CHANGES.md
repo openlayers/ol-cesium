@@ -13,6 +13,8 @@
     `olcs.RasterSynchronizer.prototype.convertLayerToCesiumImageries`.
 
 * Changes
+  * Add the experimental method `olcs.OLCesium.enableAutoRenderLoop` to stop
+    rendering the globe when idle. This is based on work from Kevin Ring.
   * Port to Cesium 1.14.
   * The `olcs.AbstractSynchronizer` now tries to synchronize the layer groups.
     Only if null is returned will it synchronize each of its children. This

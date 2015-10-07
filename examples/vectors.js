@@ -275,3 +275,5 @@ function toggleClampToGround() {
   map.addLayer(vectorLayer);
   map.addLayer(vectorLayer2);
 }
+
+ol3d.enableAutoRenderLoop();
