@@ -2187,6 +2187,14 @@ Cesium.Matrix4.prototype.equals = function(matrix) {};
 
 
 /**
+ * @param {Cesium.Matrix4} matrix
+ * @param {number} epsilon
+ * @return {boolean}
+ */
+Cesium.Matrix4.prototype.equalsEpsilon = function(matrix, epsilon) {};
+
+
+/**
  * @param {Cesium.Matrix4=} opt_result
  */
 Cesium.Matrix4.prototype.clone = function(opt_result) {};
