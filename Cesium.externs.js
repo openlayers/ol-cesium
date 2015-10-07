@@ -2171,6 +2171,15 @@ Cesium.Matrix4.multiply = function(left, right, result) {};
 
 
 /**
+ * @param {Cesium.Matrix4|undefined} matrix1
+ * @param {Cesium.Matrix4|undefined} matrix2
+ * @param {number} epsilon
+ * @return {boolean}
+ */
+Cesium.Matrix4.equalsEpsilon = function(matrix1, matrix2, epsilon) {};
+
+
+/**
  * @param {Cesium.Matrix4} matrix .
  * @return {boolean} .
  */
