@@ -490,7 +490,15 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium =
     // Cesium requires the image to be loaded
     var listener = function() {
       if (!billboards.isDestroyed()) {
-        reallyCreateBillboard();
+        // We create the billboard only if the feature is still displayed on the
+        // map.
+        var features = layer.getSource().getFeatures();
+        for (var i = 0, ii = features.length; i < ii; i++) {
+          if (goog.getUid(features[i]) == goog.getUid(feature)) {
+            reallyCreateBillboard();
+            break;
+          }
+        }
       }
     };
 
