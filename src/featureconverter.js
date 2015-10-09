@@ -440,63 +440,65 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium =
   olGeometry = olcs.core.olGeometryCloneTo4326(olGeometry, projection);
 
   var imageStyle = style.getImage();
-  if (imageStyle instanceof ol.style.Icon) {
-    // make sure the image is scheduled for load
-    imageStyle.load();
-  }
-
-  var image = imageStyle.getImage(1); // get normal density
-  var isImageLoaded = function(image) {
-    return image.src != '' &&
-        image.naturalHeight != 0 &&
-        image.naturalWidth != 0 &&
-        image.complete;
-  };
-  var reallyCreateBillboard = (function() {
-    if (goog.isNull(image)) {
-      return;
-    }
-    if (!(image instanceof HTMLCanvasElement ||
-        image instanceof Image ||
-        image instanceof HTMLImageElement)) {
-      return;
-    }
-    var center = olGeometry.getCoordinates();
-    var position = olcs.core.ol4326CoordinateToCesiumCartesian(center);
-    var color;
-    var opacity = imageStyle.getOpacity();
-    if (goog.isDef(opacity)) {
-      color = new Cesium.Color(1.0, 1.0, 1.0, opacity);
+  if (imageStyle) {
+    if (imageStyle instanceof ol.style.Icon) {
+      // make sure the image is scheduled for load
+      imageStyle.load();
     }
 
-    var heightReference = this.getHeightReference(layer, feature, olGeometry);
-
-    var bbOptions = /** @type {Cesium.optionsBillboardCollectionAdd} */ ({
-      // always update Cesium externs before adding a property
-      image: image,
-      color: color,
-      heightReference: heightReference,
-      verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-      position: position
-    });
-    var bb = this.csAddBillboard(billboards, bbOptions, layer, feature,
-        olGeometry, style);
-    if (opt_newBillboardCallback) {
-      opt_newBillboardCallback(bb);
-    }
-  }).bind(this);
-
-  if (image instanceof Image && !isImageLoaded(image)) {
-    // Cesium requires the image to be loaded
-    var listener = function() {
-      if (!billboards.isDestroyed()) {
-        reallyCreateBillboard();
-      }
+    var image = imageStyle.getImage(1); // get normal density
+    var isImageLoaded = function(image) {
+      return image.src != '' &&
+          image.naturalHeight != 0 &&
+          image.naturalWidth != 0 &&
+          image.complete;
     };
+    var reallyCreateBillboard = (function() {
+      if (goog.isNull(image)) {
+        return;
+      }
+      if (!(image instanceof HTMLCanvasElement ||
+          image instanceof Image ||
+          image instanceof HTMLImageElement)) {
+        return;
+      }
+      var center = olGeometry.getCoordinates();
+      var position = olcs.core.ol4326CoordinateToCesiumCartesian(center);
+      var color;
+      var opacity = imageStyle.getOpacity();
+      if (goog.isDef(opacity)) {
+        color = new Cesium.Color(1.0, 1.0, 1.0, opacity);
+      }
 
-    goog.events.listenOnce(image, 'load', listener);
-  } else {
-    reallyCreateBillboard();
+      var heightReference = this.getHeightReference(layer, feature, olGeometry);
+
+      var bbOptions = /** @type {Cesium.optionsBillboardCollectionAdd} */ ({
+        // always update Cesium externs before adding a property
+        image: image,
+        color: color,
+        heightReference: heightReference,
+        verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+        position: position
+      });
+      var bb = this.csAddBillboard(billboards, bbOptions, layer, feature,
+          olGeometry, style);
+      if (opt_newBillboardCallback) {
+        opt_newBillboardCallback(bb);
+      }
+    }).bind(this);
+
+    if (image instanceof Image && !isImageLoaded(image)) {
+      // Cesium requires the image to be loaded
+      var listener = function() {
+        if (!billboards.isDestroyed()) {
+          reallyCreateBillboard();
+        }
+      };
+
+      goog.events.listenOnce(image, 'load', listener);
+    } else {
+      reallyCreateBillboard();
+    }
   }
 
   if (style.getText()) {
