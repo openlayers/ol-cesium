@@ -96,9 +96,7 @@ olcs.RasterSynchronizer.prototype.createSingleLayerCounterparts =
   var viewProj = this.view.getProjection();
   var cesiumObjects = this.convertLayerToCesiumImageries(olLayer, viewProj);
   if (!goog.isNull(cesiumObjects)) {
-    olLayer.on(
-        ['change:brightness', 'change:contrast', 'change:hue',
-         'change:opacity', 'change:saturation', 'change:visible'],
+    olLayer.on(['change:opacity', 'change:visible'],
         function(e) {
           // the compiler does not seem to be able to infer this
           goog.asserts.assert(!goog.isNull(cesiumObjects));
