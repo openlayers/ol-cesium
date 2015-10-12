@@ -632,23 +632,19 @@ olcs.FeatureConverter.prototype.olGeometry4326TextPartToCesium =
   }
   options.style = labelStyle;
 
-  if (style.getTextAlign()) {
-    var horizontalOrigin;
-    switch (style.getTextAlign()) {
-      case 'center':
-        horizontalOrigin = Cesium.HorizontalOrigin.CENTER;
-        break;
-      case 'left':
-        horizontalOrigin = Cesium.HorizontalOrigin.LEFT;
-        break;
-      case 'right':
-        horizontalOrigin = Cesium.HorizontalOrigin.RIGHT;
-        break;
-      default:
-        goog.asserts.fail('unhandled text align ' + style.getTextAlign());
-    }
-    options.horizontalOrigin = horizontalOrigin;
+  var horizontalOrigin;
+  switch (style.getTextAlign()) {
+    case 'left':
+      horizontalOrigin = Cesium.HorizontalOrigin.LEFT;
+      break;
+    case 'right':
+      horizontalOrigin = Cesium.HorizontalOrigin.RIGHT;
+      break;
+    case 'center':
+    default:
+      horizontalOrigin = Cesium.HorizontalOrigin.CENTER;
   }
+  options.horizontalOrigin = horizontalOrigin;
 
   if (style.getTextBaseline()) {
     var verticalOrigin;
