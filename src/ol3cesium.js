@@ -88,7 +88,7 @@ olcs.OLCesium = function(options) {
 
   var sscc = this.scene_.screenSpaceCameraController;
   sscc.inertiaSpin = 0;
-  sscc.ineartiaTranslate = 0;
+  sscc.inertiaTranslate = 0;
   sscc.inertiaZoom = 0;
 
   sscc.tiltEventTypes.push({
