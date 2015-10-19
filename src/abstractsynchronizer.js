@@ -89,6 +89,10 @@ olcs.AbstractSynchronizer.prototype.synchronize = function() {
  */
 olcs.AbstractSynchronizer.flattenLayers =
     function(layer, foundLayers, foundGroups, opt_zIndices) {
+  foundLayers.push(layer);
+  if (opt_zIndices) {
+    opt_zIndices[goog.getUid(layer)] = layer.getZIndex();
+  }
   if (layer instanceof ol.layer.Group) {
     foundGroups.push(layer);
     var sublayers = layer.getLayers();
@@ -97,11 +101,6 @@ olcs.AbstractSynchronizer.flattenLayers =
         olcs.AbstractSynchronizer.flattenLayers(el, foundLayers, foundGroups,
             opt_zIndices);
       });
-    }
-  } else {
-    foundLayers.push(layer);
-    if (opt_zIndices) {
-      opt_zIndices[goog.getUid(layer)] = layer.getZIndex();
     }
   }
 };
