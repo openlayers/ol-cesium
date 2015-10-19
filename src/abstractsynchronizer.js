@@ -195,6 +195,7 @@ olcs.AbstractSynchronizer.prototype.unlistenSingleGroup_ =
     ol.Observable.unByKey(key);
   });
   delete this.olGroupListenKeys_[uid];
+  delete this.layerMap[uid];
 };
 
 
