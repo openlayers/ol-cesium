@@ -22,6 +22,46 @@ olcs.FeatureConverter = function(scene) {
    * @protected
    */
   this.scene = scene;
+
+  /**
+   * Bind once to have a unique function for using as a listener
+   * @type {function(ol.source.VectorEvent)}
+   * @private
+   */
+  this.boundOnRemoveOrClearFeatureListener_ =
+      this.onRemoveOrClearFeature_.bind(this);
+};
+
+
+/**
+ * @param {ol.source.VectorEvent} evt
+ * @private
+ */
+olcs.FeatureConverter.prototype.onRemoveOrClearFeature_ = function(evt) {
+  var source = evt.target;
+  goog.asserts.assertInstanceof(source, ol.source.Vector);
+
+  var cancellers = source['olcs_cancellers'];
+  if (cancellers) {
+    var feature = evt.feature;
+    if (goog.isDef(feature)) {
+      // remove
+      var id = goog.getUid(feature);
+      var canceller = cancellers[id];
+      if (canceller) {
+        canceller();
+        delete cancellers[id];
+      }
+    } else {
+      // clear
+      for (var key in cancellers) {
+        if (cancellers.hasOwnProperty(key)) {
+          cancellers[key]();
+        }
+      }
+      source['olcs_cancellers'] = {};
+    }
+  }
 };
 
 
@@ -489,8 +529,21 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium =
 
     if (image instanceof Image && !isImageLoaded(image)) {
       // Cesium requires the image to be loaded
+      var cancelled = false;
+      var source = layer.getSource();
+      var canceller = function() {
+        cancelled = true;
+      };
+      source.on(['removefeature', 'clear'],
+          this.boundOnRemoveOrClearFeatureListener_);
+      source['olcs_cancellers'] = source['olcs_cancellers'] || {};
+
+      goog.asserts.assert(!source['olcs_cancellers'][goog.getUid(feature)]);
+      source['olcs_cancellers'][goog.getUid(feature)] = canceller;
+
       var listener = function() {
-        if (!billboards.isDestroyed()) {
+        if (!billboards.isDestroyed() && !cancelled) {
+          // Create billboard if the feature is still displayed on the map.
           reallyCreateBillboard();
         }
       };
