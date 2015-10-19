@@ -2543,7 +2543,7 @@ Cesium.ScreenSpaceCameraController.prototype.inertiaSpin;
 /**
  * @type {number}
  */
-Cesium.ScreenSpaceCameraController.prototype.ineartiaTranslate;
+Cesium.ScreenSpaceCameraController.prototype.inertiaTranslate;
 
 /**
  * @type {number}
