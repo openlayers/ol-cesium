@@ -13,6 +13,7 @@
     `olcs.RasterSynchronizer.prototype.convertLayerToCesiumImageries`.
 
 * Changes
+  * Port to Cesium 1.14.
   * The `olcs.AbstractSynchronizer` now tries to synchronize the layer groups.
     Only if null is returned will it synchronize each of its children. This
     allows more synchronization strategies in user applications.
