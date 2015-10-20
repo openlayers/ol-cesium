@@ -1531,6 +1531,12 @@ Cesium.DefaultProxy = function(proxy) {};
  */
 Cesium.Event = function() {};
 
+/**
+ * @param {function(...)} listener
+ * @param {Object=} opt_scope
+ * @return {function()}
+ */
+Cesium.Event.prototype.addEventListener = function(listener, opt_scope) {};
 
 
 /**
@@ -2140,6 +2146,14 @@ Cesium.Matrix4 = function(opt_a00, opt_a10, opt_a20, opt_a30,
 
 
 /**
+ * @param {Cesium.Matrix4} matrix
+ * @param {Cesium.Matrix4=} opt_result
+ * @return {!Cesium.Matrix4}
+ */
+Cesium.Matrix4.clone = function(matrix, opt_result) {};
+
+
+/**
  * @param {Cesium.Cartesian3} translation .
  * @param {Cesium.Matrix4=} opt_result .
  * @return {!Cesium.Matrix4} .
@@ -2157,10 +2171,27 @@ Cesium.Matrix4.multiply = function(left, right, result) {};
 
 
 /**
+ * @param {Cesium.Matrix4|undefined} matrix1
+ * @param {Cesium.Matrix4|undefined} matrix2
+ * @param {number} epsilon
+ * @return {boolean}
+ */
+Cesium.Matrix4.equalsEpsilon = function(matrix1, matrix2, epsilon) {};
+
+
+/**
  * @param {Cesium.Matrix4} matrix .
  * @return {boolean} .
  */
 Cesium.Matrix4.prototype.equals = function(matrix) {};
+
+
+/**
+ * @param {Cesium.Matrix4} matrix
+ * @param {number} epsilon
+ * @return {boolean}
+ */
+Cesium.Matrix4.prototype.equalsEpsilon = function(matrix, epsilon) {};
 
 
 /**
@@ -2332,9 +2363,19 @@ Cesium.Scene.prototype.initializeFrame = function() {};
 
 
 /**
- * @param {number|undefined} time The simulation time.
+ * @param {number=} opt_date
  */
-Cesium.Scene.prototype.render = function(time) {};
+Cesium.Scene.prototype.render = function(opt_date) {};
+
+/**
+ * @type {Cesium.Event}
+ */
+Cesium.Scene.prototype.preRender;
+
+/**
+ * @type {Cesium.Event}
+ */
+Cesium.Scene.prototype.postRender;
 
 
 /**
@@ -2982,3 +3023,27 @@ Cesium.WebMapTileServiceImageryProviderOptions.prototype.layer;
  * @type {string}
  */
 Cesium.WebMapTileServiceImageryProviderOptions.prototype.url;
+
+
+/**
+ * @type {function(Object=)}
+ */
+Cesium.loadWithXhr;
+
+/**
+ * @type {function(...)}
+ */
+Cesium.loadWithXhr.load;
+
+
+/**
+ * @param {string} workerName
+ * @param {number=} opt_maximumActiveTasks
+ * @constructor
+ */
+Cesium.TaskProcessor = function(workerName, opt_maximumActiveTasks) {};
+
+/**
+ * @return {boolean}
+ */
+Cesium.TaskProcessor.prototype.isDestroyed = function() {};

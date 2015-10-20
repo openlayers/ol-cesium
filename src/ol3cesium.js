@@ -2,6 +2,7 @@ goog.provide('olcs.OLCesium');
 
 goog.require('goog.async.AnimationDelay');
 goog.require('goog.dom');
+goog.require('olcs.AutoRenderLoop');
 goog.require('olcs.Camera');
 goog.require('olcs.RasterSynchronizer');
 goog.require('olcs.VectorSynchronizer');
@@ -14,6 +15,12 @@ goog.require('olcs.VectorSynchronizer');
  * @api
  */
 olcs.OLCesium = function(options) {
+
+  /**
+   * @type {olcs.AutoRenderLoop}
+   * @private
+   */
+  this.autoRenderLoop_ = null;
 
   /**
    * @type {!ol.Map}
@@ -312,4 +319,16 @@ olcs.OLCesium.prototype.warmUp = function(height, timeout) {
 */
 olcs.OLCesium.prototype.setBlockCesiumRendering = function(block) {
   this.blockCesiumRendering_ = block;
+};
+
+
+/**
+ * Render the globe only when necessary in order to save resources.
+ * Experimental.
+ * @api
+ */
+olcs.OLCesium.prototype.enableAutoRenderLoop = function() {
+  if (!this.autoRenderLoop_) {
+    this.autoRenderLoop_ = new olcs.AutoRenderLoop(this, false);
+  }
 };
