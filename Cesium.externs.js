@@ -2332,8 +2332,9 @@ Cesium.Scene.prototype.initializeFrame = function() {};
 
 
 /**
+ * @param {number|undefined} time The simulation time.
  */
-Cesium.Scene.prototype.render = function() {};
+Cesium.Scene.prototype.render = function(time) {};
 
 
 /**
@@ -2404,6 +2405,65 @@ Cesium.Scene.prototype.skyAtmosphere;
  * @type {number}
  */
 Cesium.Scene.prototype.maximumAliasedLineWidth;
+
+
+/**
+ * @constructor
+ */
+Cesium.JulianDate = function() {};
+
+
+/**
+ * @constructor
+ */
+Cesium.DataSource = function() {};
+
+
+/**
+ * @constructor
+ */
+Cesium.DataSourceCollection = function() {};
+
+/**
+ * @param {Cesium.DataSource|Promise.<Cesium.DataSource>} dataSource A data source or a promise to a data source to add to the collection.
+ *                                        When passing a promise, the data source will not actually be added
+ *                                        to the collection until the promise resolves successfully.
+ * @returns {Promise.<Cesium.DataSource>} A Promise that resolves once the data source has been added to the collection.
+ */
+Cesium.DataSourceCollection.prototype.add = function(dataSource) {};
+
+/**
+ * Removes a data source from this collection, if present.
+ *
+ * @param {Cesium.DataSource} dataSource The data source to remove.
+ * @param {Boolean} [destroy=false] Whether to destroy the data source in addition to removing it.
+ * @returns {Boolean} true if the data source was in the collection and was removed,
+ *                    false if the data source was not in the collection.
+ */
+Cesium.DataSourceCollection.prototype.remove = function(dataSource, destroy) {};
+
+
+/**
+ * @constructor
+ * @param {{scene: Cesium.Scene,
+            dataSourceCollection: Cesium.DataSourceCollection}} opt_opts
+ */
+Cesium.DataSourceDisplay = function(opt_opts) {};
+
+
+/**
+* @param {Cesium.JulianDate} time The simulation time.
+ * @returns {Boolean} True if all data sources are ready to be displayed, false otherwise.
+ */
+Cesium.DataSourceDisplay.prototype.update = function(time) {};
+
+
+/**
+ * @type {!Cesium.UniformState}
+ */
+Cesium.Context.prototype.uniformState;
+
+
 
 /**
  * @typedef {{
