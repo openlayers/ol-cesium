@@ -145,10 +145,23 @@ olcs.RasterSynchronizer.prototype.createSingleLayerCounterparts =
  */
 olcs.RasterSynchronizer.prototype.orderLayers = function() {
   var layers = [];
-  var groups = [];
   var zIndices = {};
-  olcs.AbstractSynchronizer.flattenLayers(this.mapLayerGroup, layers, groups,
-      zIndices);
+  var fifo = [this.mapLayerGroup];
+
+  while (fifo.length > 0) {
+    var olLayer = fifo.splice(0, 1)[0];
+    layers.push(olLayer);
+    zIndices[goog.getUid(olLayer)] = olLayer.getZIndex();
+
+    if (olLayer instanceof ol.layer.Group) {
+      var sublayers = olLayer.getLayers();
+      if (goog.isDef(sublayers)) {
+        sublayers.forEach(function(el) {
+          fifo.push(el);
+        });
+      }
+    }
+  }
 
   goog.array.stableSort(layers, function(layer1, layer2) {
     return zIndices[goog.getUid(layer1)] - zIndices[goog.getUid(layer2)];

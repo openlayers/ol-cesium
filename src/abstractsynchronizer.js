@@ -79,35 +79,6 @@ olcs.AbstractSynchronizer.prototype.synchronize = function() {
 
 
 /**
- * Populate the foundLayers and foundGroups using a breadth-first algorithm.
- * A map of layer uid to z-index is also populated.
- * @param {ol.layer.Base} layer
- * @param {Array.<ol.layer.Layer>} foundLayers Found leaves.
- * @param {Array.<ol.layer.Group>} foundGroups Found nodes.
- * @param {Object.<number, number>=} opt_zIndices Map of layer uid to z-index.
- * @protected
- */
-olcs.AbstractSynchronizer.flattenLayers =
-    function(layer, foundLayers, foundGroups, opt_zIndices) {
-  if (layer instanceof ol.layer.Group) {
-    foundGroups.push(layer);
-    var sublayers = layer.getLayers();
-    if (goog.isDef(sublayers)) {
-      sublayers.forEach(function(el) {
-        olcs.AbstractSynchronizer.flattenLayers(el, foundLayers, foundGroups,
-            opt_zIndices);
-      });
-    }
-  } else {
-    foundLayers.push(layer);
-    if (opt_zIndices) {
-      opt_zIndices[goog.getUid(layer)] = layer.getZIndex();
-    }
-  }
-};
-
-
-/**
  * Order counterparts using the same algorithm as the Openlayers renderer:
  * z-index then original sequence order.
  * @protected
@@ -205,20 +176,20 @@ olcs.AbstractSynchronizer.prototype.unlistenSingleGroup_ =
  * @private
  */
 olcs.AbstractSynchronizer.prototype.removeLayer_ = function(root) {
-  if (!root) {
-    return;
+  if (!!root) {
+    var fifo = [root];
+    while (fifo.length > 0) {
+      var olLayer = fifo.splice(0, 1)[0];
+      if (olLayer instanceof ol.layer.Group) {
+        this.unlistenSingleGroup_(olLayer);
+        olLayer.getLayers().forEach(function(l) {
+          fifo.push(l);
+        });
+      } else {
+        this.removeAndDestroySingleLayer_(olLayer);
+      }
+    }
   }
-  var layers = [];
-  var groups = [];
-  olcs.AbstractSynchronizer.flattenLayers(root, layers, groups);
-
-  layers.forEach(function(el) {
-    this.removeAndDestroySingleLayer_(el);
-  }, this);
-
-  groups.forEach(function(el) {
-    this.unlistenSingleGroup_(el);
-  }, this);
 };
 
 
