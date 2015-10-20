@@ -3,6 +3,7 @@
 ## v1.9
 
 * Breaking changes
+  * Port to OL 3.10.1, remove saturation, gamma and hue functions.
   * Change `olcs.AbstractSynchronizer.prototype.createSingleCounterpart` to
     return an array of counterparts instead of a unique object. This allows
     one OL3 layer to be transformed in several Cesium layers.
@@ -12,6 +13,7 @@
     `olcs.RasterSynchronizer.prototype.convertLayerToCesiumImageries`.
 
 * Changes
+  * Port to Cesium 1.14.
   * The `olcs.AbstractSynchronizer` now tries to synchronize the layer groups.
     Only if null is returned will it synchronize each of its children. This
     allows more synchronization strategies in user applications.

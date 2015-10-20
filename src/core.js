@@ -404,8 +404,8 @@ olcs.core.tileLayerToImageryLayer = function(olLayer, viewProj) {
 
 
 /**
- * Synchronizes the layer rendering properties (brightness, contrast, hue,
- * opacity, saturation, visible) to the given Cesium ImageryLayer.
+ * Synchronizes the layer rendering properties (opacity, visible)
+ * to the given Cesium ImageryLayer.
  * @param {!ol.layer.Base} olLayer
  * @param {!Cesium.ImageryLayer} csLayer
  * @api
@@ -418,31 +418,6 @@ olcs.core.updateCesiumLayerProperties = function(olLayer, csLayer) {
   var visible = olLayer.getVisible();
   if (goog.isDef(visible)) {
     csLayer.show = visible;
-  }
-
-  // saturation and contrast are working ok
-  var saturation = olLayer.getSaturation();
-  if (goog.isDef(saturation)) {
-    csLayer.saturation = saturation;
-  }
-  var contrast = olLayer.getContrast();
-  if (goog.isDef(contrast)) {
-    csLayer.contrast = contrast;
-  }
-
-  // Cesium actually operates in YIQ space -> hard to emulate
-  // The following values are only a rough approximations:
-
-  // The hue in Cesium has different meaning than the OL equivalent.
-  // var hue = olLayer.getHue();
-  // if (goog.isDef(hue)) {
-  //   csLayer.hue = hue;
-  // }
-
-  var brightness = olLayer.getBrightness();
-  if (goog.isDef(brightness)) {
-    // rough estimation
-    csLayer.brightness = Math.pow(1 + parseFloat(brightness), 2);
   }
 };
 
