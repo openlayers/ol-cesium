@@ -100,6 +100,8 @@ olcs.VectorSynchronizer.prototype.createSingleLayerCounterparts =
   var csPrimitives = counterpart.getRootPrimitive();
   var olListenKeys = counterpart.olListenKeys;
 
+  csPrimitives.show = olLayer.getVisible();
+
   olListenKeys.push(olLayer.on('change:visible', function(e) {
     csPrimitives.show = olLayer.getVisible();
   }));
