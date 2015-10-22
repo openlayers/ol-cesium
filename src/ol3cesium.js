@@ -332,3 +332,13 @@ olcs.OLCesium.prototype.enableAutoRenderLoop = function() {
     this.autoRenderLoop_ = new olcs.AutoRenderLoop(this, false);
   }
 };
+
+
+/**
+ * Get the autorender loop.
+ * @return {?olcs.AutoRenderLoop}
+ * @api
+*/
+olcs.OLCesium.prototype.getAutoRenderLoop = function() {
+  return this.autoRenderLoop_;
+};

@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.9
+## v1.9 - 2015-10-22
 
 * Breaking changes
   * Port to OL 3.10.1, remove saturation, gamma and hue functions.

@@ -116,6 +116,10 @@ olcs.AutoRenderLoop.prototype.enable = function() {
 
     return result;
   };
+
+  // Listen for changes on the layer group
+  this.ol3d.getOlMap().getLayerGroup().on('change',
+      this._boundNotifyRepaintRequired);
 };
 
 
@@ -147,6 +151,9 @@ olcs.AutoRenderLoop.prototype.disable = function() {
 
   Cesium.loadWithXhr.load = this._originalLoadWithXhr;
   Cesium.TaskProcessor.prototype.scheduleTask = this._originalScheduleTask;
+
+  this.ol3d.getOlMap().getLayerGroup().un('change',
+      this._boundNotifyRepaintRequired);
 };
 
 
@@ -187,6 +194,16 @@ olcs.AutoRenderLoop.prototype.postRender = function(date) {
   }
 
   Cesium.Matrix4.clone(camera.viewMatrix, this.lastCameraViewMatrix_);
+};
+
+
+/**
+ * Restart render loop.
+ * Force a restart of the render loop.
+ * @api
+ */
+olcs.AutoRenderLoop.prototype.restartRenderLoop = function() {
+  this.notifyRepaintRequired();
 };
 
 
