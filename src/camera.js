@@ -465,10 +465,11 @@ olcs.Camera.prototype.updateView = function() {
  * @param {boolean=} opt_dontSync Do not synchronize the view.
  */
 olcs.Camera.prototype.checkCameraChange = function(opt_dontSync) {
-  var viewMatrix = this.cam_.viewMatrix;
-  if (!this.lastCameraViewMatrix_ ||
-      !this.lastCameraViewMatrix_.equals(viewMatrix)) {
-    this.lastCameraViewMatrix_ = viewMatrix.clone();
+  var old = this.lastCameraViewMatrix_;
+  var current = this.cam_.viewMatrix;
+
+  if (!old || !Cesium.Matrix4.equalsEpsilon(old, current, 1e-5)) {
+    this.lastCameraViewMatrix_ = current.clone();
     if (opt_dontSync !== true) {
       this.updateView();
     }
