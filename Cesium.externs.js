@@ -2225,35 +2225,6 @@ Cesium.Matrix4.multiplyByVector = function(matrix, point, result) {};
 Cesium.Matrix4.toArray = function(matrix) {};
 
 
-/**
- * @constructor
- * @param {{url: (string|undefined),
- *          fileExtension: (string|undefined),
- *          proxy: (Object|undefined),
- *          rectangle: (Cesium.Rectangle|undefined),
- *          minimumLevel: (number|undefined),
- *          maximumLevel: (number|undefined),
- *          credit: (Cesium.Credit|string|undefined)}=} opt_opts
- * @extends {Cesium.ImageryProvider}
- */
-Cesium.OpenStreetMapImageryProvider = function(opt_opts) {};
-
-
-
-/**
- * @constructor
- * @param {{url: string,
- *          layers: string,
- *          parameters: (Object|undefined),
- *          rectangle: (Cesium.Rectangle|undefined),
- *          maximumLevel: (number|undefined),
- *          credit: (Cesium.Credit|string|undefined),
- *          proxy: (Object|undefined)}} options
- * @extends {Cesium.ImageryProvider}
- */
-Cesium.WebMapServiceImageryProvider = function(options) {};
-
-
 
 /**
  * @constructor
@@ -2974,61 +2945,109 @@ Cesium.HeightReference.RELATIVE_TO_GROUND;
 Cesium.WebMapTileServiceImageryProvider = function(options) {};
 
 
-
 /**
  * @typedef {{
  *   url: string,
- *   layer: string,
  *   format: string,
+ *   layer: string,
  *   style: string,
  *   tileMatrixSetID: string,
+ *   tileWidth: (number|undefined),
+ *   tileHeight: (number|undefined),
  *   tilingScheme: (Cesium.TilingScheme|undefined),
- *   maximumLevel: (number|undefined)
+ *   proxy: (Object|undefined),
+ *   rectangle: (Cesium.Rectangle|undefined),
+ *   minimumLevel: (number|undefined),
+ *   maximumLevel: (number|undefined),
+ *   credit: (Cesium.Credit|string|undefined),
+ *   subdomains: (string|Array.<string>|undefined)
  * }}
  */
 Cesium.WebMapTileServiceImageryProviderOptions;
 
 
-/**
- * @type {number}
- */
-Cesium.WebMapTileServiceImageryProviderOptions.prototype.maximumLevel;
-
 
 /**
- * @type {Cesium.TilingScheme}
+ * @param {!Cesium.UrlTemplateImageryProviderOptions} options
+ * @extends {Cesium.ImageryProvider}
+ * @constructor
  */
-Cesium.WebMapTileServiceImageryProviderOptions.prototype.tilingScheme;
+Cesium.UrlTemplateImageryProvider = function(options) {};
 
 
 /**
- * @type {string}
+ * @typedef {{
+ *   url: string,
+ *   subdomains: (string|Array.<string>|undefined),
+ *   proxy: (Object|undefined),
+ *   credit: (Cesium.Credit|string|undefined),
+ *   minimumLevel: (number|undefined),
+ *   maximumLevel: (number|undefined),
+ *   rectangle: (Cesium.Rectangle|undefined),
+ *   tilingScheme: (Cesium.TilingScheme|undefined),
+ *   tileWidth: (number|undefined),
+ *   tileHeight: (number|undefined),
+ *   hasAlphaChannel: (boolean|undefined)
+ * }}
  */
-Cesium.WebMapTileServiceImageryProviderOptions.prototype.tileMatrixSetID;
+Cesium.UrlTemplateImageryProviderOptions;
+
 
 
 /**
- * @type {string}
+ * @typedef {{
+ *   url: (string|undefined),
+ *   fileExtension: (string|undefined),
+ *   proxy: (Object|undefined),
+ *   rectangle: (Cesium.Rectangle|undefined),
+ *   minimumLevel: (number|undefined),
+ *   maximumLevel: (number|undefined),
+ *   credit: (Cesium.Credit|string|undefined)
+ * }}
  */
-Cesium.WebMapTileServiceImageryProviderOptions.prototype.format;
+Cesium.OpenStreetMapImageryProviderOptions;
+
+/**
+ * @constructor
+ * @param {Cesium.OpenStreetMapImageryProviderOptions=} opt_opts
+ * @extends {Cesium.ImageryProvider}
+ */
+Cesium.OpenStreetMapImageryProvider = function(opt_opts) {};
 
 
 /**
- * @type {string}
+ * @typedef {{
+ *   url: string,
+ *   layers: string,
+ *   parameters: (Object|undefined),
+ *   rectangle: (Cesium.Rectangle|undefined),
+ *   tilingScheme: (Cesium.TilingScheme|undefined),
+ *   tileWidth: (number|undefined),
+ *   tileHeight: (number|undefined),
+ *   minimumLevel: (number|undefined),
+ *   maximumLevel: (number|undefined),
+ *   credit: (Cesium.Credit|string|undefined),
+ *   proxy: (Object|undefined),
+ *   subdomains: (string|Array.<string>|undefined)
+ * }}
  */
-Cesium.WebMapTileServiceImageryProviderOptions.prototype.layer;
+Cesium.WebMapServiceImageryProviderOptions;
+
 
 
 /**
- * @type {string}
+ * @constructor
+ * @param {Cesium.WebMapServiceImageryProviderOptions} options
+ * @extends {Cesium.ImageryProvider}
  */
-Cesium.WebMapTileServiceImageryProviderOptions.prototype.url;
+Cesium.WebMapServiceImageryProvider = function(options) {};
 
 
 /**
  * @type {function(Object=)}
  */
 Cesium.loadWithXhr;
+
 
 /**
  * @type {function(...)}
@@ -3042,6 +3061,7 @@ Cesium.loadWithXhr.load;
  * @constructor
  */
 Cesium.TaskProcessor = function(workerName, opt_maximumActiveTasks) {};
+
 
 /**
  * @return {boolean}
