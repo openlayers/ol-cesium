@@ -40,6 +40,7 @@ olcs.AutoRenderLoop = function(ol3d, debug) {
 
   this._originalLoadWithXhr = Cesium.loadWithXhr.load;
   this._originalScheduleTask = Cesium.TaskProcessor.prototype.scheduleTask;
+  this._originalCameraSetView = Cesium.Camera.prototype.setView;
 
   this.enable();
 };
@@ -117,6 +118,11 @@ olcs.AutoRenderLoop.prototype.enable = function() {
     return result;
   };
 
+  Cesium.Camera.prototype.setView = function() {
+    that._originalCameraSetView.apply(this, arguments);
+    that.notifyRepaintRequired();
+  };
+
   // Listen for changes on the layer group
   this.ol3d.getOlMap().getLayerGroup().on('change',
       this._boundNotifyRepaintRequired);
@@ -151,6 +157,7 @@ olcs.AutoRenderLoop.prototype.disable = function() {
 
   Cesium.loadWithXhr.load = this._originalLoadWithXhr;
   Cesium.TaskProcessor.prototype.scheduleTask = this._originalScheduleTask;
+  Cesium.Camera.prototype.setView = this._originalCameraSetView;
 
   this.ol3d.getOlMap().getLayerGroup().un('change',
       this._boundNotifyRepaintRequired);
