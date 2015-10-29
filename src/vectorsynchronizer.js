@@ -86,14 +86,21 @@ olcs.VectorSynchronizer.prototype.removeAllCesiumObjects = function(destroy) {
  */
 olcs.VectorSynchronizer.prototype.createSingleLayerCounterparts =
     function(olLayer) {
-  if (!(olLayer instanceof ol.layer.Vector)) {
+  if (!(olLayer instanceof ol.layer.Vector) &&
+      !(olLayer instanceof ol.layer.Image)) {
     return null;
   }
-  goog.asserts.assertInstanceof(olLayer, ol.layer.Vector);
+  goog.asserts.assertInstanceof(olLayer, ol.layer.Layer);
+
+  var source = olLayer.getSource();
+  if (olLayer.getSource() instanceof ol.source.ImageVector) {
+    source = olLayer.getSource().getSource();
+  }
+
+  goog.asserts.assertInstanceof(source, ol.source.Vector);
   goog.asserts.assert(!goog.isNull(this.view));
 
   var view = this.view;
-  var source = olLayer.getSource();
   var featurePrimitiveMap = {};
   var counterpart = this.converter.olVectorLayerToCesium(olLayer, view,
       featurePrimitiveMap);
@@ -107,7 +114,10 @@ olcs.VectorSynchronizer.prototype.createSingleLayerCounterparts =
   }));
 
   var onAddFeature = (function(feature) {
-    goog.asserts.assertInstanceof(olLayer, ol.layer.Vector);
+    goog.asserts.assert(
+        (olLayer instanceof ol.layer.Vector) ||
+        (olLayer instanceof ol.layer.Image)
+    );
     var context = counterpart.context;
     var prim = this.converter.convert(olLayer, view, feature, context);
     if (prim) {

@@ -152,13 +152,14 @@ var vectorLayer = new ol.layer.Vector({
   style: styleFunction
 });
 
-
 var vectorSource2 = new ol.source.Vector({
   features: [iconFeature, textFeature, cervinFeature]
 });
-
-var vectorLayer2 = new ol.layer.Vector({
+var imageVectorSource = new ol.source.ImageVector({
   source: vectorSource2
+});
+var vectorLayer2 = new ol.layer.Image({
+  source: imageVectorSource
 });
 
 var dragAndDropInteraction = new ol.interaction.DragAndDrop({
