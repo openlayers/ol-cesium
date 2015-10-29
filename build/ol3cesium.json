@@ -1,12 +1,22 @@
 {
   "exports": ["*"],
-  "src": ["src/**/*.js"],
-  "ignoreRequires": "^ol\\.",
+  "src": [
+    "src/**/*.js",
+    "ol3/src/**/*.js",
+    "ol3/build/ol.ext/*.js"
+  ],
   "compile": {
     "externs": [
-      "ol3/build/ol-externs.js",
-      "ol3/externs/esrijson.js",
       "externs/olcsx.js",
+      "ol3/externs/oli.js",
+      "ol3/externs/olx.js",
+      "ol3/externs/proj4js.js",
+      "ol3/externs/tilejson.js",
+      "ol3/externs/topojson.js",
+      "ol3/externs/esrijson.js",
+      "ol3/externs/geojson.js",
+      "ol3/externs/bingmaps.js",
+      "ol3/externs/closure-compiler.js",
       "Cesium.externs.js"
     ],
     "define": [

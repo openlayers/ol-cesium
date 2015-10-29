@@ -16,7 +16,7 @@
     "htmlparser2": "~3.7.1"
   },
   "devDependencies": {
-    "closure-util": "1.7.0",
+    "closure-util": "1.8.0",
     "geojsonhint": "^1.0.0",
     "fs-extra": "~0.8.1",
     "graceful-fs": "~3.0.2",
