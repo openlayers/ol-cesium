@@ -138,7 +138,6 @@ cesium/node_modules/.bin/gulp: cesium/package.json
 # or CHANGES.md changed
 ifndef NO_CESIUM
 cesium/Build/Cesium/Cesium.js: cesium/CHANGES.md cesium/node_modules/.bin/gulp
-	print 'HELLO'
 	(cd cesium && node_modules/.bin/gulp $(CESIUM_COMPILE_TARGET))
 else
 cesium/Build/Cesium/Cesium.js:
