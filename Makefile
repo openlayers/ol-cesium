@@ -131,10 +131,16 @@ ol3/build/ol-externs.js:
 ol3/build/olX:
 	(cd ol3 && npm install && make build)
 
+cesium/node_modules/.bin/gulp: cesium/package.json
+	cd cesium && npm install
+
 # Only generated when cesium/Build/Cesium/Cesium.js does not exist
-cesium/Build/Cesium/Cesium.js:
+# or CHANGES.md changed
 ifndef NO_CESIUM
-	(cd cesium && ./Tools/apache-ant-1.8.2/bin/ant $(CESIUM_COMPILE_TARGET))
+cesium/Build/Cesium/Cesium.js: cesium/CHANGES.md cesium/node_modules/.bin/gulp
+	print 'HELLO'
+	(cd cesium && node_modules/.bin/gulp $(CESIUM_COMPILE_TARGET))
 else
+cesium/Build/Cesium/Cesium.js:
 	mkdir -p cesium/Build/Cesium/
 endif

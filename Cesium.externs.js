@@ -315,7 +315,7 @@ Cesium.Camera.prototype.constrainedAxisAngle;
 
 
 /**
- * @type {Cesium.Cartographic} .
+ * @type {!Cesium.Cartographic} .
  */
 Cesium.Camera.prototype.positionCartographic;
 
@@ -523,11 +523,22 @@ Cesium.Camera.prototype.setPositionCartographic;
 
 /**
  * @typedef {{
- *  position: (Cesium.Cartesian3|undefined),
- *  positionCartographic: (Cesium.Cartographic|undefined),
- *  heading: (number|undefined),
- *  pitch: (number|undefined),
- *  roll: (number|undefined)
+ *    heading: (number|undefined),
+ *    pitch: (number|undefined),
+ *    roll: (number|undefined)
+ * }}
+ */
+Cesium.optionsOrientation;
+
+/**
+ * @typedef {{
+ *  destination: (Cesium.Cartesian3|Cesium.Rectangle|undefined),
+ *  orientation: (Cesium.optionsOrientation|undefined),
+ *  position: (Cesium.RemovedAPI|undefined),
+ *  positionCartographic: (Cesium.RemovedAPI|undefined),
+ *  heading: (undefined|Cesium.RemovedAPI),
+ *  pitch: (undefined|Cesium.RemovedAPI),
+ *  roll: (undefined|Cesium.RemovedAPI)
  * }}
  */
 Cesium.optionsCameraSetView;
