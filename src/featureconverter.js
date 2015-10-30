@@ -901,11 +901,6 @@ olcs.FeatureConverter.prototype.olFeatureToCesium =
  */
 olcs.FeatureConverter.prototype.olVectorLayerToCesium =
     function(olLayer, olView, featurePrimitiveMap) {
-  var source = olLayer.getSource();
-  if (source instanceof ol.source.ImageVector) {
-    source = source.getSource();
-  }
-  var features = source.getFeatures();
   var proj = olView.getProjection();
   var resolution = olView.getResolution();
 
@@ -915,6 +910,19 @@ olcs.FeatureConverter.prototype.olVectorLayerToCesium =
     // are defined
     throw new Error('View not ready');
   }
+
+  var source = olLayer.getSource();
+  if (olLayer instanceof ol.layer.Image) {
+    if (source instanceof ol.source.ImageVector) {
+      source = source.getSource();
+    } else {
+      // Not supported
+      return new olcs.core.VectorLayerCounterpart(proj, this.scene);
+    }
+  }
+
+  goog.asserts.assertInstanceof(source, ol.source.Vector);
+  var features = source.getFeatures();
   var counterpart = new olcs.core.VectorLayerCounterpart(proj, this.scene);
   var context = counterpart.context;
   for (var i = 0; i < features.length; ++i) {
@@ -924,7 +932,9 @@ olcs.FeatureConverter.prototype.olVectorLayerToCesium =
     }
     var layerStyle;
     if (olLayer instanceof ol.layer.Image) {
-      layerStyle = olLayer.getSource().getStyleFunction();
+      var imageSource = olLayer.getSource();
+      goog.asserts.assertInstanceof(imageSource, ol.source.ImageVector);
+      layerStyle = imageSource.getStyleFunction();
     } else {
       layerStyle = olLayer.getStyleFunction();
     }
@@ -964,7 +974,12 @@ olcs.FeatureConverter.prototype.convert =
 
   var layerStyle;
   if (layer instanceof ol.layer.Image) {
-    layerStyle = layer.getSource().getStyleFunction();
+    var imageSource = layer.getSource();
+    if (imageSource instanceof ol.source.ImageVector) {
+      layerStyle = imageSource.getStyleFunction();
+    } else {
+      return null;
+    }
   } else {
     layerStyle = layer.getStyleFunction();
   }
