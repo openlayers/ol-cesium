@@ -4,6 +4,7 @@ goog.require('goog.asserts');
 goog.require('ol.extent');
 goog.require('ol.geom.SimpleGeometry');
 goog.require('olcs.core.VectorLayerCounterpart');
+goog.require('olcs.obj');
 
 
 
@@ -42,7 +43,7 @@ olcs.FeatureConverter.prototype.onRemoveOrClearFeature_ = function(evt) {
   var source = evt.target;
   goog.asserts.assertInstanceof(source, ol.source.Vector);
 
-  var cancellers = source['olcs_cancellers'];
+  var cancellers = olcs.obj(source)['olcs_cancellers'];
   if (cancellers) {
     var feature = evt.feature;
     if (goog.isDef(feature)) {
@@ -60,7 +61,7 @@ olcs.FeatureConverter.prototype.onRemoveOrClearFeature_ = function(evt) {
           cancellers[key]();
         }
       }
-      source['olcs_cancellers'] = {};
+      olcs.obj(source)['olcs_cancellers'] = {};
     }
   }
 };
@@ -540,10 +541,13 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium =
       };
       source.on(['removefeature', 'clear'],
           this.boundOnRemoveOrClearFeatureListener_);
-      source['olcs_cancellers'] = source['olcs_cancellers'] || {};
+      var cancellers = olcs.obj(source)['olcs_cancellers'];
+      if (!cancellers) {
+        cancellers = olcs.obj(source)['olcs_cancellers'] = {};
+      }
 
-      goog.asserts.assert(!source['olcs_cancellers'][goog.getUid(feature)]);
-      source['olcs_cancellers'][goog.getUid(feature)] = canceller;
+      goog.asserts.assert(!cancellers[goog.getUid(feature)]);
+      cancellers[goog.getUid(feature)] = canceller;
 
       var listener = function() {
         if (!billboards.isDestroyed() && !cancelled) {

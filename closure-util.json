@@ -1,4 +1,4 @@
 {
-  "compiler_url": "http://dev.camptocamp.com/files/closure-compiler/compiler-20150903.zip",
-  "library_url": "https://github.com/google/closure-library/archive/b129bb.zip"
+  "Allowed keys, see":  "https://github.com/openlayers/closure-util/blob/master/default-config.json",
+  "See downloads at": "https://github.com/google/closure-compiler/wiki/Binary-Downloads"
 }
