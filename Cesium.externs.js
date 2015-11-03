@@ -2345,7 +2345,7 @@ Cesium.Scene.prototype.initializeFrame = function() {};
 
 
 /**
- * @param {number=} opt_date
+ * @param {Cesium.JulianDate=} opt_date
  */
 Cesium.Scene.prototype.render = function(opt_date) {};
 
@@ -2434,6 +2434,12 @@ Cesium.Scene.prototype.maximumAliasedLineWidth;
  * @constructor
  */
 Cesium.JulianDate = function() {};
+
+
+/**
+ * @return {Cesium.JulianDate}
+ */
+Cesium.JulianDate.now = function() {};
 
 
 /**

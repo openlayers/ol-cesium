@@ -156,10 +156,11 @@ olcs.OLCesium = function(options) {
 
   this.cesiumRenderingDelay_ = new goog.async.AnimationDelay(function(time) {
     if (!this.blockCesiumRendering_) {
+      var julianDate = Cesium.JulianDate.now();
       this.scene_.initializeFrame();
       this.handleResize_();
-      this.dataSourceDisplay_.update(time);
-      this.scene_.render(time);
+      this.dataSourceDisplay_.update(julianDate);
+      this.scene_.render(julianDate);
       this.enabled_ && this.camera_.checkCameraChange();
     }
     this.cesiumRenderingDelay_.start();
