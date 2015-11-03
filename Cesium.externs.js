@@ -511,7 +511,7 @@ Cesium.CameraEventAggregator.prototype.isDestroyed = function() {};
 
 
 /**
-*/
+ */
 Cesium.CameraEventAggregator.prototype.destroy = function() {};
 
 
@@ -2475,7 +2475,7 @@ Cesium.DataSourceDisplay = function(opt_opts) {};
 
 
 /**
-* @param {Cesium.JulianDate} time The simulation time.
+ * @param {Cesium.JulianDate} time The simulation time.
  * @returns {Boolean} True if all data sources are ready to be displayed, false otherwise.
  */
 Cesium.DataSourceDisplay.prototype.update = function(time) {};
