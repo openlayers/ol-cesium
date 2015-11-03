@@ -21,7 +21,8 @@ olcs.core.computePixelSizeAtCoordinate = function(scene, target) {
   var camera = scene.camera;
   var canvas = scene.canvas;
   var frustum = camera.frustum;
-  var canvasDimensions = new Cesium.Cartesian2(canvas.width, canvas.height);
+  var canvasDimensions = new Cesium.Cartesian2(
+      canvas.clientWidth, canvas.clientHeight);
   var distance = Cesium.Cartesian3.magnitude(Cesium.Cartesian3.subtract(
       camera.position, target, new Cesium.Cartesian3()));
   var pixelSize = frustum.getPixelSize(canvasDimensions, distance);
@@ -170,7 +171,8 @@ olcs.core.pickOnTerrainOrEllipsoid = function(scene, pixel) {
  */
 olcs.core.pickBottomPoint = function(scene) {
   var canvas = scene.canvas;
-  var bottom = new Cesium.Cartesian2(canvas.width / 2, canvas.height);
+  var bottom = new Cesium.Cartesian2(
+      canvas.clientWidth / 2, canvas.clientHeight);
   return olcs.core.pickOnTerrainOrEllipsoid(scene, bottom);
 };
 
@@ -183,7 +185,9 @@ olcs.core.pickBottomPoint = function(scene) {
  */
 olcs.core.pickCenterPoint = function(scene) {
   var canvas = scene.canvas;
-  var center = new Cesium.Cartesian2(canvas.width / 2, canvas.height / 2);
+  var center = new Cesium.Cartesian2(
+      canvas.clientWidth / 2,
+      canvas.clientHeight / 2);
   return olcs.core.pickOnTerrainOrEllipsoid(scene, center);
 };
 
