@@ -13,6 +13,9 @@
     `olcs.RasterSynchronizer.prototype.convertLayerToCesiumImageries`.
 
 * Changes
+  * Add `olcs.OLCesium.setResolutionScale` to allow improving performance at
+    the cost of quality.
+  * Automatically use device pixel ratio to configure the Webgl 3D globe.
   * Add the experimental method `olcs.OLCesium.enableAutoRenderLoop` to stop
     rendering the globe when idle. This is based on work from Kevin Ring.
   * Port to Cesium 1.14.

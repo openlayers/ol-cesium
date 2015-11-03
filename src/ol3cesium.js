@@ -28,6 +28,30 @@ olcs.OLCesium = function(options) {
    */
   this.map_ = options.map;
 
+  /**
+   * @type {number}
+   * @private
+   */
+  this.resolutionScale_ = 1.0;
+
+  /**
+   * @type {number}
+   * @private
+   */
+  this.canvasClientWidth_ = 0.0;
+
+  /**
+   * @type {number}
+   * @private
+   */
+  this.canvasClientHeight_ = 0.0;
+
+  /**
+   * @type {boolean}
+   * @private
+   */
+  this.resolutionScaleChanged_ = true; // force resize
+
   var fillArea = 'position:absolute;top:0;left:0;width:100%;height:100%;';
 
   /**
@@ -180,9 +204,20 @@ olcs.OLCesium.prototype.handleResize_ = function() {
   var width = this.canvas_.clientWidth;
   var height = this.canvas_.clientHeight;
 
-  if (this.canvas_.width === width && this.canvas_.height === height) {
+  if (width === this.canvasClientWidth_ &&
+      height === this.canvasClientHeight_ &&
+      !this.resolutionScaleChanged_) {
     return;
   }
+
+  var zoomFactor = (window.devicePixelRatio || 1.0) * this.resolutionScale_;
+  this.resolutionScaleChanged_ = false;
+
+  this.canvasClientWidth_ = width;
+  this.canvasClientHeight_ = height;
+
+  width *= zoomFactor;
+  height *= zoomFactor;
 
   this.canvas_.width = width;
   this.canvas_.height = height;
@@ -342,4 +377,33 @@ olcs.OLCesium.prototype.enableAutoRenderLoop = function() {
 */
 olcs.OLCesium.prototype.getAutoRenderLoop = function() {
   return this.autoRenderLoop_;
+};
+
+
+/**
+ * The 3D Cesium globe is rendered in a canvas with two different dimensions:
+ * clientWidth and clientHeight which are the dimension on the screen and
+ * width and height which are the dimensions of the drawing buffer.
+ *
+ * By using a resolution scale lower than 1.0, it is possible to render the
+ * globe in a buffer smaller than the canvas client dimensions and improve
+ * performance, at the cost of quality.
+ *
+ * Pixel ratio should also be taken into account; by default, a device with
+ * pixel ratio of 2.0 will have a buffer surface 4 times bigger than the client
+ * surface.
+ *
+ * @param {number} value
+ * @this {olcs.OLCesium}
+ * @api
+ */
+olcs.OLCesium.prototype.setResolutionScale = function(value) {
+  value = Math.max(0, value);
+  if (value !== this.resolutionScale_) {
+    this.resolutionScale_ = Math.max(0, value);
+    this.resolutionScaleChanged_ = true;
+    if (this.autoRenderLoop_) {
+      this.autoRenderLoop_.restartRenderLoop();
+    }
+  }
 };
