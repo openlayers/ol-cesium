@@ -344,6 +344,16 @@ Cesium.Camera.prototype.tilt;
  */
 Cesium.Camera.prototype.pitch;
 
+/**
+ * @type {Cesium.Event}
+ */
+Cesium.Camera.prototype.moveStart;
+
+/**
+ * @type {Cesium.Event}
+ */
+Cesium.Camera.prototype.moveEnd;
+
 
 /**
  * @param {!Cesium.Cartesian2} windowPosition
