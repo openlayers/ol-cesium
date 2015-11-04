@@ -562,6 +562,31 @@ Cesium.Camera.prototype.lookAt = function(eye, target, up) {};
  */
 Cesium.Camera.prototype.lookAtTransform = function(transform) {};
 
+/**
+ * @param {Cesium.Cartesian3} axis
+ * @param {number} angle
+ */
+Cesium.Camera.prototype.rotate = function(axis, angle) {};
+
+/**
+ * @param {number} angle
+ */
+Cesium.Camera.prototype.rotateUp = function(angle) {};
+
+/**
+ * @param {number} angle
+ */
+Cesium.Camera.prototype.rotateDown = function(angle) {};
+
+/**
+ * @param {number} angle
+ */
+Cesium.Camera.prototype.rotateLeft = function(angle) {};
+
+/**
+ * @param {number} angle
+ */
+Cesium.Camera.prototype.rotateRight = function(angle) {};
 
 /**
  * @param {number} amount .
