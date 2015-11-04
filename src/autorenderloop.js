@@ -41,6 +41,9 @@ olcs.AutoRenderLoop = function(ol3d, debug) {
   this._originalLoadWithXhr = Cesium.loadWithXhr.load;
   this._originalScheduleTask = Cesium.TaskProcessor.prototype.scheduleTask;
   this._originalCameraSetView = Cesium.Camera.prototype.setView;
+  this._originalCameraMove = Cesium.Camera.prototype.move;
+  this._originalCameraRotate = Cesium.Camera.prototype.rotate;
+  this._originalCameraLookAt = Cesium.Camera.prototype.lookAt;
 
   this.enable();
 };
@@ -122,6 +125,19 @@ olcs.AutoRenderLoop.prototype.enable = function() {
     that._originalCameraSetView.apply(this, arguments);
     that.notifyRepaintRequired();
   };
+  Cesium.Camera.prototype.move = function() {
+    that._originalCameraMove.apply(this, arguments);
+    that.notifyRepaintRequired();
+  };
+  Cesium.Camera.prototype.rotate = function() {
+    that._originalCameraRotate.apply(this, arguments);
+    that.notifyRepaintRequired();
+  };
+  Cesium.Camera.prototype.lookAt = function() {
+    that._originalCameraLookAt.apply(this, arguments);
+    that.notifyRepaintRequired();
+  };
+
 
   // Listen for changes on the layer group
   this.ol3d.getOlMap().getLayerGroup().on('change',
@@ -158,6 +174,9 @@ olcs.AutoRenderLoop.prototype.disable = function() {
   Cesium.loadWithXhr.load = this._originalLoadWithXhr;
   Cesium.TaskProcessor.prototype.scheduleTask = this._originalScheduleTask;
   Cesium.Camera.prototype.setView = this._originalCameraSetView;
+  Cesium.Camera.prototype.move = this._originalCameraMove;
+  Cesium.Camera.prototype.rotate = this._originalCameraRotate;
+  Cesium.Camera.prototype.lookAt = this._originalCameraLookAt;
 
   this.ol3d.getOlMap().getLayerGroup().un('change',
       this._boundNotifyRepaintRequired);
