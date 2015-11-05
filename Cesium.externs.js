@@ -660,6 +660,25 @@ Cesium.Camera.prototype.moveUp = function(amount) {};
  */
 Cesium.Camera.prototype.pickEllipsoid = function(windowPos, opt_ellipsoid) {};
 
+/**
+ * @typedef {{
+ *   destination: (!Cesium.Cartesian3|Cesium.Rectangle),
+ *   orientation: (!Cesium.optionsOrientation|undefined),
+ *   duration: (number|undefined),
+ *   complete: (function()|undefined),
+ *   cancel: (function()|undefined),
+ *   endTransform: (Cesium.Matrix4|undefined),
+ *   convert: (boolean|undefined),
+ *   maximumHeight: (number|undefined),
+ *   easingFunction: (function(number): number|undefined)
+ * }}
+ */
+Cesium.optionsCameraFlyTo;
+
+/**
+ * @param {!Cesium.optionsCameraFlyTo} options
+ */
+Cesium.Camera.prototype.flyTo = function(options) {};
 
 /**
  * @constructor
