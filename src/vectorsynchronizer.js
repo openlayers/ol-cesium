@@ -87,7 +87,8 @@ olcs.VectorSynchronizer.prototype.removeAllCesiumObjects = function(destroy) {
 olcs.VectorSynchronizer.prototype.createSingleLayerCounterparts =
     function(olLayer) {
   if (!(olLayer instanceof ol.layer.Vector) &&
-      !(olLayer instanceof ol.layer.Image)) {
+      !(olLayer instanceof ol.layer.Image &&
+      olLayer.getSource() instanceof ol.source.ImageVector)) {
     return null;
   }
   goog.asserts.assertInstanceof(olLayer, ol.layer.Layer);
