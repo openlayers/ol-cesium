@@ -2157,6 +2157,25 @@ Cesium.Context = function() {};
  */
 Cesium.Context.prototype.uniformState;
 
+/**
+ * @constructor
+ */
+Cesium.Fog = function() {};
+
+/**
+ * @type {boolean}
+ */
+Cesium.Fog.prototype.enabled;
+
+/**
+ * @type {number}
+ */
+Cesium.Fog.prototype.density;
+
+/**
+ * @type {number}
+ */
+Cesium.Fog.prototype.screenSpaceErrorFactor;
 
 
 /**
@@ -2180,6 +2199,12 @@ Cesium.Scene.prototype.canvas;
  * @type {!Cesium.Context}
  */
 Cesium.Scene.prototype.context;
+
+
+/**
+ * @type {!Cesium.Fog}
+ */
+Cesium.Scene.prototype.fog;
 
 
 /**
