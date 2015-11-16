@@ -34,7 +34,7 @@ help:
 npm-install: .build/node_modules.timestamp
 
 .PHONY: serve
-serve: npm-install ol3/build/olX cesium/Build/Cesium/Cesium.js
+serve: npm-install cesium/Build/Cesium/Cesium.js
 	node build/serve.js
 
 .PHONY: dist
@@ -86,7 +86,7 @@ cleanall: clean
 	.build/python-venv/bin/gjslint --jslint_error=all --strict --custom_jsdoc_tags=api $?
 	touch $@
 
-.build/dist-examples.timestamp: ol3/build/olX cesium/Build/Cesium/Cesium.js dist/ol3cesium.js $(EXAMPLES_JS_FILES) $(EXAMPLES_HTML_FILES)
+.build/dist-examples.timestamp: cesium/Build/Cesium/Cesium.js dist/ol3cesium.js $(EXAMPLES_JS_FILES) $(EXAMPLES_HTML_FILES)
 	node build/parse-examples.js
 	mkdir -p $(dir $@)
 	mkdir -p dist/ol3
@@ -126,10 +126,6 @@ dist/ol3cesium.js: build/ol3cesium.json $(SRC_JS_FILES) ol3/build/ol-externs.js 
 .PHONY: ol3/build/ol-externs.js
 ol3/build/ol-externs.js:
 	(cd ol3 && npm install && node tasks/generate-externs.js build/ol-externs.js)
-
-.PHONY: ol3/build/olX
-ol3/build/olX:
-	(cd ol3 && npm install && make build)
 
 cesium/node_modules/.bin/gulp: cesium/package.json
 	cd cesium && npm install
