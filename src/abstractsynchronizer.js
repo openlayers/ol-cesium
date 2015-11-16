@@ -132,6 +132,7 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
 /**
  * Remove and destroy a single layer.
  * @param {ol.layer.Layer} layer
+ * @return {boolean} counterpart destroyed
  * @private
  */
 olcs.AbstractSynchronizer.prototype.removeAndDestroySingleLayer_ =
@@ -147,6 +148,7 @@ olcs.AbstractSynchronizer.prototype.removeAndDestroySingleLayer_ =
     delete this.olLayerListenKeys_[uid];
   }
   delete this.layerMap[uid];
+  return !!counterparts;
 };
 
 
@@ -180,13 +182,14 @@ olcs.AbstractSynchronizer.prototype.removeLayer_ = function(root) {
     var fifo = [root];
     while (fifo.length > 0) {
       var olLayer = fifo.splice(0, 1)[0];
+      var done = this.removeAndDestroySingleLayer_(olLayer);
       if (olLayer instanceof ol.layer.Group) {
         this.unlistenSingleGroup_(olLayer);
-        olLayer.getLayers().forEach(function(l) {
-          fifo.push(l);
-        });
-      } else {
-        this.removeAndDestroySingleLayer_(olLayer);
+        if (done) {
+          olLayer.getLayers().forEach(function(l) {
+            fifo.push(l);
+          });
+        }
       }
     }
   }
