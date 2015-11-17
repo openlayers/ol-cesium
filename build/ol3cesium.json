@@ -27,8 +27,10 @@
       "api", "observable"
     ],
     "compilation_level": "ADVANCED_OPTIMIZATIONS",
+    "language_in": "ECMASCRIPT5_STRICT",
+    "language_out": "ECMASCRIPT5_STRICT",
     "warning_level": "VERBOSE",
-    "output_wrapper": "(function(){%output%})();",
+    "output_wrapper": "(function(){%output%}).call(window);",
     "use_types_for_optimization": true,
     "create_source_map": "dist/ol3cesium.js.map",
     "source_map_format": "V3"
