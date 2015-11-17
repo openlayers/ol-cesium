@@ -27,6 +27,7 @@ olcs.DragBoxEventType = {
  * @extends {goog.events.EventTarget}
  * @param {Object=} opt_options Options.
  * @api
+ * @struct
  */
 olcs.DragBox = function(opt_options) {
 

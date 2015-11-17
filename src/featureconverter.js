@@ -15,6 +15,7 @@ goog.require('olcs.core.VectorLayerCounterpart');
  * @param {!Cesium.Scene} scene Cesium scene.
  * @constructor
  * @api
+ * @struct
  */
 olcs.FeatureConverter = function(scene) {
 

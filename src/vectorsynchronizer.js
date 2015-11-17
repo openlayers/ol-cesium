@@ -16,6 +16,7 @@ goog.require('olcs.core.VectorLayerCounterpart');
  * @constructor
  * @extends {olcs.AbstractSynchronizer.<olcs.core.VectorLayerCounterpart>}
  * @api
+ * @struct
  */
 olcs.VectorSynchronizer = function(map, scene, opt_converter) {
 
