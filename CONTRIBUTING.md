@@ -40,6 +40,11 @@ where `<target>` is the name of the target you want to execute. For example:
 
     $ make dist
 
+## Compliler version
+
+The version of the compiler may be changed by creating a file closure-util.json
+at the root of the project. See [available options](https://github.com/openlayers/closure-util/blob/master/default-config.json)
+and [available compilers](https://github.com/google/closure-compiler/wiki/Binary-Downloads).
 
 ## Pull request guidelines
 
