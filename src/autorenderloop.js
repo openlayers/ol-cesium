@@ -10,6 +10,7 @@ goog.provide('olcs.AutoRenderLoop');
  * @constructor
  * @param {olcs.OLCesium} ol3d
  * @param {boolean} debug
+ * @struct
  */
 olcs.AutoRenderLoop = function(ol3d, debug) {
   this.ol3d = ol3d;
@@ -245,7 +246,7 @@ olcs.AutoRenderLoop.prototype.notifyRepaintRequired = function() {
   if (this.verboseRendering && this.stoppedRendering) {
     console.log('starting rendering @ ' + Date.now());
   }
-  this._lastCameraMoveTime = Date.now();
+  this.lastCameraMoveTime_ = Date.now();
   // TODO: do not unblock if not blocked by us
   this.ol3d.setBlockCesiumRendering(false);
   this.stoppedRendering = false;

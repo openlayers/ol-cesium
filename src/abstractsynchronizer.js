@@ -12,6 +12,7 @@ goog.require('ol.layer.Group');
  * @param {!Cesium.Scene} scene
  * @constructor
  * @template T
+ * @struct
  * @api
  */
 olcs.AbstractSynchronizer = function(map, scene) {
@@ -247,12 +248,12 @@ olcs.AbstractSynchronizer.prototype.listenForGroupChanges_ = function(group) {
  */
 olcs.AbstractSynchronizer.prototype.destroyAll = function() {
   this.removeAllCesiumObjects(true); // destroy
-  goog.object.forEach(this.olGroupListenKeys, function(keys) {
+  goog.object.forEach(this.olGroupListenKeys_, function(keys) {
     keys.forEach(ol.Observable.unByKey);
   });
-  goog.object.forEach(this.olLayerListenKeys, ol.Observable.unByKey);
-  this.olGroupListenKeys = {};
-  this.olLayerListenKeys = {};
+  goog.object.forEach(this.olLayerListenKeys_, ol.Observable.unByKey);
+  this.olGroupListenKeys_ = {};
+  this.olLayerListenKeys_ = {};
   this.layerMap = {};
 };
 

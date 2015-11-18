@@ -22,7 +22,7 @@
     <div><input type="button" value="Add/remove one feature"
       onclick="javascript:addOrRemoveOneFeature()" /></div>
     <div><input type="button" value="Toggle clampToGround mode"
-      onclick="javascript:toggleClampToGround()" /></div>
+      onclick="javascript:toggleClampToGround(); ol3d.getAutoRenderLoop().restartRenderLoop()" /></div>
     <div>Vectors are synchronized from the ol3 map to the Cesium scene.
       <br/>3D positioning and some styling is supported.<br />The render loop is automatically stopped when idle.</div>
     <script src="../ol3/build/ol.js"></script>

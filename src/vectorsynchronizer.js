@@ -16,6 +16,7 @@ goog.require('olcs.core.VectorLayerCounterpart');
  * @constructor
  * @extends {olcs.AbstractSynchronizer.<olcs.core.VectorLayerCounterpart>}
  * @api
+ * @struct
  */
 olcs.VectorSynchronizer = function(map, scene, opt_converter) {
 
@@ -94,8 +95,8 @@ olcs.VectorSynchronizer.prototype.createSingleLayerCounterparts =
   goog.asserts.assertInstanceof(olLayer, ol.layer.Layer);
 
   var source = olLayer.getSource();
-  if (olLayer.getSource() instanceof ol.source.ImageVector) {
-    source = olLayer.getSource().getSource();
+  if (source instanceof ol.source.ImageVector) {
+    source = source.getSource();
   }
 
   goog.asserts.assertInstanceof(source, ol.source.Vector);

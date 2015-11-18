@@ -14,6 +14,7 @@ goog.require('olcs.core');
  * @param {!ol.Map} map
  * @constructor
  * @api
+ * @struct
  */
 olcs.Camera = function(scene, map) {
   /**

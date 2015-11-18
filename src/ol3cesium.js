@@ -13,6 +13,7 @@ goog.require('olcs.VectorSynchronizer');
  * @param {!olcsx.OLCesiumOptions} options Options.
  * @constructor
  * @api
+ * @struct
  */
 olcs.OLCesium = function(options) {
 
