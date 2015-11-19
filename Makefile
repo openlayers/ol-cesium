@@ -34,7 +34,7 @@ help:
 npm-install: .build/node_modules.timestamp
 
 .PHONY: serve
-serve: npm-install ol3/build/olX cesium/Build/Cesium/Cesium.js
+serve: npm-install cesium/Build/Cesium/Cesium.js
 	node build/serve.js
 
 .PHONY: dist
@@ -65,7 +65,6 @@ clean:
 	rm -f ol3/build/ol.js
 	rm -f ol3/build/ol-debug.js
 	rm -f ol3/build/ol.css
-	rm -f ol3/build/ol-externs.js
 	rm -rf cesium/Build/Cesium
 	rm -rf cesium/Build/CesiumUnminified
 	rm -rf dist/ol3
@@ -86,18 +85,12 @@ cleanall: clean
 	.build/python-venv/bin/gjslint --jslint_error=all --strict --custom_jsdoc_tags=api $?
 	touch $@
 
-.build/dist-examples.timestamp: ol3/build/olX cesium/Build/Cesium/Cesium.js dist/ol3cesium.js $(EXAMPLES_JS_FILES) $(EXAMPLES_HTML_FILES)
+.build/dist-examples.timestamp: cesium/Build/Cesium/Cesium.js dist/ol3cesium.js $(EXAMPLES_JS_FILES) $(EXAMPLES_HTML_FILES)
 	node build/parse-examples.js
 	mkdir -p $(dir $@)
-	mkdir -p dist/ol3
-	cp ol3/build/ol-debug.js dist/ol3/
-	cp ol3/build/ol.js dist/ol3/
-	mkdir -p dist/ol3/css
-	cp ol3/build/ol.css dist/ol3/css/
 	cp -R cesium/Build/Cesium dist/
 	cp -R examples dist/
 	for f in dist/examples/*.html; do $(SEDI) 'sY/@loaderY../ol3cesium.jsY' $$f; done
-	for f in dist/examples/*.html; do $(SEDI) 'sY../ol3/build/ol.jsY../ol3/ol-debug.jsY' $$f; done
 	for f in dist/examples/*.html; do $(SEDI) 'sY../cesium/Build/Y../Y' $$f; done
 	for f in dist/examples/*.js; do $(SEDI) 'sY../cesium/Build/Y../Y' $$f; done
 	touch $@
@@ -110,26 +103,26 @@ cleanall: clean
 	.build/python-venv/bin/pip install "http://closure-linter.googlecode.com/files/closure_linter-latest.tar.gz"
 	touch $@
 
-dist/ol3cesium-debug.js: build/ol3cesium-debug.json $(SRC_JS_FILES) ol3/build/ol-externs.js Cesium.externs.js build/build.js npm-install
+dist/ol3cesium-debug.js: build/ol3cesium-debug.json $(SRC_JS_FILES) Cesium.externs.js build/build.js npm-install
 	mkdir -p $(dir $@)
 	node build/build.js $< $@
 
+
+ol3/node_modules/rbush/package.json: ol3/package.json
+	(cd ol3 && npm install --production)
+
+ol3/build/ol.ext/rbush.js: ol3/node_modules/rbush/package.json
+	(cd ol3 && node tasks/build-ext.js)
+
+
 # A sourcemap is prepared, the source is exected to be deployed in 'source' directory
-dist/ol3cesium.js: build/ol3cesium.json $(SRC_JS_FILES) ol3/build/ol-externs.js Cesium.externs.js build/build.js npm-install
+dist/ol3cesium.js: build/ol3cesium.json $(SRC_JS_FILES) Cesium.externs.js build/build.js npm-install ol3/build/ol.ext/rbush.js
 	mkdir -p $(dir $@)
 	node build/build.js $< $@
 	$(SEDI) 's!$(shell pwd)/dist!source!g' dist/ol3cesium.js.map
 	$(SEDI) 's!$(shell pwd)!source!g' dist/ol3cesium.js.map
 #	echo '//# sourceMappingURL=ol3cesium.js.map' >> dist/ol3cesium.js
 #	-ln -s .. dist/source
-
-.PHONY: ol3/build/ol-externs.js
-ol3/build/ol-externs.js:
-	(cd ol3 && npm install && node tasks/generate-externs.js build/ol-externs.js)
-
-.PHONY: ol3/build/olX
-ol3/build/olX:
-	(cd ol3 && npm install && make build)
 
 cesium/node_modules/.bin/gulp: cesium/package.json
 	cd cesium && npm install

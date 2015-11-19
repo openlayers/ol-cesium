@@ -1,4 +1,8 @@
 {
-  "ignoreRequires": "^ol\\.",
+  "src": [
+    "src/**/*.js",
+    "ol3/src/**/*.js",
+    "ol3/build/ol.ext/*.js"
+  ],
   "exports": ["*"]
 }

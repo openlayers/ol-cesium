@@ -30,9 +30,10 @@ log.info('ol3-cesium', 'Parsing dependencies ...');
 var manager = new closure.Manager({
   closure: true, // use the bundled Closure Library
   lib: [
-    'src/**/*.js'
-  ],
-  ignoreRequires: '^ol\\.'
+    'src/**/*.js',
+    'ol3/src/**/*.js',
+    'ol3/build/ol.ext/*.js'
+  ]
 });
 manager.on('error', function(e) {
   log.error('ol3-cesium', e.message);
