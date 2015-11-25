@@ -6,6 +6,10 @@
   * OL3-Cesium is now compiled together with OL3. A custom closure compiler
     build is no more required.
 
+* Changes
+  * Automatically use device pixel ratio (the right way) to configure the
+    Webgl 3D globe. See https://github.com/AnalyticalGraphicsInc/cesium/pull/3233.
+
 ## v1.9 - 2015-10-22
 
 * Breaking changes
