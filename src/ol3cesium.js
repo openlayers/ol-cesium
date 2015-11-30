@@ -211,7 +211,7 @@ olcs.OLCesium.prototype.handleResize_ = function() {
     return;
   }
 
-  var zoomFactor = this.resolutionScale_ / (window.devicePixelRatio || 1.0);
+  var zoomFactor = (window.devicePixelRatio || 1.0) * this.resolutionScale_;
   this.resolutionScaleChanged_ = false;
 
   this.canvasClientWidth_ = width;
