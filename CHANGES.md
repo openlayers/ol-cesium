@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.10
+## v1.10 - 2015-11-30
 
 * Breaking changes
   * OL3-Cesium is now compiled together with OL3. A custom closure compiler
