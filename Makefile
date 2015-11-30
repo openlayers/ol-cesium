@@ -90,8 +90,10 @@ cleanall: clean
 	mkdir -p $(dir $@)
 	cp -R cesium/Build/Cesium dist/
 	cp -R examples dist/
+	cp ol3/css/ol.css dist/
 	for f in dist/examples/*.html; do $(SEDI) 'sY/@loaderY../ol3cesium.jsY' $$f; done
 	for f in dist/examples/*.html; do $(SEDI) 'sY../cesium/Build/Y../Y' $$f; done
+	for f in dist/examples/*.html; do $(SEDI) 'sY../ol3/css/ol.cssY../ol.cssY' $$f; done
 	for f in dist/examples/*.js; do $(SEDI) 'sY../cesium/Build/Y../Y' $$f; done
 	touch $@
 
