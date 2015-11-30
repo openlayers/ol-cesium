@@ -1,5 +1,10 @@
 # Changelog
 
+# v 1.37
+
+* Changes
+  * Add client side raster reprojection.
+
 # v 1.36
 
 * Changes

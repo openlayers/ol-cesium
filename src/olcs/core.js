@@ -1,7 +1,9 @@
 goog.provide('olcs.core');
-goog.require('ol.easing');
 
 goog.require('goog.asserts');
+
+goog.require('ol');
+goog.require('ol.easing');
 goog.require('ol.layer.Tile');
 goog.require('ol.layer.Image');
 goog.require('ol.proj');
@@ -9,6 +11,7 @@ goog.require('ol.source.Image');
 goog.require('ol.source.ImageWMS');
 goog.require('ol.source.TileImage');
 goog.require('ol.source.TileWMS');
+
 goog.require('olcs.core.OLImageryProvider');
 goog.require('olcs.util');
 
@@ -393,7 +396,7 @@ olcs.core.tileLayerToImageryLayer = function(olLayer, viewProj) {
       projection = viewProj;
     }
 
-    if (olcs.core.isCesiumProjection(projection))  {
+    if (olcs.core.isCesiumProjection(projection) || ol.ENABLE_RASTER_REPROJECTION)  {
       provider = new olcs.core.OLImageryProvider(source, viewProj);
     }
     // Projection not supported by Cesium
