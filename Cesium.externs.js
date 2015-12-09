@@ -2567,6 +2567,33 @@ Cesium.DataSourceDisplay.prototype.update = function(time) {};
 
 
 /**
+ * @type {Cesium.CustomDataSource}
+ */
+Cesium.DataSourceDisplay.prototype.defaultDataSource;
+
+
+
+/**
+ * @param {string} name
+ * @constructor
+ */
+Cesium.CustomDataSource = function(name) {};
+
+
+/**
+ * @type {Cesium.EntityCollection}
+ */
+Cesium.CustomDataSource.prototype.entities;
+
+
+
+/**
+ * @constructor
+ */
+Cesium.EntityCollection = function() {}
+
+
+/**
  * @type {!Cesium.UniformState}
  */
 Cesium.Context.prototype.uniformState;
