@@ -263,6 +263,15 @@ olcs.OLCesium.prototype.getDataSources = function() {
 
 
 /**
+ * @return {!Cesium.DataSourceDisplay}
+ * @api
+ */
+olcs.OLCesium.prototype.getDataSourceDisplay = function() {
+  return this.dataSourceDisplay_;
+};
+
+
+/**
  * @return {boolean}
  * @api
  */
