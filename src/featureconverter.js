@@ -518,6 +518,7 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium =
         // always update Cesium externs before adding a property
         image: image,
         color: color,
+        scale: imageStyle.getScale(),
         heightReference: heightReference,
         verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
         position: position
