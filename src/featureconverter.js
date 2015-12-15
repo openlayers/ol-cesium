@@ -783,33 +783,41 @@ olcs.FeatureConverter.prototype.olStyleToCesium =
  * Evaluates style function, blend arrays, get default style.
  * @param {ol.layer.Vector|ol.layer.Image} layer
  * @param {!ol.Feature} feature
- * @param {ol.style.StyleFunction|undefined} fallbackStyle
+ * @param {ol.style.StyleFunction|undefined} fallbackStyleFunction
  * @param {number} resolution
  * @return {ol.style.Style} null if no style is available
  * @api
  */
 olcs.FeatureConverter.prototype.computePlainStyle =
-    function(layer, feature, fallbackStyle, resolution) {
-  var featureStyle = feature.getStyleFunction();
-  var style;
-  if (goog.isDef(featureStyle)) {
-    style = featureStyle.call(feature, resolution);
-  }
-  if (!goog.isDefAndNotNull(style) && goog.isDefAndNotNull(fallbackStyle)) {
-    style = fallbackStyle(feature, resolution);
+    function(layer, feature, fallbackStyleFunction, resolution) {
+  /**
+   * @type {ol.FeatureStyleFunction|undefined}
+   */
+  var featureStyleFunction = feature.getStyleFunction();
+
+  /**
+   * @type {ol.style.Style|Array.<ol.style.Style>}
+   */
+  var style = null;
+
+  if (featureStyleFunction) {
+    style = featureStyleFunction.call(feature, resolution);
   }
 
-  if (!goog.isDef(style)) {
+  if (!style && fallbackStyleFunction) {
+    style = fallbackStyleFunction(feature, resolution);
+  }
+
+  if (!style) {
     // The feature must not be displayed
     return null;
   }
 
-  goog.asserts.assert(Array.isArray(style));
   // FIXME combine materials as in cesium-materials-pack?
   // then this function must return a custom material
   // More simply, could blend the colors like described in
   // http://en.wikipedia.org/wiki/Alpha_compositing
-  return style[0];
+  return Array.isArray(style) ? style[0] : style;
 };
 
 
@@ -935,6 +943,9 @@ olcs.FeatureConverter.prototype.olVectorLayerToCesium =
     if (!goog.isDefAndNotNull(feature)) {
       continue;
     }
+    /**
+     * @type {ol.style.StyleFunction|undefined}
+     */
     var layerStyle;
     if (olLayer instanceof ol.layer.Image) {
       var imageSource = olLayer.getSource();
@@ -977,6 +988,9 @@ olcs.FeatureConverter.prototype.convert =
     return null;
   }
 
+  /**
+   * @type {ol.style.StyleFunction|undefined}
+   */
   var layerStyle;
   if (layer instanceof ol.layer.Image) {
     var imageSource = layer.getSource();
