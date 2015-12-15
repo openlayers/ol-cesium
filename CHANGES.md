@@ -4,6 +4,7 @@
 
 * Changes
   * Port to Cesium 1.16.
+  * Port to OL 3.12.0
 
 ## v1.10 - 2015-11-30
 
