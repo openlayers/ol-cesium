@@ -621,7 +621,7 @@ olcs.FeatureConverter.prototype.olMultiGeometryToCesium =
           goog.asserts.assert(!goog.isNull(geometry));
           this.olPointGeometryToCesium(layer, feature, geometry, projection,
               olStyle, billboards, opt_newBillboardCallback);
-        });
+        }.bind(this));
         return null;
       }
     case 'MultiLineString':
