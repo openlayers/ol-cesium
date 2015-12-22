@@ -39,6 +39,11 @@ Cesium.Color.unpack = function(color) {};
 Cesium.Color.byteToFloat = function(component) {};
 
 /**
+ * @type {!Cesium.Color}
+ */
+Cesium.Color.WHITE;
+
+/**
  * @constructor
  * @param {string} text
  * @param {Object=} opt_description
@@ -960,6 +965,12 @@ Cesium.Globe = function(ellipsoid) {};
  * @type {Cesium.Ellipsoid}
  */
 Cesium.Globe.prototype.ellipsoid;
+
+
+/**
+ * @type {!Cesium.Color}
+ */
+Cesium.Globe.prototype.baseColor;
 
 
 /**
@@ -2405,6 +2416,12 @@ Cesium.Scene = function(opt_opts) {};
  * @type {!HTMLCanvasElement}
  */
 Cesium.Scene.prototype.canvas;
+
+
+/**
+ * @type {!Cesium.Color}
+ */
+Cesium.Scene.prototype.backgroundColor;
 
 
 /**
