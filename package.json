@@ -7,7 +7,7 @@
     "type": "git",
     "url": "git://github.com/openlayers/ol3-cesium.git"
   },
-  "license": "BSD",
+  "license": "BSD-2-Clause",
   "bugs": {
     "url": "https://github.com/openlayers/ol3-cesium/issues"
   },
