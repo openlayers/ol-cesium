@@ -148,6 +148,7 @@ olcs.OLCesium = function(options) {
    * @private
    */
   this.globe_ = new Cesium.Globe(Cesium.Ellipsoid.WGS84);
+  this.globe_.baseColor = Cesium.Color.WHITE;
   this.scene_.globe = this.globe_;
   this.scene_.skyAtmosphere = new Cesium.SkyAtmosphere();
 
