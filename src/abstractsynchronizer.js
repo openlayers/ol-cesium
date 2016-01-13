@@ -186,7 +186,9 @@ olcs.AbstractSynchronizer.prototype.removeLayer_ = function(root) {
       var done = this.removeAndDestroySingleLayer_(olLayer);
       if (olLayer instanceof ol.layer.Group) {
         this.unlistenSingleGroup_(olLayer);
-        if (done) {
+        if (!done) {
+          // No counterpart for the group itself so removing
+          // each of the child layers.
           olLayer.getLayers().forEach(function(l) {
             fifo.push(l);
           });
