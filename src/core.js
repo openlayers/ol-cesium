@@ -1,5 +1,6 @@
 goog.provide('olcs.core');
 
+goog.require('goog.Promise');
 goog.require('goog.asserts');
 goog.require('goog.async.AnimationDelay');
 goog.require('ol.layer.Tile');
@@ -7,6 +8,11 @@ goog.require('ol.proj');
 goog.require('ol.source.TileImage');
 goog.require('ol.source.WMTS');
 goog.require('olcs.core.OLImageryProvider');
+
+
+// Initialize rejection handler.
+// Do nothing on rejected promise, like with standard Promises.
+goog.Promise.setUnhandledRejectionHandler(function() {});
 
 
 /**
@@ -82,6 +88,7 @@ olcs.core.applyHeightOffsetToGeometry = function(geometry, height) {
  * @param {!Cesium.Cartesian3} axis
  * @param {!Cesium.Matrix4} transform
  * @param {olcsx.core.RotateAroundAxisOption=} opt_options
+ * @return {goog.Promise}
  * @api
  */
 olcs.core.rotateAroundAxis = function(camera, angle, axis, transform,
@@ -98,24 +105,29 @@ olcs.core.rotateAroundAxis = function(camera, angle, axis, transform,
   var lastProgress = 0;
   var oldTransform = new Cesium.Matrix4();
 
-  var animation = new goog.async.AnimationDelay(function(millis) {
-    var progress = easing(clamp((millis - start) / duration, 0, 1));
-    goog.asserts.assert(progress > lastProgress);
+  return new goog.Promise(function(resolve, reject) {
+    var animation = new goog.async.AnimationDelay(function(millis) {
+      var progress = easing(clamp((millis - start) / duration, 0, 1));
+      goog.asserts.assert(progress > lastProgress);
 
-    camera.transform.clone(oldTransform);
-    var stepAngle = (progress - lastProgress) * angle;
-    lastProgress = progress;
-    camera.lookAtTransform(transform);
-    camera.rotate(axis, stepAngle);
-    camera.lookAtTransform(oldTransform);
+      camera.transform.clone(oldTransform);
+      var stepAngle = (progress - lastProgress) * angle;
+      lastProgress = progress;
+      camera.lookAtTransform(transform);
+      camera.rotate(axis, stepAngle);
+      camera.lookAtTransform(oldTransform);
 
-    if (progress < 1) {
-      animation.start();
-    } else if (callback) {
-      callback();
-    }
+      if (progress < 1) {
+        animation.start();
+      } else {
+        if (callback) {
+          callback();
+        }
+        resolve();
+      }
+    });
+    animation.start();
   });
-  animation.start();
 };
 
 
