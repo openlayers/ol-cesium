@@ -9,7 +9,6 @@ git:
 
 before_install:
   - git submodule update --init ol3
-  - pip install -r ol3/requirements.txt
   - npm install -g npm && npm install
 
 script:

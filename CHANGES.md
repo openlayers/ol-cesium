@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.12
+
+* Changes
+  * Port to OL 3.13.0.
+
 ## v1.11 - 2015-12-23
 
 * Changes
