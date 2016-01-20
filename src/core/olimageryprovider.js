@@ -221,7 +221,8 @@ olcs.core.OLImageryProvider.prototype.requestImage = function(x, y, level) {
     // 2) OpenLayers tile coordinates increase from bottom to top
     var y_ = -y - 1;
 
-    var url = tileUrlFunction([z_, x, y_], 1, this.projection_);
+    var url = tileUrlFunction.call(this.source_,
+        [z_, x, y_], 1, this.projection_);
     return goog.isDef(url) ?
            Cesium.ImageryProvider.loadImage(this, url) : this.emptyCanvas_;
   } else {
