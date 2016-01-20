@@ -172,15 +172,11 @@ var dragAndDropInteraction = new ol.interaction.DragAndDrop({
   ]
 });
 
-
 var map = new ol.Map({
   interactions: ol.interaction.defaults().extend([dragAndDropInteraction]),
   layers: [
     new ol.layer.Tile({
-      source: new ol.source.BingMaps({
-        key: 'Ak-dzM4wZjSqTlzveKz5u0d4IQ4bRzVI309GxmkgSVr1ewS6iPSrOvOKhA-CJlm3',
-        imagerySet: 'Aerial'
-      })
+      source: new ol.source.OSM()
     }),
     vectorLayer,
     vectorLayer2
@@ -215,9 +211,11 @@ dragAndDropInteraction.on('addfeatures', function(event) {
 var ol3d = new olcs.OLCesium({map: map, target: 'map3d'});
 var scene = ol3d.getCesiumScene();
 var terrainProvider = new Cesium.CesiumTerrainProvider({
-  url: '//assets.agi.com/stk-terrain/world'
+  url: '//assets.agi.com/stk-terrain/world',
+  requestVertexNormals: true
 });
 scene.terrainProvider = terrainProvider;
+scene.globe.enableLighting = true;
 ol3d.setEnabled(true);
 
 var csLabels = new Cesium.LabelCollection();
