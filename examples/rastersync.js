@@ -14,7 +14,7 @@ var layer1 = new ol.layer.Tile({
 });
 
 var tileJsonSource = new ol.source.TileJSON({
-  url: 'http://api.tiles.mapbox.com/v3/mapbox.world-borders-light.jsonp',
+  url: 'http://api.tiles.mapbox.com/v3/mapbox.world-borders-light.json',
   crossOrigin: 'anonymous'
 });
 
