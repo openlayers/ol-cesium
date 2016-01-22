@@ -27,12 +27,11 @@ olcs.core.computePixelSizeAtCoordinate = function(scene, target) {
   var camera = scene.camera;
   var canvas = scene.canvas;
   var frustum = camera.frustum;
-  var canvasDimensions = new Cesium.Cartesian2(
-      canvas.clientWidth, canvas.clientHeight);
   var distance = Cesium.Cartesian3.magnitude(Cesium.Cartesian3.subtract(
       camera.position, target, new Cesium.Cartesian3()));
-  var pixelSize = frustum.getPixelSize(canvasDimensions, distance);
-  return pixelSize;
+  var pixelSize = new Cesium.Cartesian2();
+  return frustum.getPixelDimensions(canvas.clientWidth, canvas.clientHeight,
+      distance, pixelSize);
 };
 
 

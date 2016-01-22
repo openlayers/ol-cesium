@@ -2346,12 +2346,13 @@ Cesium.PerspectiveFrustrum.prototype.projectionMatrix;
 
 
 /**
- * @param {!Cesium.Cartesian2} canvasDim .
- * @param {number=} opt_dist .
+ * @param {!number} drawingBufferWidth
+ * @param {!number} drawingBufferHeight
+ * @param {!number} dist
+ * @param {!Cesium.Cartesian2} result
  * @return {!Cesium.Cartesian2}
  */
-Cesium.PerspectiveFrustrum.prototype.getPixelSize = function(canvasDim, opt_dist) {};
-
+Cesium.PerspectiveFrustrum.prototype.getPixelDimensions = function(drawingBufferWidth, drawingBufferHeight, dist, result) {};
 
 
 /**
