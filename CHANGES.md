@@ -2,8 +2,14 @@
 
 ## v1.12
 
+* Breaking changes
+  * Remove dragbox functionality due to the removal of the Cesium.RectanglePrimitive
+    by upstream. See the commit message for hints about how to reimplement it.
+  * Remove Cesium.RectanglePrimitive, Cesium.PerspectiveFrustrum.getPixelSize,
+    Cesium.OpenStreetMapImageryProvider from Cesium externs.
 * Changes
   * Port to OL 3.13.0.
+  * Port to Cesium 1.17.
 
 ## v1.11 - 2015-12-23
 
