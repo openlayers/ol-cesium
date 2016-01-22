@@ -3134,28 +3134,6 @@ Cesium.UrlTemplateImageryProvider = function(options) {};
 Cesium.UrlTemplateImageryProviderOptions;
 
 
-
-/**
- * @typedef {{
- *   url: (string|undefined),
- *   fileExtension: (string|undefined),
- *   proxy: (Object|undefined),
- *   rectangle: (Cesium.Rectangle|undefined),
- *   minimumLevel: (number|undefined),
- *   maximumLevel: (number|undefined),
- *   credit: (Cesium.Credit|string|undefined)
- * }}
- */
-Cesium.OpenStreetMapImageryProviderOptions;
-
-/**
- * @constructor
- * @param {Cesium.OpenStreetMapImageryProviderOptions=} opt_opts
- * @extends {Cesium.ImageryProvider}
- */
-Cesium.OpenStreetMapImageryProvider = function(opt_opts) {};
-
-
 /**
  * @typedef {{
  *   url: string,
