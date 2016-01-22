@@ -2082,33 +2082,6 @@ Cesium.Rectangle.fromCartographicArray = function(cartographics, opt_result) {};
 
 
 /**
- * @typedef {{asynchronous: (boolean|undefined),
- *     height: (number|undefined),
- *     rectangle: (Cesium.Rectangle|undefined),
- *     material: (Cesium.Material|undefined)}}
- */
-Cesium.RectanglePrimitiveOptions;
-
-/**
- * @constructor
- * @param {Cesium.RectanglePrimitiveOptions} options .
- * @extends {Cesium.Primitive}
- */
-Cesium.RectanglePrimitive = function(options) {};
-
-
-/**
- * @type {!Cesium.Material} material .
- */
-Cesium.RectanglePrimitive.prototype.material;
-
-/**
- * @type {!Cesium.Rectangle} rectangle .
- */
-Cesium.RectanglePrimitive.prototype.rectangle;
-
-
-/**
  * @constructor
  */
 Cesium.FeatureDetection = function() {};
