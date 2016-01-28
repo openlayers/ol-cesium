@@ -2082,33 +2082,6 @@ Cesium.Rectangle.fromCartographicArray = function(cartographics, opt_result) {};
 
 
 /**
- * @typedef {{asynchronous: (boolean|undefined),
- *     height: (number|undefined),
- *     rectangle: (Cesium.Rectangle|undefined),
- *     material: (Cesium.Material|undefined)}}
- */
-Cesium.RectanglePrimitiveOptions;
-
-/**
- * @constructor
- * @param {Cesium.RectanglePrimitiveOptions} options .
- * @extends {Cesium.Primitive}
- */
-Cesium.RectanglePrimitive = function(options) {};
-
-
-/**
- * @type {!Cesium.Material} material .
- */
-Cesium.RectanglePrimitive.prototype.material;
-
-/**
- * @type {!Cesium.Rectangle} rectangle .
- */
-Cesium.RectanglePrimitive.prototype.rectangle;
-
-
-/**
  * @constructor
  */
 Cesium.FeatureDetection = function() {};
@@ -2346,12 +2319,13 @@ Cesium.PerspectiveFrustrum.prototype.projectionMatrix;
 
 
 /**
- * @param {!Cesium.Cartesian2} canvasDim .
- * @param {number=} opt_dist .
+ * @param {!number} drawingBufferWidth
+ * @param {!number} drawingBufferHeight
+ * @param {!number} dist
+ * @param {!Cesium.Cartesian2} result
  * @return {!Cesium.Cartesian2}
  */
-Cesium.PerspectiveFrustrum.prototype.getPixelSize = function(canvasDim, opt_dist) {};
-
+Cesium.PerspectiveFrustrum.prototype.getPixelDimensions = function(drawingBufferWidth, drawingBufferHeight, dist, result) {};
 
 
 /**
@@ -3132,28 +3106,6 @@ Cesium.UrlTemplateImageryProvider = function(options) {};
  * }}
  */
 Cesium.UrlTemplateImageryProviderOptions;
-
-
-
-/**
- * @typedef {{
- *   url: (string|undefined),
- *   fileExtension: (string|undefined),
- *   proxy: (Object|undefined),
- *   rectangle: (Cesium.Rectangle|undefined),
- *   minimumLevel: (number|undefined),
- *   maximumLevel: (number|undefined),
- *   credit: (Cesium.Credit|string|undefined)
- * }}
- */
-Cesium.OpenStreetMapImageryProviderOptions;
-
-/**
- * @constructor
- * @param {Cesium.OpenStreetMapImageryProviderOptions=} opt_opts
- * @extends {Cesium.ImageryProvider}
- */
-Cesium.OpenStreetMapImageryProvider = function(opt_opts) {};
 
 
 /**
