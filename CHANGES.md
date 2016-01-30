@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.12
+## v1.12 - 2016-01-30
 
 * Breaking changes
   * Remove dragbox functionality due to the removal of the Cesium.RectanglePrimitive
