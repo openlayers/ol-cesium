@@ -64,7 +64,7 @@ olcs.OLCesium = function(options) {
 
   var targetElement = goog.dom.getElement(options.target || null);
   if (targetElement) {
-    goog.dom.appendChild(targetElement, this.container_);
+    targetElement.appendChild(this.container_);
   } else {
     var vp = this.map_.getViewport();
     var oc = goog.dom.getElementByClass('ol-overlaycontainer', vp);
@@ -89,7 +89,7 @@ olcs.OLCesium = function(options) {
   this.canvas_.oncontextmenu = function() { return false; };
   this.canvas_.onselectstart = function() { return false; };
 
-  goog.dom.appendChild(this.container_, this.canvas_);
+  this.container_.appendChild(this.canvas_);
 
   /**
    * @type {boolean}
