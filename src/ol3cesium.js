@@ -62,8 +62,11 @@ olcs.OLCesium = function(options) {
   this.container_ = goog.dom.createDom(goog.dom.TagName.DIV,
       {style: fillArea + 'visibility:hidden;'});
 
-  var targetElement = goog.dom.getElement(options.target || null);
+  var targetElement = options.target || null;
   if (targetElement) {
+    if (typeof targetElement === 'string') {
+      targetElement = document.getElementById(targetElement);
+    }
     targetElement.appendChild(this.container_);
   } else {
     var vp = this.map_.getViewport();
