@@ -252,8 +252,8 @@ olcs.Camera.prototype.setPosition = function(position) {
   var ll = this.toLonLat_(position);
   goog.asserts.assert(!goog.isNull(ll));
 
-  var carto = new Cesium.Cartographic(goog.math.toRadians(ll[0]),
-                                      goog.math.toRadians(ll[1]),
+  var carto = new Cesium.Cartographic(ol.math.toRadians(ll[0]),
+                                      ol.math.toRadians(ll[1]),
                                       this.getAltitude());
 
   this.cam_.position = Cesium.Ellipsoid.WGS84.cartographicToCartesian(carto);
@@ -273,8 +273,8 @@ olcs.Camera.prototype.getPosition = function() {
   var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(
       this.cam_.position);
 
-  var pos = this.fromLonLat_([goog.math.toDegrees(carto.longitude),
-                              goog.math.toDegrees(carto.latitude)]);
+  var pos = this.fromLonLat_([ol.math.toDegrees(carto.longitude),
+                              ol.math.toDegrees(carto.latitude)]);
   goog.asserts.assert(!goog.isNull(pos));
   return pos;
 };
@@ -341,8 +341,8 @@ olcs.Camera.prototype.updateCamera_ = function() {
   var ll = this.toLonLat_(center);
   goog.asserts.assert(!goog.isNull(ll));
 
-  var carto = new Cesium.Cartographic(goog.math.toRadians(ll[0]),
-                                      goog.math.toRadians(ll[1]));
+  var carto = new Cesium.Cartographic(ol.math.toRadians(ll[0]),
+                                      ol.math.toRadians(ll[1]));
   if (this.scene_.globe) {
     var height = this.scene_.globe.getHeight(carto);
     carto.height = goog.isDef(height) ? height : 0;
@@ -384,7 +384,7 @@ olcs.Camera.prototype.readFromView = function() {
 
   var resolution = this.view_.getResolution();
   this.distance_ = this.calcDistanceForResolution_(
-      goog.isDef(resolution) ? resolution : 0, goog.math.toRadians(ll[1]));
+      goog.isDef(resolution) ? resolution : 0, ol.math.toRadians(ll[1]));
 
   this.updateCamera_();
 };
@@ -418,8 +418,8 @@ olcs.Camera.prototype.updateView = function() {
   this.distance_ = Cesium.Cartesian3.distance(bestTarget, this.cam_.position);
   var bestTargetCartographic = ellipsoid.cartesianToCartographic(bestTarget);
   this.view_.setCenter(this.fromLonLat_([
-    goog.math.toDegrees(bestTargetCartographic.longitude),
-    goog.math.toDegrees(bestTargetCartographic.latitude)]));
+    ol.math.toDegrees(bestTargetCartographic.longitude),
+    ol.math.toDegrees(bestTargetCartographic.latitude)]));
 
   // resolution
   this.view_.setResolution(
