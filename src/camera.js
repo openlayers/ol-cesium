@@ -1,7 +1,7 @@
 goog.provide('olcs.Camera');
 
-goog.require('goog.events');
 goog.require('ol.Observable');
+goog.require('ol.events');
 goog.require('ol.proj');
 goog.require('olcs.core');
 
@@ -42,7 +42,7 @@ olcs.Camera = function(scene, map) {
   this.view_ = null;
 
   /**
-   * @type {?goog.events.Key}
+   * @type {?ol.events.Key}
    * @private
    */
   this.viewListenKey_ = null;
@@ -128,8 +128,9 @@ olcs.Camera.prototype.setView_ = function(view) {
     this.toLonLat_ = toLonLat;
     this.fromLonLat_ = fromLonLat;
 
-    this.viewListenKey_ = view.on('propertychange',
-                                  this.handleViewEvent_, this);
+    this.viewListenKey_ = ol.events.listen(view, 'propertychange',
+        this.handleViewEvent_, this);
+
     this.readFromView();
   } else {
     this.toLonLat_ = olcs.Camera.identityProjection;

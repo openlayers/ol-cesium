@@ -1,6 +1,6 @@
 goog.provide('olcs.core.OLImageryProvider');
 
-goog.require('goog.events');
+goog.require('ol.events');
 goog.require('ol.proj');
 
 
@@ -46,7 +46,7 @@ olcs.core.OLImageryProvider = function(source, opt_fallbackProj) {
   this.emptyCanvas_.width = 1;
   this.emptyCanvas_.height = 1;
 
-  this.source_.on(goog.events.EventType.CHANGE, function(e) {
+  this.source_.on(ol.events.EventType.CHANGE, function(e) {
     this.handleSourceChanged_();
   }, this);
   this.handleSourceChanged_();
