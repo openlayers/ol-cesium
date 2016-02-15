@@ -42,7 +42,7 @@ olcs.core.OLImageryProvider = function(source, opt_fallbackProj) {
 
   this.errorEvent_ = new Cesium.Event();
 
-  this.emptyCanvas_ = goog.dom.createElement(goog.dom.TagName.CANVAS);
+  this.emptyCanvas_ = document.createElement('canvas');
   this.emptyCanvas_.width = 1;
   this.emptyCanvas_.height = 1;
 
