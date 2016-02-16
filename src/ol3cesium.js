@@ -59,17 +59,21 @@ olcs.OLCesium = function(options) {
    * @type {!Element}
    * @private
    */
-  this.container_ = goog.dom.createDom(goog.dom.TagName.DIV,
-      {style: fillArea + 'visibility:hidden;'});
+  this.container_ = document.createElement('DIV');
+  var containerAttribute = document.createAttribute('style');
+  containerAttribute.value = fillArea + 'visibility:hidden;';
+  this.container_.setAttributeNode(containerAttribute);
 
-  var targetElement = goog.dom.getElement(options.target || null);
+  var targetElement = options.target || null;
   if (targetElement) {
-    goog.dom.appendChild(targetElement, this.container_);
+    if (typeof targetElement === 'string') {
+      targetElement = document.getElementById(targetElement);
+    }
+    targetElement.appendChild(this.container_);
   } else {
-    var vp = this.map_.getViewport();
-    var oc = goog.dom.getElementByClass('ol-overlaycontainer', vp);
-    if (oc) {
-      goog.dom.insertSiblingBefore(this.container_, oc);
+    var oc = this.map_.getViewport().querySelector('.ol-overlaycontainer');
+    if (oc && oc.parentNode) {
+      oc.parentNode.insertBefore(this.container_, oc);
     }
   }
 
@@ -84,12 +88,16 @@ olcs.OLCesium = function(options) {
    * @type {!HTMLCanvasElement}
    * @private
    */
-  this.canvas_ = /** @type {!HTMLCanvasElement} */
-      (goog.dom.createDom(goog.dom.TagName.CANVAS, {style: fillArea}));
+  this.canvas_ = /** @type {!HTMLCanvasElement} */ (
+      document.createElement('CANVAS'));
+  var canvasAttribute = document.createAttribute('style');
+  canvasAttribute.value = fillArea;
+  this.canvas_.setAttributeNode(canvasAttribute);
+
   this.canvas_.oncontextmenu = function() { return false; };
   this.canvas_.onselectstart = function() { return false; };
 
-  goog.dom.appendChild(this.container_, this.canvas_);
+  this.container_.appendChild(this.canvas_);
 
   /**
    * @type {boolean}
