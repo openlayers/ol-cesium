@@ -557,7 +557,7 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium =
         }
       };
 
-      goog.events.listenOnce(image, 'load', listener);
+      ol.events.listenOnce(image, 'load', listener);
     } else {
       reallyCreateBillboard();
     }
@@ -817,7 +817,7 @@ olcs.FeatureConverter.prototype.computePlainStyle =
   // then this function must return a custom material
   // More simply, could blend the colors like described in
   // http://en.wikipedia.org/wiki/Alpha_compositing
-  return Array.isArray(style) ? style[0] : style;
+  return goog.isArray(style) ? style[0] : style;
 };
 
 
