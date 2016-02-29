@@ -138,3 +138,13 @@ else
 cesium/Build/Cesium/Cesium.js:
 	mkdir -p cesium/Build/Cesium/
 endif
+
+# Only generated when cesium/Build/CesiumUnminified/Cesium.js does not exist
+# or CHANGES.md changed
+ifndef NO_CESIUM
+cesium/Build/CesiumUnminified/Cesium.js: cesium/CHANGES.md cesium/node_modules/.bin/gulp
+	(cd cesium && node_modules/.bin/gulp combine)
+else
+cesium/Build/CesiumUnminified/Cesium.js:
+	mkdir -p cesium/Build/CesiumUnminified/
+endif
