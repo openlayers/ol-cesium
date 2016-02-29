@@ -27,17 +27,11 @@ function _doToggle() {
 
 function toggle3D() {
   if (!ol3d) {
-    var s = document.createElement("script");
-    s.type = "text/javascript";
-    s.src = "../cesium/Build/Cesium/Cesium.js";
-    console.log('loading Cesium...');
-
+    var s = window.lazyLoadCesium();
     s.onload = function() {
       init3D();
       _doToggle();
     };
-
-    document.body.appendChild(s);
   } else {
      _doToggle();
   }

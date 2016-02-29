@@ -12,7 +12,8 @@
     <div>This is an experimental feature.</div>
     <div id="map" style="width:600px;height:400px;"></div>
     <input type="button" value="Enable/disable 3D" onclick="javascript:toggle3D()" />
-    <script src="/@loader"></script>
+    <script>LAZY_CESIUM = true</script>
+    <script src="inject_ol3_cesium.js"></script>
     <script src="lazy.js"></script>
   </body>
 </html>
