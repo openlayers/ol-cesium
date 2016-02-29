@@ -1137,7 +1137,8 @@ Cesium.Primitive.prototype.olLayer;
 
 /**
  * @typedef {{
- *   geometryInstance: !Cesium.GeometryInstance
+ *   geometryInstances: (!Cesium.GeometryInstance|undefined),
+ *   geometryInstance: (!Cesium.GeometryInstance|undefined)
  * }}
  */
 Cesium.optionsGroundPrimitive;
@@ -2842,20 +2843,9 @@ Cesium.SingleTileImageryProviderOptions;
 
 
 /**
- * @constructor
- * @param {{url: (string|undefined),
- *          fileExtension: (string|undefined),
- *          proxy: (Object|undefined),
- *          credit: (Cesium.Credit|string|undefined),
- *          minimumLevel: (number|undefined),
- *          maximumLevel: (number|undefined),
- *          rectangle: (Cesium.Rectangle|undefined),
- *          tilingScheme: (Cesium.TilingScheme|undefined),
- *          tileWidth: (number|undefined),
- *          tileHeight: (number|undefined)}} options
- * @extends {Cesium.ImageryProvider}
+ * @type {Cesium.RemovedAPI}
  */
-Cesium.TileMapServiceImageryProvider = function(options) {};
+Cesium.TileMapServiceImageryProvider;
 
 
 

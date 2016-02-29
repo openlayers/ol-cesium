@@ -1,5 +1,11 @@
 # Changelog
 
+## v 1.13 - 2016-02-29
+
+* Changes
+  * Port to Cesium 1.18.
+  * Port to OL 3.14.0.
+
 ## v1.12 - 2016-01-30
 
 * Breaking changes
