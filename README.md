@@ -76,4 +76,12 @@ source files instead of a minified build:
 
     $ make serve
 
-will make the distribution examples available at http://localhost:4000/
+will make the distribution examples available at http://localhost:4000/examples
+
+Running the unminified version of Cesium
+----------------------------------------
+
+Passing the parameter `?mode=dev` to an example will load the debug version of
+Cesium instead of the minified one. This is helpful when something breaks inside
+Cesium. In distribution mode, an unminified version of OL3 and OL3-Cesium is
+also loaded.

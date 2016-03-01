@@ -1,5 +1,10 @@
 # Changelog
 
+## v 1.14
+
+* Changes
+  * Accept a mode=dev parameter in examples to ease debugging.
+
 ## v 1.13 - 2016-02-29
 
 * Changes
