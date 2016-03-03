@@ -108,7 +108,9 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
       cesiumObjects = this.createSingleLayerCounterparts(olLayer);
       if (!cesiumObjects) {
         olLayer.getLayers().forEach(function(l) {
-          fifo.push(l);
+          if (l) {
+            fifo.push(l);
+          }
         });
       }
     } else {
