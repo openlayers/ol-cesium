@@ -12,16 +12,16 @@
     "url": "https://github.com/openlayers/ol3-cesium/issues"
   },
   "dependencies": {
-    "async": "1.5.0",
-    "htmlparser2": "3.7.1"
+    "async": "1.5.2",
+    "htmlparser2": "3.9.0"
   },
   "devDependencies": {
-    "closure-util": "1.9.0",
-    "geojsonhint": "1.0.0",
-    "fs-extra": "0.26.2",
-    "graceful-fs": "4.1.2",
+    "closure-util": "1.11.0",
+    "geojsonhint": "1.2.0",
+    "fs-extra": "0.26.5",
+    "graceful-fs": "4.1.3",
     "jsdoc": "~3.4.0",
-    "jshint": "2.8.0",
+    "jshint": "2.9.1",
     "nomnom": "1.8.1",
     "temp": "0.8.3",
     "walk": "2.3.9"

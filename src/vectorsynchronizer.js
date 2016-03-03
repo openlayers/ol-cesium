@@ -111,7 +111,7 @@ olcs.VectorSynchronizer.prototype.createSingleLayerCounterparts =
 
   csPrimitives.show = olLayer.getVisible();
 
-  olListenKeys.push(olLayer.on('change:visible', function(e) {
+  olListenKeys.push(ol.events.listen(olLayer, 'change:visible', function(e) {
     csPrimitives.show = olLayer.getVisible();
   }));
 
@@ -146,17 +146,17 @@ olcs.VectorSynchronizer.prototype.createSingleLayerCounterparts =
     }
   }).bind(this);
 
-  olListenKeys.push(source.on('addfeature', function(e) {
+  olListenKeys.push(ol.events.listen(source, 'addfeature', function(e) {
     goog.asserts.assert(goog.isDefAndNotNull(e.feature));
     onAddFeature(e.feature);
   }, this));
 
-  olListenKeys.push(source.on('removefeature', function(e) {
+  olListenKeys.push(ol.events.listen(source, 'removefeature', function(e) {
     goog.asserts.assert(goog.isDefAndNotNull(e.feature));
     onRemoveFeature(e.feature);
   }, this));
 
-  olListenKeys.push(source.on('changefeature', function(e) {
+  olListenKeys.push(ol.events.listen(source, 'changefeature', function(e) {
     var feature = e.feature;
     goog.asserts.assert(goog.isDefAndNotNull(feature));
     onRemoveFeature(feature);
