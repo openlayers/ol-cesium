@@ -1137,8 +1137,7 @@ Cesium.Primitive.prototype.olLayer;
 
 /**
  * @typedef {{
- *   geometryInstances: (!Cesium.GeometryInstance|undefined),
- *   geometryInstance: (!Cesium.GeometryInstance|undefined)
+ *   geometryInstances: (!Array.<Cesium.GeometryInstance>|Cesium.GeometryInstance)
  * }}
  */
 Cesium.optionsGroundPrimitive;

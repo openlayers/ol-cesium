@@ -92,8 +92,9 @@ cleanall: clean
 	cp -R cesium/Build/CesiumUnminified dist/
 	cp -R examples dist/
 	cp ol3/css/ol.css dist/
-	for f in dist/examples/*.js; do $(SEDI) 'sY@loaderYol3cesium.jsY' $$f; done
-	for f in dist/examples/*.js; do $(SEDI) 'sY../cesium/Build/Y../Y' $$f; done
+	$(SEDI) 'sYDIST = falseYDIST = trueY' dist/examples/inject_ol3_cesium.js
+	$(SEDI) 'sY@loaderYol3cesium.jsY' dist/examples/inject_ol3_cesium.js
+	$(SEDI) 'sY../cesium/Build/Y../Y' dist/examples/inject_ol3_cesium.js
 	for f in dist/examples/*.html; do $(SEDI) 'sY../ol3/css/ol.cssY../ol.cssY' $$f; done
 	touch $@
 

@@ -89,7 +89,7 @@ olcs.FeatureConverter.prototype.setReferenceForPicking =
  * @param {!Cesium.Geometry} geometry
  * @param {!Cesium.Color} color
  * @param {number=} opt_lineWidth
- * @return {!Cesium.Primitive}
+ * @return {Cesium.Primitive}
  * @protected
  */
 olcs.FeatureConverter.prototype.createColoredPrimitive =
@@ -128,9 +128,13 @@ olcs.FeatureConverter.prototype.createColoredPrimitive =
   var primitive;
 
   if (heightReference == Cesium.HeightReference.CLAMP_TO_GROUND) {
+    var ctor = instances.geometry.constructor;
+    if (ctor && !ctor.createShadowVolume) {
+      return null;
+    }
     primitive = new Cesium.GroundPrimitive({
       // always update Cesium externs before adding a property
-      geometryInstance: instances
+      geometryInstances: instances
     });
   } else {
     var appearance = new Cesium.PerInstanceColorAppearance(options);
@@ -205,6 +209,7 @@ olcs.FeatureConverter.prototype.wrapFillAndOutlineGeometries =
   if (olStyle.getFill()) {
     var p = this.createColoredPrimitive(layer, feature, olGeometry,
         fillGeometry, fillColor);
+    goog.asserts.assert(!!p);
     primitives.add(p);
   }
 
@@ -212,7 +217,11 @@ olcs.FeatureConverter.prototype.wrapFillAndOutlineGeometries =
     var width = this.extractLineWidthFromOlStyle(olStyle);
     var p = this.createColoredPrimitive(layer, feature, olGeometry,
         outlineGeometry, outlineColor, width);
-    primitives.add(p);
+    if (p) {
+      // Some outline geometries are not supported by Cesium in clamp to ground
+      // mode. These primitives are skipped.
+      primitives.add(p);
+    }
   }
 
   return primitives;
