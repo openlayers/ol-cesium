@@ -117,14 +117,16 @@ olcs.OLCesium = function(options) {
    */
   this.hiddenRootGroup_ = null;
 
+  var sceneOptions = options.sceneOptions !== undefined ? options.sceneOptions :
+      /** @type {Cesium.SceneOptions} */ ({});
+  sceneOptions.canvas = this.canvas_;
+  sceneOptions.scene3DOnly = true;
+
   /**
    * @type {!Cesium.Scene}
    * @private
    */
-  this.scene_ = new Cesium.Scene({
-    canvas: this.canvas_,
-    scene3DOnly: true
-  });
+  this.scene_ = new Cesium.Scene(sceneOptions);
 
   var sscc = this.scene_.screenSpaceCameraController;
   sscc.inertiaSpin = 0;
