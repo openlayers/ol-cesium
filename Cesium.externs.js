@@ -2374,14 +2374,22 @@ Cesium.Fog.prototype.density;
  */
 Cesium.Fog.prototype.screenSpaceErrorFactor;
 
+/**
+ * @typedef {{
+ *   canvas: (!HTMLCanvasElement),
+ *   contextOptions: (!Object|undefined),
+ *   creditContainer: (!Element|undefined),
+ *   mapProjection: (!Object|undefined),
+ *   orderIndependentTranslucency: (!boolean|undefined),
+ *   scene3DOnly: (!boolean|undefined),
+ *   terrainExaggeration: (!number|undefined)
+ *   }}
+ */
+Cesium.SceneOptions;
 
 /**
  * @constructor
- * @param {{canvas: HTMLCanvasElement,
-            contextOptions: (Object|undefined),
-            creditContainer: (Element|undefined),
-            mapProjection: (Object|undefined),
-            scene3DOnly: (boolean|undefined)}} opt_opts
+ * @param {!Cesium.SceneOptions} opt_opts
  */
 Cesium.Scene = function(opt_opts) {};
 
@@ -2409,6 +2417,10 @@ Cesium.Scene.prototype.context;
  */
 Cesium.Scene.prototype.fog;
 
+/**
+ * @type {!number}
+ */
+Cesium.Scene.prototype.terrainExaggeration;
 
 /**
  */

@@ -10,7 +10,8 @@ var olcsx;
  * @typedef {{
  *   map: (!ol.Map),
  *   target: (Element|string|undefined),
- *   createSynchronizers: (undefined|function(!ol.Map, !Cesium.Scene): Array.<olcs.AbstractSynchronizer>)
+ *   createSynchronizers: (undefined|function(!ol.Map, !Cesium.Scene): Array.<olcs.AbstractSynchronizer>),
+ *   sceneOptions: (Cesium.SceneOptions|undefined)
  * }}
  * @api
  */
@@ -24,6 +25,12 @@ olcsx.OLCesiumOptions;
  */
 olcsx.OLCesiumOptions.prototype.map;
 
+/**
+ * Allows the passing of property value to the `Cesium.Scene`.
+ * @type {Cesium.SceneOptions|undefined}
+ * @api
+ */
+olcsx.OLCesiumOptions.prototype.sceneOptions;
 
 /**
  * Target element for the Cesium scene.
