@@ -556,8 +556,13 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium =
         cancellers = olcs.obj(source)['olcs_cancellers'] = {};
       }
 
-      goog.asserts.assert(!cancellers[goog.getUid(feature)]);
-      cancellers[goog.getUid(feature)] = canceller;
+      var fuid = goog.getUid(feature);
+      if (cancellers[fuid]) {
+        // When the feature change quickly, a canceller may still be present so
+        // we cancel it here to prevent creation of a billboard.
+        cancellers[fuid]();
+      }
+      cancellers[fuid] = canceller;
 
       var listener = function() {
         if (!billboards.isDestroyed() && !cancelled) {
