@@ -129,7 +129,7 @@ olcs.FeatureConverter.prototype.createColoredPrimitive =
 
   if (heightReference == Cesium.HeightReference.CLAMP_TO_GROUND) {
     var ctor = instances.geometry.constructor;
-    if (ctor && !ctor.createShadowVolume) {
+    if (ctor && !ctor['createShadowVolume']) {
       return null;
     }
     primitive = new Cesium.GroundPrimitive({
