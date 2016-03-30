@@ -4,6 +4,8 @@
 
 * Changes
   * Accept a mode=dev parameter in examples to ease debugging.
+  * Port to OL 3.14.2.
+  * Port to Cesium 1.19.
 
 ## v 1.13 - 2016-02-29
 
