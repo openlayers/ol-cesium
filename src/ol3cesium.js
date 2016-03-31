@@ -94,6 +94,11 @@ olcs.OLCesium = function(options) {
   canvasAttribute.value = fillArea;
   this.canvas_.setAttributeNode(canvasAttribute);
 
+  if (olcs.supportsImageRenderingPixelated()) {
+    // non standard CSS4
+    this.canvas_.style['imageRendering'] = olcs.imageRenderingValue();
+  }
+
   this.canvas_.oncontextmenu = function() { return false; };
   this.canvas_.onselectstart = function() { return false; };
 
@@ -222,14 +227,17 @@ olcs.OLCesium.prototype.handleResize_ = function() {
     return;
   }
 
-  var zoomFactor = (window.devicePixelRatio || 1.0) * this.resolutionScale_;
+  var resolutionScale = this.resolutionScale_;
+  if (!olcs.supportsImageRenderingPixelated()) {
+    resolutionScale *= window.devicePixelRatio || 1.0;
+  }
   this.resolutionScaleChanged_ = false;
 
   this.canvasClientWidth_ = width;
   this.canvasClientHeight_ = height;
 
-  width *= zoomFactor;
-  height *= zoomFactor;
+  width *= resolutionScale;
+  height *= resolutionScale;
 
   this.canvas_.width = width;
   this.canvas_.height = height;
