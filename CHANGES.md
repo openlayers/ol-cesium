@@ -1,5 +1,12 @@
 # Changelog
 
+## v 1.15
+
+* Changes
+  * Use fast pixelated canvas scaling on supported browsers. See
+    PR 3288 / commit 322df7b in Cesium. On unsupported browsers, render at
+    full resolution (slow).
+
 ## v 1.14 - 2016-03-31
 
 * Changes
