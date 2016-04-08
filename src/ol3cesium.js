@@ -306,7 +306,7 @@ olcs.OLCesium.prototype.getEnabled = function() {
  * @api
  */
 olcs.OLCesium.prototype.setEnabled = function(enable) {
-  if (this.enabled_ == enable) {
+  if (this.enabled_ === enable) {
     return;
   }
   this.enabled_ = enable;
@@ -315,6 +315,7 @@ olcs.OLCesium.prototype.setEnabled = function(enable) {
   // so we can't remove it from DOM or even make display:none;
   this.container_.style.visibility = this.enabled_ ? 'visible' : 'hidden';
   if (this.enabled_) {
+    this.throwOnUnitializedMap_();
     if (this.isOverMap_) {
       var interactions = this.map_.getInteractions();
       interactions.forEach(function(el, i, arr) {
@@ -361,6 +362,7 @@ olcs.OLCesium.prototype.warmUp = function(height, timeout) {
     // already enabled
     return;
   }
+  this.throwOnUnitializedMap_();
   this.camera_.readFromView();
   var ellipsoid = this.globe_.ellipsoid;
   var csCamera = this.scene_.camera;
@@ -434,5 +436,20 @@ olcs.OLCesium.prototype.setResolutionScale = function(value) {
     if (this.autoRenderLoop_) {
       this.autoRenderLoop_.restartRenderLoop();
     }
+  }
+};
+
+
+/**
+ * Check if OL3 map is not properly initialized.
+ * @private
+ */
+olcs.OLCesium.prototype.throwOnUnitializedMap_ = function() {
+  var map = this.map_;
+  var center = map.getView().getCenter();
+  var resolution = map.getView().getResolution();
+  if (!center || isNaN(center[0]) || isNaN(center[1]) || !resolution) {
+    throw new Error('The OL3 map is not properly initialized: ' +
+        center + ' / ' + resolution);
   }
 };
