@@ -221,6 +221,11 @@ olcs.OLCesium.prototype.handleResize_ = function() {
   var width = this.canvas_.clientWidth;
   var height = this.canvas_.clientHeight;
 
+  if (width === 0 | height === 0) {
+    // The canvas DOM element is not ready yet.
+    return;
+  }
+
   if (width === this.canvasClientWidth_ &&
       height === this.canvasClientHeight_ &&
       !this.resolutionScaleChanged_) {
@@ -446,10 +451,10 @@ olcs.OLCesium.prototype.setResolutionScale = function(value) {
  */
 olcs.OLCesium.prototype.throwOnUnitializedMap_ = function() {
   var map = this.map_;
-  var center = map.getView().getCenter();
-  var resolution = map.getView().getResolution();
-  if (!center || isNaN(center[0]) || isNaN(center[1]) || !resolution) {
+  var view = map.getView();
+  var center = view.getCenter();
+  if (!view.isDef() || isNaN(center[0]) || isNaN(center[1])) {
     throw new Error('The OL3 map is not properly initialized: ' +
-        center + ' / ' + resolution);
+        center + ' / ' + view.getResolution());
   }
 };
