@@ -6,7 +6,7 @@
   * Use fast pixelated canvas scaling on supported browsers. See
     PR 3288 / commit 322df7b in Cesium. On unsupported browsers, render at
     full resolution (slow).
-  * Port to OL 3.15.0.
+  * Port to OL 3.15.1.
   * Port to Cesium 1.20.
 
 ## v 1.14 - 2016-03-31
