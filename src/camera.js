@@ -496,6 +496,7 @@ olcs.Camera.prototype.calcDistanceForResolution_ = function(resolution,
                                                             latitude) {
   var canvas = this.scene_.canvas;
   var fovy = this.cam_.frustum.fovy; // vertical field of view
+  goog.asserts.assert(!isNaN(fovy));
   var metersPerUnit = this.view_.getProjection().getMetersPerUnit();
 
   // number of "map units" visible in 2D (vertically)
