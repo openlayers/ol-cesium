@@ -1,6 +1,6 @@
 # Changelog
 
-## v 1.15
+## v 1.15 - 2016-04-28
 
 * Changes
   * Use fast pixelated canvas scaling on supported browsers. See
