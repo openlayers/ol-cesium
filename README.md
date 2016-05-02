@@ -85,3 +85,10 @@ Passing the parameter `?mode=dev` to an example will load the debug version of
 Cesium instead of the minified one. This is helpful when something breaks inside
 Cesium. In distribution mode, an unminified version of OL3 and OL3-Cesium is
 also loaded.
+
+Limitations
+-----------
+
+OpenLayers unmanaged layers are not discoverable and as a consequence not
+supported. Plain layers should be used instead or the synchronization managed
+manually. See https://github.com/openlayers/ol3-cesium/issues/350.
