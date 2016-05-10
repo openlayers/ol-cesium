@@ -401,7 +401,8 @@ olcs.FeatureConverter.prototype.olPolygonGeometryToCesium =
   if (feature.getGeometry().get('olcs.polygon_kind') === 'rectangle') {
     // Extract the West, South, East, North coordinates
     var extent = ol.extent.boundingExtent(olGeometry.getCoordinates()[0]);
-    var rectangle = Cesium.Rectangle.fromDegrees(extent[0], extent[1], extent[2], extent[3]);
+    var rectangle = Cesium.Rectangle.fromDegrees(extent[0], extent[1],
+      extent[2], extent[3]);
 
     // Render the cartographic rectangle
     fillGeometry = new Cesium.RectangleGeometry({
