@@ -1483,6 +1483,14 @@ Cesium.PolygonOutlineGeometry = function(object) {};
 
 
 /**
+ * @constructor
+ * @param {Object=} object
+ * @extends {Cesium.Geometry}
+ */
+Cesium.RectangleOutlineGeometry = function(object) {};
+
+
+/**
  * @typedef {{
  * positions: !Array.<Cesium.Cartesian3>,
  * vertexFormat: number
@@ -1497,6 +1505,23 @@ Cesium.optionsPolylineGeometry;
  * @extends {Cesium.Geometry}
  */
 Cesium.PolylineGeometry = function(object) {};
+
+
+/**
+ * @typedef {{
+ * rectangle: {Cesium.Rectangle},
+ * vertexFormat: number
+ * }}
+ */
+Cesium.optionsRectangleGeometry;
+
+
+/**
+ * @constructor
+ * @param {Object=} object
+ * @extends {Cesium.Geometry}
+ */
+Cesium.RectangleGeometry = function(object) {};
 
 
 
