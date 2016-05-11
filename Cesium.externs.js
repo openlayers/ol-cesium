@@ -1483,11 +1483,24 @@ Cesium.PolygonOutlineGeometry = function(object) {};
 
 
 /**
+ * @typedef {{
+ * rectangle: !Cesium.Rectangle,
+ * ellipsoid: (Cesium.Ellipsoid|undefined),
+ * granularity: (number|undefined),
+ * height: (number|undefined),
+ * rotation: (number|undefined),
+ * extrudedHeight: (number|undefined)
+ * }}
+ */
+Cesium.optionsRectangleOutlineGeometry;
+
+
+/**
  * @constructor
- * @param {Object=} object
+ * @param {Cesium.optionsRectangleOutlineGeometry} opt_opts
  * @extends {Cesium.Geometry}
  */
-Cesium.RectangleOutlineGeometry = function(object) {};
+Cesium.RectangleOutlineGeometry = function(opt_opts) {};
 
 
 /**
@@ -1509,8 +1522,16 @@ Cesium.PolylineGeometry = function(object) {};
 
 /**
  * @typedef {{
- * rectangle: {Cesium.Rectangle},
- * vertexFormat: number
+ * rectangle: !Cesium.Rectangle,
+ * vertexFormat: (Cesium.VertexFormat|undefined),
+ * ellipsoid: (Cesium.Ellipsoid|undefined),
+ * granularity: (number|undefined),
+ * height: (number|undefined),
+ * rotation: (number|undefined),
+ * stRotation: (number|undefined),
+ * extrudedHeight: (number|undefined),
+ * closeTop: (boolean|undefined),
+ * closeBottom: (boolean|undefined)
  * }}
  */
 Cesium.optionsRectangleGeometry;
@@ -1518,10 +1539,10 @@ Cesium.optionsRectangleGeometry;
 
 /**
  * @constructor
- * @param {Object=} object
+ * @param {Cesium.optionsRectangleGeometry} opt_opts
  * @extends {Cesium.Geometry}
  */
-Cesium.RectangleGeometry = function(object) {};
+Cesium.RectangleGeometry = function(opt_opts) {};
 
 
 
