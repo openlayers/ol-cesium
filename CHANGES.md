@@ -1,5 +1,8 @@
 # Changelog
 
+* Changes
+  * Added support for Cesium rectangles via the olcs.polygon_kind property.
+
 ## v 1.15 - 2016-04-28
 
 * Changes
