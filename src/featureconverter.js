@@ -399,20 +399,32 @@ olcs.FeatureConverter.prototype.olPolygonGeometryToCesium =
 
   var fillGeometry, outlineGeometry;
   if (feature.getGeometry().get('olcs.polygon_kind') === 'rectangle') {
+    var coordinates = olGeometry.getCoordinates()[0];
     // Extract the West, South, East, North coordinates
-    var extent = ol.extent.boundingExtent(olGeometry.getCoordinates()[0]);
+    var extent = ol.extent.boundingExtent(coordinates);
     var rectangle = Cesium.Rectangle.fromDegrees(extent[0], extent[1],
         extent[2], extent[3]);
+
+    // Extract the average height of the vertices
+    var height = 0.0;
+    if (coordinates[0].length == 3) {
+      for (var c = 0; c < coordinates.length; c++) {
+        height += coordinates[c][2];
+      }
+      height /= coordinates.length;
+    }
 
     // Render the cartographic rectangle
     fillGeometry = new Cesium.RectangleGeometry({
       ellipsoid: Cesium.Ellipsoid.WGS84,
-      rectangle: rectangle
+      rectangle: rectangle,
+      height: height
     });
 
     outlineGeometry = new Cesium.RectangleOutlineGeometry({
       ellipsoid: Cesium.Ellipsoid.WGS84,
-      rectangle: rectangle
+      rectangle: rectangle,
+      height: height
     });
   } else {
     var rings = olGeometry.getLinearRings();
