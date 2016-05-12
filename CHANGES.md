@@ -1,7 +1,10 @@
 # Changelog
 
 * Changes
-  * Added support for Cesium rectangles via the olcs.polygon_kind property.
+  * Add support for drawing rectangles according to the longitude and latitude
+    curves instead of straight lines. This functionality can be activated by
+    setting the olcs.polygon_kind property to 'rectangle' on the OpenLayers
+    geometry.
 
 ## v 1.15 - 2016-04-28
 
