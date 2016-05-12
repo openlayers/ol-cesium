@@ -398,7 +398,9 @@ olcs.FeatureConverter.prototype.olPolygonGeometryToCesium =
   goog.asserts.assert(olGeometry.getType() == 'Polygon');
 
   var fillGeometry, outlineGeometry;
-  if (feature.getGeometry().get('olcs.polygon_kind') === 'rectangle') {
+  if ((olGeometry.getCoordinates()[0].length == 5) &&
+      (feature.getGeometry().get('olcs.polygon_kind') === 'rectangle')) {
+    // Create a rectangle according to the longitude and latitude curves
     var coordinates = olGeometry.getCoordinates()[0];
     // Extract the West, South, East, North coordinates
     var extent = ol.extent.boundingExtent(coordinates);
@@ -406,25 +408,24 @@ olcs.FeatureConverter.prototype.olPolygonGeometryToCesium =
         extent[2], extent[3]);
 
     // Extract the average height of the vertices
-    var height = 0.0;
+    var maxHeight = 0.0;
     if (coordinates[0].length == 3) {
       for (var c = 0; c < coordinates.length; c++) {
-        height += coordinates[c][2];
+        maxHeight = Math.max(maxHeight, coordinates[c][2]);
       }
-      height /= coordinates.length;
     }
 
     // Render the cartographic rectangle
     fillGeometry = new Cesium.RectangleGeometry({
       ellipsoid: Cesium.Ellipsoid.WGS84,
       rectangle: rectangle,
-      height: height
+      height: maxHeight
     });
 
     outlineGeometry = new Cesium.RectangleOutlineGeometry({
       ellipsoid: Cesium.Ellipsoid.WGS84,
       rectangle: rectangle,
-      height: height
+      height: maxHeight
     });
   } else {
     var rings = olGeometry.getLinearRings();
