@@ -21,32 +21,32 @@ var iconStyle = new ol.style.Style({
     src: 'data/icon.png'
   })),
   text: new ol.style.Text({
-     text: 'Some text',
-     textAlign: 'center',
-     textBaseline: 'middle',
-     stroke: new ol.style.Stroke({
-       color: 'magenta',
-       width: 3
-     }),
-     fill: new ol.style.Fill({
-       color: 'rgba(0, 0, 155, 0.3)'
-     })
-   })
+    text: 'Some text',
+    textAlign: 'center',
+    textBaseline: 'middle',
+    stroke: new ol.style.Stroke({
+      color: 'magenta',
+      width: 3
+    }),
+    fill: new ol.style.Fill({
+      color: 'rgba(0, 0, 155, 0.3)'
+    })
+  })
 });
 
 var textStyle = new ol.style.Style({
   text: new ol.style.Text({
-     text: 'Only text',
-     textAlign: 'center',
-     textBaseline: 'middle',
-     stroke: new ol.style.Stroke({
-       color: 'red',
-       width: 3
-     }),
-     fill: new ol.style.Fill({
-       color: 'rgba(0, 0, 155, 0.3)'
-     })
-   })
+    text: 'Only text',
+    textAlign: 'center',
+    textBaseline: 'middle',
+    stroke: new ol.style.Stroke({
+      color: 'red',
+      width: 3
+    }),
+    fill: new ol.style.Fill({
+      color: 'rgba(0, 0, 155, 0.3)'
+    })
+  })
 });
 
 iconFeature.setStyle(iconStyle);
@@ -147,13 +147,25 @@ var vectorSource = new ol.source.Vector({
 
 var theCircle = new ol.Feature(new ol.geom.Circle([5e6, 7e6, 5e5], 1e6));
 
+// Render a Cesium rectangle, via setting the property olcs.polygon_kind
+var cartographicRectangleStyle = new ol.style.Style({
+  fill: new ol.style.Fill({color: 'rgba(255, 69, 0, 0.7)'
+  })});
+var cartographicRectangleGeometry = new ol.geom.Polygon([[[-5e6, 11e6],
+        [4e6, 11e6], [4e6, 10e6], [-5e6, 10e6], [-5e6, 11e6]]]);
+cartographicRectangleGeometry.set('olcs.polygon_kind', 'rectangle');
+var cartographicRectangle = new ol.Feature({
+  geometry: cartographicRectangleGeometry
+});
+cartographicRectangle.setStyle(cartographicRectangleStyle);
+
 var vectorLayer = new ol.layer.Vector({
   source: vectorSource,
   style: styleFunction
 });
 
 var vectorSource2 = new ol.source.Vector({
-  features: [iconFeature, textFeature, cervinFeature]
+  features: [iconFeature, textFeature, cervinFeature, cartographicRectangle]
 });
 var imageVectorSource = new ol.source.ImageVector({
   source: vectorSource2
