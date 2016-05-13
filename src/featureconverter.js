@@ -397,38 +397,70 @@ olcs.FeatureConverter.prototype.olPolygonGeometryToCesium =
   olGeometry = olcs.core.olGeometryCloneTo4326(olGeometry, projection);
   goog.asserts.assert(olGeometry.getType() == 'Polygon');
 
-  var rings = olGeometry.getLinearRings();
-  // always update Cesium externs before adding a property
-  var hierarchy = {};
-  var polygonHierarchy = hierarchy;
-  goog.asserts.assert(rings.length > 0);
+  var fillGeometry, outlineGeometry;
+  if ((olGeometry.getCoordinates()[0].length == 5) &&
+      (feature.getGeometry().get('olcs.polygon_kind') === 'rectangle')) {
+    // Create a rectangle according to the longitude and latitude curves
+    var coordinates = olGeometry.getCoordinates()[0];
+    // Extract the West, South, East, North coordinates
+    var extent = ol.extent.boundingExtent(coordinates);
+    var rectangle = Cesium.Rectangle.fromDegrees(extent[0], extent[1],
+        extent[2], extent[3]);
 
-  for (var i = 0; i < rings.length; ++i) {
-    var olPos = rings[i].getCoordinates();
-    var positions = olcs.core.ol4326CoordinateArrayToCsCartesians(olPos);
-    goog.asserts.assert(positions && positions.length > 0);
-    if (i == 0) {
-      hierarchy.positions = positions;
-    } else {
-      hierarchy.holes = {
-        // always update Cesium externs before adding a property
-        positions: positions
-      };
-      hierarchy = hierarchy.holes;
+    // Extract the average height of the vertices
+    var maxHeight = 0.0;
+    if (coordinates[0].length == 3) {
+      for (var c = 0; c < coordinates.length; c++) {
+        maxHeight = Math.max(maxHeight, coordinates[c][2]);
+      }
     }
+
+    // Render the cartographic rectangle
+    fillGeometry = new Cesium.RectangleGeometry({
+      ellipsoid: Cesium.Ellipsoid.WGS84,
+      rectangle: rectangle,
+      height: maxHeight
+    });
+
+    outlineGeometry = new Cesium.RectangleOutlineGeometry({
+      ellipsoid: Cesium.Ellipsoid.WGS84,
+      rectangle: rectangle,
+      height: maxHeight
+    });
+  } else {
+    var rings = olGeometry.getLinearRings();
+    // always update Cesium externs before adding a property
+    var hierarchy = {};
+    var polygonHierarchy = hierarchy;
+    goog.asserts.assert(rings.length > 0);
+
+    for (var i = 0; i < rings.length; ++i) {
+      var olPos = rings[i].getCoordinates();
+      var positions = olcs.core.ol4326CoordinateArrayToCsCartesians(olPos);
+      goog.asserts.assert(positions && positions.length > 0);
+      if (i == 0) {
+        hierarchy.positions = positions;
+      } else {
+        hierarchy.holes = {
+          // always update Cesium externs before adding a property
+          positions: positions
+        };
+        hierarchy = hierarchy.holes;
+      }
+    }
+
+    fillGeometry = new Cesium.PolygonGeometry({
+      // always update Cesium externs before adding a property
+      polygonHierarchy: polygonHierarchy,
+      perPositionHeight: true
+    });
+
+    outlineGeometry = new Cesium.PolygonOutlineGeometry({
+      // always update Cesium externs before adding a property
+      polygonHierarchy: hierarchy,
+      perPositionHeight: true
+    });
   }
-
-  var fillGeometry = new Cesium.PolygonGeometry({
-    // always update Cesium externs before adding a property
-    polygonHierarchy: polygonHierarchy,
-    perPositionHeight: true
-  });
-
-  var outlineGeometry = new Cesium.PolygonOutlineGeometry({
-    // always update Cesium externs before adding a property
-    polygonHierarchy: hierarchy,
-    perPositionHeight: true
-  });
 
   var primitives = this.wrapFillAndOutlineGeometries(
       layer, feature, olGeometry, fillGeometry, outlineGeometry, olStyle);

@@ -21,32 +21,32 @@ var iconStyle = new ol.style.Style({
     src: 'data/icon.png'
   })),
   text: new ol.style.Text({
-     text: 'Some text',
-     textAlign: 'center',
-     textBaseline: 'middle',
-     stroke: new ol.style.Stroke({
-       color: 'magenta',
-       width: 3
-     }),
-     fill: new ol.style.Fill({
-       color: 'rgba(0, 0, 155, 0.3)'
-     })
-   })
+    text: 'Some text',
+    textAlign: 'center',
+    textBaseline: 'middle',
+    stroke: new ol.style.Stroke({
+      color: 'magenta',
+      width: 3
+    }),
+    fill: new ol.style.Fill({
+      color: 'rgba(0, 0, 155, 0.3)'
+    })
+  })
 });
 
 var textStyle = new ol.style.Style({
   text: new ol.style.Text({
-     text: 'Only text',
-     textAlign: 'center',
-     textBaseline: 'middle',
-     stroke: new ol.style.Stroke({
-       color: 'red',
-       width: 3
-     }),
-     fill: new ol.style.Fill({
-       color: 'rgba(0, 0, 155, 0.3)'
-     })
-   })
+    text: 'Only text',
+    textAlign: 'center',
+    textBaseline: 'middle',
+    stroke: new ol.style.Stroke({
+      color: 'red',
+      width: 3
+    }),
+    fill: new ol.style.Fill({
+      color: 'rgba(0, 0, 155, 0.3)'
+    })
+  })
 });
 
 iconFeature.setStyle(iconStyle);
@@ -147,13 +147,49 @@ var vectorSource = new ol.source.Vector({
 
 var theCircle = new ol.Feature(new ol.geom.Circle([5e6, 7e6, 5e5], 1e6));
 
+// Add a Cesium rectangle, via setting the property olcs.polygon_kind
+var cartographicRectangleStyle = new ol.style.Style({
+  fill: new ol.style.Fill({
+    color: 'rgba(255, 69, 0, 0.7)'
+  }),
+  stroke: new ol.style.Stroke({
+    color: 'rgba(255, 69, 0, 0.9)',
+    width: 1
+  })
+});
+var cartographicRectangleGeometry = new ol.geom.Polygon([[[-5e6, 11e6],
+        [4e6, 11e6], [4e6, 10.5e6], [-5e6, 10.5e6], [-5e6, 11e6]]]);
+cartographicRectangleGeometry.set('olcs.polygon_kind', 'rectangle');
+var cartographicRectangle = new ol.Feature({
+  geometry: cartographicRectangleGeometry
+});
+cartographicRectangle.setStyle(cartographicRectangleStyle);
+
+// Add two Cesium rectangles with height and the property olcs.polygon_kind
+var cartographicRectangleGeometry2 = new ol.geom.MultiPolygon([
+  [[
+    [-5e6, 12e6, 0], [4e6, 12e6, 0], [4e6, 11.5e6, 0], [-5e6, 11.5e6, 0],
+    [-5e6, 12e6, 0]
+  ]],
+  [[
+    [-5e6, 11.5e6, 1e6], [4e6, 11.5e6, 1e6], [4e6, 11e6, 1e6],
+    [-5e6, 11e6, 1e6], [-5e6, 11.5e6, 1e6]
+  ]]
+]);
+cartographicRectangleGeometry2.set('olcs.polygon_kind', 'rectangle');
+var cartographicRectangle2 = new ol.Feature({
+  geometry: cartographicRectangleGeometry2
+});
+cartographicRectangle2.setStyle(cartographicRectangleStyle);
+
 var vectorLayer = new ol.layer.Vector({
   source: vectorSource,
   style: styleFunction
 });
 
 var vectorSource2 = new ol.source.Vector({
-  features: [iconFeature, textFeature, cervinFeature]
+  features: [iconFeature, textFeature, cervinFeature, cartographicRectangle,
+    cartographicRectangle2]
 });
 var imageVectorSource = new ol.source.ImageVector({
   source: vectorSource2
