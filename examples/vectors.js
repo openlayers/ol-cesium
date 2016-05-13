@@ -149,8 +149,14 @@ var theCircle = new ol.Feature(new ol.geom.Circle([5e6, 7e6, 5e5], 1e6));
 
 // Add a Cesium rectangle, via setting the property olcs.polygon_kind
 var cartographicRectangleStyle = new ol.style.Style({
-  fill: new ol.style.Fill({color: 'rgba(255, 69, 0, 0.7)'
-  })});
+  fill: new ol.style.Fill({
+    color: 'rgba(255, 69, 0, 0.7)'
+  }),
+  stroke: new ol.style.Stroke({
+    color: 'rgba(255, 69, 0, 0.9)',
+    width: 1
+  })
+});
 var cartographicRectangleGeometry = new ol.geom.Polygon([[[-5e6, 11e6],
         [4e6, 11e6], [4e6, 10.5e6], [-5e6, 10.5e6], [-5e6, 11e6]]]);
 cartographicRectangleGeometry.set('olcs.polygon_kind', 'rectangle');
