@@ -5,6 +5,10 @@
     curves instead of straight lines. This functionality can be activated by
     setting the olcs.polygon_kind property to 'rectangle' on the OpenLayers
     geometry.
+  * Add support to set a proxy for Cesium to load layer not accessible 
+    due to missing CORS headers (eg. when user can't modify configuration 
+    of the mapservice used). This functionality can be activated by 
+    setting the olcs.proxy property to the OpenLayers source.
 
 ## v 1.15 - 2016-04-28
 

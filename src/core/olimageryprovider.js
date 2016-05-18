@@ -40,6 +40,17 @@ olcs.core.OLImageryProvider = function(source, opt_fallbackProj) {
 
   this.ready_ = false;
 
+  var proxy = this.source_.get('olcs.proxy');
+  if (goog.isDef(proxy)) {
+    if (goog.isFunction(proxy)) {
+      this.proxy_ = {
+        'getURL': proxy
+      };
+    } else if (typeof proxy === 'string') {
+      this.proxy_ = new Cesium.DefaultProxy(proxy);
+    }
+  }
+
   this.errorEvent_ = new Cesium.Event();
 
   this.emptyCanvas_ = document.createElement('canvas');
@@ -120,7 +131,8 @@ Object.defineProperties(olcs.core.OLImageryProvider.prototype, {
   },
 
   proxy: {
-    get: function() {return undefined;}
+    get: /** @this {olcs.core.OLImageryProvider} */
+        function() {return this.proxy_;}
   },
 
   hasAlphaChannel: {
@@ -223,6 +235,9 @@ olcs.core.OLImageryProvider.prototype.requestImage = function(x, y, level) {
 
     var url = tileUrlFunction.call(this.source_,
         [z_, x, y_], 1, this.projection_);
+    if (goog.isDef(this.proxy_)) {
+      url = this.proxy_.getURL(url);
+    }
     return goog.isDef(url) ?
            Cesium.ImageryProvider.loadImage(this, url) : this.emptyCanvas_;
   } else {
