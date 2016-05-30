@@ -53,8 +53,7 @@ olcs.RasterSynchronizer.prototype.destroyCesiumObject = function(object) {
 /**
  * @inheritDoc
  */
-olcs.RasterSynchronizer.prototype.removeSingleCesiumObject =
-    function(object, destroy) {
+olcs.RasterSynchronizer.prototype.removeSingleCesiumObject = function(object, destroy) {
   this.cesiumLayers_.remove(object, destroy);
   this.ourLayers_.remove(object, false);
 };
@@ -82,8 +81,7 @@ olcs.RasterSynchronizer.prototype.removeAllCesiumObjects = function(destroy) {
  * (or supported)
  * @protected
  */
-olcs.RasterSynchronizer.prototype.convertLayerToCesiumImageries =
-    function(olLayer, viewProj) {
+olcs.RasterSynchronizer.prototype.convertLayerToCesiumImageries = function(olLayer, viewProj) {
   var result = olcs.core.tileLayerToImageryLayer(olLayer, viewProj);
   return result ? [result] : null;
 };
@@ -92,8 +90,7 @@ olcs.RasterSynchronizer.prototype.convertLayerToCesiumImageries =
 /**
  * @inheritDoc
  */
-olcs.RasterSynchronizer.prototype.createSingleLayerCounterparts =
-    function(olLayer) {
+olcs.RasterSynchronizer.prototype.createSingleLayerCounterparts = function(olLayer) {
   var viewProj = this.view.getProjection();
   var cesiumObjects = this.convertLayerToCesiumImageries(olLayer, viewProj);
   if (!goog.isNull(cesiumObjects)) {

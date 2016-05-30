@@ -58,8 +58,7 @@ olcs.VectorSynchronizer.prototype.destroyCesiumObject = function(object) {
 /**
  * @inheritDoc
  */
-olcs.VectorSynchronizer.prototype.removeSingleCesiumObject =
-    function(object, destroy) {
+olcs.VectorSynchronizer.prototype.removeSingleCesiumObject = function(object, destroy) {
   object.destroy();
   this.csAllPrimitives_.destroyPrimitives = destroy;
   this.csAllPrimitives_.remove(object.getRootPrimitive());
@@ -85,8 +84,7 @@ olcs.VectorSynchronizer.prototype.removeAllCesiumObjects = function(destroy) {
 /**
  * @inheritDoc
  */
-olcs.VectorSynchronizer.prototype.createSingleLayerCounterparts =
-    function(olLayer) {
+olcs.VectorSynchronizer.prototype.createSingleLayerCounterparts = function(olLayer) {
   if (!(olLayer instanceof ol.layer.Vector) &&
       !(olLayer instanceof ol.layer.Image &&
       olLayer.getSource() instanceof ol.source.ImageVector)) {

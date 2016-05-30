@@ -138,8 +138,7 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
  * @return {boolean} counterpart destroyed
  * @private
  */
-olcs.AbstractSynchronizer.prototype.removeAndDestroySingleLayer_ =
-    function(layer) {
+olcs.AbstractSynchronizer.prototype.removeAndDestroySingleLayer_ = function(layer) {
   var uid = goog.getUid(layer);
   var counterparts = this.layerMap[uid];
   if (!!counterparts) {
@@ -160,8 +159,7 @@ olcs.AbstractSynchronizer.prototype.removeAndDestroySingleLayer_ =
  * @param {ol.layer.Group} group
  * @private
  */
-olcs.AbstractSynchronizer.prototype.unlistenSingleGroup_ =
-    function(group) {
+olcs.AbstractSynchronizer.prototype.unlistenSingleGroup_ = function(group) {
   if (group === this.mapLayerGroup) {
     return;
   }

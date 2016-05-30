@@ -1,0 +1,17 @@
+{
+  "extends": "openlayers",
+  "rules": {
+    "no-console": 0,
+    "no-extra-boolean-cast": 0,
+    "brace-style": 0,
+    "no-multiple-empty-lines": 0,
+    "valid-jsdoc": 0
+  },
+  "globals": {
+    "ol": false,
+    "goog": false,
+    "Cesium": false,
+    "olcs": false,
+    "proj4": false
+  }
+}

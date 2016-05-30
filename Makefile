@@ -49,7 +49,7 @@ dist-apidoc:
 	node node_modules/.bin/jsdoc -c build/jsdoc/api/conf.json -d dist/apidoc
 
 .PHONY: lint
-lint: .build/python-venv/bin/gjslint .build/gjslint.timestamp
+lint: .build/node_modules.timestamp .build/eslint.timestamp
 	@build/check-no-goog.sh
 
 .build/geojsonhint.timestamp: $(EXAMPLES_GEOJSON_FILES)
@@ -81,8 +81,8 @@ cleanall: clean
 	mkdir -p $(dir $@)
 	touch $@
 
-.build/gjslint.timestamp: $(SRC_JS_FILES)
-	.build/python-venv/bin/gjslint --jslint_error=all --strict --custom_jsdoc_tags=api $?
+.build/eslint.timestamp: $(SRC_JS_FILES)
+	./node_modules/.bin/eslint $?
 	touch $@
 
 .build/dist-examples.timestamp: cesium/Build/Cesium/Cesium.js cesium/Build/CesiumUnminified/Cesium.js dist/ol3cesium.js $(EXAMPLES_JS_FILES) $(EXAMPLES_HTML_FILES)
@@ -96,14 +96,6 @@ cleanall: clean
 	$(SEDI) 'sY@loaderYol3cesium.jsY' dist/examples/inject_ol3_cesium.js
 	$(SEDI) 'sY../cesium/Build/Y../Y' dist/examples/inject_ol3_cesium.js
 	for f in dist/examples/*.html; do $(SEDI) 'sY../ol3/css/ol.cssY../ol.cssY' $$f; done
-	touch $@
-
-.build/python-venv:
-	mkdir -p $(dir $@)
-	virtualenv --no-site-packages $@
-
-.build/python-venv/bin/gjslint: .build/python-venv
-	.build/python-venv/bin/pip install "http://closure-linter.googlecode.com/files/closure_linter-latest.tar.gz"
 	touch $@
 
 dist/ol3cesium-debug.js: build/ol3cesium-debug.json $(SRC_JS_FILES) Cesium.externs.js build/build.js npm-install

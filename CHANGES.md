@@ -3,6 +3,7 @@
 ## v 1.16 - 2016-05-30
 
 * Changes
+  * Switch to eslint.
   * Update npm dependencies.
   * Port to Cesium 1.21.
   * Port to OL 3.16.0.

@@ -174,8 +174,7 @@ olcs.OLCesium = function(options) {
   });
 
   var synchronizers = goog.isDef(options.createSynchronizers) ?
-      options.createSynchronizers(this.map_, this.scene_) :
-      [
+      options.createSynchronizers(this.map_, this.scene_) : [
         new olcs.RasterSynchronizer(this.map_, this.scene_),
         new olcs.VectorSynchronizer(this.map_, this.scene_)
       ];
@@ -319,10 +318,11 @@ olcs.OLCesium.prototype.setEnabled = function(enable) {
   // some Cesium operations are operating with canvas.clientWidth,
   // so we can't remove it from DOM or even make display:none;
   this.container_.style.visibility = this.enabled_ ? 'visible' : 'hidden';
+  var interactions;
   if (this.enabled_) {
     this.throwOnUnitializedMap_();
     if (this.isOverMap_) {
-      var interactions = this.map_.getInteractions();
+      interactions = this.map_.getInteractions();
       interactions.forEach(function(el, i, arr) {
         this.pausedInteractions_.push(el);
       }, this);
@@ -338,7 +338,7 @@ olcs.OLCesium.prototype.setEnabled = function(enable) {
     this.cesiumRenderingDelay_.start();
   } else {
     if (this.isOverMap_) {
-      var interactions = this.map_.getInteractions();
+      interactions = this.map_.getInteractions();
       this.pausedInteractions_.forEach(function(interaction) {
         interactions.push(interaction);
       });
