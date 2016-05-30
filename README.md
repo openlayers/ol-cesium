@@ -56,7 +56,6 @@ Requirements for building OL3-Cesium:
 * [GNU Make](http://www.gnu.org/software/make/)
 * [Node.js](http://nodejs.org/)
 * [Python](http://python.org/)
-* [Ant](http://ant.apache.org/)
 
 To get started, clone the [OL3-Cesium repository](https://github.com/openlayers/ol3-cesium) with its submodules:
 
