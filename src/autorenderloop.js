@@ -105,8 +105,7 @@ olcs.AutoRenderLoop.prototype.enable = function() {
   };
 
   // Hacky way to force a repaint when a web worker sends something back.
-  Cesium.TaskProcessor.prototype.scheduleTask =
-      function(parameters, transferableObjects) {
+  Cesium.TaskProcessor.prototype.scheduleTask = function(parameters, transferableObjects) {
     var result = that._originalScheduleTask.call(this, parameters,
         transferableObjects);
 
