@@ -1,5 +1,6 @@
 goog.provide('olcs.RasterSynchronizer');
 
+goog.require('ol.array');
 goog.require('olcs.AbstractSynchronizer');
 goog.require('olcs.core');
 
@@ -158,7 +159,7 @@ olcs.RasterSynchronizer.prototype.orderLayers = function() {
     }
   }
 
-  goog.array.stableSort(layers, function(layer1, layer2) {
+  ol.array.stableSort(layers, function(layer1, layer2) {
     return zIndices[goog.getUid(layer1)] - zIndices[goog.getUid(layer2)];
   });
 
