@@ -21,7 +21,6 @@
       "Cesium.externs.js"
     ],
     "define": [
-      "goog.array.ASSUME_NATIVE_FUNCTIONS=true",
       "goog.DEBUG=false"
     ],
     "js": [
