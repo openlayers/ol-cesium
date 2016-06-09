@@ -3,8 +3,6 @@ goog.provide('olcs.core');
 goog.require('goog.Promise');
 goog.require('goog.asserts');
 goog.require('goog.async.AnimationDelay');
-/** @suppress {extraRequire} */
-goog.require('goog.events.EventTarget');
 goog.require('ol.layer.Tile');
 goog.require('ol.proj');
 goog.require('ol.source.TileImage');
