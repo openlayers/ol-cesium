@@ -172,14 +172,14 @@ olcs.FeatureConverter.prototype.extractColorFromOlStyle = function(style, outlin
 
 /**
  * Return the width of stroke from a plain ol style.
- * Use GL aliased line width range constraint.
  * @param {!ol.style.Style|ol.style.Text} style
  * @return {number}
  * @protected
  */
 olcs.FeatureConverter.prototype.extractLineWidthFromOlStyle = function(style) {
-  var width = style.getStroke() ? style.getStroke().getWidth() : 1;
-  return Math.min(width, this.scene.maximumAliasedLineWidth);
+  // Handling of line width WebGL limitations is handled by Cesium.
+  var width = style.getStroke() ? style.getStroke().getWidth() : undefined;
+  return width !== undefined ? width : 1;
 };
 
 

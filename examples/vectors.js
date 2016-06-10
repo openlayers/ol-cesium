@@ -70,13 +70,13 @@ var styles = {
     stroke: new ol.style.Stroke({
       color: 'green',
       lineDash: [4],
-      width: 1
+      width: 10
     })
   })],
   'MultiLineString': [new ol.style.Style({
     stroke: new ol.style.Stroke({
       color: 'green',
-      width: 1
+      width: 10
     })
   })],
   'MultiPoint': [new ol.style.Style({
