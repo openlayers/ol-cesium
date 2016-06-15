@@ -14,3 +14,4 @@ script:
   - NO_CESIUM=1 make dist
   - NO_CESIUM=1 make check
   - NO_CESIUM=1 make dist-examples
+  - ./build/goog-count.sh
