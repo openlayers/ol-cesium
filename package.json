@@ -19,7 +19,6 @@
     "closure-util": "1.14.0",
     "geojsonhint": "1.2.1",
     "fs-extra": "0.30.0",
-    "graceful-fs": "4.1.4",
     "jsdoc": "~3.4.0",
     "eslint": "2.11.0",
     "eslint-config-openlayers": "4.1.0",
