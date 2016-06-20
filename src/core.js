@@ -515,3 +515,29 @@ olcs.core.convertColorToCesium = function(olColor) {
   }
   goog.asserts.fail('impossible');
 };
+
+
+/**
+ * Convert an OpenLayers url to Cesium.
+ * @param {string} url
+ * @return {!olcsx.core.CesiumUrlDefinition}
+ * @api
+ */
+olcs.core.convertUrlToCesium = function(url) {
+  var subdomains = '';
+  var re = /\{(\d|[a-z])-(\d|[a-z])\}/;
+  var match = re.exec(url);
+  if (match) {
+    url = url.replace(re, '{s}');
+    var startCharCode = match[1].charCodeAt(0);
+    var stopCharCode = match[2].charCodeAt(0);
+    var charCode;
+    for (charCode = startCharCode; charCode <= stopCharCode; ++charCode) {
+      subdomains += String.fromCharCode(charCode);
+    }
+  }
+  return {
+    url: url,
+    subdomains: subdomains
+  };
+};
