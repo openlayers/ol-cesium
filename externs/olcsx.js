@@ -83,3 +83,13 @@ olcsx.core.OlFeatureToCesiumContext;
  * @api
  */
 olcsx.core.RotateAroundAxisOption;
+
+
+/**
+ * @typedef {{
+ *   url: string,
+ *   subdomains: string
+ * }}
+ * @api
+ */
+olcsx.core.CesiumUrlDefinition;
