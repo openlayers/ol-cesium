@@ -1,9 +1,12 @@
 # Changelog
 
-# v 1.17 -
+# v 1.17 - 2016-06-23
 
 * Changes
   * Port to Cesium 1.22.
+  * Add olcs.core.convertUrlToCesium function to help convert OpenLayers urls
+    to Cesium.
+  * Handle arbitrary line widths on Windows OS.
 
 ## v 1.16 - 2016-05-30
 
