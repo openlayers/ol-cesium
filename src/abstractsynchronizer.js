@@ -1,7 +1,5 @@
 goog.provide('olcs.AbstractSynchronizer');
 
-goog.require('goog.object');
-
 goog.require('ol.Observable');
 goog.require('ol.layer.Group');
 
@@ -250,10 +248,13 @@ olcs.AbstractSynchronizer.prototype.listenForGroupChanges_ = function(group) {
  */
 olcs.AbstractSynchronizer.prototype.destroyAll = function() {
   this.removeAllCesiumObjects(true); // destroy
-  goog.object.forEach(this.olGroupListenKeys_, function(keys) {
-    keys.forEach(ol.Observable.unByKey);
-  });
-  goog.object.forEach(this.olLayerListenKeys_, ol.Observable.unByKey);
+  var keys;
+  for (keys in this.olGroupListenKeys_) {
+    this.olGroupListenKeys_[keys].forEach(ol.Observable.unByKey);
+  }
+  for (keys in this.olLayerListenKeys_) {
+    ol.Observable.unByKey(this.olLayerListenKeys_[keys]);
+  }
   this.olGroupListenKeys_ = {};
   this.olLayerListenKeys_ = {};
   this.layerMap = {};
