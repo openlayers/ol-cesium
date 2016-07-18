@@ -1,5 +1,12 @@
 # Changelog
 
+# v 1.18 - 2016-07-18
+
+* Changes
+  * Port to Cesium 1.23.
+  * Port to OL 3.17.1 (include OL3 typedefs.js and rename some symbols).
+  * In examples, use OSM instead of obsolete MapQuest tiles.
+
 # v 1.17 - 2016-06-23
 
 * Changes

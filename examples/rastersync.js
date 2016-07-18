@@ -4,7 +4,7 @@ var view = new ol.View({
 });
 
 var layer0 = new ol.layer.Tile({
-  source: new ol.source.MapQuest({layer: 'sat'})
+  source: new ol.source.OSM()
 });
 var layer1 = new ol.layer.Tile({
   source: new ol.source.TileJSON({
@@ -37,13 +37,6 @@ var terrainProvider = new Cesium.CesiumTerrainProvider({
 scene.terrainProvider = terrainProvider;
 
 ol3d.setEnabled(true);
-
-var addOSM = function() {
-  ol2d.addLayer(new ol.layer.Tile({
-    opacity: 0.7,
-    source: new ol.source.OSM()
-  }));
-};
 
 var addStamen = function() {
   ol2d.addLayer(new ol.layer.Tile({

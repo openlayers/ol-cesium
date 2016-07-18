@@ -15,7 +15,7 @@ olcs.core.VectorLayerCounterpart = function(layerProjection, scene) {
   var primitives = new Cesium.PrimitiveCollection();
 
   /**
-   * @type {!Array.<ol.events.Key>}
+   * @type {!Array.<ol.EventsKey>}
    */
   this.olListenKeys = [];
 
