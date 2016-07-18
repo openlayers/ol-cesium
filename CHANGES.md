@@ -1,5 +1,10 @@
 # Changelog
 
+# v 1.18 - 2016-07-18
+
+* Changes
+  * Port to Cesium 1.23.
+
 # v 1.17 - 2016-06-23
 
 * Changes
