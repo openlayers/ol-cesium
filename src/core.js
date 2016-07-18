@@ -346,7 +346,7 @@ olcs.core.lookAt = function(camera, target, opt_globe) {
 /**
  * Convert an OpenLayers extent to a Cesium rectangle.
  * @param {ol.Extent} extent Extent.
- * @param {ol.proj.ProjectionLike} projection Extent projection.
+ * @param {ol.ProjectionLike} projection Extent projection.
  * @return {Cesium.Rectangle} The corresponding Cesium rectangle.
  * @api
  */
@@ -473,7 +473,7 @@ olcs.core.ol4326CoordinateArrayToCsCartesians = function(coordinates) {
  * The geometry will be cloned only when original projection is not EPSG:4326
  * and the properties will be shallow copied.
  * @param {!T} geometry
- * @param {!ol.proj.ProjectionLike} projection
+ * @param {!ol.ProjectionLike} projection
  * @return {!T}
  * @template T
  * @api

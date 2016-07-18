@@ -281,7 +281,7 @@ olcs.FeatureConverter.prototype.csAddBillboard = function(billboards, bbOptions,
  * @param {ol.layer.Vector|ol.layer.Image} layer
  * @param {!ol.Feature} feature Ol3 feature..
  * @param {!ol.geom.Circle} olGeometry Ol3 circle geometry.
- * @param {!ol.proj.ProjectionLike} projection
+ * @param {!ol.ProjectionLike} projection
  * @param {!ol.style.Style} olStyle
  * @return {!Cesium.PrimitiveCollection} primitives
  * @api
@@ -331,7 +331,7 @@ olcs.FeatureConverter.prototype.olCircleGeometryToCesium = function(layer, featu
  * @param {ol.layer.Vector|ol.layer.Image} layer
  * @param {!ol.Feature} feature Ol3 feature..
  * @param {!ol.geom.LineString} olGeometry Ol3 line string geometry.
- * @param {!ol.proj.ProjectionLike} projection
+ * @param {!ol.ProjectionLike} projection
  * @param {!ol.style.Style} olStyle
  * @return {!Cesium.PrimitiveCollection} primitives
  * @api
@@ -376,7 +376,7 @@ olcs.FeatureConverter.prototype.olLineStringGeometryToCesium = function(layer, f
  * @param {ol.layer.Vector|ol.layer.Image} layer
  * @param {!ol.Feature} feature Ol3 feature..
  * @param {!ol.geom.Polygon} olGeometry Ol3 polygon geometry.
- * @param {!ol.proj.ProjectionLike} projection
+ * @param {!ol.ProjectionLike} projection
  * @param {!ol.style.Style} olStyle
  * @return {!Cesium.PrimitiveCollection} primitives
  * @api
@@ -496,7 +496,7 @@ olcs.FeatureConverter.prototype.getHeightReference = function(layer, feature, ge
  * @param {ol.layer.Vector|ol.layer.Image} layer
  * @param {!ol.Feature} feature Ol3 feature..
  * @param {!ol.geom.Point} olGeometry Ol3 point geometry.
- * @param {!ol.proj.ProjectionLike} projection
+ * @param {!ol.ProjectionLike} projection
  * @param {!ol.style.Style} style
  * @param {!Cesium.BillboardCollection} billboards
  * @param {function(!Cesium.Billboard)=} opt_newBillboardCallback Called when
@@ -610,7 +610,7 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium = function(layer, featur
  * @param {ol.layer.Vector|ol.layer.Image} layer
  * @param {!ol.Feature} feature Ol3 feature..
  * @param {!ol.geom.Geometry} geometry Ol3 geometry.
- * @param {!ol.proj.ProjectionLike} projection
+ * @param {!ol.ProjectionLike} projection
  * @param {!ol.style.Style} olStyle
  * @param {!Cesium.BillboardCollection} billboards
  * @param {function(!Cesium.Billboard)=} opt_newBillboardCallback Called when
@@ -813,7 +813,7 @@ olcs.FeatureConverter.prototype.olStyleToCesium = function(feature, style, outli
  * Evaluates style function, blend arrays, get default style.
  * @param {ol.layer.Vector|ol.layer.Image} layer
  * @param {!ol.Feature} feature
- * @param {ol.style.StyleFunction|undefined} fallbackStyleFunction
+ * @param {ol.StyleFunction|undefined} fallbackStyleFunction
  * @param {number} resolution
  * @return {ol.style.Style} null if no style is available
  * @api
@@ -971,7 +971,7 @@ olcs.FeatureConverter.prototype.olVectorLayerToCesium = function(olLayer, olView
       continue;
     }
     /**
-     * @type {ol.style.StyleFunction|undefined}
+     * @type {ol.StyleFunction|undefined}
      */
     var layerStyle;
     if (olLayer instanceof ol.layer.Image) {
@@ -1015,7 +1015,7 @@ olcs.FeatureConverter.prototype.convert = function(layer, view, feature, context
   }
 
   /**
-   * @type {ol.style.StyleFunction|undefined}
+   * @type {ol.StyleFunction|undefined}
    */
   var layerStyle;
   if (layer instanceof ol.layer.Image) {
