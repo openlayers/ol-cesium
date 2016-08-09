@@ -3,6 +3,7 @@
 # v 1.19 - 2016-08-08
 
 * Changes
+  * Require node 4 or 6.
   * Port to Cesium 1.24.
 
 # v 1.18 - 2016-07-18
