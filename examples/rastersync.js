@@ -8,13 +8,13 @@ var layer0 = new ol.layer.Tile({
 });
 var layer1 = new ol.layer.Tile({
   source: new ol.source.TileJSON({
-    url: 'http://tileserver.maptiler.com/grandcanyon.json',
+    url: 'https://tileserver.maptiler.com/grandcanyon.json',
     crossOrigin: 'anonymous'
   })
 });
 
 var tileJsonSource = new ol.source.TileJSON({
-  url: 'http://api.tiles.mapbox.com/v3/mapbox.world-borders-light.json',
+  url: 'https://api.tiles.mapbox.com/v3/mapbox.world-borders-light.json',
   crossOrigin: 'anonymous'
 });
 
@@ -32,7 +32,7 @@ var ol2d = new ol.Map({
 var ol3d = new olcs.OLCesium({map: ol2d, target: 'map3d'});
 var scene = ol3d.getCesiumScene();
 var terrainProvider = new Cesium.CesiumTerrainProvider({
-    url : '//assets.agi.com/stk-terrain/world'
+  url : 'https://assets.agi.com/stk-terrain/world'
 });
 scene.terrainProvider = terrainProvider;
 

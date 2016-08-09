@@ -1,4 +1,11 @@
 sudo: false
+
+language: node_js
+
+node_js:
+  - "4"
+  - "6"
+
 cache:
   directories:
     - node_modules
@@ -8,7 +15,6 @@ git:
 
 before_install:
   - git submodule update --init ol3
-  - npm install -g npm && npm install
 
 script:
   - NO_CESIUM=1 make dist
