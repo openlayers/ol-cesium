@@ -2139,6 +2139,11 @@ Cesium.FeatureDetection = function() {};
 Cesium.FeatureDetection.supportsCrossOriginImagery = function() {};
 
 
+/**
+ * @return {boolean}
+ */
+Cesium.FeatureDetection.supportsImageRenderingPixelated = function() {};
+
 
 /**
  * @constructor
