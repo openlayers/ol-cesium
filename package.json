@@ -16,11 +16,11 @@
     "htmlparser2": "3.9.1"
   },
   "devDependencies": {
-    "closure-util": "1.15.0",
+    "closure-util": "1.15.1",
     "geojsonhint": "1.2.1",
     "fs-extra": "0.30.0",
     "jsdoc": "~3.4.0",
-    "eslint": "3.2.2",
+    "eslint": "3.4.0",
     "eslint-config-openlayers": "5.0.0",
     "nomnom": "1.8.1",
     "temp": "0.8.3",
