@@ -1,9 +1,10 @@
 # Changelog
 
-* v 1.20
+* v 1.20 - 2016-09-02
 
 * Changes
-  * Port to OpenLayers 3.18.1
+  * Port to Cesium 1.25.
+  * Port to OpenLayers 3.18.2.
 
 # v 1.19 - 2016-08-08
 
