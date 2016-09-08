@@ -134,9 +134,6 @@ olcs.OLCesium = function(options) {
   this.scene_ = new Cesium.Scene(sceneOptions);
 
   var sscc = this.scene_.screenSpaceCameraController;
-  sscc.inertiaSpin = 0;
-  sscc.inertiaTranslate = 0;
-  sscc.inertiaZoom = 0;
 
   sscc.tiltEventTypes.push({
     'eventType': Cesium.CameraEventType.LEFT_DRAG,
