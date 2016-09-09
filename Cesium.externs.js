@@ -1960,7 +1960,7 @@ Cesium.ImageryProvider.prototype.tilingScheme;
 
 
 /**
- * //@returns {TileDiscardPolicy} The discard policy.
+ * //@return {TileDiscardPolicy} The discard policy.
  * // TODO
  * @type {undefined}
  */
@@ -2585,13 +2585,63 @@ Cesium.DataSource = function() {};
 /**
  * @constructor
  */
+Cesium.GeoJsonDataSource = function() {};
+
+/**
+ * @typedef {{
+ *   source: string,
+ *   describe: Function,
+ *   markerSize: number,
+ *   markerSymbol: string,
+ *   markerColor: Cesium.Color,
+ *   stroke: Cesium.Color,
+ *   strokeWidth: number,
+ *   fill: Cesium.Color,
+ *   clampToGround: boolean
+ * }}
+ */
+Cesium.GeoJsonDataSourceLoadOptions;
+
+/**
+ * @param {string|Object} data
+ * @param {!Cesium.GeoJsonDataSourceLoadOptions} options
+ * @return {Cesium.DataSource|Promise.<Cesium.DataSource>}
+ */
+Cesium.GeoJsonDataSource.load = function(data, options) {};
+
+
+/**
+ * @constructor
+ */
+Cesium.KmlDataSource = function() {};
+
+/**
+ * @typedef {{
+ *   camera: Cesium.Camera,
+ *   canvas: HTMLCanvasElement,
+ *   proxy: (Cesium.DefaultProxy|string)
+ * }}
+ */
+Cesium.KmlDataSourceLoadOptions;
+
+/**
+ * @param {string|HTMLDocument|Blob} data
+ * @param {!Cesium.KmlDataSourceLoadOptions} options
+ * @return {Cesium.DataSource|Promise.<Cesium.DataSource>}
+ */
+Cesium.KmlDataSource.load = function(data, options) {};
+
+
+/**
+ * @constructor
+ */
 Cesium.DataSourceCollection = function() {};
 
 /**
  * @param {Cesium.DataSource|Promise.<Cesium.DataSource>} dataSource A data source or a promise to a data source to add to the collection.
  *                                        When passing a promise, the data source will not actually be added
  *                                        to the collection until the promise resolves successfully.
- * @returns {Promise.<Cesium.DataSource>} A Promise that resolves once the data source has been added to the collection.
+ * @return {Promise.<Cesium.DataSource>} A Promise that resolves once the data source has been added to the collection.
  */
 Cesium.DataSourceCollection.prototype.add = function(dataSource) {};
 
@@ -2600,7 +2650,7 @@ Cesium.DataSourceCollection.prototype.add = function(dataSource) {};
  *
  * @param {Cesium.DataSource} dataSource The data source to remove.
  * @param {Boolean} [destroy=false] Whether to destroy the data source in addition to removing it.
- * @returns {Boolean} true if the data source was in the collection and was removed,
+ * @return {Boolean} true if the data source was in the collection and was removed,
  *                    false if the data source was not in the collection.
  */
 Cesium.DataSourceCollection.prototype.remove = function(dataSource, destroy) {};
@@ -2616,7 +2666,7 @@ Cesium.DataSourceDisplay = function(opt_opts) {};
 
 /**
  * @param {Cesium.JulianDate} time The simulation time.
- * @returns {Boolean} True if all data sources are ready to be displayed, false otherwise.
+ * @return {Boolean} True if all data sources are ready to be displayed, false otherwise.
  */
 Cesium.DataSourceDisplay.prototype.update = function(time) {};
 

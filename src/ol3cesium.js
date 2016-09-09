@@ -174,7 +174,7 @@ olcs.OLCesium = function(options) {
   });
 
   var synchronizers = goog.isDef(options.createSynchronizers) ?
-      options.createSynchronizers(this.map_, this.scene_) : [
+      options.createSynchronizers(this.map_, this.scene_, this.dataSourceCollection_) : [
         new olcs.RasterSynchronizer(this.map_, this.scene_),
         new olcs.VectorSynchronizer(this.map_, this.scene_)
       ];

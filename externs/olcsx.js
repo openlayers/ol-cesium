@@ -10,7 +10,7 @@ var olcsx;
  * @typedef {{
  *   map: (!ol.Map),
  *   target: (Element|string|undefined),
- *   createSynchronizers: (undefined|function(!ol.Map, !Cesium.Scene): Array.<olcs.AbstractSynchronizer>),
+ *   createSynchronizers: (undefined|function(!ol.Map, !Cesium.Scene, !Cesium.DataSourceCollection): Array.<olcs.AbstractSynchronizer>),
  *   sceneOptions: (Cesium.SceneOptions|undefined)
  * }}
  * @api
@@ -45,7 +45,7 @@ olcsx.OLCesiumOptions.prototype.target;
  * constructor to create custom synchronizers. Receives an `ol.Map` and a
  * `Cesium.Scene` as arguments, and needs to return an array of
  * {@link olcs.AbstractSynchronizer}.
- * @type {undefined|function(!ol.Map, !Cesium.Scene): Array.<olcs.AbstractSynchronizer>}
+ * @type {undefined|function(!ol.Map, !Cesium.Scene, !Cesium.DataSourceCollection): Array.<olcs.AbstractSynchronizer>}
  * @api
  */
 olcsx.OLCesiumOptions.prototype.createSynchronizers;
