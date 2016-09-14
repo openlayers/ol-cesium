@@ -30,9 +30,9 @@ olcs.RasterSynchronizer = function(map, scene) {
    */
   this.ourLayers_ = new Cesium.ImageryLayerCollection();
 
-  goog.base(this, map, scene);
+  olcs.AbstractSynchronizer.call(this, map, scene);
 };
-goog.inherits(olcs.RasterSynchronizer, olcs.AbstractSynchronizer);
+ol.inherits(olcs.RasterSynchronizer, olcs.AbstractSynchronizer);
 
 
 /**

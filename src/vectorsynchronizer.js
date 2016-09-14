@@ -34,9 +34,9 @@ olcs.VectorSynchronizer = function(map, scene, opt_converter) {
   scene.primitives.add(this.csAllPrimitives_);
   this.csAllPrimitives_.destroyPrimitives = false;
 
-  goog.base(this, map, scene);
+  olcs.AbstractSynchronizer.call(this, map, scene);
 };
-goog.inherits(olcs.VectorSynchronizer, olcs.AbstractSynchronizer);
+ol.inherits(olcs.VectorSynchronizer, olcs.AbstractSynchronizer);
 
 
 /**
