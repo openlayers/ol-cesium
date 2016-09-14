@@ -1,6 +1,7 @@
 goog.provide('olcs.VectorSynchronizer');
 
 goog.require('goog.asserts');
+goog.require('ol.events');
 goog.require('ol.layer.Vector');
 goog.require('olcs.AbstractSynchronizer');
 goog.require('olcs.FeatureConverter');

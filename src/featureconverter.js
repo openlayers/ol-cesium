@@ -1,6 +1,7 @@
 goog.provide('olcs.FeatureConverter');
 
 goog.require('goog.asserts');
+goog.require('ol.events');
 goog.require('ol.extent');
 goog.require('ol.geom.SimpleGeometry');
 goog.require('olcs.core.VectorLayerCounterpart');
