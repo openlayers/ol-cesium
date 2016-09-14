@@ -846,7 +846,7 @@ olcs.FeatureConverter.prototype.computePlainStyle = function(layer, feature, fal
   // then this function must return a custom material
   // More simply, could blend the colors like described in
   // http://en.wikipedia.org/wiki/Alpha_compositing
-  return goog.isArray(style) ? style[0] : style;
+  return Array.isArray(style) ? style[0] : style;
 };
 
 
