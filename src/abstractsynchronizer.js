@@ -265,41 +265,43 @@ olcs.AbstractSynchronizer.prototype.destroyAll = function() {
 /**
  * Adds a single Cesium object to the collection.
  * @param {!T} object
+ * @abstract
  * @protected
  */
-olcs.AbstractSynchronizer.prototype.addCesiumObject = goog.abstractMethod;
+olcs.AbstractSynchronizer.prototype.addCesiumObject = function(object) {};
 
 
 /**
  * @param {!T} object
+ * @abstract
  * @protected
  */
-olcs.AbstractSynchronizer.prototype.destroyCesiumObject = goog.abstractMethod;
+olcs.AbstractSynchronizer.prototype.destroyCesiumObject = function(object) {};
 
 
 /**
  * Remove single Cesium object from the collection.
  * @param {!T} object
  * @param {boolean} destroy
+ * @abstract
  * @protected
  */
-olcs.AbstractSynchronizer.prototype.removeSingleCesiumObject =
-    goog.abstractMethod;
+olcs.AbstractSynchronizer.prototype.removeSingleCesiumObject = function(object, destroy) {};
 
 
 /**
  * Remove all Cesium objects from the collection.
  * @param {boolean} destroy
+ * @abstract
  * @protected
  */
-olcs.AbstractSynchronizer.prototype.removeAllCesiumObjects =
-    goog.abstractMethod;
+olcs.AbstractSynchronizer.prototype.removeAllCesiumObjects = function(destroy) {};
 
 
 /**
  * @param {!ol.layer.Base} olLayer
  * @return {?Array.<T>}
+ * @abstract
  * @protected
  */
-olcs.AbstractSynchronizer.prototype.createSingleLayerCounterparts =
-    goog.abstractMethod;
+olcs.AbstractSynchronizer.prototype.createSingleLayerCounterparts = function(olLayer) {};
