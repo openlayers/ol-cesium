@@ -1,5 +1,6 @@
 goog.provide('olcs.RasterSynchronizer');
 
+goog.require('goog.asserts');
 goog.require('ol.array');
 goog.require('olcs.AbstractSynchronizer');
 goog.require('olcs.core');

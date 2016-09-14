@@ -1,8 +1,10 @@
 goog.provide('olcs.AbstractSynchronizer');
 
+goog.require('goog.asserts');
 goog.require('goog.object');
 
 goog.require('ol.Observable');
+goog.require('ol.events');
 goog.require('ol.layer.Group');
 
 
