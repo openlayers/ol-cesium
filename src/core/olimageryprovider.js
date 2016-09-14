@@ -42,7 +42,7 @@ olcs.core.OLImageryProvider = function(source, opt_fallbackProj) {
 
   var proxy = this.source_.get('olcs.proxy');
   if (goog.isDef(proxy)) {
-    if (goog.isFunction(proxy)) {
+    if (typeof proxy === 'function') {
       this.proxy_ = {
         'getURL': proxy
       };
