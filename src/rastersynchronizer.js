@@ -131,7 +131,7 @@ olcs.RasterSynchronizer.prototype.createSingleLayerCounterparts = function(olLay
     }, this);
   }
 
-  return goog.isArray(cesiumObjects) ? cesiumObjects : null;
+  return Array.isArray(cesiumObjects) ? cesiumObjects : null;
 };
 
 
