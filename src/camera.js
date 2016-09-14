@@ -1,5 +1,6 @@
 goog.provide('olcs.Camera');
 
+goog.require('goog.asserts');
 goog.require('ol.Observable');
 goog.require('ol.events');
 goog.require('ol.proj');
