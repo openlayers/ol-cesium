@@ -210,16 +210,16 @@ olcs.core.OLImageryProvider.createCreditForSource = function(source) {
 
 /**
  * TODO: attributions for individual tile ranges
+ * @export
  * @override
  */
 olcs.core.OLImageryProvider.prototype.getTileCredits = function(x, y, level) {
   return undefined;
 };
-goog.exportProperty(olcs.core.OLImageryProvider.prototype, 'getTileCredits',
-                    olcs.core.OLImageryProvider.prototype.getTileCredits);
 
 
 /**
+ * @export
  * @override
  */
 olcs.core.OLImageryProvider.prototype.requestImage = function(x, y, level) {
@@ -245,5 +245,3 @@ olcs.core.OLImageryProvider.prototype.requestImage = function(x, y, level) {
     return this.emptyCanvas_;
   }
 };
-goog.exportProperty(olcs.core.OLImageryProvider.prototype, 'requestImage',
-                    olcs.core.OLImageryProvider.prototype.requestImage);
