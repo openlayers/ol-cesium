@@ -22,4 +22,4 @@ The first two lines are text for the user documentation. This can be long, and i
 
 The second line tells the Closure compiler the type of the argument.
 
-The third line (`@api`) marks the method as part of the api and thus exportable. The stability can be added as value, e.g. `@api stable`. Without such an api annotation, the method will not be documented in the generated API documentation. Symbols without an api annotation will also not be exportable (unless they are explicitly exported with a `goog.exportProperty` call).
+The third line (`@api`) marks the method as part of the api and thus exportable. The stability can be added as value, e.g. `@api stable`. Without such an api annotation, the method will not be documented in the generated API documentation. Symbols without an api annotation will also not be exportable (unless they are explicitly exported with a `@export` jsdoc tag).
