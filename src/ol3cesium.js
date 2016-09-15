@@ -1,7 +1,6 @@
 goog.provide('olcs.OLCesium');
 
 goog.require('goog.async.AnimationDelay');
-goog.require('goog.dom');
 goog.require('olcs.AutoRenderLoop');
 goog.require('olcs.Camera');
 goog.require('olcs.RasterSynchronizer');
@@ -185,7 +184,7 @@ olcs.OLCesium = function(options) {
 
   if (this.isOverMap_) {
     // if in "stacked mode", hide everything except canvas (including credits)
-    var credits = goog.dom.getNextElementSibling(this.canvas_);
+    var credits = this.canvas_.nextElementSibling;
     if (goog.isDefAndNotNull(credits)) {
       credits.style.display = 'none';
     }
