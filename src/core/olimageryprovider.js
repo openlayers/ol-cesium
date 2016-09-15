@@ -16,7 +16,7 @@ goog.require('ol.proj');
  * @extends {Cesium.ImageryProvider}
  */
 olcs.core.OLImageryProvider = function(source, opt_fallbackProj) {
-  // Do not goog.inherit() or call super constructor from
+  // Do not ol.inherit() or call super constructor from
   // Cesium.ImageryProvider since this particular function is a
   // 'non instanciable interface' which throws on instanciation.
 
