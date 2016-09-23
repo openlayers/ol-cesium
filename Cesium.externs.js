@@ -2683,6 +2683,13 @@ Cesium.DataSourceDisplay.prototype.update = function(time) {};
 Cesium.DataSourceDisplay.prototype.defaultDataSource;
 
 
+/**
+ * @param {Cesium.Entity} entity
+ * @param {boolean} allowPartial
+ * @param {Cesium.BoundingSphere} boundingSphere
+ * @return {Cesium.BoundingSphereState}
+ */
+Cesium.DataSourceDisplay.prototype.getBoundingSphere = function(entity, allowPartial, boundingSphere) {};
 
 /**
  * @param {string} name
@@ -3286,3 +3293,26 @@ Cesium.EventHelper.prototype.add = function(event, listener, opt_scope) {};
 
 
 Cesium.EventHelper.prototype.removeAll = function() {};
+
+
+/**
+ * @constructor
+ */
+Cesium.BoundingSphere = function() {};
+
+
+/**
+ * @enum {number}
+ */
+Cesium.BoundingSphereState = {
+  DONE: 0,
+  PENDING: 1,
+  FAILED: 2
+};
+
+
+/**
+ * @param {Object} options
+ * @constructor
+ */
+Cesium.Entity = function(options) {};
