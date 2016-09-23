@@ -3262,3 +3262,21 @@ Cesium.TaskProcessor = function(workerName, opt_maximumActiveTasks) {};
  * @return {boolean}
  */
 Cesium.TaskProcessor.prototype.isDestroyed = function() {};
+
+
+/**
+ * @constructor
+ */
+Cesium.EventHelper = function() {};
+
+
+/**
+ * @param {Cesium.Event} event
+ * @param {function()} listener
+ * @param {Object=} opt_scope
+ * @return {function()}
+ */
+Cesium.EventHelper.prototype.add = function(event, listener, opt_scope) {};
+
+
+Cesium.EventHelper.prototype.removeAll = function() {};
