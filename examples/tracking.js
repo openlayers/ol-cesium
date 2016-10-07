@@ -49,7 +49,7 @@ var map = new ol.Map({
 });
 
 
-var ol3d = new olcs.OLCesium({map: map, target: 'map3d'});
+var ol3d = new olcs.OLCesium({map: map/*, target: 'map3d'*/});
 var scene = ol3d.getCesiumScene();
 var terrainProvider = new Cesium.CesiumTerrainProvider({
   url: '//assets.agi.com/stk-terrain/world',
