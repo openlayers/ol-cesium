@@ -3350,3 +3350,11 @@ Cesium.EntityView = function(entity, scene, ellipsoid) {};
  * @param {!Cesium.BoundingSphere|undefined} bs
  */
 Cesium.EntityView.prototype.update = function(currentTime, bs) {};
+
+
+/**
+ * @param {function(Cesium.JulianDate, Object)} cb
+ * @param {boolean} constant
+ * @constructor
+ */
+Cesium.CallbackProperty = function(cb, constant) {};
