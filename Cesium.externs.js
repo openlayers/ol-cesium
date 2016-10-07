@@ -2717,6 +2717,19 @@ Cesium.EntityCollection = function() {}
 
 
 /**
+ * @param {Cesium.Entity} entity
+ */
+Cesium.EntityCollection.prototype.remove = function(entity) {}
+
+/**
+ * @param {Object} options
+ * @return {Cesium.Entity}
+ */
+Cesium.EntityCollection.prototype.add = function(options) {}
+
+
+
+/**
  * @type {!Cesium.UniformState}
  */
 Cesium.Context.prototype.uniformState;
