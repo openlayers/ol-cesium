@@ -44,6 +44,11 @@ Cesium.Color.byteToFloat = function(component) {};
 Cesium.Color.WHITE;
 
 /**
+ * @type {!Cesium.Color}
+ */
+Cesium.Color.TRANSPARENT;
+
+/**
  * @constructor
  * @param {string} text
  * @param {Object=} opt_description
