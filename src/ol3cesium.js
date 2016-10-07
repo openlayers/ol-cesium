@@ -30,6 +30,12 @@ olcs.OLCesium = function(options) {
   this.map_ = options.map;
 
   /**
+   * No change of the view projection.
+   * @private
+   */
+  this.to4326Transform_ = ol.proj.getTransform(this.map_.getView().getProjection(), 'EPSG:4326');
+
+  /**
    * @type {number}
    * @private
    */
@@ -197,6 +203,17 @@ olcs.OLCesium = function(options) {
       this.scene_.initializeFrame();
       this.handleResize_();
       this.dataSourceDisplay_.update(julianDate);
+
+      // Update tracked entity
+      if (this.entityView_) {
+        var trackedEntity = this.trackedEntity_;
+        var trackedState = this.dataSourceDisplay_.getBoundingSphere(trackedEntity, false, this.boundingSphereScratch_);
+        if (trackedState === Cesium.BoundingSphereState.DONE) {
+          this.boundingSphereScratch_.radius = 1; // a radius of 1 is enough for tracking points
+          this.entityView_.update(julianDate, this.boundingSphereScratch_);
+        }
+      }
+
       this.scene_.render(julianDate);
       this.enabled_ && this.camera_.checkCameraChange();
     }
@@ -207,6 +224,125 @@ olcs.OLCesium = function(options) {
    * @private
    */
   this.blockCesiumRendering_ = false;
+
+  /**
+   * @type {ol.Feature}
+   * @private
+   */
+  this.trackedFeature_ = null;
+
+  /**
+   * @type {Cesium.Entity}
+   * @private
+   */
+  this.trackedEntity_ = null;
+
+  /**
+   * @type {Cesium.EntityView}
+   * @private
+   */
+  this.entityView_ = null;
+
+  /**
+   * @type {boolean}
+   * @private
+   */
+  this.needTrackedEntityUpdate_ = false;
+
+  /**
+   * @type {!Cesium.BoundingSphere}
+   */
+  this.boundingSphereScratch_ = new Cesium.BoundingSphere();
+
+  var eventHelper = new Cesium.EventHelper();
+  eventHelper.add(this.scene_.postRender, olcs.OLCesium.prototype.updateTrackedEntity_, this);
+};
+
+
+Object.defineProperties(olcs.OLCesium.prototype, {
+  'trackedFeature': {
+    'get': /** @this {olcs.OLCesium} */ function() {
+      return this.trackedFeature_;
+    },
+    'set': /** @this {olcs.OLCesium} */ function(feature) {
+      if (this.trackedFeature_ !== feature) {
+
+        var scene = this.scene_;
+
+        //Stop tracking
+        if (!feature || !feature.getGeometry()) {
+          this.needTrackedEntityUpdate_ = false;
+          scene.screenSpaceCameraController.enableTilt = true;
+
+          if (this.trackedEntity_) {
+            this.dataSourceDisplay_.defaultDataSource.entities.remove(this.trackedEntity_);
+          }
+          this.trackedEntity_ = null;
+          this.trackedFeature_ = null;
+          this.entityView_ = null;
+          scene.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+          return;
+        }
+
+        this.trackedFeature_ = feature;
+
+        //We can't start tracking immediately, so we set a flag and start tracking
+        //when the bounding sphere is ready (most likely next frame).
+        this.needTrackedEntityUpdate_ = true;
+
+        var to4326Transform = this.to4326Transform_;
+        var toCesiumPosition = function() {
+          var geometry = feature.getGeometry();
+          goog.asserts.assertInstanceof(geometry, ol.geom.Point);
+          var coo = geometry.getCoordinates();
+          var coo4326 = to4326Transform(coo, undefined, coo.length);
+          return olcs.core.ol4326CoordinateToCesiumCartesian(coo4326);
+        };
+
+        // Create an invisible point entity for tracking.
+        // It is independant from the primitive/geometry created by the vector synchronizer.
+        var options = {
+          'position': new Cesium.CallbackProperty(function(time, result) {
+            return toCesiumPosition();
+          }, false),
+          'point': {
+            'pixelSize': 1,
+            'color': Cesium.Color.TRANSPARENT
+          }
+        };
+
+        this.trackedEntity_ = this.dataSourceDisplay_.defaultDataSource.entities.add(options);
+      }
+    }
+  }
+});
+
+
+/**
+ * @private
+ */
+olcs.OLCesium.prototype.updateTrackedEntity_ = function() {
+  if (!this.needTrackedEntityUpdate_) {
+    return;
+  }
+
+  var trackedEntity = this.trackedEntity_;
+  var scene = this.scene_;
+
+  var state = this.dataSourceDisplay_.getBoundingSphere(trackedEntity, false, this.boundingSphereScratch_);
+  if (state === Cesium.BoundingSphereState.PENDING) {
+    return;
+  }
+
+  scene.screenSpaceCameraController.enableTilt = false;
+
+  var bs = state !== Cesium.BoundingSphereState.FAILED ? this.boundingSphereScratch_ : undefined;
+  if (bs) {
+    bs.radius = 1;
+  }
+  this.entityView_ = new Cesium.EntityView(trackedEntity, scene, scene.mapProjection.ellipsoid);
+  this.entityView_.update(Cesium.JulianDate.now(), bs); // FIXME: have a global management of current time
+  this.needTrackedEntityUpdate_ = false;
 };
 
 
