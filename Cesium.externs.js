@@ -3316,3 +3316,19 @@ Cesium.BoundingSphereState = {
  * @constructor
  */
 Cesium.Entity = function(options) {};
+
+
+/**
+ * @param {Cesium.Entity} entity
+ * @param {Cesium.Scene} scene
+ * @param {Cesium.Ellipsoid} ellipsoid
+ * @constructor
+ */
+Cesium.EntityView = function(entity, scene, ellipsoid) {};
+
+
+/**
+ * @param {Cesium.JulianDate} currentTime
+ * @param {!Cesium.BoundingSphere|undefined} bs
+ */
+Cesium.EntityView.prototype.update = function(currentTime, bs) {};
