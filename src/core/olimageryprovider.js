@@ -67,39 +67,39 @@ olcs.core.OLImageryProvider = function(source, opt_fallbackProj) {
 // definitions of getters that are required to be present
 // in the Cesium.ImageryProvider instance:
 Object.defineProperties(olcs.core.OLImageryProvider.prototype, {
-  ready: {
-    get: /** @this {olcs.core.OLImageryProvider} */
+  'ready': {
+    'get': /** @this {olcs.core.OLImageryProvider} */
         function() {return this.ready_;}
   },
 
-  rectangle: {
-    get: /** @this {olcs.core.OLImageryProvider} */
+  'rectangle': {
+    'get': /** @this {olcs.core.OLImageryProvider} */
         function() {return this.rectangle_;}
   },
 
-  tileWidth: {
-    get: /** @this {olcs.core.OLImageryProvider} */
+  'tileWidth': {
+    'get': /** @this {olcs.core.OLImageryProvider} */
         function() {
           var tg = this.source_.getTileGrid();
           return !goog.isNull(tg) ? tg.getTileSize(0) : 256;
         }
   },
 
-  tileHeight: {
-    get: /** @this {olcs.core.OLImageryProvider} */
+  'tileHeight': {
+    'get': /** @this {olcs.core.OLImageryProvider} */
         function() {return this.tileWidth;}
   },
 
-  maximumLevel: {
-    get: /** @this {olcs.core.OLImageryProvider} */
+  'maximumLevel': {
+    'get': /** @this {olcs.core.OLImageryProvider} */
         function() {
           var tg = this.source_.getTileGrid();
           return !goog.isNull(tg) ? tg.getMaxZoom() : 18;
         }
   },
 
-  minimumLevel: {
-    get: /** @this {olcs.core.OLImageryProvider} */
+  'minimumLevel': {
+    'get': /** @this {olcs.core.OLImageryProvider} */
         function() {
           // WARNING: Do not use the minimum level (at least until the extent is
           // properly set). Cesium assumes the minimumLevel to contain only
@@ -111,36 +111,36 @@ Object.defineProperties(olcs.core.OLImageryProvider.prototype, {
         }
   },
 
-  tilingScheme: {
-    get: /** @this {olcs.core.OLImageryProvider} */
+  'tilingScheme': {
+    'get': /** @this {olcs.core.OLImageryProvider} */
         function() {return this.tilingScheme_;}
   },
 
-  tileDiscardPolicy: {
-    get: function() {return undefined;}
+  'tileDiscardPolicy': {
+    'get': function() {return undefined;}
   },
 
-  errorEvent: {
-    get: /** @this {olcs.core.OLImageryProvider} */
+  'errorEvent': {
+    'get': /** @this {olcs.core.OLImageryProvider} */
         function() {return this.errorEvent_;}
   },
 
-  credit: {
-    get: /** @this {olcs.core.OLImageryProvider} */
+  'credit': {
+    'get': /** @this {olcs.core.OLImageryProvider} */
         function() {return this.credit_;}
   },
 
-  proxy: {
-    get: /** @this {olcs.core.OLImageryProvider} */
+  'proxy': {
+    'get': /** @this {olcs.core.OLImageryProvider} */
         function() {return this.proxy_;}
   },
 
-  hasAlphaChannel: {
-    get: function() {return true;}
+  'hasAlphaChannel': {
+    'get': function() {return true;}
   },
 
-  pickFeatures: {
-    get: function() {return undefined;}
+  'pickFeatures': {
+    'get': function() {return undefined;}
   }
 });
 

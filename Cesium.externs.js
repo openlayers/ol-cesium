@@ -44,6 +44,11 @@ Cesium.Color.byteToFloat = function(component) {};
 Cesium.Color.WHITE;
 
 /**
+ * @type {!Cesium.Color}
+ */
+Cesium.Color.TRANSPARENT;
+
+/**
  * @constructor
  * @param {string} text
  * @param {Object=} opt_description
@@ -2247,6 +2252,12 @@ Cesium.Matrix4 = function(opt_a00, opt_a10, opt_a20, opt_a30,
 
 
 /**
+ * @type {Cesium.Matrix4}
+ */
+Cesium.Matrix4.IDENTITY;
+
+
+/**
  * @param {Cesium.Matrix4} matrix
  * @param {Cesium.Matrix4=} opt_result
  * @return {!Cesium.Matrix4}
@@ -2677,6 +2688,13 @@ Cesium.DataSourceDisplay.prototype.update = function(time) {};
 Cesium.DataSourceDisplay.prototype.defaultDataSource;
 
 
+/**
+ * @param {Cesium.Entity} entity
+ * @param {boolean} allowPartial
+ * @param {Cesium.BoundingSphere} boundingSphere
+ * @return {Cesium.BoundingSphereState}
+ */
+Cesium.DataSourceDisplay.prototype.getBoundingSphere = function(entity, allowPartial, boundingSphere) {};
 
 /**
  * @param {string} name
@@ -2696,6 +2714,19 @@ Cesium.CustomDataSource.prototype.entities;
  * @constructor
  */
 Cesium.EntityCollection = function() {}
+
+
+/**
+ * @param {Cesium.Entity} entity
+ */
+Cesium.EntityCollection.prototype.remove = function(entity) {}
+
+/**
+ * @param {Object} options
+ * @return {Cesium.Entity}
+ */
+Cesium.EntityCollection.prototype.add = function(options) {}
+
 
 
 /**
@@ -3262,3 +3293,68 @@ Cesium.TaskProcessor = function(workerName, opt_maximumActiveTasks) {};
  * @return {boolean}
  */
 Cesium.TaskProcessor.prototype.isDestroyed = function() {};
+
+
+/**
+ * @constructor
+ */
+Cesium.EventHelper = function() {};
+
+
+/**
+ * @param {Cesium.Event} event
+ * @param {function()} listener
+ * @param {Object=} opt_scope
+ * @return {function()}
+ */
+Cesium.EventHelper.prototype.add = function(event, listener, opt_scope) {};
+
+
+Cesium.EventHelper.prototype.removeAll = function() {};
+
+
+/**
+ * @constructor
+ */
+Cesium.BoundingSphere = function() {};
+
+
+/**
+ * @enum {number}
+ */
+Cesium.BoundingSphereState = {
+  DONE: 0,
+  PENDING: 1,
+  FAILED: 2
+};
+
+
+/**
+ * @param {Object} options
+ * @constructor
+ */
+Cesium.Entity = function(options) {};
+
+
+/**
+ * @param {Cesium.Entity} entity
+ * @param {Cesium.Scene} scene
+ * @param {Cesium.Ellipsoid} ellipsoid
+ * @constructor
+ */
+Cesium.EntityView = function(entity, scene, ellipsoid) {};
+
+
+/**
+ * @param {Cesium.JulianDate} currentTime
+ * @param {!Cesium.BoundingSphere|undefined} bs
+ */
+Cesium.EntityView.prototype.update = function(currentTime, bs) {};
+
+
+/**
+ * @param {function(Cesium.JulianDate, Object)} cb
+ * @param {boolean} constant
+ * @constructor
+ */
+Cesium.CallbackProperty = function(cb, constant) {};
