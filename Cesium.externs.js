@@ -2445,7 +2445,7 @@ Cesium.Fog.prototype.screenSpaceErrorFactor;
  *   orderIndependentTranslucency: (!boolean|undefined),
  *   scene3DOnly: (!boolean|undefined),
  *   terrainExaggeration: (!number|undefined)
- *   }}
+ * }}
  */
 Cesium.SceneOptions;
 
@@ -2473,6 +2473,10 @@ Cesium.Scene.prototype.backgroundColor;
  */
 Cesium.Scene.prototype.context;
 
+/**
+ * @type {!Object}
+ */
+Cesium.Scene.prototype.mapProjection;
 
 /**
  * @type {!Cesium.Fog}
