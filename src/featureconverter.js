@@ -28,7 +28,7 @@ olcs.FeatureConverter = function(scene) {
 
   /**
    * Bind once to have a unique function for using as a listener
-   * @type {function(ol.source.VectorEvent)}
+   * @type {function(ol.source.Vector.Event)}
    * @private
    */
   this.boundOnRemoveOrClearFeatureListener_ =
@@ -37,7 +37,7 @@ olcs.FeatureConverter = function(scene) {
 
 
 /**
- * @param {ol.source.VectorEvent} evt
+ * @param {ol.source.Vector.Event} evt
  * @private
  */
 olcs.FeatureConverter.prototype.onRemoveOrClearFeature_ = function(evt) {
