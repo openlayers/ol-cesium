@@ -2508,6 +2508,10 @@ Cesium.Scene.prototype.preRender;
  */
 Cesium.Scene.prototype.postRender;
 
+/**
+ * @type {!Cesium.ShadowMap}
+ */
+Cesium.Scene.prototype.shadowMap;
 
 /**
  * @type {Cesium.ScreenSpaceCameraController}
@@ -2577,6 +2581,56 @@ Cesium.Scene.prototype.skyAtmosphere;
  * @type {number}
  */
 Cesium.Scene.prototype.maximumAliasedLineWidth;
+
+
+/**
+ * @typedef {{
+ *   context: Cesium.Context,
+ *   lightCamera: Cesium.Camera,
+ *   enabled: (boolean|undefined),
+ *   isPointLight: (boolean|undefined),
+ *   pointLightRadius: (number|undefined),
+ *   cascadesEnabled: (boolean|undefined),
+ *   numberOfCascades: (number|undefined),
+ *   maximumDistance: (number|undefined),
+ *   size: (number|undefined),
+ *   softShadows: (boolean|undefined),
+ *   darkness: (number|undefined)
+ * }}
+ */
+Cesium.ShadowMapOptions;
+
+
+/**
+ * @constructor
+ * @param {Cesium.ShadowMapOptions} options
+ */
+Cesium.ShadowMap = function(options) {};
+
+/**
+ * @type {boolean}
+ */
+Cesium.ShadowMap.prototype.enabled;
+
+/**
+ * @type {boolean}
+ */
+Cesium.ShadowMap.prototype.softShadows;
+
+/**
+ * @type {number}
+ */
+Cesium.ShadowMap.prototype.maximumDistance;
+
+/**
+ * @type {number}
+ */
+Cesium.ShadowMap.prototype.size;
+
+/**
+ * @type {number}
+ */
+Cesium.ShadowMap.prototype.darkness;
 
 
 /**
