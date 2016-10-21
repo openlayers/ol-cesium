@@ -20,7 +20,6 @@ var map = new ol.Map({
 
 
 var ol3d = new olcs.OLCesium({map: map, target: 'map3d'});
-var scene = ol3d.getCesiumScene();
 ol3d.setEnabled(true);
 
 

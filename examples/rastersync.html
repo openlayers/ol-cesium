@@ -25,8 +25,8 @@
     <input type="button" value="TileWMS change" onclick="changeTileWMSParams();" />
 
     <fieldset id="layer0">
-      <label class="checkbox" for="visible0">
-        <input id="visible0" class="visible" type="checkbox" onchange="layer0.setVisible(this.checked)" checked/>OpenAerial layer
+      <label class="checkbox">
+        <input class="visible" type="checkbox" onchange="layer0.setVisible(this.checked)" checked/>OpenAerial layer
       </label>
       <label>opacity</label>
       <input class="opacity" type="range" min="0" max="1" step="0.01" value="1" oninput="layer0.setOpacity(this.value)"/>
@@ -34,8 +34,8 @@
       <input type="range" min="-10" max="10" step="1" oninput="layer0.setZIndex(this.value)" />
     </fieldset>
     <fieldset id="layer1">
-      <label class="checkbox" for="visible10">
-        <input id="visible1" class="visible" type="checkbox" onchange="layer1.setVisible(this.checked)" checked/>Grand Canyon overlay
+      <label class="checkbox">
+        <input class="visible" type="checkbox" onchange="layer1.setVisible(this.checked)" checked/>Grand Canyon overlay
       </label>
       <label>opacity</label>
       <input class="opacity" type="range" min="0" max="1" step="0.01" value="1" oninput="layer1.setOpacity(this.value)"/>
@@ -43,8 +43,8 @@
       <input type="range" min="-10" max="10" step="1" oninput="layer1.setZIndex(this.value)" />
     </fieldset>
     <fieldset id="layer2">
-      <label class="checkbox" for="visible10">
-        <input id="visible1" class="visible" type="checkbox" onchange="layer2.setVisible(this.checked)" checked/>World borders
+      <label class="checkbox">
+        <input class="visible" type="checkbox" onchange="layer2.setVisible(this.checked)" checked/>World borders
       </label>
       <label>opacity</label>
       <input class="opacity" type="range" min="0" max="1" step="0.01" value="1" oninput="layer2.setOpacity(this.value)"/>

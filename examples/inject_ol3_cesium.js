@@ -6,7 +6,7 @@
   var ol = (DIST && isDev) ? 'ol3cesium-debug.js' : '@loader';
 
   if (!window.LAZY_CESIUM) {
-    document.write('<scr' + 'ipt type="text/javascript" src="../cesium/Build/'+ cs + '"></scr' + 'ipt>');
+    document.write('<scr' + 'ipt type="text/javascript" src="../cesium/Build/' + cs + '"></scr' + 'ipt>');
   }
   document.write('<scr' + 'ipt type="text/javascript" src="../' + ol + '"></scr' + 'ipt>');
 
@@ -20,6 +20,6 @@
       document.body.appendChild(s);
     }
     return s;
-  }
+  };
 })();
 

@@ -33,7 +33,7 @@ function toggle3D() {
       _doToggle();
     };
   } else {
-     _doToggle();
+    _doToggle();
   }
 }
 
@@ -42,7 +42,7 @@ function init3D() {
   ol3d = new olcs.OLCesium({map: ol2d});
   var scene = ol3d.getCesiumScene();
   var terrainProvider = new Cesium.CesiumTerrainProvider({
-      url : '//assets.agi.com/stk-terrain/world'
+    url : '//assets.agi.com/stk-terrain/world'
   });
   scene.terrainProvider = terrainProvider;
 }

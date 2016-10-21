@@ -48,11 +48,11 @@ var addStamen = function() {
 };
 
 var tileWMSSource = new ol.source.TileWMS({
-      url: 'http://demo.boundlessgeo.com/geoserver/wms',
-      params: {'LAYERS': 'topp:states', 'TILED': true},
-      serverType: 'geoserver',
-      crossOrigin: 'anonymous'
-    });
+  url: 'http://demo.boundlessgeo.com/geoserver/wms',
+  params: {'LAYERS': 'topp:states', 'TILED': true},
+  serverType: 'geoserver',
+  crossOrigin: 'anonymous'
+});
 
 var addTileWMS = function() {
   ol2d.addLayer(new ol.layer.Tile({

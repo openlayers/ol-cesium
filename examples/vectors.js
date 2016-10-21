@@ -1,9 +1,9 @@
 var iconFeature = new ol.Feature({
-  geometry: new ol.geom.Point([700000, 200000, 100000]),
+  geometry: new ol.geom.Point([700000, 200000, 100000])
 });
 
 var textFeature = new ol.Feature({
-  geometry: new ol.geom.Point([1000000, 3000000, 50000]),
+  geometry: new ol.geom.Point([1000000, 3000000, 50000])
 });
 
 var cervinFeature = new ol.Feature({
