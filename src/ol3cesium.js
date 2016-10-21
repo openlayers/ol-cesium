@@ -1,6 +1,7 @@
 goog.provide('olcs.OLCesium');
 
 goog.require('goog.async.AnimationDelay');
+goog.require('goog.async.Delay');
 goog.require('olcs.AutoRenderLoop');
 goog.require('olcs.Camera');
 goog.require('olcs.RasterSynchronizer');
@@ -196,28 +197,12 @@ olcs.OLCesium = function(options) {
     }
   }
 
-  this.cesiumRenderingDelay_ = new goog.async.AnimationDelay(function(time) {
-    if (!this.blockCesiumRendering_) {
-      var julianDate = Cesium.JulianDate.now();
-      this.scene_.initializeFrame();
-      this.handleResize_();
-      this.dataSourceDisplay_.update(julianDate);
-
-      // Update tracked entity
-      if (this.entityView_) {
-        var trackedEntity = this.trackedEntity_;
-        var trackedState = this.dataSourceDisplay_.getBoundingSphere(trackedEntity, false, this.boundingSphereScratch_);
-        if (trackedState === Cesium.BoundingSphereState.DONE) {
-          this.boundingSphereScratch_.radius = 1; // a radius of 1 is enough for tracking points
-          this.entityView_.update(julianDate, this.boundingSphereScratch_);
-        }
-      }
-
-      this.scene_.render(julianDate);
-      this.enabled_ && this.camera_.checkCameraChange();
-    }
-    this.cesiumRenderingDelay_.start();
-  }, undefined, this);
+  /**
+   * Delay to render the Cesium scene.
+   * @type {goog.async.AnimationDelay|goog.async.Delay}
+   * @private
+   */
+  this.cesiumRenderingDelay_ = new goog.async.AnimationDelay(this.render_, undefined, this);
 
   /**
    * @private
@@ -315,6 +300,38 @@ Object.defineProperties(olcs.OLCesium.prototype, {
     }
   }
 });
+
+
+/**
+ * Render the Cesium scene.
+ * @param {number=} opt_time Timestamp from `getAnimationFrame`.
+ * @private
+ */
+olcs.OLCesium.prototype.render_ = function(opt_time) {
+  if (!this.blockCesiumRendering_) {
+    var julianDate = Cesium.JulianDate.now();
+    this.scene_.initializeFrame();
+    this.handleResize_();
+    this.dataSourceDisplay_.update(julianDate);
+
+    // Update tracked entity
+    if (this.entityView_) {
+      var trackedEntity = this.trackedEntity_;
+      var trackedState = this.dataSourceDisplay_.getBoundingSphere(trackedEntity, false, this.boundingSphereScratch_);
+      if (trackedState === Cesium.BoundingSphereState.DONE) {
+        this.boundingSphereScratch_.radius = 1; // a radius of 1 is enough for tracking points
+        this.entityView_.update(julianDate, this.boundingSphereScratch_);
+      }
+    }
+
+    this.scene_.render(julianDate);
+    this.enabled_ && this.camera_.checkCameraChange();
+
+    if (this.cesiumRenderingDelay_) {
+      this.cesiumRenderingDelay_.start();
+    }
+  }
+};
 
 
 /**
@@ -522,7 +539,18 @@ olcs.OLCesium.prototype.warmUp = function(height, timeout) {
  * @api
 */
 olcs.OLCesium.prototype.setBlockCesiumRendering = function(block) {
-  this.blockCesiumRendering_ = block;
+  if (this.blockCesiumRendering_ !== block) {
+    this.blockCesiumRendering_ = block;
+
+    // prevent the rendering delay from spinning when rendering is blocked
+    if (this.cesiumRenderingDelay_) {
+      if (this.blockCesiumRendering_) {
+        this.cesiumRenderingDelay_.stop();
+      } else {
+        this.cesiumRenderingDelay_.start();
+      }
+    }
+  }
 };
 
 
@@ -573,6 +601,31 @@ olcs.OLCesium.prototype.setResolutionScale = function(value) {
     if (this.autoRenderLoop_) {
       this.autoRenderLoop_.restartRenderLoop();
     }
+  }
+};
+
+
+/**
+ * Set the target frame rate for the renderer.
+ * @param {number|undefined} value The frame rate, in frames per second
+ */
+olcs.OLCesium.prototype.setTargetFrameRate = function(value) {
+  if (this.cesiumRenderingDelay_) {
+    this.cesiumRenderingDelay_.dispose();
+    this.cesiumRenderingDelay_ = null;
+  }
+
+  if (!goog.isDefAndNotNull(value)) {
+    // no limit - animate frames as the application allows
+    this.cesiumRenderingDelay_ = new goog.async.AnimationDelay(this.render_, undefined, this);
+  } else if (value > 0) {
+    // use a delay to prevent the renderer from falling behind. the delay will be started after rendering
+    // completes, while a timer more strictly adheres to the interval.
+    this.cesiumRenderingDelay_ = new goog.async.Delay(this.render_, 1000 / value, this);
+  }
+
+  if (this.enabled_ && this.cesiumRenderingDelay_) {
+    this.cesiumRenderingDelay_.start();
   }
 };
 
