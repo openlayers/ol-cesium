@@ -11,9 +11,9 @@ var addFeatures = function() {
   for (var i = 0; i < count; ++i) {
     var feature = new ol.Feature({
       geometry: new ol.geom.Point([
-          2 * e * Math.random() - e,
-          2 * e * Math.random() - e,
-          e * Math.random()
+        2 * e * Math.random() - e,
+        2 * e * Math.random() - e,
+        e * Math.random()
       ])
     });
     var style = [new ol.style.Style({
@@ -39,7 +39,7 @@ var addFeatures = function() {
 
   var vectorSource = new ol.source.Vector({});
   var vector = new ol.layer.Vector({
-    source: vectorSource,
+    source: vectorSource
   });
   vectorSource.addFeatures(features);
   map.addLayer(vector);
@@ -85,8 +85,8 @@ var handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
 var lastPicked;
 handler.setInputAction(function(movement) {
   var pickedObjects = scene.drillPick(movement.position);
-   if (Cesium.defined(pickedObjects)) {
-    for (i = 0; i < pickedObjects.length; ++i) {
+  if (Cesium.defined(pickedObjects)) {
+    for (var i = 0; i < pickedObjects.length; ++i) {
       var picked = pickedObjects[i].primitive;
       if (picked.olFeature == lastPicked) continue;
       var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(picked.position);

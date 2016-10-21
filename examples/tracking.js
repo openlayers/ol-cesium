@@ -1,7 +1,7 @@
 var point = new ol.geom.Point([700000, 200000, 100000]);
 
 var iconFeature = new ol.Feature({
-  geometry: point,
+  geometry: point
 });
 
 
@@ -67,9 +67,9 @@ function toggleTracking() {
 setInterval(function() {
   var old = point.getCoordinates();
   point.setCoordinates([
-      old[0] + 1000* Math.random(),
-      old[1] + 1000* Math.random(),
-      old[2]
+    old[0] + 1000 * Math.random(),
+    old[1] + 1000 * Math.random(),
+    old[2]
   ]);
   iconFeature.changed();
 }, 100);
