@@ -21,7 +21,7 @@
       "Cesium.externs.js"
     ],
     "define": [
-      "goog.DEBUG=false"
+      "ol.DEBUG=false"
     ],
     "js": [
     ],
