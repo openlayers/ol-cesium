@@ -1,11 +1,13 @@
 # Changelog
 
-# v 1.21 -
+# v 1.21 - 2016-11-02
 
 * Changes
   * Add olcs.OLCesium.trackedFeature property to make Cesium automatically track an
     OpenLayers point feature. When active, the Cesium camera will follow changes of
     the feature position. This requires using stacked view.
+  * Port to OpenLayers 3.19.1.
+  * Port to Cesium 1.27.
 
 # v 1.20 - 2016-09-02
 

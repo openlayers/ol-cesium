@@ -276,8 +276,10 @@ olcs.Camera.prototype.getPosition = function() {
   var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(
       this.cam_.position);
 
-  var pos = this.fromLonLat_([ol.math.toDegrees(carto.longitude),
-                              ol.math.toDegrees(carto.latitude)]);
+  var pos = this.fromLonLat_([
+    ol.math.toDegrees(carto.longitude),
+    ol.math.toDegrees(carto.latitude)
+  ]);
   goog.asserts.assert(!goog.isNull(pos));
   return pos;
 };
