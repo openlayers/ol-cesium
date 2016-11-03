@@ -431,7 +431,7 @@ olcs.FeatureConverter.prototype.olPolygonGeometryToCesium = function(layer, feat
       if (i == 0) {
         hierarchy.positions = positions;
       } else {
-        if(!hierarchy.holes){
+        if (!hierarchy.holes) {
           hierarchy.holes = [];
         }
         hierarchy.holes.push({
