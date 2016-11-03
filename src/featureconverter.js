@@ -431,11 +431,12 @@ olcs.FeatureConverter.prototype.olPolygonGeometryToCesium = function(layer, feat
       if (i == 0) {
         hierarchy.positions = positions;
       } else {
-        hierarchy.holes = {
-          // always update Cesium externs before adding a property
+        if (!hierarchy.holes) {
+          hierarchy.holes = [];
+        }
+        hierarchy.holes.push({
           positions: positions
-        };
-        hierarchy = hierarchy.holes;
+        });
       }
     }
 

@@ -1000,26 +1000,6 @@ Cesium.Globe.prototype.getHeight = function(cartographic) {};
 Cesium.Globe.prototype.pick = function(ray, scene, opt_result) {};
 
 
-
-/**
- * @param {Object.<string, *>=} opt_opts
- * @constructor
- */
-Cesium.Polygon = function(opt_opts) {};
-
-
-/**
- * @type {!Array.<!Cesium.Cartesian3>}
- */
-Cesium.Polygon.prototype.positions;
-
-
-/**
- * @type {!Cesium.Material} material .
- */
-Cesium.Polygon.prototype.material;
-
-
 /**
  * Merge of all values
  * @typedef {{
@@ -1037,19 +1017,6 @@ Cesium.optionsMaterialFromTypeAny;
  * @param {Cesium.optionsMaterialFromTypeAny=} opt_uniforms .
  */
 Cesium.Material.fromType = function(type, opt_uniforms) {};
-
-
-
-/**
- * @type {boolean} .
- */
-Cesium.Polygon.prototype.show;
-
-
-/**
- */
-Cesium.Polygon.prototype.update = function() {};
-
 
 
 /**
@@ -1416,19 +1383,11 @@ Cesium.VertexFormat = function(options) {};
  */
 Cesium.PerInstanceColorAppearance.VERTEX_FORMAT;
 
-/**
- * @typedef {{
- * positions: !Array.<Cesium.Cartesian3>,
- * holes: (Cesium.optionsPolygonHoles | undefined)
- * }}
- */
-Cesium.optionsPolygonHoles;
-
 
 /**
  * @typedef {{
  * positions: !Array.<Cesium.Cartesian3>,
- * holes: (Cesium.optionsPolygonHoles | undefined)
+ * holes: !Array.<Cesium.optionsPolygonHierarchy>
  * }}
  */
 Cesium.optionsPolygonHierarchy;
@@ -1595,7 +1554,7 @@ Cesium.PrimitiveCollection = function() {};
 
 
 /**
- * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.Primitive} poly .
+ * @param {!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.Primitive} poly .
  */
 Cesium.PrimitiveCollection.prototype.add = function(poly) {};
 
@@ -1606,19 +1565,19 @@ Cesium.PrimitiveCollection.prototype.add = function(poly) {};
 Cesium.PrimitiveCollection.prototype.get = function(index) {};
 
 /**
- * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.Primitive} poly .
+ * @param {!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.Primitive} poly .
  * @return {boolean}
  */
 Cesium.PrimitiveCollection.prototype.contains = function(poly) {};
 
 /**
- * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.PrimitiveCollection} poly .
+ * @param {!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.PrimitiveCollection} poly .
  */
 Cesium.PrimitiveCollection.prototype.raiseToTop = function(poly) {};
 
 
 /**
- * @param {!Cesium.Polygon|!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.Primitive} poly .
+ * @param {!Cesium.PolylineCollection|!Cesium.BillboardCollection|!Cesium.Primitive} poly .
  */
 Cesium.PrimitiveCollection.prototype.remove = function(poly) {};
 
