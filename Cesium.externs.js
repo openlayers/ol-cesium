@@ -1416,19 +1416,11 @@ Cesium.VertexFormat = function(options) {};
  */
 Cesium.PerInstanceColorAppearance.VERTEX_FORMAT;
 
-/**
- * @typedef {{
- * positions: !Array.<Cesium.Cartesian3>,
- * holes: (Cesium.optionsPolygonHoles | undefined)
- * }}
- */
-Cesium.optionsPolygonHoles;
-
 
 /**
  * @typedef {{
  * positions: !Array.<Cesium.Cartesian3>,
- * holes: (Cesium.optionsPolygonHoles | undefined)
+ * holes: !Array.<Cesium.optionsPolygonHierarchy>
  * }}
  */
 Cesium.optionsPolygonHierarchy;
