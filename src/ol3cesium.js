@@ -28,6 +28,14 @@ olcs.OLCesium = function(options) {
   this.map_ = options.map;
 
   /**
+   * @type {!Function}
+   * @private
+   */
+  this.time_ = options.time || function() {
+    return Cesium.JulianDate.now();
+  };
+
+  /**
    * No change of the view projection.
    * @private
    */
@@ -361,7 +369,7 @@ olcs.OLCesium.prototype.onAnimationFrame_ = function(frameTime) {
   // time to render a frame, save the time
   this.lastFrameTime_ = frameTime;
 
-  var julianDate = Cesium.JulianDate.now();
+  var julianDate = this.time_();
   this.scene_.initializeFrame();
   this.handleResize_();
   this.dataSourceDisplay_.update(julianDate);
@@ -407,7 +415,7 @@ olcs.OLCesium.prototype.updateTrackedEntity_ = function() {
     bs.radius = 1;
   }
   this.entityView_ = new Cesium.EntityView(trackedEntity, scene, scene.mapProjection.ellipsoid);
-  this.entityView_.update(Cesium.JulianDate.now(), bs); // FIXME: have a global management of current time
+  this.entityView_.update(this.time_(), bs);
   this.needTrackedEntityUpdate_ = false;
 };
 
