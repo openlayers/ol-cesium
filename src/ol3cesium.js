@@ -217,9 +217,18 @@ olcs.OLCesium = function(options) {
   this.targetFrameRate_ = Number.POSITIVE_INFINITY;
 
   /**
+   * If the Cesium render loop is being blocked.
+   * @type {boolean}
    * @private
    */
   this.blockCesiumRendering_ = false;
+
+  /**
+   * If the warmup routine is active.
+   * @type {boolean}
+   * @private
+   */
+  this.warmingUp_ = false;
 
   /**
    * @type {ol.Feature}
@@ -505,6 +514,9 @@ olcs.OLCesium.prototype.setEnabled = function(enable) {
   }
   this.enabled_ = enable;
 
+  // prevent warm up timeout from disabling rendering
+  this.warmingUp_ = false;
+
   // some Cesium operations are operating with canvas.clientWidth,
   // so we can't remove it from DOM or even make display:none;
   this.container_.style.visibility = this.enabled_ ? 'visible' : 'hidden';
@@ -566,16 +578,17 @@ olcs.OLCesium.prototype.warmUp = function(height, timeout) {
     csCamera.position = ellipsoid.cartographicToCartesian(position);
   }
 
-  // enable rendering and use the maximum frame rate while preloading
-  var targetFrameRate = this.targetFrameRate_;
-  this.targetFrameRate_ = Number.POSITIVE_INFINITY;
+  // temporarily enable rendering
   this.enabled_ = true;
+  this.warmingUp_ = true;
   this.render_();
 
   setTimeout((function() {
-    // disable and reset the frame rate
-    this.enabled_ = false;
-    this.targetFrameRate_ = targetFrameRate;
+    // disable rendering after the warm up timeout is reached
+    if (this.warmingUp_) {
+      this.warmingUp_ = false;
+      this.enabled_ = false;
+    }
   }).bind(this), timeout);
 };
 

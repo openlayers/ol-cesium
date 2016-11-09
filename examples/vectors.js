@@ -311,4 +311,13 @@ function toggleClampToGround() {
   map.addLayer(vectorLayer2);
 }
 
+function setTargetFrameRate() {
+  var fps;
+  var fpsEl = document.querySelector('#framerate');
+  if (fpsEl) {
+    fps = Number(fpsEl.value);
+    ol3d.setTargetFrameRate(fps);
+  }
+}
+
 ol3d.enableAutoRenderLoop();
