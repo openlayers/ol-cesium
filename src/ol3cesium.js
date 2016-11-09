@@ -334,8 +334,8 @@ olcs.OLCesium.prototype.render_ = function() {
     this.renderId_ = undefined;
   }
 
-  // only render if Cesium is enabled and rendering hasn't been blocked
-  if (this.enabled_ && !this.blockCesiumRendering_) {
+  // only render if Cesium is enabled/warming and rendering hasn't been blocked
+  if ((this.enabled_ || this.warmingUp_) && !this.blockCesiumRendering_) {
     this.renderId_ = requestAnimationFrame(this.onAnimationFrame_.bind(this));
   }
 };
@@ -514,9 +514,6 @@ olcs.OLCesium.prototype.setEnabled = function(enable) {
   }
   this.enabled_ = enable;
 
-  // prevent warm up timeout from disabling rendering
-  this.warmingUp_ = false;
-
   // some Cesium operations are operating with canvas.clientWidth,
   // so we can't remove it from DOM or even make display:none;
   this.container_.style.visibility = this.enabled_ ? 'visible' : 'hidden';
@@ -578,17 +575,11 @@ olcs.OLCesium.prototype.warmUp = function(height, timeout) {
     csCamera.position = ellipsoid.cartographicToCartesian(position);
   }
 
-  // temporarily enable rendering
-  this.enabled_ = true;
   this.warmingUp_ = true;
   this.render_();
 
   setTimeout((function() {
-    // disable rendering after the warm up timeout is reached
-    if (this.warmingUp_) {
-      this.warmingUp_ = false;
-      this.enabled_ = false;
-    }
+    this.warmingUp_ = false;
   }).bind(this), timeout);
 };
 
