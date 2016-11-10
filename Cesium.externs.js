@@ -2683,6 +2683,14 @@ Cesium.DataSourceCollection.prototype.add = function(dataSource) {};
  */
 Cesium.DataSourceCollection.prototype.remove = function(dataSource, destroy) {};
 
+/**
+ * Removes all data sources from this collection, if present.
+ *
+ * @param {boolean} [destroy=false] Whether to destroy the data source in
+ * addition to removing it.
+ */
+Cesium.DataSourceCollection.prototype.removeAll = function(destroy) {};
+
 
 /**
  * @constructor
