@@ -1,6 +1,5 @@
 goog.provide('olcs.OLCesium');
 
-goog.require('goog.async.AnimationDelay');
 goog.require('olcs.AutoRenderLoop');
 goog.require('olcs.Camera');
 goog.require('olcs.RasterSynchronizer');
@@ -196,33 +195,40 @@ olcs.OLCesium = function(options) {
     }
   }
 
-  this.cesiumRenderingDelay_ = new goog.async.AnimationDelay(function(time) {
-    if (!this.blockCesiumRendering_) {
-      var julianDate = Cesium.JulianDate.now();
-      this.scene_.initializeFrame();
-      this.handleResize_();
-      this.dataSourceDisplay_.update(julianDate);
-
-      // Update tracked entity
-      if (this.entityView_) {
-        var trackedEntity = this.trackedEntity_;
-        var trackedState = this.dataSourceDisplay_.getBoundingSphere(trackedEntity, false, this.boundingSphereScratch_);
-        if (trackedState === Cesium.BoundingSphereState.DONE) {
-          this.boundingSphereScratch_.radius = 1; // a radius of 1 is enough for tracking points
-          this.entityView_.update(julianDate, this.boundingSphereScratch_);
-        }
-      }
-
-      this.scene_.render(julianDate);
-      this.enabled_ && this.camera_.checkCameraChange();
-    }
-    this.cesiumRenderingDelay_.start();
-  }, undefined, this);
+  /**
+   * Time of the last rendered frame, as returned by `performance.now()`.
+   * @type {number}
+   * @private
+   */
+  this.lastFrameTime_ = 0;
 
   /**
+   * The identifier returned by `requestAnimationFrame`.
+   * @type {number|undefined}
+   * @private
+   */
+  this.renderId_ = undefined;
+
+  /**
+   * Target frame rate for the render loop.
+   * @type {number}
+   * @private
+   */
+  this.targetFrameRate_ = Number.POSITIVE_INFINITY;
+
+  /**
+   * If the Cesium render loop is being blocked.
+   * @type {boolean}
    * @private
    */
   this.blockCesiumRendering_ = false;
+
+  /**
+   * If the warmup routine is active.
+   * @type {boolean}
+   * @private
+   */
+  this.warmingUp_ = false;
 
   /**
    * @type {ol.Feature}
@@ -315,6 +321,67 @@ Object.defineProperties(olcs.OLCesium.prototype, {
     }
   }
 });
+
+
+/**
+ * Render the Cesium scene.
+ * @private
+ */
+olcs.OLCesium.prototype.render_ = function() {
+  // if a call to `requestAnimationFrame` is pending, cancel it
+  if (this.renderId_ !== undefined) {
+    cancelAnimationFrame(this.renderId_);
+    this.renderId_ = undefined;
+  }
+
+  // only render if Cesium is enabled/warming and rendering hasn't been blocked
+  if ((this.enabled_ || this.warmingUp_) && !this.blockCesiumRendering_) {
+    this.renderId_ = requestAnimationFrame(this.onAnimationFrame_.bind(this));
+  }
+};
+
+
+/**
+ * Callback for `requestAnimationFrame`.
+ * @param {number} frameTime The frame time, from `performance.now()`.
+ * @private
+ */
+olcs.OLCesium.prototype.onAnimationFrame_ = function(frameTime) {
+  this.renderId_ = undefined;
+
+  // check if a frame was rendered within the target frame rate
+  var interval = 1000.0 / this.targetFrameRate_;
+  var delta = frameTime - this.lastFrameTime_;
+  if (delta < interval) {
+    // too soon, don't render yet
+    this.render_();
+    return;
+  }
+
+  // time to render a frame, save the time
+  this.lastFrameTime_ = frameTime;
+
+  var julianDate = Cesium.JulianDate.now();
+  this.scene_.initializeFrame();
+  this.handleResize_();
+  this.dataSourceDisplay_.update(julianDate);
+
+  // Update tracked entity
+  if (this.entityView_) {
+    var trackedEntity = this.trackedEntity_;
+    var trackedState = this.dataSourceDisplay_.getBoundingSphere(trackedEntity, false, this.boundingSphereScratch_);
+    if (trackedState === Cesium.BoundingSphereState.DONE) {
+      this.boundingSphereScratch_.radius = 1; // a radius of 1 is enough for tracking points
+      this.entityView_.update(julianDate, this.boundingSphereScratch_);
+    }
+  }
+
+  this.scene_.render(julianDate);
+  this.camera_.checkCameraChange();
+
+  // request the next render call after this one completes to ensure the browser doesn't get backed up
+  this.render_();
+};
 
 
 /**
@@ -467,7 +534,7 @@ olcs.OLCesium.prototype.setEnabled = function(enable) {
       }
     }
     this.camera_.readFromView();
-    this.cesiumRenderingDelay_.start();
+    this.render_();
   } else {
     if (this.isOverMap_) {
       interactions = this.map_.getInteractions();
@@ -483,7 +550,6 @@ olcs.OLCesium.prototype.setEnabled = function(enable) {
     }
 
     this.camera_.updateView();
-    this.cesiumRenderingDelay_.stop();
   }
 };
 
@@ -508,11 +574,13 @@ olcs.OLCesium.prototype.warmUp = function(height, timeout) {
     position.height = height;
     csCamera.position = ellipsoid.cartographicToCartesian(position);
   }
-  this.cesiumRenderingDelay_.start();
-  var that = this;
-  setTimeout(
-      function() { !that.enabled_ && that.cesiumRenderingDelay_.stop(); },
-      timeout);
+
+  this.warmingUp_ = true;
+  this.render_();
+
+  setTimeout((function() {
+    this.warmingUp_ = false;
+  }).bind(this), timeout);
 };
 
 
@@ -522,7 +590,12 @@ olcs.OLCesium.prototype.warmUp = function(height, timeout) {
  * @api
 */
 olcs.OLCesium.prototype.setBlockCesiumRendering = function(block) {
-  this.blockCesiumRendering_ = block;
+  if (this.blockCesiumRendering_ !== block) {
+    this.blockCesiumRendering_ = block;
+
+    // reset the render loop
+    this.render_();
+  }
 };
 
 
@@ -573,6 +646,22 @@ olcs.OLCesium.prototype.setResolutionScale = function(value) {
     if (this.autoRenderLoop_) {
       this.autoRenderLoop_.restartRenderLoop();
     }
+  }
+};
+
+
+/**
+ * Set the target frame rate for the renderer. Set to `Number.POSITIVE_INFINITY`
+ * to render as quickly as possible.
+ * @param {number} value The frame rate, in frames per second.
+ * @api
+ */
+olcs.OLCesium.prototype.setTargetFrameRate = function(value) {
+  if (this.targetFrameRate_ !== value) {
+    this.targetFrameRate_ = value;
+
+    // reset the render loop
+    this.render_();
   }
 };
 
