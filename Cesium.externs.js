@@ -2677,8 +2677,8 @@ Cesium.DataSourceCollection.prototype.add = function(dataSource) {};
  * Removes a data source from this collection, if present.
  *
  * @param {Cesium.DataSource} dataSource The data source to remove.
- * @param {Boolean} [destroy=false] Whether to destroy the data source in addition to removing it.
- * @return {Boolean} true if the data source was in the collection and was removed,
+ * @param {boolean} [destroy=false] Whether to destroy the data source in addition to removing it.
+ * @return {boolean} true if the data source was in the collection and was removed,
  *                    false if the data source was not in the collection.
  */
 Cesium.DataSourceCollection.prototype.remove = function(dataSource, destroy) {};
