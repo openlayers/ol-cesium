@@ -2702,7 +2702,7 @@ Cesium.DataSourceDisplay = function(opt_opts) {};
 
 /**
  * @param {Cesium.JulianDate} time The simulation time.
- * @return {Boolean} True if all data sources are ready to be displayed, false otherwise.
+ * @return {boolean} True if all data sources are ready to be displayed, false otherwise.
  */
 Cesium.DataSourceDisplay.prototype.update = function(time) {};
 
