@@ -16,10 +16,34 @@ var ol2d = new ol.Map({
   })
 });
 
-var ol3d = new olcs.OLCesium({map: ol2d});
+var ol3d = new olcs.OLCesium({
+  map: ol2d,
+  time: function() {
+    var val = timeElt.value;
+    if (scene.globe.enableLighting && val) {
+      var d = new Date();
+      d.setUTCHours(val);
+      return Cesium.JulianDate.fromDate(d);
+    }
+    return Cesium.JulianDate.now();
+  }
+});
 var scene = ol3d.getCesiumScene();
 var terrainProvider = new Cesium.CesiumTerrainProvider({
-  url : '//assets.agi.com/stk-terrain/world'
+  url : '//assets.agi.com/stk-terrain/world',
+  requestVertexNormals: true
 });
 scene.terrainProvider = terrainProvider;
+
+
+var timeElt = document.getElementById('time');
+timeElt.style.display = 'none';
+var toggleTime = function() {
+  scene.globe.enableLighting = !scene.globe.enableLighting;
+  if (timeElt.style.display == 'none') {
+    timeElt.style.display = 'inline-block';
+  } else {
+    timeElt.style.display = 'none';
+  }
+}
 
