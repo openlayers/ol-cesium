@@ -2647,13 +2647,15 @@ Cesium.KmlDataSource = function() {};
  * @typedef {{
  *   camera: Cesium.Camera,
  *   canvas: HTMLCanvasElement,
- *   proxy: (Cesium.DefaultProxy|string)
+ *   proxy: (Cesium.DefaultProxy|undefined),
+ *   sourceUri: (string|undefined),
+ *   clampToGround: (boolean|undefined)
  * }}
  */
 Cesium.KmlDataSourceLoadOptions;
 
 /**
- * @param {string|HTMLDocument|Blob} data
+ * @param {string|Document|Blob} data
  * @param {!Cesium.KmlDataSourceLoadOptions} options
  * @return {Cesium.DataSource|Promise.<Cesium.DataSource>}
  */
