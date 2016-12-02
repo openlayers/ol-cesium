@@ -1,6 +1,6 @@
 {
   "name": "ol3-cesium",
-  "version": "1.21.0",
+  "version": "1.22.0",
   "description": "OpenLayers 3 Cesium integration library",
   "scripts": {},
   "repository": {
