@@ -990,7 +990,9 @@ olcs.FeatureConverter.prototype.olVectorLayerToCesium = function(olLayer, olView
       continue;
     }
     var primitives = this.olFeatureToCesium(olLayer, feature, style, context);
-    if (!primitives) continue;
+    if (!primitives) {
+      continue;
+    }
     featurePrimitiveMap[goog.getUid(feature)] = primitives;
     counterpart.getRootPrimitive().add(primitives);
   }
