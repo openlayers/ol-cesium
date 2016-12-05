@@ -11,6 +11,7 @@ var olcsx;
  *   map: (!ol.Map),
  *   target: (Element|string|undefined),
  *   createSynchronizers: (undefined|function(!ol.Map, !Cesium.Scene, !Cesium.DataSourceCollection): Array.<olcs.AbstractSynchronizer>),
+ *   time: (undefined|function(): Cesium.JulianDate),
  *   sceneOptions: (Cesium.SceneOptions|undefined)
  * }}
  * @api
@@ -24,6 +25,13 @@ olcsx.OLCesiumOptions;
  * @api
  */
 olcsx.OLCesiumOptions.prototype.map;
+
+/**
+ * Control the current time used by Cesium.
+ * @type {undefined|function(): Cesium.JulianDate}
+ * @api
+ */
+olcsx.OLCesiumOptions.prototype.time;
 
 /**
  * Allows the passing of property value to the `Cesium.Scene`.

@@ -28,7 +28,7 @@ olcs.OLCesium = function(options) {
   this.map_ = options.map;
 
   /**
-   * @type {!Function}
+   * @type {!function(): Cesium.JulianDate}
    * @private
    */
   this.time_ = options.time || function() {
