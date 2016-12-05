@@ -4,6 +4,8 @@
 
 * Changes
   * Port to Cesium 1.28.
+  * Add OLCesium.setTargetFrameRate to enforce an fps limit for Cesium.
+  * Add OLCesium option `time` to control the current time passed to Cesium.
 
 # v 1.21 - 2016-11-02
 
