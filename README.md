@@ -90,3 +90,8 @@ Limitations
 OpenLayers unmanaged layers are not discoverable and as a consequence not
 supported. Plain layers should be used instead or the synchronization managed
 manually. See https://github.com/openlayers/ol3-cesium/issues/350.
+
+Release process
+---------------
+
+See [RELEASE.md](https://github.com/openlayers/ol3-cesium/RELEASE.md).
