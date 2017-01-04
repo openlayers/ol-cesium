@@ -4,6 +4,7 @@
 
 * Changes
   * Port to Cesium 1.29.
+  * Port to OpenLayers 3.20.0.
 
 # v 1.22 - 2016-12-02
 
