@@ -94,4 +94,4 @@ manually. See https://github.com/openlayers/ol3-cesium/issues/350.
 Release process
 ---------------
 
-See [RELEASE.md](https://github.com/openlayers/ol3-cesium/RELEASE.md).
+See [RELEASE.md](https://github.com/openlayers/ol3-cesium/blob/master/RELEASE.md).
