@@ -211,8 +211,10 @@ olcs.AutoRenderLoop.prototype.postRender = function(date) {
   var cameraMovedInLastSecond = now - this.lastCameraMoveTime_ < 1000;
 
   var surface = scene.globe['_surface'];
-  var tilesWaiting = !surface['_tileProvider'].ready ||
-      surface['_tileLoadQueue'].length > 0 ||
+  var tilesWaiting = !surface['tileProvider'].ready ||
+      surface['_tileLoadQueueHigh'].length > 0 ||
+      surface['_tileLoadQueueMedium'].length > 0 ||
+      surface['_tileLoadQueueLow'].length > 0 ||
       surface['_debug']['tilesWaitingForChildren'] > 0;
 
   var tweens = scene['tweens'];
