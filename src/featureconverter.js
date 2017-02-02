@@ -350,21 +350,37 @@ olcs.FeatureConverter.prototype.olLineStringGeometryToCesium = function(layer, f
     material: this.olStyleToCesium(feature, olStyle, true)
   });
 
-  // Handle both color and width
-  var outlineGeometry = new Cesium.PolylineGeometry({
+  var geometryOptions = {
     // always update Cesium externs before adding a property
     positions: positions,
     width: this.extractLineWidthFromOlStyle(olStyle),
     vertexFormat: appearance.vertexFormat
-  });
+  };
 
-  var outlinePrimitive = new Cesium.Primitive({
-    // always update Cesium externs before adding a property
-    geometryInstances: new Cesium.GeometryInstance({
-      geometry: outlineGeometry
-    }),
-    appearance: appearance
-  });
+  var outlinePrimitive;
+  var heightReference = this.getHeightReference(layer, feature, olGeometry);
+
+  if (heightReference == Cesium.HeightReference.CLAMP_TO_GROUND) {
+    var color = this.extractColorFromOlStyle(olStyle, true);
+    outlinePrimitive = new Cesium.GroundPrimitive({
+      // always update Cesium externs before adding a property
+      geometryInstances: new Cesium.GeometryInstance({
+        geometry: new Cesium.CorridorGeometry(geometryOptions),
+        attributes : {
+          color : Cesium.ColorGeometryInstanceAttribute.fromColor(color)
+        }
+      })
+    });
+  } else {
+    outlinePrimitive = new Cesium.Primitive({
+      // always update Cesium externs before adding a property
+      geometryInstances: new Cesium.GeometryInstance({
+        geometry: new Cesium.PolylineGeometry(geometryOptions)
+      }),
+      appearance: appearance
+    });
+  }
+
   this.setReferenceForPicking(layer, feature, outlinePrimitive);
 
   return this.addTextStyle(layer, feature, olGeometry, olStyle,
