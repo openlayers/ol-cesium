@@ -1,5 +1,10 @@
 # Changelog
 
+# v 1.24
+
+* Changes
+  * Clamp line to the ground using Corridor geometry (experimental feature).
+
 # v 1.23 - 2016-01-04
 
 * Changes

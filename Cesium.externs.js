@@ -1273,7 +1273,6 @@ Cesium.CircleOutlineGeometry = function(opt_opts) {};
  */
 Cesium.ColorGeometryInstanceAttribute = function() {};
 
-
 /**
  * @param {!Cesium.Color} color
  * @return {!Cesium.ColorGeometryInstanceAttribute}
@@ -1508,7 +1507,26 @@ Cesium.optionsRectangleGeometry;
  */
 Cesium.RectangleGeometry = function(opt_opts) {};
 
+/**
+ * @constructor
+ * @param {Cesium.optionsCorridorGeometry} opt_opts
+ * @extends {Cesium.Geometry}
+ */
+Cesium.CorridorGeometry = function(opt_opts) {};
 
+/**
+ * @typedef {{
+ * positions: !Array.<Cesium.Cartesian3>,
+ * width: (number|undefined),
+ * ellipsoid: (Cesium.Ellipsoid|undefined),
+ * granularity: (number|undefined),
+ * height: (number|undefined),
+ * extrudedHeight: (number|undefined),
+ * vertexFormat: number,
+ * cornerType: (number|undefined),
+ * }}
+ */
+Cesium.optionsCorridorGeometry;
 
 /**
  * @constructor
