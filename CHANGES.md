@@ -4,6 +4,8 @@
 
 * Changes
   * Clamp line to the ground using Corridor geometry (experimental feature).
+  * Port to Cesium 1.30.
+  * Port to OpenLayers 4.0.1.
 
 # v 1.23 - 2016-01-04
 

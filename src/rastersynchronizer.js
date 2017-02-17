@@ -2,6 +2,7 @@ goog.provide('olcs.RasterSynchronizer');
 
 goog.require('goog.asserts');
 goog.require('ol.array');
+goog.require('ol');
 goog.require('olcs.AbstractSynchronizer');
 goog.require('olcs.core');
 
@@ -139,6 +140,7 @@ olcs.RasterSynchronizer.prototype.createSingleLayerCounterparts = function(olLay
 /**
  * Order counterparts using the same algorithm as the Openlayers renderer:
  * z-index then original sequence order.
+ * @override
  * @protected
  */
 olcs.RasterSynchronizer.prototype.orderLayers = function() {

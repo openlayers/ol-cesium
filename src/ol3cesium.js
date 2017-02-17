@@ -1,5 +1,10 @@
 goog.provide('olcs.OLCesium');
 
+goog.require('goog.asserts');
+goog.require('ol.proj');
+
+goog.require('olcs.util');
+goog.require('olcs.core');
 goog.require('olcs.AutoRenderLoop');
 goog.require('olcs.Camera');
 goog.require('olcs.RasterSynchronizer');
@@ -106,9 +111,9 @@ olcs.OLCesium = function(options) {
   canvasAttribute.value = fillArea;
   this.canvas_.setAttributeNode(canvasAttribute);
 
-  if (olcs.supportsImageRenderingPixelated()) {
+  if (olcs.util.supportsImageRenderingPixelated()) {
     // non standard CSS4
-    this.canvas_.style['imageRendering'] = olcs.imageRenderingValue();
+    this.canvas_.style['imageRendering'] = olcs.util.imageRenderingValue();
   }
 
   this.canvas_.oncontextmenu = function() { return false; };
@@ -439,7 +444,7 @@ olcs.OLCesium.prototype.handleResize_ = function() {
   }
 
   var resolutionScale = this.resolutionScale_;
-  if (!olcs.supportsImageRenderingPixelated()) {
+  if (!olcs.util.supportsImageRenderingPixelated()) {
     resolutionScale *= window.devicePixelRatio || 1.0;
   }
   this.resolutionScaleChanged_ = false;

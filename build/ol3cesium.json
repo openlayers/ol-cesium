@@ -20,9 +20,6 @@
       "ol3/externs/closure-compiler.js",
       "Cesium.externs.js"
     ],
-    "define": [
-      "ol.DEBUG=false"
-    ],
     "js": [
     ],
     "jscomp_error": [

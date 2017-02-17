@@ -15,6 +15,7 @@ goog.require('ol.layer.Group');
  * @constructor
  * @template T
  * @struct
+ * @abstract
  * @api
  */
 olcs.AbstractSynchronizer = function(map, scene) {
