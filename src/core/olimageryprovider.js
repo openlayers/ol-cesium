@@ -183,7 +183,13 @@ olcs.core.OLImageryProvider.createCreditForSource = function(source) {
   if (!goog.isNull(attributions)) {
     attributions.forEach(function(el) {
       // strip html tags (not supported in Cesium)
-      text += el.getHTML().replace(/<\/?[^>]+(>|$)/g, '') + ' ';
+      if (Array.isArray(el.getHTML())) {
+        el.getHTML().forEach(function(el2) {
+          text += el2.replace(/<\/?[^>]+(>|$)/g, '') + ' ';  
+        });
+      } else {
+        text += el.getHTML().replace(/<\/?[^>]+(>|$)/g, '') + ' ';
+      }
     });
   }
 
