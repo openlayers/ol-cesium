@@ -96,11 +96,11 @@ olcs.RasterSynchronizer.prototype.convertLayerToCesiumImageries = function(olLay
 olcs.RasterSynchronizer.prototype.createSingleLayerCounterparts = function(olLayer) {
   var viewProj = this.view.getProjection();
   var cesiumObjects = this.convertLayerToCesiumImageries(olLayer, viewProj);
-  if (!goog.isNull(cesiumObjects)) {
+  if (cesiumObjects) {
     olLayer.on(['change:opacity', 'change:visible'],
         function(e) {
           // the compiler does not seem to be able to infer this
-          goog.asserts.assert(!goog.isNull(cesiumObjects));
+          goog.asserts.assert(cesiumObjects);
           for (var i = 0; i < cesiumObjects.length; ++i) {
             olcs.core.updateCesiumLayerProperties(olLayer, cesiumObjects[i]);
           }

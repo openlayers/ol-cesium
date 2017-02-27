@@ -44,7 +44,7 @@ ol.inherits(olcs.VectorSynchronizer, olcs.AbstractSynchronizer);
  * @inheritDoc
  */
 olcs.VectorSynchronizer.prototype.addCesiumObject = function(counterpart) {
-  goog.asserts.assert(!goog.isNull(counterpart));
+  goog.asserts.assert(counterpart);
   counterpart.getRootPrimitive()['counterpart'] = counterpart;
   this.csAllPrimitives_.add(counterpart.getRootPrimitive());
 };
@@ -101,7 +101,7 @@ olcs.VectorSynchronizer.prototype.createSingleLayerCounterparts = function(olLay
   }
 
   goog.asserts.assertInstanceof(source, ol.source.Vector);
-  goog.asserts.assert(!goog.isNull(this.view));
+  goog.asserts.assert(this.view);
 
   var view = this.view;
   var featurePrimitiveMap = {};
@@ -142,24 +142,24 @@ olcs.VectorSynchronizer.prototype.createSingleLayerCounterparts = function(olLay
     }
     var csPrimitive = featurePrimitiveMap[id];
     delete featurePrimitiveMap[id];
-    if (goog.isDefAndNotNull(csPrimitive)) {
+    if (csPrimitive) {
       csPrimitives.remove(csPrimitive);
     }
   }).bind(this);
 
   olListenKeys.push(ol.events.listen(source, 'addfeature', function(e) {
-    goog.asserts.assert(goog.isDefAndNotNull(e.feature));
+    goog.asserts.assert(e.feature);
     onAddFeature(e.feature);
   }, this));
 
   olListenKeys.push(ol.events.listen(source, 'removefeature', function(e) {
-    goog.asserts.assert(goog.isDefAndNotNull(e.feature));
+    goog.asserts.assert(e.feature);
     onRemoveFeature(e.feature);
   }, this));
 
   olListenKeys.push(ol.events.listen(source, 'changefeature', function(e) {
     var feature = e.feature;
-    goog.asserts.assert(goog.isDefAndNotNull(feature));
+    goog.asserts.assert(feature);
     onRemoveFeature(feature);
     onAddFeature(feature);
   }, this));

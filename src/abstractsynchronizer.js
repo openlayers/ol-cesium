@@ -103,7 +103,7 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
   while (fifo.length > 0) {
     var olLayer = fifo.splice(0, 1)[0];
     var olLayerId = goog.getUid(olLayer);
-    goog.asserts.assert(!goog.isDef(this.layerMap[olLayerId]));
+    goog.asserts.assert(!this.layerMap[olLayerId]);
 
     var cesiumObjects = null;
     if (olLayer instanceof ol.layer.Group) {
@@ -121,7 +121,7 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
     }
 
     // add Cesium layers
-    if (!goog.isNull(cesiumObjects)) {
+    if (cesiumObjects) {
       this.layerMap[olLayerId] = cesiumObjects;
       this.olLayerListenKeys_[olLayerId] = ol.events.listen(olLayer,
           'change:zIndex', this.orderLayers, this);
@@ -210,7 +210,7 @@ olcs.AbstractSynchronizer.prototype.removeLayer_ = function(root) {
 olcs.AbstractSynchronizer.prototype.listenForGroupChanges_ = function(group) {
   var uuid = goog.getUid(group);
 
-  goog.asserts.assert(!goog.isDef(this.olGroupListenKeys_[uuid]));
+  goog.asserts.assert(this.olGroupListenKeys_[uuid] === undefined);
 
   var listenKeyArray = [];
   this.olGroupListenKeys_[uuid] = listenKeyArray;
@@ -219,7 +219,7 @@ olcs.AbstractSynchronizer.prototype.listenForGroupChanges_ = function(group) {
   var contentKeys = [];
   var listenAddRemove = (function() {
     var collection = group.getLayers();
-    if (goog.isDef(collection)) {
+    if (collection) {
       contentKeys = [
         collection.on('add', function(event) {
           this.addLayers_(event.element);

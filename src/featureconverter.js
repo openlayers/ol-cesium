@@ -48,7 +48,7 @@ olcs.FeatureConverter.prototype.onRemoveOrClearFeature_ = function(evt) {
   var cancellers = olcs.util.obj(source)['olcs_cancellers'];
   if (cancellers) {
     var feature = evt.feature;
-    if (goog.isDef(feature)) {
+    if (feature) {
       // remove
       var id = goog.getUid(feature);
       var canceller = cancellers[id];
@@ -114,7 +114,7 @@ olcs.FeatureConverter.prototype.createColoredPrimitive = function(layer, feature
     }
   };
 
-  if (goog.isDef(opt_lineWidth)) {
+  if (opt_lineWidth !== undefined) {
     if (!options.renderState) {
       options.renderState = {};
     }
@@ -490,12 +490,12 @@ olcs.FeatureConverter.prototype.getHeightReference = function(layer, feature, ge
   var altitudeMode = geometry.get('altitudeMode');
 
   // Or from the feature
-  if (!goog.isDef(altitudeMode)) {
+  if (altitudeMode === undefined) {
     altitudeMode = feature.get('altitudeMode');
   }
 
   // Or from the layer
-  if (!goog.isDef(altitudeMode)) {
+  if (altitudeMode === undefined) {
     altitudeMode = layer.get('altitudeMode');
   }
 
@@ -543,7 +543,7 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium = function(layer, featur
           image.complete;
     };
     var reallyCreateBillboard = (function() {
-      if (goog.isNull(image)) {
+      if (!image) {
         return;
       }
       if (!(image instanceof HTMLCanvasElement ||
@@ -555,7 +555,7 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium = function(layer, featur
       var position = olcs.core.ol4326CoordinateToCesiumCartesian(center);
       var color;
       var opacity = imageStyle.getOpacity();
-      if (goog.isDef(opacity)) {
+      if (opacity !== undefined) {
         color = new Cesium.Color(1.0, 1.0, 1.0, opacity);
       }
 
@@ -669,7 +669,7 @@ olcs.FeatureConverter.prototype.olMultiGeometryToCesium = function(layer, featur
         return primitives;
       } else {
         subgeos.forEach(function(geometry) {
-          goog.asserts.assert(!goog.isNull(geometry));
+          goog.asserts.assert(geometry);
           this.olPointGeometryToCesium(layer, feature, geometry, projection,
               olStyle, billboards, opt_newBillboardCallback);
         }.bind(this));
@@ -700,7 +700,7 @@ olcs.FeatureConverter.prototype.olMultiGeometryToCesium = function(layer, featur
  */
 olcs.FeatureConverter.prototype.olGeometry4326TextPartToCesium = function(layer, feature, geometry, style) {
   var text = style.getText();
-  goog.asserts.assert(goog.isDef(text));
+  goog.asserts.assert(text !== undefined);
 
 
   var labels = new Cesium.LabelCollection({scene: this.scene});
@@ -727,7 +727,7 @@ olcs.FeatureConverter.prototype.olGeometry4326TextPartToCesium = function(layer,
   }
 
   var font = style.getFont();
-  if (goog.isDefAndNotNull(font)) {
+  if (font !== undefined) {
     options.font = font;
   }
 
@@ -963,7 +963,7 @@ olcs.FeatureConverter.prototype.olVectorLayerToCesium = function(olLayer, olView
   var proj = olView.getProjection();
   var resolution = olView.getResolution();
 
-  if (!goog.isDef(resolution) || !proj) {
+  if (resolution === undefined || !proj) {
     goog.asserts.fail('View not ready');
     // an assertion is not enough for closure to assume resolution and proj
     // are defined
@@ -986,7 +986,7 @@ olcs.FeatureConverter.prototype.olVectorLayerToCesium = function(olLayer, olView
   var context = counterpart.context;
   for (var i = 0; i < features.length; ++i) {
     var feature = features[i];
-    if (!goog.isDefAndNotNull(feature)) {
+    if (!feature) {
       continue;
     }
     /**
@@ -1031,7 +1031,7 @@ olcs.FeatureConverter.prototype.convert = function(layer, view, feature, context
   var proj = view.getProjection();
   var resolution = view.getResolution();
 
-  if (!goog.isDef(resolution) || !proj) {
+  if (resolution == undefined || !proj) {
     return null;
   }
 

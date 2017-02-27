@@ -99,7 +99,7 @@ olcs.OLCesium = function(options) {
    * @type {boolean}
    * @private
    */
-  this.isOverMap_ = !goog.isDefAndNotNull(targetElement);
+  this.isOverMap_ = !targetElement;
 
   /**
    * @type {!HTMLCanvasElement}
@@ -187,7 +187,7 @@ olcs.OLCesium = function(options) {
     dataSourceCollection: this.dataSourceCollection_
   });
 
-  var synchronizers = goog.isDef(options.createSynchronizers) ?
+  var synchronizers = options.createSynchronizers ?
       options.createSynchronizers(this.map_, this.scene_, this.dataSourceCollection_) : [
         new olcs.RasterSynchronizer(this.map_, this.scene_),
         new olcs.VectorSynchronizer(this.map_, this.scene_)
@@ -203,7 +203,7 @@ olcs.OLCesium = function(options) {
   if (this.isOverMap_) {
     // if in "stacked mode", hide everything except canvas (including credits)
     var credits = this.canvas_.nextElementSibling;
-    if (goog.isDefAndNotNull(credits)) {
+    if (credits) {
       credits.style.display = 'none';
     }
   }
@@ -556,7 +556,7 @@ olcs.OLCesium.prototype.setEnabled = function(enable) {
       });
       this.pausedInteractions_.length = 0;
 
-      if (!goog.isNull(this.hiddenRootGroup_)) {
+      if (this.hiddenRootGroup_) {
         this.hiddenRootGroup_.setVisible(true);
         this.hiddenRootGroup_ = null;
       }
