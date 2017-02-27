@@ -12,15 +12,15 @@
     "url": "https://github.com/openlayers/ol3-cesium/issues"
   },
   "dependencies": {
-    "async": "2.1.4",
+    "async": "2.1.5",
     "htmlparser2": "3.9.2"
   },
   "devDependencies": {
-    "closure-util": "1.17.0",
-    "@mapbox/geojsonhint": "2.0.0",
+    "closure-util": "1.18.0",
+    "@mapbox/geojsonhint": "2.0.1",
     "fs-extra": "2.0.0",
     "jsdoc": "~3.4.0",
-    "eslint": "3.15.0",
+    "eslint": "3.16.1",
     "eslint-config-openlayers": "7.0.0",
     "nomnom": "1.8.1",
     "temp": "0.8.3",
