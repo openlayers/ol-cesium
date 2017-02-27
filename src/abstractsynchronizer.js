@@ -3,6 +3,7 @@ goog.provide('olcs.AbstractSynchronizer');
 goog.require('goog.asserts');
 goog.require('goog.object');
 
+goog.require('ol');
 goog.require('ol.Observable');
 goog.require('ol.events');
 goog.require('ol.layer.Group');
@@ -49,7 +50,7 @@ olcs.AbstractSynchronizer = function(map, scene) {
   this.mapLayerGroup = map.getLayerGroup();
 
   /**
-   * Map of ol3 layer ids (from goog.getUid) to the Cesium ImageryLayers.
+   * Map of ol3 layer ids (from ol.getUid) to the Cesium ImageryLayers.
    * Null value means, that we are unable to create equivalent layers.
    * @type {Object.<number, ?Array.<T>>}
    * @protected
@@ -57,14 +58,14 @@ olcs.AbstractSynchronizer = function(map, scene) {
   this.layerMap = {};
 
   /**
-   * Map of listen keys for ol3 layer layers ids (from goog.getUid).
+   * Map of listen keys for ol3 layer layers ids (from ol.getUid).
    * @type {!Object.<number, ol.EventsKey>}
    * @private
    */
   this.olLayerListenKeys_ = {};
 
   /**
-   * Map of listen keys for ol3 layer groups ids (from goog.getUid).
+   * Map of listen keys for ol3 layer groups ids (from ol.getUid).
    * @type {!Object.<number, !Array.<ol.EventsKey>>}
    * @private
    */
@@ -102,7 +103,7 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
   var fifo = [root];
   while (fifo.length > 0) {
     var olLayer = fifo.splice(0, 1)[0];
-    var olLayerId = goog.getUid(olLayer);
+    var olLayerId = ol.getUid(olLayer);
     goog.asserts.assert(!this.layerMap[olLayerId]);
 
     var cesiumObjects = null;
@@ -142,7 +143,7 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
  * @private
  */
 olcs.AbstractSynchronizer.prototype.removeAndDestroySingleLayer_ = function(layer) {
-  var uid = goog.getUid(layer);
+  var uid = ol.getUid(layer);
   var counterparts = this.layerMap[uid];
   if (!!counterparts) {
     counterparts.forEach(function(counterpart) {
@@ -166,7 +167,7 @@ olcs.AbstractSynchronizer.prototype.unlistenSingleGroup_ = function(group) {
   if (group === this.mapLayerGroup) {
     return;
   }
-  var uid = goog.getUid(group);
+  var uid = ol.getUid(group);
   var keys = this.olGroupListenKeys_[uid];
   keys.forEach(function(key) {
     ol.Observable.unByKey(key);
@@ -208,7 +209,7 @@ olcs.AbstractSynchronizer.prototype.removeLayer_ = function(root) {
  * @private
  */
 olcs.AbstractSynchronizer.prototype.listenForGroupChanges_ = function(group) {
-  var uuid = goog.getUid(group);
+  var uuid = ol.getUid(group);
 
   goog.asserts.assert(this.olGroupListenKeys_[uuid] === undefined);
 

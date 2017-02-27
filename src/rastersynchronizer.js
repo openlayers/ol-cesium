@@ -117,7 +117,7 @@ olcs.RasterSynchronizer.prototype.createSingleLayerCounterparts = function(olLay
         this.cesiumLayers_.remove(cesiumObjects[i], true); // destroy
         this.ourLayers_.remove(cesiumObjects[i], false);
       }
-      delete this.layerMap[goog.getUid(olLayer)]; // invalidate the map entry
+      delete this.layerMap[ol.getUid(olLayer)]; // invalidate the map entry
       this.synchronize();
     }, this);
 
@@ -151,7 +151,7 @@ olcs.RasterSynchronizer.prototype.orderLayers = function() {
   while (queue.length > 0) {
     var olLayer = queue.splice(0, 1)[0];
     layers.push(olLayer);
-    zIndices[goog.getUid(olLayer)] = olLayer.getZIndex();
+    zIndices[ol.getUid(olLayer)] = olLayer.getZIndex();
 
     if (olLayer instanceof ol.layer.Group) {
       var sublayers = olLayer.getLayers();
@@ -163,11 +163,11 @@ olcs.RasterSynchronizer.prototype.orderLayers = function() {
   }
 
   ol.array.stableSort(layers, function(layer1, layer2) {
-    return zIndices[goog.getUid(layer1)] - zIndices[goog.getUid(layer2)];
+    return zIndices[ol.getUid(layer1)] - zIndices[ol.getUid(layer2)];
   });
 
   layers.forEach(function(olLayer) {
-    var olLayerId = goog.getUid(olLayer);
+    var olLayerId = ol.getUid(olLayer);
     var cesiumObjects = this.layerMap[olLayerId];
     if (cesiumObjects) {
       cesiumObjects.forEach(this.raiseToTop, this);

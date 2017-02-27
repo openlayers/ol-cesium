@@ -124,14 +124,14 @@ olcs.VectorSynchronizer.prototype.createSingleLayerCounterparts = function(olLay
     var context = counterpart.context;
     var prim = this.converter.convert(olLayer, view, feature, context);
     if (prim) {
-      featurePrimitiveMap[goog.getUid(feature)] = prim;
+      featurePrimitiveMap[ol.getUid(feature)] = prim;
       csPrimitives.add(prim);
     }
   }).bind(this);
 
   var onRemoveFeature = (function(feature) {
     var geometry = feature.getGeometry();
-    var id = goog.getUid(feature);
+    var id = ol.getUid(feature);
     if (!geometry || geometry.getType() == 'Point') {
       var context = counterpart.context;
       var bb = context.featureToCesiumMap[id];

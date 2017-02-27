@@ -1,6 +1,7 @@
 goog.provide('olcs.FeatureConverter');
 
 goog.require('goog.asserts');
+goog.require('ol');
 goog.require('ol.events');
 goog.require('ol.extent');
 goog.require('ol.geom.SimpleGeometry');
@@ -50,7 +51,7 @@ olcs.FeatureConverter.prototype.onRemoveOrClearFeature_ = function(evt) {
     var feature = evt.feature;
     if (feature) {
       // remove
-      var id = goog.getUid(feature);
+      var id = ol.getUid(feature);
       var canceller = cancellers[id];
       if (canceller) {
         canceller();
@@ -594,7 +595,7 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium = function(layer, featur
         cancellers = olcs.util.obj(source)['olcs_cancellers'] = {};
       }
 
-      var fuid = goog.getUid(feature);
+      var fuid = ol.getUid(feature);
       if (cancellers[fuid]) {
         // When the feature change quickly, a canceller may still be present so
         // we cancel it here to prevent creation of a billboard.
@@ -889,7 +890,7 @@ olcs.FeatureConverter.prototype.olFeatureToCesium = function(layer, feature, sty
   }
 
   var newBillboardAddedCallback = function(bb) {
-    context.featureToCesiumMap[goog.getUid(feature)] = bb;
+    context.featureToCesiumMap[ol.getUid(feature)] = bb;
   };
 
   switch (geom.getType()) {
@@ -1010,7 +1011,7 @@ olcs.FeatureConverter.prototype.olVectorLayerToCesium = function(olLayer, olView
     if (!primitives) {
       continue;
     }
-    featurePrimitiveMap[goog.getUid(feature)] = primitives;
+    featurePrimitiveMap[ol.getUid(feature)] = primitives;
     counterpart.getRootPrimitive().add(primitives);
   }
 
