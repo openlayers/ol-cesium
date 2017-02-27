@@ -1,4 +1,4 @@
-goog.provide('olcs.obj');
+goog.provide('olcs.util');
 
 
 /**
@@ -6,7 +6,7 @@ goog.provide('olcs.obj');
  * @param {Object} param
  * @return {Object}
  */
-olcs.obj = function(param) {
+olcs.util.obj = function(param) {
   return param;
 };
 
@@ -15,21 +15,21 @@ olcs.obj = function(param) {
  * @type {boolean|undefined}
  * @private
  */
-olcs.supportsImageRenderingPixelatedResult_ = undefined;
+olcs.util.supportsImageRenderingPixelatedResult_ = undefined;
 
 
 /**
  * @type {string|undefined}
  * @private
  */
-olcs.imageRenderingValueResult_ = undefined;
+olcs.util.imageRenderingValueResult_ = undefined;
 
 
 /**
  * @return {boolean}
  */
-olcs.supportsImageRenderingPixelated = function() {
-  if (olcs.supportsImageRenderingPixelatedResult_ === undefined) {
+olcs.util.supportsImageRenderingPixelated = function() {
+  if (olcs.util.supportsImageRenderingPixelatedResult_ === undefined) {
     var canvas = document.createElement('canvas');
     canvas.setAttribute('style',
                         'image-rendering: -moz-crisp-edges;' +
@@ -37,20 +37,20 @@ olcs.supportsImageRenderingPixelated = function() {
     // canvas.style.imageRendering will be undefined, null or an
     // empty string on unsupported browsers.
     var tmp = canvas.style['imageRendering']; // non standard
-    olcs.supportsImageRenderingPixelatedResult_ = !!tmp;
-    if (olcs.supportsImageRenderingPixelatedResult_) {
-      olcs.imageRenderingValueResult_ = tmp;
+    olcs.util.supportsImageRenderingPixelatedResult_ = !!tmp;
+    if (olcs.util.supportsImageRenderingPixelatedResult_) {
+      olcs.util.imageRenderingValueResult_ = tmp;
     }
   }
-  return olcs.supportsImageRenderingPixelatedResult_;
+  return olcs.util.supportsImageRenderingPixelatedResult_;
 };
 
 
 /**
- * @return {string|undefined}
+ * @return {string}
  */
-olcs.imageRenderingValue = function() {
-  return olcs.supportsImageRenderingPixelated() ?
-      olcs.imageRenderingValueResult_ : undefined;
+olcs.util.imageRenderingValue = function() {
+  olcs.util.supportsImageRenderingPixelated();
+  return olcs.util.imageRenderingValueResult_ || '';
 };
 

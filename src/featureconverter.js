@@ -4,8 +4,9 @@ goog.require('goog.asserts');
 goog.require('ol.events');
 goog.require('ol.extent');
 goog.require('ol.geom.SimpleGeometry');
+goog.require('olcs.core');
 goog.require('olcs.core.VectorLayerCounterpart');
-goog.require('olcs.obj');
+goog.require('olcs.util');
 
 
 
@@ -44,7 +45,7 @@ olcs.FeatureConverter.prototype.onRemoveOrClearFeature_ = function(evt) {
   var source = evt.target;
   goog.asserts.assertInstanceof(source, ol.source.Vector);
 
-  var cancellers = olcs.obj(source)['olcs_cancellers'];
+  var cancellers = olcs.util.obj(source)['olcs_cancellers'];
   if (cancellers) {
     var feature = evt.feature;
     if (goog.isDef(feature)) {
@@ -62,7 +63,7 @@ olcs.FeatureConverter.prototype.onRemoveOrClearFeature_ = function(evt) {
           cancellers[key]();
         }
       }
-      olcs.obj(source)['olcs_cancellers'] = {};
+      olcs.util.obj(source)['olcs_cancellers'] = {};
     }
   }
 };
@@ -366,8 +367,8 @@ olcs.FeatureConverter.prototype.olLineStringGeometryToCesium = function(layer, f
       // always update Cesium externs before adding a property
       geometryInstances: new Cesium.GeometryInstance({
         geometry: new Cesium.CorridorGeometry(geometryOptions),
-        attributes : {
-          color : Cesium.ColorGeometryInstanceAttribute.fromColor(color)
+        attributes: {
+          color: Cesium.ColorGeometryInstanceAttribute.fromColor(color)
         }
       })
     });
@@ -588,9 +589,9 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium = function(layer, featur
       };
       source.on(['removefeature', 'clear'],
           this.boundOnRemoveOrClearFeatureListener_);
-      var cancellers = olcs.obj(source)['olcs_cancellers'];
+      var cancellers = olcs.util.obj(source)['olcs_cancellers'];
       if (!cancellers) {
-        cancellers = olcs.obj(source)['olcs_cancellers'] = {};
+        cancellers = olcs.util.obj(source)['olcs_cancellers'] = {};
       }
 
       var fuid = goog.getUid(feature);

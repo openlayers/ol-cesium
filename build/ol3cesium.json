@@ -20,9 +20,6 @@
       "ol3/externs/closure-compiler.js",
       "Cesium.externs.js"
     ],
-    "define": [
-      "ol.DEBUG=false"
-    ],
     "js": [
     ],
     "jscomp_error": [
@@ -40,7 +37,7 @@
     "language_out": "ECMASCRIPT5_STRICT",
     "warning_level": "VERBOSE",
     "generate_exports": true,
-    "output_wrapper": "(function(){%output%}).call(window);",
+    "isolation_mode": "IIFE",
     "use_types_for_optimization": true,
     "create_source_map": "dist/ol3cesium.js.map",
     "source_map_format": "V3"
