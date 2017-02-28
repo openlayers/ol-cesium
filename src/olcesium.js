@@ -680,7 +680,7 @@ olcs.OLCesium.prototype.setTargetFrameRate = function(value) {
 
 
 /**
- * Check if OL3 map is not properly initialized.
+ * Check if OpenLayers map is not properly initialized.
  * @private
  */
 olcs.OLCesium.prototype.throwOnUnitializedMap_ = function() {
@@ -688,7 +688,7 @@ olcs.OLCesium.prototype.throwOnUnitializedMap_ = function() {
   var view = map.getView();
   var center = view.getCenter();
   if (!view.isDef() || isNaN(center[0]) || isNaN(center[1])) {
-    throw new Error('The OL3 map is not properly initialized: ' +
+    throw new Error('The OpenLayers map is not properly initialized: ' +
         center + ' / ' + view.getResolution());
   }
 };

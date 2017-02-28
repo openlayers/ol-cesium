@@ -50,7 +50,7 @@ olcs.AbstractSynchronizer = function(map, scene) {
   this.mapLayerGroup = map.getLayerGroup();
 
   /**
-   * Map of ol3 layer ids (from ol.getUid) to the Cesium ImageryLayers.
+   * Map of OpenLayers layer ids (from ol.getUid) to the Cesium ImageryLayers.
    * Null value means, that we are unable to create equivalent layers.
    * @type {Object.<number, ?Array.<T>>}
    * @protected
@@ -58,14 +58,14 @@ olcs.AbstractSynchronizer = function(map, scene) {
   this.layerMap = {};
 
   /**
-   * Map of listen keys for ol3 layer layers ids (from ol.getUid).
+   * Map of listen keys for OpenLayers layer layers ids (from ol.getUid).
    * @type {!Object.<number, ol.EventsKey>}
    * @private
    */
   this.olLayerListenKeys_ = {};
 
   /**
-   * Map of listen keys for ol3 layer groups ids (from ol.getUid).
+   * Map of listen keys for OpenLayers layer groups ids (from ol.getUid).
    * @type {!Object.<number, !Array.<ol.EventsKey>>}
    * @private
    */

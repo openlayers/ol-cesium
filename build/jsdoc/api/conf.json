@@ -35,7 +35,7 @@
         "default": {
             "outputSourceFiles": true
         },
-        "applicationName": "OL3-Cesium"
+        "applicationName": "OL-Cesium"
     },
     "jsVersion": 180
 }
