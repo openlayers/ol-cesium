@@ -29,7 +29,7 @@ Applications using Ol-Cesium also need to load OpenLayers styles and Cesium reso
 ```html
 <link rel="stylesheet" href="ol.css" type="text/css">
 <script src="Cesium/Cesium.js"></script>
-<script src="ol3cesium.js"></script>
+<script src="olcesium.js"></script>
 ```
 
 An OpenLayers map can be switched to a 3d globe view by running the code below after the map has been created:
@@ -64,7 +64,7 @@ Change into the clone directory, and invoke
 
     $ make dist
 
-from the root of the repository. You will then be able to use `dist/ol3cesium.js` for your applications.
+from the root of the repository. You will then be able to use `dist/olcesium.js` for your applications.
 
 Running the examples in debug mode
 ----------------------------------

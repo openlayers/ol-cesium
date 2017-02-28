@@ -39,7 +39,7 @@
     "generate_exports": true,
     "isolation_mode": "IIFE",
     "use_types_for_optimization": true,
-    "create_source_map": "dist/ol3cesium.js.map",
+    "create_source_map": "dist/olcesium.js.map",
     "source_map_format": "V3"
   }
 }
