@@ -53,7 +53,7 @@ lint: .build/node_modules.timestamp .build/eslint.timestamp
 	@build/check-no-goog.sh
 
 .build/geojsonhint.timestamp: $(EXAMPLES_GEOJSON_FILES)
-	$(foreach file,$?, echo $(file); node_modules/geojsonhint/bin/geojsonhint $(file);)
+	$(foreach file,$?, echo $(file); node_modules/.bin/geojsonhint $(file);)
 	touch $@
 
 .PHONY: check
