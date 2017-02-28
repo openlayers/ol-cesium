@@ -6,7 +6,7 @@ var async = require('async');
 var fse = require('fs-extra');
 var walk = require('walk').walk;
 
-var sourceDirOL = path.join(__dirname, '..', 'ol3', 'src');
+var sourceDirOL = path.join(__dirname, '..', 'ol', 'src');
 var sourceDirSelf = path.join(__dirname, '..', 'src');
 var sourceDirs = [sourceDirOL, sourceDirSelf];
 var infoPath = path.join(__dirname, '..', '.build', 'info.json');

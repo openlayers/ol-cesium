@@ -14,7 +14,7 @@ git:
   submodules: false
 
 before_install:
-  - git submodule update --init ol3
+  - git submodule update --init ol
 
 script:
   - NO_CESIUM=1 make dist

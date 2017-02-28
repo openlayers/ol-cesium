@@ -31,8 +31,8 @@ var manager = new closure.Manager({
   closure: true, // use the bundled Closure Library
   lib: [
     'src/**/*.js',
-    'ol3/src/**/*.js',
-    'ol3/build/ol.ext/*.js'
+    'ol/src/**/*.js',
+    'ol/build/ol.ext/*.js'
   ]
 });
 manager.on('error', function(e) {
