@@ -1,5 +1,10 @@
 # Changelog
 
+# v 1.24.3 - 2017-02-17
+
+* Changes
+  * For npm.
+
 # v 1.24.2 - 2017-02-17
 
 * Changes
