@@ -48,7 +48,7 @@ and [available compilers](https://github.com/google/closure-compiler/wiki/Binary
 
 ## Pull request guidelines
 
-Your pull request should follow the OpenLayers 3 guidelines.
+Your pull request should follow the OpenLayers guidelines.
 
 ### The `check` build target
 
@@ -66,9 +66,9 @@ include:
  * Tests
 
 
-### Follow OpenLayers 3's coding style
+### Follow OpenLayers coding style
 
-The OpenLayers 3's coding style should be followed except as specified below.
+The OpenLayers coding style should be followed except as specified below.
 
 For readablitiy, testing for `undefined` and `null` must be handled as follows:
 
