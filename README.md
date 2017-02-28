@@ -1,8 +1,8 @@
-OL3-Cesium
+Ol-Cesium
 ==========
 
 OpenLayers - Cesium integration library. Create your map using [OpenLayers 3](http://openlayers.org/), and visualize it on a globe with [Cesium](http://cesiumjs.org).
-See [live examples](http://openlayers.org/ol3-cesium/examples/).
+See [live examples](http://openlayers.org/ol-cesium/examples/).
 
 Features
 --------
@@ -23,9 +23,9 @@ Stay tuned for more exciting features like animated transitions between map and 
 Getting started
 ---------------
 
-To obtain OL3-Cesium, either download a release from https://github.com/openlayers/ol3-cesium/releases, or clone the repository and build it yourself (see below).
+To obtain Ol-Cesium, either download a release from https://github.com/openlayers/ol-cesium/releases, or clone the repository and build it yourself (see below).
 
-Applications using OL3-Cesium also need to load OpenLayers styles and Cesium resources (included in the distribution):
+Applications using Ol-Cesium also need to load OpenLayers styles and Cesium resources (included in the distribution):
 ```html
 <link rel="stylesheet" href="ol.css" type="text/css">
 <script src="Cesium/Cesium.js"></script>
@@ -51,14 +51,14 @@ ol3d.setEnabled(true);
 Building the library
 --------------------
 
-Requirements for building OL3-Cesium:
+Requirements for building Ol-Cesium:
 
 * [GNU Make](http://www.gnu.org/software/make/)
 * [Node.js](http://nodejs.org/)
 
-To get started, clone the [OL3-Cesium repository](https://github.com/openlayers/ol3-cesium) with its submodules:
+To get started, clone the [Ol-Cesium repository](https://github.com/openlayers/ol-cesium) with its submodules:
 
-    $ git clone --recursive https://github.com/openlayers/ol3-cesium.git
+    $ git clone --recursive https://github.com/openlayers/ol-cesium.git
     
 Change into the clone directory, and invoke
 
@@ -69,7 +69,7 @@ from the root of the repository. You will then be able to use `dist/ol3cesium.js
 Running the examples in debug mode
 ----------------------------------
 
-This is useful for contributing to OL3-Cesium, because it loads the
+This is useful for contributing to Ol-Cesium, because it loads the
 source files instead of a minified build:
 
     $ make serve
@@ -81,7 +81,7 @@ Running the unminified version of Cesium
 
 Passing the parameter `?mode=dev` to an example will load the debug version of
 Cesium instead of the minified one. This is helpful when something breaks inside
-Cesium. In distribution mode, an unminified version of OL3 and OL3-Cesium is
+Cesium. In distribution mode, an unminified version of OpenLayers and Ol-Cesium is
 also loaded.
 
 Limitations
@@ -89,9 +89,9 @@ Limitations
 
 OpenLayers unmanaged layers are not discoverable and as a consequence not
 supported. Plain layers should be used instead or the synchronization managed
-manually. See https://github.com/openlayers/ol3-cesium/issues/350.
+manually. See https://github.com/openlayers/ol-cesium/issues/350.
 
 Release process
 ---------------
 
-See [RELEASE.md](https://github.com/openlayers/ol3-cesium/blob/master/RELEASE.md).
+See [RELEASE.md](https://github.com/openlayers/ol-cesium/blob/master/RELEASE.md).

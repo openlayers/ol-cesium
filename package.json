@@ -5,11 +5,11 @@
   "scripts": {},
   "repository": {
     "type": "git",
-    "url": "git://github.com/openlayers/ol3-cesium.git"
+    "url": "git://github.com/openlayers/ol-cesium.git"
   },
   "license": "BSD-2-Clause",
   "bugs": {
-    "url": "https://github.com/openlayers/ol3-cesium/issues"
+    "url": "https://github.com/openlayers/ol-cesium/issues"
   },
   "dependencies": {
     "async": "2.1.5",

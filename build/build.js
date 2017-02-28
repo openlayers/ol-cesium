@@ -105,7 +105,7 @@ function getDependencies(config, exports, callback) {
       callback(err);
       return;
     }
-    log.info('ol3-cesium', 'Parsing dependencies');
+    log.info('ol-cesium', 'Parsing dependencies');
     var options;
     if (config.src) {
       options = {
@@ -163,11 +163,11 @@ function build(config, paths, callback) {
     jvm: config.jvm
   };
   if (!options.compile) {
-    log.info('ol3-cesium', 'No compile options found.  Concatenating ' +
+    log.info('ol-cesium', 'No compile options found.  Concatenating ' +
         paths.length + ' sources');
     concatenate(paths, callback);
   } else {
-    log.info('ol3-cesium', 'Compiling ' + paths.length + ' sources');
+    log.info('ol-cesium', 'Compiling ' + paths.length + ' sources');
     paths = paths.concat('ol3/src/ol/typedefs.js');
     options.compile.js = paths.concat(options.compile.js || []);
     closure.compile(options, callback);
@@ -183,8 +183,8 @@ function build(config, paths, callback) {
  */
 function addHeader(compiledSource, callback) {
   exec('git describe --tags', function(error, stdout, stderr) {
-    var header = '// Ol3-Cesium. See https://github.com/openlayers/ol3-cesium/\n';
-    header += '// License: https://github.com/openlayers/ol3-cesium/blob/master/LICENSE\n';
+    var header = '// Ol-Cesium. See https://github.com/openlayers/ol-cesium/\n';
+    header += '// License: https://github.com/openlayers/ol-cesium/blob/master/LICENSE\n';
     if (stdout !== '') {
       header += '// Version: ' + stdout + '\n';
     }
