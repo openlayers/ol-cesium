@@ -1,6 +1,11 @@
 # Changelog
 
-# v 1.24.1
+# v 1.24.2 - 2017-02-17
+
+* Changes
+  * Final rename and publication of the project as a new npm project.
+
+# v 1.24.1 - 2017-02-17
 
 * Changes
   * Renamed project to OL-Cesium following the renaming of the OpenLayers3 project.
@@ -10,7 +15,6 @@
       rm -rf ol3
       make cleanall
     Note that the distributed js file is olcesium.js
-
 
 # v 1.24 - 2017-02-17
 
