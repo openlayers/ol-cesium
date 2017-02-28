@@ -1,15 +1,15 @@
 {
   "name": "ol3-cesium",
-  "version": "1.24.0",
-  "description": "OpenLayers 3 Cesium integration library",
+  "version": "1.24.1",
+  "description": "OpenLayers Cesium integration library",
   "scripts": {},
   "repository": {
     "type": "git",
-    "url": "git://github.com/openlayers/ol3-cesium.git"
+    "url": "git://github.com/openlayers/ol-cesium.git"
   },
   "license": "BSD-2-Clause",
   "bugs": {
-    "url": "https://github.com/openlayers/ol3-cesium/issues"
+    "url": "https://github.com/openlayers/ol-cesium/issues"
   },
   "dependencies": {
     "async": "2.1.5",

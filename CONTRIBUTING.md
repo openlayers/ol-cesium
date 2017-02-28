@@ -1,13 +1,13 @@
-# Contributing to Ol3-Cesium
+# Contributing to Ol-Cesium
 
-Thanks for your interest in contributing to Ol3-Cesium.
+Thanks for your interest in contributing to Ol-Cesium.
 
 ## Contributing Code
 
 Our preferred means of receiving contributions is through [pull requests](https://help.github.com/articles/using-pull-requests). Make sure
 that your pull request follows our pull request guidelines below before submitting it.
 
-This page describes what you need to know to contribute code to ol3-cesium as a developer.
+This page describes what you need to know to contribute code to ol-cesium as a developer.
 
 ## Contributor License Agreement
 
@@ -21,7 +21,7 @@ Contributor License Agreement](https://docs.google.com/spreadsheet/viewform?form
 ## Setting up development environment
 
 You will obviously start by
-[forking](https://github.com/openlayers/ol3-cesium/fork) the ol3-cesium repository.
+[forking](https://github.com/openlayers/ol-cesium/fork) the ol-cesium repository.
 
 ### Cloning the repository
 
@@ -29,7 +29,7 @@ Make sure you clone the repositiory using `git clone --recursive` command.
 
 ## Working with the build tool
 
-As an ol3-cesium developer you will need to use the `make` command in order
+As an ol-cesium developer you will need to use the `make` command in order
 to run the linter, the compiler, the tests, etc.
 
 The targets can be invoked using:
@@ -48,7 +48,7 @@ and [available compilers](https://github.com/google/closure-compiler/wiki/Binary
 
 ## Pull request guidelines
 
-Your pull request should follow the OpenLayers 3 guidelines.
+Your pull request should follow the OpenLayers guidelines.
 
 ### The `check` build target
 
@@ -66,9 +66,9 @@ include:
  * Tests
 
 
-### Follow OpenLayers 3's coding style
+### Follow OpenLayers coding style
 
-The OpenLayers 3's coding style should be followed except as specified below.
+The OpenLayers coding style should be followed except as specified below.
 
 For readablitiy, testing for `undefined` and `null` must be handled as follows:
 

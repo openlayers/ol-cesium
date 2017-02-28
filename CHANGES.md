@@ -1,5 +1,17 @@
 # Changelog
 
+# v 1.24.1
+
+* Changes
+  * Renamed project to OL-Cesium following the renaming of the OpenLayers3 project.
+    In existing clones, do:
+      git submodule sync
+      git submodule update --recursive --init
+      rm -rf ol3
+      make cleanall
+    Note that the distributed js file is olcesium.js
+
+
 # v 1.24 - 2017-02-17
 
 * Changes

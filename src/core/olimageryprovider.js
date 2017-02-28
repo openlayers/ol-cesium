@@ -226,7 +226,7 @@ olcs.core.OLImageryProvider.prototype.requestImage = function(x, y, level) {
   var tileUrlFunction = this.source_.getTileUrlFunction();
   if (tileUrlFunction && this.projection_) {
 
-    // Perform mapping of Cesium tile coordinates to ol3 tile coordinates:
+    // Perform mapping of Cesium tile coordinates to OpenLayers tile coordinates:
     // 1) Cesium zoom level 0 is OpenLayers zoom level 1 for EPSG:4326
     var z_ = this.tilingScheme_ instanceof Cesium.GeographicTilingScheme ?
         level + 1 : level;

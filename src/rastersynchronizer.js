@@ -10,7 +10,7 @@ goog.require('olcs.core');
 
 /**
  * This object takes care of one-directional synchronization of
- * ol3 raster layers to the given Cesium globe.
+ * Openlayers raster layers to the given Cesium globe.
  * @param {!ol.Map} map
  * @param {!Cesium.Scene} scene
  * @constructor
@@ -111,7 +111,7 @@ olcs.RasterSynchronizer.prototype.createSingleLayerCounterparts = function(olLay
     }
 
     // there is no way to modify Cesium layer extent,
-    // we have to recreate when ol3 layer extent changes:
+    // we have to recreate when OpenLayers layer extent changes:
     olLayer.on('change:extent', function(e) {
       for (var i = 0; i < cesiumObjects.length; ++i) {
         this.cesiumLayers_.remove(cesiumObjects[i], true); // destroy

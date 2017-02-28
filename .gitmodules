@@ -1,6 +1,6 @@
-[submodule "ol3"]
-	path = ol3
-	url = https://github.com/openlayers/ol3.git
+[submodule "ol"]
+	path = ol
+	url = https://github.com/openlayers/openlayers.git
 [submodule "cesium"]
 	path = cesium
 	url = https://github.com/AnalyticalGraphicsInc/cesium.git

@@ -19,7 +19,7 @@ help:
 	@echo
 	@echo "Main targets:"
 	@echo
-	@echo "- dist                    Create a "distribution" for the library (dist/ol3cesium.js)"
+	@echo "- dist                    Create a "distribution" for the library (dist/olcesium.js)"
 	@echo "- check                   Perform a number of checks on the code (lint, compile, etc.)"
 	@echo "- lint                    Check the code with the linter"
 	@echo "- serve                   Run a development web server for running the examples"
@@ -38,7 +38,7 @@ serve: npm-install cesium/Build/Cesium/Cesium.js
 	node build/serve.js
 
 .PHONY: dist
-dist: dist/ol3cesium.js dist/ol3cesium-debug.js CHANGES.md
+dist: dist/olcesium.js dist/olcesium-debug.js CHANGES.md
 	cp CHANGES.md dist/
 
 .PHONY: dist-examples
@@ -53,7 +53,7 @@ lint: .build/node_modules.timestamp .build/eslint.timestamp
 	@build/check-no-goog.sh
 
 .build/geojsonhint.timestamp: $(EXAMPLES_GEOJSON_FILES)
-	$(foreach file,$?, echo $(file); node_modules/geojsonhint/bin/geojsonhint $(file);)
+	$(foreach file,$?, echo $(file); node_modules/.bin/geojsonhint $(file);)
 	touch $@
 
 .PHONY: check
@@ -61,13 +61,13 @@ check: lint dist .build/geojsonhint.timestamp
 
 .PHONY: clean
 clean:
-	rm -f dist/ol3cesium.js
-	rm -f ol3/build/ol.js
-	rm -f ol3/build/ol-debug.js
-	rm -f ol3/build/ol.css
+	rm -f dist/olcesium.js
+	rm -f ol/build/ol.js
+	rm -f ol/build/ol-debug.js
+	rm -f ol/build/ol.css
 	rm -rf cesium/Build/Cesium
 	rm -rf cesium/Build/CesiumUnminified
-	rm -rf dist/ol3
+	rm -rf dist/ol
 	rm -rf dist/examples
 	rm -rf dist/Cesium
 
@@ -85,38 +85,38 @@ cleanall: clean
 	./node_modules/.bin/eslint $?
 	touch $@
 
-.build/dist-examples.timestamp: cesium/Build/Cesium/Cesium.js cesium/Build/CesiumUnminified/Cesium.js dist/ol3cesium.js $(EXAMPLES_JS_FILES) $(EXAMPLES_HTML_FILES)
+.build/dist-examples.timestamp: cesium/Build/Cesium/Cesium.js cesium/Build/CesiumUnminified/Cesium.js dist/olcesium.js $(EXAMPLES_JS_FILES) $(EXAMPLES_HTML_FILES)
 	node build/parse-examples.js
 	mkdir -p $(dir $@)
 	cp -R cesium/Build/Cesium dist/
 	cp -R cesium/Build/CesiumUnminified dist/
 	cp -R examples dist/
-	cp ol3/css/ol.css dist/
-	$(SEDI) 'sYDIST = falseYDIST = trueY' dist/examples/inject_ol3_cesium.js
-	$(SEDI) 'sY@loaderYol3cesium.jsY' dist/examples/inject_ol3_cesium.js
-	$(SEDI) 'sY../cesium/Build/Y../Y' dist/examples/inject_ol3_cesium.js
-	for f in dist/examples/*.html; do $(SEDI) 'sY../ol3/css/ol.cssY../ol.cssY' $$f; done
+	cp ol/css/ol.css dist/
+	$(SEDI) 'sYDIST = falseYDIST = trueY' dist/examples/inject_ol_cesium.js
+	$(SEDI) 'sY@loaderYolcesium.jsY' dist/examples/inject_ol_cesium.js
+	$(SEDI) 'sY../cesium/Build/Y../Y' dist/examples/inject_ol_cesium.js
+	for f in dist/examples/*.html; do $(SEDI) 'sY../ol/css/ol.cssY../ol.cssY' $$f; done
 	touch $@
 
-dist/ol3cesium-debug.js: build/ol3cesium-debug.json $(SRC_JS_FILES) Cesium.externs.js build/build.js npm-install
+dist/olcesium-debug.js: build/olcesium-debug.json $(SRC_JS_FILES) Cesium.externs.js build/build.js npm-install
 	mkdir -p $(dir $@)
 	node build/build.js $< $@
 
 
-ol3/node_modules/rbush/package.json: ol3/package.json
-	(cd ol3 && npm install --production)
+ol/node_modules/rbush/package.json: ol/package.json
+	(cd ol && npm install --production)
 
-ol3/build/ol.ext/rbush.js: ol3/node_modules/rbush/package.json
-	(cd ol3 && node tasks/build-ext.js)
+ol/build/ol.ext/rbush.js: ol/node_modules/rbush/package.json
+	(cd ol && node tasks/build-ext.js)
 
 
 # A sourcemap is prepared, the source is exected to be deployed in 'source' directory
-dist/ol3cesium.js: build/ol3cesium.json $(SRC_JS_FILES) Cesium.externs.js build/build.js npm-install ol3/build/ol.ext/rbush.js
+dist/olcesium.js: build/olcesium.json $(SRC_JS_FILES) Cesium.externs.js build/build.js npm-install ol/build/ol.ext/rbush.js
 	mkdir -p $(dir $@)
 	node build/build.js $< $@
-	$(SEDI) 's!$(shell pwd)/dist!source!g' dist/ol3cesium.js.map
-	$(SEDI) 's!$(shell pwd)!source!g' dist/ol3cesium.js.map
-#	echo '//# sourceMappingURL=ol3cesium.js.map' >> dist/ol3cesium.js
+	$(SEDI) 's!$(shell pwd)/dist!source!g' dist/olcesium.js.map
+	$(SEDI) 's!$(shell pwd)!source!g' dist/olcesium.js.map
+#	echo '//# sourceMappingURL=olcesium.js.map' >> dist/olcesium.js
 #	-ln -s .. dist/source
 
 cesium/node_modules/.bin/gulp: cesium/package.json

@@ -72,7 +72,7 @@ olcs.FeatureConverter.prototype.onRemoveOrClearFeature_ = function(evt) {
 
 /**
  * @param {ol.layer.Vector|ol.layer.Image} layer
- * @param {!ol.Feature} feature Ol3 feature.
+ * @param {!ol.Feature} feature OpenLayers feature.
  * @param {!Cesium.Primitive|Cesium.Label|Cesium.Billboard} primitive
  * @protected
  */
@@ -86,8 +86,8 @@ olcs.FeatureConverter.prototype.setReferenceForPicking = function(layer, feature
  * Basics primitive creation using a color attribute.
  * Note that Cesium has 'interior' and outline geometries.
  * @param {ol.layer.Vector|ol.layer.Image} layer
- * @param {!ol.Feature} feature Ol3 feature.
- * @param {!ol.geom.Geometry} olGeometry Ol3 geometry.
+ * @param {!ol.Feature} feature OpenLayers feature.
+ * @param {!ol.geom.Geometry} olGeometry OpenLayers geometry.
  * @param {!Cesium.Geometry} geometry
  * @param {!Cesium.Color} color
  * @param {number=} opt_lineWidth
@@ -190,8 +190,8 @@ olcs.FeatureConverter.prototype.extractLineWidthFromOlStyle = function(style) {
  * Create a primitive collection out of two Cesium geometries.
  * Only the OpenLayers style colors will be used.
  * @param {ol.layer.Vector|ol.layer.Image} layer
- * @param {!ol.Feature} feature Ol3 feature.
- * @param {!ol.geom.Geometry} olGeometry Ol3 geometry.
+ * @param {!ol.Feature} feature OpenLayers feature.
+ * @param {!ol.geom.Geometry} olGeometry OpenLayers geometry.
  * @param {!Cesium.Geometry} fillGeometry
  * @param {!Cesium.Geometry} outlineGeometry
  * @param {!ol.style.Style} olStyle
@@ -230,7 +230,7 @@ olcs.FeatureConverter.prototype.wrapFillAndOutlineGeometries = function(layer, f
  * Create a Cesium primitive if style has a text component.
  * Eventually return a PrimitiveCollection including current primitive.
  * @param {ol.layer.Vector|ol.layer.Image} layer
- * @param {!ol.Feature} feature Ol3 feature..
+ * @param {!ol.Feature} feature OpenLayers feature..
  * @param {!ol.geom.Geometry} geometry
  * @param {!ol.style.Style} style
  * @param {!Cesium.Primitive} primitive current primitive
@@ -266,7 +266,7 @@ olcs.FeatureConverter.prototype.addTextStyle = function(layer, feature, geometry
  * @param {!Cesium.BillboardCollection} billboards
  * @param {!Cesium.optionsBillboardCollectionAdd} bbOptions
  * @param {ol.layer.Vector|ol.layer.Image} layer
- * @param {!ol.Feature} feature Ol3 feature.
+ * @param {!ol.Feature} feature OpenLayers feature.
  * @param {!ol.geom.Geometry} geometry
  * @param {!ol.style.Style} style
  * @return {!Cesium.Billboard} newly created billboard
@@ -282,8 +282,8 @@ olcs.FeatureConverter.prototype.csAddBillboard = function(billboards, bbOptions,
 /**
  * Convert an OpenLayers circle geometry to Cesium.
  * @param {ol.layer.Vector|ol.layer.Image} layer
- * @param {!ol.Feature} feature Ol3 feature..
- * @param {!ol.geom.Circle} olGeometry Ol3 circle geometry.
+ * @param {!ol.Feature} feature OpenLayers feature..
+ * @param {!ol.geom.Circle} olGeometry OpenLayers circle geometry.
  * @param {!ol.ProjectionLike} projection
  * @param {!ol.style.Style} olStyle
  * @return {!Cesium.PrimitiveCollection} primitives
@@ -332,8 +332,8 @@ olcs.FeatureConverter.prototype.olCircleGeometryToCesium = function(layer, featu
 /**
  * Convert an OpenLayers line string geometry to Cesium.
  * @param {ol.layer.Vector|ol.layer.Image} layer
- * @param {!ol.Feature} feature Ol3 feature..
- * @param {!ol.geom.LineString} olGeometry Ol3 line string geometry.
+ * @param {!ol.Feature} feature OpenLayers feature..
+ * @param {!ol.geom.LineString} olGeometry OpenLayers line string geometry.
  * @param {!ol.ProjectionLike} projection
  * @param {!ol.style.Style} olStyle
  * @return {!Cesium.PrimitiveCollection} primitives
@@ -393,8 +393,8 @@ olcs.FeatureConverter.prototype.olLineStringGeometryToCesium = function(layer, f
 /**
  * Convert an OpenLayers polygon geometry to Cesium.
  * @param {ol.layer.Vector|ol.layer.Image} layer
- * @param {!ol.Feature} feature Ol3 feature..
- * @param {!ol.geom.Polygon} olGeometry Ol3 polygon geometry.
+ * @param {!ol.Feature} feature OpenLayers feature..
+ * @param {!ol.geom.Polygon} olGeometry OpenLayers polygon geometry.
  * @param {!ol.ProjectionLike} projection
  * @param {!ol.style.Style} olStyle
  * @return {!Cesium.PrimitiveCollection} primitives
@@ -480,7 +480,7 @@ olcs.FeatureConverter.prototype.olPolygonGeometryToCesium = function(layer, feat
 
 /**
  * @param {ol.layer.Vector|ol.layer.Image} layer
- * @param {ol.Feature} feature Ol3 feature..
+ * @param {ol.Feature} feature OpenLayers feature..
  * @param {!ol.geom.Geometry} geometry
  * @return {!Cesium.HeightReference}
  * @api
@@ -514,8 +514,8 @@ olcs.FeatureConverter.prototype.getHeightReference = function(layer, feature, ge
 /**
  * Convert a point geometry to a Cesium BillboardCollection.
  * @param {ol.layer.Vector|ol.layer.Image} layer
- * @param {!ol.Feature} feature Ol3 feature..
- * @param {!ol.geom.Point} olGeometry Ol3 point geometry.
+ * @param {!ol.Feature} feature OpenLayers feature..
+ * @param {!ol.geom.Point} olGeometry OpenLayers point geometry.
  * @param {!ol.ProjectionLike} projection
  * @param {!ol.style.Style} style
  * @param {!Cesium.BillboardCollection} billboards
@@ -628,8 +628,8 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium = function(layer, featur
 /**
  * Convert an OpenLayers multi-something geometry to Cesium.
  * @param {ol.layer.Vector|ol.layer.Image} layer
- * @param {!ol.Feature} feature Ol3 feature..
- * @param {!ol.geom.Geometry} geometry Ol3 geometry.
+ * @param {!ol.Feature} feature OpenLayers feature..
+ * @param {!ol.geom.Geometry} geometry OpenLayers geometry.
  * @param {!ol.ProjectionLike} projection
  * @param {!ol.style.Style} olStyle
  * @param {!Cesium.BillboardCollection} billboards
@@ -693,7 +693,7 @@ olcs.FeatureConverter.prototype.olMultiGeometryToCesium = function(layer, featur
 /**
  * Convert an OpenLayers text style to Cesium.
  * @param {ol.layer.Vector|ol.layer.Image} layer
- * @param {!ol.Feature} feature Ol3 feature..
+ * @param {!ol.Feature} feature OpenLayers feature..
  * @param {!ol.geom.Geometry} geometry
  * @param {!ol.style.Text} style
  * @return {Cesium.LabelCollection} Cesium primitive
@@ -705,7 +705,7 @@ olcs.FeatureConverter.prototype.olGeometry4326TextPartToCesium = function(layer,
 
 
   var labels = new Cesium.LabelCollection({scene: this.scene});
-  // TODO: export and use the text draw position from ol3 .
+  // TODO: export and use the text draw position from OpenLayers .
   // See src/ol/render/vector.js
   var extentCenter = ol.extent.getCenter(geometry.getExtent());
   if (geometry instanceof ol.geom.SimpleGeometry) {
@@ -794,7 +794,7 @@ olcs.FeatureConverter.prototype.olGeometry4326TextPartToCesium = function(layer,
 
 /**
  * Convert an OpenLayers style to a Cesium Material.
- * @param {ol.Feature} feature Ol3 feature..
+ * @param {ol.Feature} feature OpenLayers feature..
  * @param {!ol.style.Style} style
  * @param {boolean} outline
  * @return {Cesium.Material}
@@ -873,7 +873,7 @@ olcs.FeatureConverter.prototype.computePlainStyle = function(layer, feature, fal
 /**
  * Convert one OpenLayers feature up to a collection of Cesium primitives.
  * @param {ol.layer.Vector|ol.layer.Image} layer
- * @param {!ol.Feature} feature Ol3 feature.
+ * @param {!ol.Feature} feature OpenLayers feature.
  * @param {!ol.style.Style} style
  * @param {!olcsx.core.OlFeatureToCesiumContext} context
  * @param {!ol.geom.Geometry=} opt_geom Geometry to be converted.
@@ -884,7 +884,7 @@ olcs.FeatureConverter.prototype.olFeatureToCesium = function(layer, feature, sty
   var geom = opt_geom || feature.getGeometry();
   var proj = context.projection;
   if (!geom) {
-    // Ol3 features may not have a geometry
+    // OpenLayers features may not have a geometry
     // See http://geojson.org/geojson-spec.html#feature-objects
     return null;
   }
