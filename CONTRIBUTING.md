@@ -72,9 +72,9 @@ The OpenLayers 3's coding style should be followed except as specified below.
 
 For readablitiy, testing for `undefined` and `null` must be handled as follows:
 
-- In the case of numbers, strings and booleans: use `goog.isDef`;
-- In the case of objects: use `goog.isNull` or `the object itself`;
-- In all cases where the type is unknown, like with templates: use `goog.isDefAndNotNull`.
+- In the case of numbers, strings and booleans: use `object !== undefined`;
+- In the case of objects: use `the object itself`;
+- In all cases where the type is unknown, like with templates: use `object !== undefined && object !== null`.
 
 
 

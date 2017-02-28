@@ -70,7 +70,7 @@ olcs.core.computeBoundingBoxAtTarget = function(scene, target, amount) {
 olcs.core.applyHeightOffsetToGeometry = function(geometry, height) {
   geometry.applyTransform(function(input, output, stride) {
     goog.asserts.assert(input === output);
-    if (goog.isDef(stride) && stride >= 3) {
+    if (stride !== undefined && stride >= 3) {
       for (var i = 0; i < output.length; i += stride) {
         output[i + 2] = output[i + 2] + height;
       }
@@ -327,9 +327,9 @@ olcs.core.computeAngleToZenith = function(scene, pivot) {
  * @api
  */
 olcs.core.lookAt = function(camera, target, opt_globe) {
-  if (goog.isDef(opt_globe)) {
+  if (opt_globe) {
     var height = opt_globe.getHeight(target);
-    target.height = goog.isDef(height) ? height : 0;
+    target.height = height || 0;
   }
 
   var ellipsoid = Cesium.Ellipsoid.WGS84;
@@ -351,7 +351,7 @@ olcs.core.lookAt = function(camera, target, opt_globe) {
  * @api
  */
 olcs.core.extentToRectangle = function(extent, projection) {
-  if (!goog.isNull(extent) && !goog.isNull(projection)) {
+  if (extent && projection) {
     var ext = ol.proj.transformExtent(extent, projection, 'EPSG:4326');
     return Cesium.Rectangle.fromDegrees(ext[0], ext[1], ext[2], ext[3]);
   } else {
@@ -384,7 +384,7 @@ olcs.core.tileLayerToImageryLayer = function(olLayer, viewProj) {
   if (source instanceof ol.source.TileImage) {
     var projection = source.getProjection();
 
-    if (goog.isNull(projection)) {
+    if (!projection) {
       // if not explicit, assume the same projection as view
       projection = viewProj;
     } else if (projection !== viewProj) {
@@ -408,7 +408,7 @@ olcs.core.tileLayerToImageryLayer = function(olLayer, viewProj) {
   var layerOptions = {};
 
   var ext = olLayer.getExtent();
-  if (goog.isDefAndNotNull(ext) && !goog.isNull(viewProj)) {
+  if (ext && viewProj) {
     layerOptions.rectangle = olcs.core.extentToRectangle(ext, viewProj);
   }
 
@@ -426,11 +426,11 @@ olcs.core.tileLayerToImageryLayer = function(olLayer, viewProj) {
  */
 olcs.core.updateCesiumLayerProperties = function(olLayer, csLayer) {
   var opacity = olLayer.getOpacity();
-  if (goog.isDef(opacity)) {
+  if (opacity !== undefined) {
     csLayer.alpha = opacity;
   }
   var visible = olLayer.getVisible();
-  if (goog.isDef(visible)) {
+  if (visible !== undefined) {
     csLayer.show = visible;
   }
 };
@@ -444,7 +444,6 @@ olcs.core.updateCesiumLayerProperties = function(olLayer, csLayer) {
  */
 olcs.core.ol4326CoordinateToCesiumCartesian = function(coordinate) {
   var coo = coordinate;
-  goog.isDefAndNotNull(coo);
   return coo.length > 2 ?
       Cesium.Cartesian3.fromDegrees(coo[0], coo[1], coo[2]) :
       Cesium.Cartesian3.fromDegrees(coo[0], coo[1]);
@@ -479,7 +478,7 @@ olcs.core.ol4326CoordinateArrayToCsCartesians = function(coordinates) {
  * @api
  */
 olcs.core.olGeometryCloneTo4326 = function(geometry, projection) {
-  goog.asserts.assert(goog.isDef(projection));
+  goog.asserts.assert(projection);
 
   var proj4326 = ol.proj.get('EPSG:4326');
   var proj = ol.proj.get(projection);

@@ -116,13 +116,13 @@ olcs.Camera.identityProjection = function(input, opt_output, opt_dimension) {
  * @private
  */
 olcs.Camera.prototype.setView_ = function(view) {
-  if (!goog.isNull(this.view_)) {
+  if (this.view_) {
     ol.Observable.unByKey(this.viewListenKey_);
     this.viewListenKey_ = null;
   }
 
   this.view_ = view;
-  if (!goog.isNull(view)) {
+  if (view) {
     var toLonLat = ol.proj.getTransform(view.getProjection(), 'EPSG:4326');
     var fromLonLat = ol.proj.getTransform('EPSG:4326', view.getProjection());
     goog.asserts.assert(toLonLat && fromLonLat);
@@ -157,7 +157,7 @@ olcs.Camera.prototype.handleViewEvent_ = function(e) {
  * @api
  */
 olcs.Camera.prototype.setHeading = function(heading) {
-  if (goog.isNull(this.view_)) {
+  if (!this.view_) {
     return;
   }
 
@@ -170,11 +170,11 @@ olcs.Camera.prototype.setHeading = function(heading) {
  * @api
  */
 olcs.Camera.prototype.getHeading = function() {
-  if (goog.isNull(this.view_)) {
+  if (!this.view_) {
     return undefined;
   }
   var rotation = this.view_.getRotation();
-  return goog.isDef(rotation) ? rotation : 0;
+  return rotation || 0;
 };
 
 
@@ -223,7 +223,7 @@ olcs.Camera.prototype.getDistance = function() {
  * @api
  */
 olcs.Camera.prototype.setCenter = function(center) {
-  if (goog.isNull(this.view_)) {
+  if (!this.view_) {
     return;
   }
   this.view_.setCenter(center);
@@ -236,7 +236,7 @@ olcs.Camera.prototype.setCenter = function(center) {
  * @api
  */
 olcs.Camera.prototype.getCenter = function() {
-  if (goog.isNull(this.view_)) {
+  if (!this.view_) {
     return undefined;
   }
   return this.view_.getCenter();
@@ -249,11 +249,11 @@ olcs.Camera.prototype.getCenter = function() {
  * @api
  */
 olcs.Camera.prototype.setPosition = function(position) {
-  if (goog.isNull(this.toLonLat_)) {
+  if (!this.toLonLat_) {
     return;
   }
   var ll = this.toLonLat_(position);
-  goog.asserts.assert(!goog.isNull(ll));
+  goog.asserts.assert(ll);
 
   var carto = new Cesium.Cartographic(ol.math.toRadians(ll[0]),
                                       ol.math.toRadians(ll[1]),
@@ -270,7 +270,7 @@ olcs.Camera.prototype.setPosition = function(position) {
  * @api
  */
 olcs.Camera.prototype.getPosition = function() {
-  if (goog.isNull(this.fromLonLat_)) {
+  if (!this.fromLonLat_) {
     return undefined;
   }
   var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(
@@ -280,7 +280,7 @@ olcs.Camera.prototype.getPosition = function() {
     ol.math.toDegrees(carto.longitude),
     ol.math.toDegrees(carto.latitude)
   ]);
-  goog.asserts.assert(!goog.isNull(pos));
+  goog.asserts.assert(pos);
   return pos;
 };
 
@@ -317,11 +317,11 @@ olcs.Camera.prototype.getAltitude = function() {
  * @api
  */
 olcs.Camera.prototype.lookAt = function(position) {
-  if (goog.isNull(this.toLonLat_)) {
+  if (!this.toLonLat_) {
     return;
   }
   var ll = this.toLonLat_(position);
-  goog.asserts.assert(!goog.isNull(ll));
+  goog.asserts.assert(ll);
 
   var carto = Cesium.Cartographic.fromDegrees(ll[0], ll[1]);
   olcs.core.lookAt(this.cam_, carto, this.scene_.globe);
@@ -336,7 +336,7 @@ olcs.Camera.prototype.lookAt = function(position) {
  * @private
  */
 olcs.Camera.prototype.updateCamera_ = function() {
-  if (goog.isNull(this.view_) || goog.isNull(this.toLonLat_)) {
+  if (!this.view_ || !this.toLonLat_) {
     return;
   }
   var center = this.view_.getCenter();
@@ -344,13 +344,13 @@ olcs.Camera.prototype.updateCamera_ = function() {
     return;
   }
   var ll = this.toLonLat_(center);
-  goog.asserts.assert(!goog.isNull(ll));
+  goog.asserts.assert(ll);
 
   var carto = new Cesium.Cartographic(ol.math.toRadians(ll[0]),
                                       ol.math.toRadians(ll[1]));
   if (this.scene_.globe) {
     var height = this.scene_.globe.getHeight(carto);
-    carto.height = goog.isDef(height) ? height : 0;
+    carto.height = height || 0;
   }
 
   var destination = Cesium.Ellipsoid.WGS84.cartographicToCartesian(carto);
@@ -377,19 +377,19 @@ olcs.Camera.prototype.updateCamera_ = function() {
  * @api
  */
 olcs.Camera.prototype.readFromView = function() {
-  if (goog.isNull(this.view_) || goog.isNull(this.toLonLat_)) {
+  if (!this.view_ || !this.toLonLat_) {
     return;
   }
   var center = this.view_.getCenter();
-  if (!goog.isDefAndNotNull(center)) {
+  if (center === undefined || center === null) {
     return;
   }
   var ll = this.toLonLat_(center);
-  goog.asserts.assert(!goog.isNull(ll));
+  goog.asserts.assert(ll);
 
   var resolution = this.view_.getResolution();
   this.distance_ = this.calcDistanceForResolution_(
-      goog.isDef(resolution) ? resolution : 0, ol.math.toRadians(ll[1]));
+      resolution || 0, ol.math.toRadians(ll[1]));
 
   this.updateCamera_();
 };
@@ -401,7 +401,7 @@ olcs.Camera.prototype.readFromView = function() {
  * @api
  */
 olcs.Camera.prototype.updateView = function() {
-  if (goog.isNull(this.view_) || goog.isNull(this.fromLonLat_)) {
+  if (!this.view_ || !this.fromLonLat_) {
     return;
   }
   this.viewUpdateInProgress_ = true;
@@ -417,7 +417,7 @@ olcs.Camera.prototype.updateView = function() {
     var globe = scene.globe;
     var carto = this.cam_.positionCartographic.clone();
     var height = globe.getHeight(carto);
-    carto.height = goog.isDef(height) ? height : 0;
+    carto.height = height || 0;
     bestTarget = Cesium.Ellipsoid.WGS84.cartographicToCartesian(carto);
   }
   this.distance_ = Cesium.Cartesian3.distance(bestTarget, this.cam_.position);
