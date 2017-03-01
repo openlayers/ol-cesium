@@ -1,13 +1,18 @@
 <!-- Begin Navigation buttons -->
 <!-- Copy this block before clicking "Load README.md" above, and paste it back here afterwards -->
-[![Download release](https://cdn.rawgit.com/ahocevar/a95de14fc607dcecce5a/raw/8dab32630b9c76526caa4ac152a339384ef0efd9/download-button.png)](https://github.com/openlayers/ol-cesium/releases/) [![Browse examples](https://cdn.rawgit.com/ahocevar/a95de14fc607dcecce5a/raw/95ff79a24b0ce611f99d46b113a215e6cb75b05a/examples-button.png)](http://openlayers.org/ol-cesium/examples/) [![View API docs](https://cdn.rawgit.com/ahocevar/a95de14fc607dcecce5a/raw/c027bfb4f33b163600ff55c7b7ecd4647fcbfc42/docs-button.png)](http://openlayers.org/ol-cesium/apidoc/olcs.OLCesium.html)
+[![Download release](https://cdn.rawgit.com/ahocevar/a95de14fc607dcecce5a/raw/8dab32630b9c76526caa4ac152a339384ef0efd9/download-button.png)](https://github.com/openlayers/ol-cesium/releases/) [![Browse examples](https://cdn.rawgit.com/ahocevar/a95de14fc607dcecce5a/raw/95ff79a24b0ce611f99d46b113a215e6cb75b05a/examples-button.png)](http://openlayers.org/ol-cesium/examples/) [![View API docs](https://cdn.rawgit.com/ahocevar/a95de14fc607dcecce5a/raw/c027bfb4f33b163600ff55c7b7ecd4647fcbfc42/docs-button.png)](http://openlayers.org/ol-cesium/apidoc)
 
 <!-- End Navigation buttons -->
-Ol-Cesium
-=========
+OpenLayers - Cesium integration library. Create your map using [OpenLayers](https://openlayers.org/), and visualize it on a globe with [Cesium](https://cesiumjs.org).
+See [live examples](https://openlayers.org/ol-cesium/examples/).
 
-OpenLayers - Cesium integration library. Create your map using [OpenLayers](http://openlayers.org/), and visualize it on a globe with [Cesium](http://cesiumjs.org).
-See [live examples](http://openlayers.org/ol-cesium/examples/).
+
+ES6 modules
+-----------
+
+Since version 2.0, the code is entirely based on ES6 modules and syntax.
+It requires OpenLayers 5.x.
+A convenient ES6 package `olcs` is available on npm.
 
 Features
 --------
@@ -16,60 +21,77 @@ Switch smoothly between 2D and 3D and synchronize:
 - Map context (bounding box and zoom level);
 - Raster data sources;
 - Vector data sources in 2D and 3D;
-- Map selection (selected items).
+- Map selection (selected items);
+- Animated transitions between map and globe view.
 
 The library is configurable and extensible and allows:
 
 - Lazy or eager loading of Cesium
 - Limiting Cesium resource consumption (idle detection)
 
-Stay tuned for more exciting features like animated transitions between map and globe view, and synchronization of maps in projections other than EPSG:4326 and EPSG:3857.
+For synchronization of maps in projections other than EPSG:4326 and EPSG:3857, see [#562](https://github.com/openlayers/ol-cesium/pull/562) branch.
 
-Getting started
----------------
+Integration in your application
+-------------------------------
 
-To obtain Ol-Cesium, either download a release from https://github.com/openlayers/ol-cesium/releases, or clone the repository and build it yourself (see below).
+There are several ways to use OL-Cesium in your application.
 
-Applications using Ol-Cesium also need to load OpenLayers styles and Cesium resources (included in the distribution):
-```html
-<link rel="stylesheet" href="ol.css" type="text/css">
-<script src="Cesium/Cesium.js"></script>
-<script src="olcesium.js"></script>
+### As an ES6 library (recommended method)
+```bash
+npm i --save olcs
 ```
 
-An OpenLayers map can be switched to a 3d globe view by running the code below after the map has been created:
+Then import the parts you need. Example:
 ```js
-var ol3d = new olcs.OLCesium({map: map}); // map is the ol.Map instance
+import OLCesium from 'olcs/OLCesium.js';
+const ol3d = new OLCesium({map: ol2dMap}); // ol2dMap is the ol.Map instance
 ol3d.setEnabled(true);
 ```
 
-The above will use the WGS84 ellipsoid all around the globe. To use terrain, simply add a [terrain provider](http://cesiumjs.org/Cesium/Build/Documentation/TerrainProvider.html) using the Cesium API (can be your own, but in the snippet below it's one that ships with Cesium):
+For Cesium integration see [ol-cesium-webpack-example](https://github.com/gberaudo/ol-cesium-webpack-example)
+based on the official `Cesium With Webpack` example.
+
+### As an old-fashioned independant library
+
+- build the library in dist/olcs.js:
+```bash
+npm i --save olcs
+npm run build-library
+```
+
+- get the CSS from css/olcs.css;
+
+- if needed build a [full OL5 build](https://github.com/geoblocks/legacylib/tree/master/ol5);
+
+- use as follow:
 ```js
-var ol3d = new olcs.OLCesium({map: map}); // map is the ol.Map instance
-var scene = ol3d.getCesiumScene();
-scene.terrainProvider = new Cesium.CesiumTerrainProvider({
-  url: 'https://assets.agi.com/stk-terrain/world'
-  });
-  ol3d.setEnabled(true);
-  ```
+const ol3d = new olcs.OLCesium({map: ol2dMap}); // ol2dMap is the ol.Map instance
+ol3d.setEnabled(true);
+```
 
-Building the library
---------------------
+In addition, see the [old fashioned example](https://openlayers.org/ol-cesium/examples/oldfashioned.html).
 
-Requirements for building Ol-Cesium:
+### As an UMD library (Angular, ...)
+```bash
+npm i --save ol-cesium
+```
+The UMD-specific build is located here: `node_modules/ol-cesium/dist/olcesium.umd.js`  
 
-* [GNU Make](http://www.gnu.org/software/make/)
-* [Node.js](http://nodejs.org/)
 
-To get started, clone the [Ol-Cesium repository](https://github.com/openlayers/ol-cesium) with its submodules:
+Then import the parts you need. Example:
+```js
+import OLCesium from 'olcs/OLCesium.js';
+const ol3d = new OLCesium({map: ol2dMap}); // ol2dMap is the ol.Map instance
+ol3d.setEnabled(true);
+```
 
-    $ git clone --recursive https://github.com/openlayers/ol-cesium.git
+Going further
+-------------
 
-Change into the clone directory, and invoke
+See the [examples](https://openlayers.org/ol-cesium/examples/).
 
-    $ make dist
+If you are new to Cesium, you should also check the [Cesium tutorials](https://cesiumjs.org/tutorials).
 
-from the root of the repository. You will then be able to use `dist/olcesium.js` for your applications.
 
 Running the examples in debug mode
 ----------------------------------
@@ -79,7 +101,7 @@ source files instead of a minified build:
 
     $ make serve
 
-will make the distribution examples available at http://localhost:4000/examples
+will make the distribution examples available at http://localhost:3000/examples
 
 Running the unminified version of Cesium
 ----------------------------------------
@@ -92,9 +114,11 @@ also loaded.
 Limitations
 -----------
 
-OpenLayers unmanaged layers are not discoverable and as a consequence not
+- OpenLayers unmanaged layers are not discoverable and as a consequence not
 supported. Plain layers should be used instead or the synchronization managed
 manually. See https://github.com/openlayers/ol-cesium/issues/350.
+
+- OpenLayers interactions are not supported in 3d. See https://github.com/openlayers/ol-cesium/issues/655.
 
 Release process
 ---------------

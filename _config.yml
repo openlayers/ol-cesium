@@ -4,6 +4,5 @@ google_analytics:
 show_downloads: true
 theme: jekyll-theme-architect
 exclude: []
-
 gems:
   - jekyll-mentions

@@ -1,25 +1,17 @@
+// This file is ES5 on purpose.
+// It does not go through webpack; it is directly loaded by the html.
 (function() {
+  /* eslint-disable no-var */
   var mode = window.location.href.match(/mode=([a-z0-9\-]+)\&?/i);
-  var DIST = true;
   var isDev = mode && mode[1] === 'dev';
+  window.IS_DEV = isDev;
   var cs = isDev ? 'CesiumUnminified/Cesium.js' : 'Cesium/Cesium.js';
-  var ol = (DIST && isDev) ? 'olcesium-debug.js' : 'olcesium.js';
 
+  window.CESIUM_URL = `../node_modules/@camptocamp/cesium/Build/${cs}`;
   if (!window.LAZY_CESIUM) {
-    document.write('<scr' + 'ipt type="text/javascript" src="../' + cs + '"></scr' + 'ipt>');
+    document.write(`<scr${'i'}pt type="text/javascript" src="${window.CESIUM_URL}"></scr${'i'}pt>`);
   }
-  document.write('<scr' + 'ipt type="text/javascript" src="../' + ol + '"></scr' + 'ipt>');
 
-  var s;
-  window.lazyLoadCesium = function() {
-    if (!s) {
-      s = document.createElement("script");
-      s.type = "text/javascript";
-      s.src = '../' + cs;
-      console.log('loading Cesium...');
-      document.body.appendChild(s);
-    }
-    return s;
-  };
+  /* eslint-enable no-var */
 })();
 
