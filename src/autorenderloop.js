@@ -220,7 +220,7 @@ olcs.AutoRenderLoop.prototype.postRender = function(date) {
   const tweens = scene['tweens'];
   if (!cameraMovedInLastSecond && !tilesWaiting && tweens.length == 0) {
     if (this.verboseRendering) {
-      console.log('stopping rendering @ ' + Date.now());
+      console.log(`stopping rendering @ ${Date.now()}`);
     }
     this.ol3d.setBlockCesiumRendering(true);
     this.stoppedRendering = true;
@@ -245,7 +245,7 @@ olcs.AutoRenderLoop.prototype.restartRenderLoop = function() {
  */
 olcs.AutoRenderLoop.prototype.notifyRepaintRequired = function() {
   if (this.verboseRendering && this.stoppedRendering) {
-    console.log('starting rendering @ ' + Date.now());
+    console.log(`starting rendering @ ${Date.now()}`);
   }
   this.lastCameraMoveTime_ = Date.now();
   // TODO: do not unblock if not blocked by us

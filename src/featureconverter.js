@@ -685,7 +685,7 @@ olcs.FeatureConverter.prototype.olMultiGeometryToCesium = function(layer, featur
       subgeos = geometry.getPolygons();
       return accumulate(subgeos, this.olPolygonGeometryToCesium.bind(this));
     default:
-      goog.asserts.fail('Unhandled multi geometry type' + geometry.getType());
+      goog.asserts.fail(`Unhandled multi geometry type${geometry.getType()}`);
   }
 };
 
@@ -780,7 +780,7 @@ olcs.FeatureConverter.prototype.olGeometry4326TextPartToCesium = function(layer,
         verticalOrigin = Cesium.VerticalOrigin.BOTTOM;
         break;
       default:
-        goog.asserts.fail('unhandled baseline ' + style.getTextBaseline());
+        goog.asserts.fail(`unhandled baseline ${style.getTextBaseline()}`);
     }
     options.verticalOrigin = verticalOrigin;
   }
@@ -945,7 +945,7 @@ olcs.FeatureConverter.prototype.olFeatureToCesium = function(layer, feature, sty
     case 'LinearRing':
       throw new Error('LinearRing should only be part of polygon.');
     default:
-      throw new Error('Ol geom type not handled : ' + geom.getType());
+      throw new Error(`Ol geom type not handled : ${geom.getType()}`);
   }
 };
 

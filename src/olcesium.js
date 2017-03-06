@@ -78,7 +78,7 @@ olcs.OLCesium = function(options) {
    */
   this.container_ = document.createElement('DIV');
   const containerAttribute = document.createAttribute('style');
-  containerAttribute.value = fillArea + 'visibility:hidden;';
+  containerAttribute.value = `${fillArea}visibility:hidden;`;
   this.container_.setAttributeNode(containerAttribute);
 
   let targetElement = options.target || null;
@@ -688,7 +688,6 @@ olcs.OLCesium.prototype.throwOnUnitializedMap_ = function() {
   const view = map.getView();
   const center = view.getCenter();
   if (!view.isDef() || isNaN(center[0]) || isNaN(center[1])) {
-    throw new Error('The OpenLayers map is not properly initialized: ' +
-        center + ' / ' + view.getResolution());
+    throw new Error(`The OpenLayers map is not properly initialized: ${center} / ${view.getResolution()}`);
   }
 };
