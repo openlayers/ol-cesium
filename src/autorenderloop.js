@@ -122,24 +122,24 @@ olcs.AutoRenderLoop.prototype.enable = function() {
     return result;
   };
 
-  Cesium.Camera.prototype.setView = function() {
-    that._originalCameraSetView.apply(this, arguments);
+  Cesium.Camera.prototype.setView = function(...args) {
+    that._originalCameraSetView.apply(this, args);
     that.notifyRepaintRequired();
   };
-  Cesium.Camera.prototype.move = function() {
-    that._originalCameraMove.apply(this, arguments);
+  Cesium.Camera.prototype.move = function(...args) {
+    that._originalCameraMove.apply(this, args);
     that.notifyRepaintRequired();
   };
-  Cesium.Camera.prototype.rotate = function() {
-    that._originalCameraRotate.apply(this, arguments);
+  Cesium.Camera.prototype.rotate = function(...args) {
+    that._originalCameraRotate.apply(this, args);
     that.notifyRepaintRequired();
   };
-  Cesium.Camera.prototype.lookAt = function() {
-    that._originalCameraLookAt.apply(this, arguments);
+  Cesium.Camera.prototype.lookAt = function(...args) {
+    that._originalCameraLookAt.apply(this, args);
     that.notifyRepaintRequired();
   };
-  Cesium.Camera.prototype.flyTo = function() {
-    that._originalCameraFlyTo.apply(this, arguments);
+  Cesium.Camera.prototype.flyTo = function(...args) {
+    that._originalCameraFlyTo.apply(this, args);
     that.notifyRepaintRequired();
   };
 
