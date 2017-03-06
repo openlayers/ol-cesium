@@ -43,23 +43,23 @@ olcs.FeatureConverter = function(scene) {
  * @private
  */
 olcs.FeatureConverter.prototype.onRemoveOrClearFeature_ = function(evt) {
-  var source = evt.target;
+  const source = evt.target;
   goog.asserts.assertInstanceof(source, ol.source.Vector);
 
-  var cancellers = olcs.util.obj(source)['olcs_cancellers'];
+  const cancellers = olcs.util.obj(source)['olcs_cancellers'];
   if (cancellers) {
-    var feature = evt.feature;
+    const feature = evt.feature;
     if (feature) {
       // remove
-      var id = ol.getUid(feature);
-      var canceller = cancellers[id];
+      const id = ol.getUid(feature);
+      const canceller = cancellers[id];
       if (canceller) {
         canceller();
         delete cancellers[id];
       }
     } else {
       // clear
-      for (var key in cancellers) {
+      for (const key in cancellers) {
         if (cancellers.hasOwnProperty(key)) {
           cancellers[key]();
         }
@@ -95,7 +95,7 @@ olcs.FeatureConverter.prototype.setReferenceForPicking = function(layer, feature
  * @protected
  */
 olcs.FeatureConverter.prototype.createColoredPrimitive = function(layer, feature, olGeometry, geometry, color, opt_lineWidth) {
-  var createInstance = function(geometry, color) {
+  const createInstance = function(geometry, color) {
     return new Cesium.GeometryInstance({
       // always update Cesium externs before adding a property
       geometry: geometry,
@@ -105,7 +105,7 @@ olcs.FeatureConverter.prototype.createColoredPrimitive = function(layer, feature
     });
   };
 
-  var options = {
+  const options = {
     // always update Cesium externs before adding a property
     flat: true, // work with all geometries
     renderState: {
@@ -122,14 +122,14 @@ olcs.FeatureConverter.prototype.createColoredPrimitive = function(layer, feature
     options.renderState.lineWidth = opt_lineWidth;
   }
 
-  var instances = createInstance(geometry, color);
+  const instances = createInstance(geometry, color);
 
-  var heightReference = this.getHeightReference(layer, feature, olGeometry);
+  const heightReference = this.getHeightReference(layer, feature, olGeometry);
 
-  var primitive;
+  let primitive;
 
   if (heightReference == Cesium.HeightReference.CLAMP_TO_GROUND) {
-    var ctor = instances.geometry.constructor;
+    const ctor = instances.geometry.constructor;
     if (ctor && !ctor['createShadowVolume']) {
       return null;
     }
@@ -138,7 +138,7 @@ olcs.FeatureConverter.prototype.createColoredPrimitive = function(layer, feature
       geometryInstances: instances
     });
   } else {
-    var appearance = new Cesium.PerInstanceColorAppearance(options);
+    const appearance = new Cesium.PerInstanceColorAppearance(options);
     primitive = new Cesium.Primitive({
       // always update Cesium externs before adding a property
       geometryInstances: instances,
@@ -159,10 +159,10 @@ olcs.FeatureConverter.prototype.createColoredPrimitive = function(layer, feature
  * @protected
  */
 olcs.FeatureConverter.prototype.extractColorFromOlStyle = function(style, outline) {
-  var fillColor = style.getFill() ? style.getFill().getColor() : null;
-  var strokeColor = style.getStroke() ? style.getStroke().getColor() : null;
+  const fillColor = style.getFill() ? style.getFill().getColor() : null;
+  const strokeColor = style.getStroke() ? style.getStroke().getColor() : null;
 
-  var olColor = 'black';
+  let olColor = 'black';
   if (strokeColor && outline) {
     olColor = strokeColor;
   } else if (fillColor) {
@@ -181,7 +181,7 @@ olcs.FeatureConverter.prototype.extractColorFromOlStyle = function(style, outlin
  */
 olcs.FeatureConverter.prototype.extractLineWidthFromOlStyle = function(style) {
   // Handling of line width WebGL limitations is handled by Cesium.
-  var width = style.getStroke() ? style.getStroke().getWidth() : undefined;
+  const width = style.getStroke() ? style.getStroke().getWidth() : undefined;
   return width !== undefined ? width : 1;
 };
 
@@ -199,20 +199,20 @@ olcs.FeatureConverter.prototype.extractLineWidthFromOlStyle = function(style) {
  * @protected
  */
 olcs.FeatureConverter.prototype.wrapFillAndOutlineGeometries = function(layer, feature, olGeometry, fillGeometry, outlineGeometry, olStyle) {
-  var fillColor = this.extractColorFromOlStyle(olStyle, false);
-  var outlineColor = this.extractColorFromOlStyle(olStyle, true);
+  const fillColor = this.extractColorFromOlStyle(olStyle, false);
+  const outlineColor = this.extractColorFromOlStyle(olStyle, true);
 
-  var primitives = new Cesium.PrimitiveCollection();
+  const primitives = new Cesium.PrimitiveCollection();
   if (olStyle.getFill()) {
-    var p1 = this.createColoredPrimitive(layer, feature, olGeometry,
+    const p1 = this.createColoredPrimitive(layer, feature, olGeometry,
         fillGeometry, fillColor);
     goog.asserts.assert(!!p1);
     primitives.add(p1);
   }
 
   if (olStyle.getStroke()) {
-    var width = this.extractLineWidthFromOlStyle(olStyle);
-    var p2 = this.createColoredPrimitive(layer, feature, olGeometry,
+    const width = this.extractLineWidthFromOlStyle(olStyle);
+    const p2 = this.createColoredPrimitive(layer, feature, olGeometry,
         outlineGeometry, outlineColor, width);
     if (p2) {
       // Some outline geometries are not supported by Cesium in clamp to ground
@@ -238,7 +238,7 @@ olcs.FeatureConverter.prototype.wrapFillAndOutlineGeometries = function(layer, f
  * @protected
  */
 olcs.FeatureConverter.prototype.addTextStyle = function(layer, feature, geometry, style, primitive) {
-  var primitives;
+  let primitives;
   if (!(primitive instanceof Cesium.PrimitiveCollection)) {
     primitives = new Cesium.PrimitiveCollection();
     primitives.add(primitive);
@@ -250,8 +250,8 @@ olcs.FeatureConverter.prototype.addTextStyle = function(layer, feature, geometry
     return primitives;
   }
 
-  var text = /** @type {!ol.style.Text} */ (style.getText());
-  var label = this.olGeometry4326TextPartToCesium(layer, feature, geometry,
+  const text = /** @type {!ol.style.Text} */ (style.getText());
+  const label = this.olGeometry4326TextPartToCesium(layer, feature, geometry,
       text);
   if (label) {
     primitives.add(label);
@@ -273,7 +273,7 @@ olcs.FeatureConverter.prototype.addTextStyle = function(layer, feature, geometry
  * @api
  */
 olcs.FeatureConverter.prototype.csAddBillboard = function(billboards, bbOptions, layer, feature, geometry, style) {
-  var bb = billboards.add(bbOptions);
+  const bb = billboards.add(bbOptions);
   this.setReferenceForPicking(layer, feature, bb);
   return bb;
 };
@@ -295,9 +295,9 @@ olcs.FeatureConverter.prototype.olCircleGeometryToCesium = function(layer, featu
   goog.asserts.assert(olGeometry.getType() == 'Circle');
 
   // ol.Coordinate
-  var center = olGeometry.getCenter();
-  var height = center.length == 3 ? center[2] : 0.0;
-  var point = center.slice();
+  let center = olGeometry.getCenter();
+  const height = center.length == 3 ? center[2] : 0.0;
+  let point = center.slice();
   point[0] += olGeometry.getRadius();
 
   // Cesium
@@ -305,16 +305,16 @@ olcs.FeatureConverter.prototype.olCircleGeometryToCesium = function(layer, featu
   point = olcs.core.ol4326CoordinateToCesiumCartesian(point);
 
   // Accurate computation of straight distance
-  var radius = Cesium.Cartesian3.distance(center, point);
+  const radius = Cesium.Cartesian3.distance(center, point);
 
-  var fillGeometry = new Cesium.CircleGeometry({
+  const fillGeometry = new Cesium.CircleGeometry({
     // always update Cesium externs before adding a property
     center: center,
     radius: radius,
     height: height
   });
 
-  var outlineGeometry = new Cesium.CircleOutlineGeometry({
+  const outlineGeometry = new Cesium.CircleOutlineGeometry({
     // always update Cesium externs before adding a property
     center: center,
     radius: radius,
@@ -322,7 +322,7 @@ olcs.FeatureConverter.prototype.olCircleGeometryToCesium = function(layer, featu
     height: height
   });
 
-  var primitives = this.wrapFillAndOutlineGeometries(
+  const primitives = this.wrapFillAndOutlineGeometries(
       layer, feature, olGeometry, fillGeometry, outlineGeometry, olStyle);
 
   return this.addTextStyle(layer, feature, olGeometry, olStyle, primitives);
@@ -344,26 +344,26 @@ olcs.FeatureConverter.prototype.olLineStringGeometryToCesium = function(layer, f
   olGeometry = olcs.core.olGeometryCloneTo4326(olGeometry, projection);
   goog.asserts.assert(olGeometry.getType() == 'LineString');
 
-  var positions = olcs.core.ol4326CoordinateArrayToCsCartesians(
+  const positions = olcs.core.ol4326CoordinateArrayToCsCartesians(
       olGeometry.getCoordinates());
 
-  var appearance = new Cesium.PolylineMaterialAppearance({
+  const appearance = new Cesium.PolylineMaterialAppearance({
     // always update Cesium externs before adding a property
     material: this.olStyleToCesium(feature, olStyle, true)
   });
 
-  var geometryOptions = {
+  const geometryOptions = {
     // always update Cesium externs before adding a property
     positions: positions,
     width: this.extractLineWidthFromOlStyle(olStyle),
     vertexFormat: appearance.vertexFormat
   };
 
-  var outlinePrimitive;
-  var heightReference = this.getHeightReference(layer, feature, olGeometry);
+  let outlinePrimitive;
+  const heightReference = this.getHeightReference(layer, feature, olGeometry);
 
   if (heightReference == Cesium.HeightReference.CLAMP_TO_GROUND) {
-    var color = this.extractColorFromOlStyle(olStyle, true);
+    const color = this.extractColorFromOlStyle(olStyle, true);
     outlinePrimitive = new Cesium.GroundPrimitive({
       // always update Cesium externs before adding a property
       geometryInstances: new Cesium.GeometryInstance({
@@ -405,20 +405,20 @@ olcs.FeatureConverter.prototype.olPolygonGeometryToCesium = function(layer, feat
   olGeometry = olcs.core.olGeometryCloneTo4326(olGeometry, projection);
   goog.asserts.assert(olGeometry.getType() == 'Polygon');
 
-  var fillGeometry, outlineGeometry;
+  let fillGeometry, outlineGeometry;
   if ((olGeometry.getCoordinates()[0].length == 5) &&
       (feature.getGeometry().get('olcs.polygon_kind') === 'rectangle')) {
     // Create a rectangle according to the longitude and latitude curves
-    var coordinates = olGeometry.getCoordinates()[0];
+    const coordinates = olGeometry.getCoordinates()[0];
     // Extract the West, South, East, North coordinates
-    var extent = ol.extent.boundingExtent(coordinates);
-    var rectangle = Cesium.Rectangle.fromDegrees(extent[0], extent[1],
+    const extent = ol.extent.boundingExtent(coordinates);
+    const rectangle = Cesium.Rectangle.fromDegrees(extent[0], extent[1],
         extent[2], extent[3]);
 
     // Extract the average height of the vertices
-    var maxHeight = 0.0;
+    let maxHeight = 0.0;
     if (coordinates[0].length == 3) {
-      for (var c = 0; c < coordinates.length; c++) {
+      for (let c = 0; c < coordinates.length; c++) {
         maxHeight = Math.max(maxHeight, coordinates[c][2]);
       }
     }
@@ -436,15 +436,15 @@ olcs.FeatureConverter.prototype.olPolygonGeometryToCesium = function(layer, feat
       height: maxHeight
     });
   } else {
-    var rings = olGeometry.getLinearRings();
+    const rings = olGeometry.getLinearRings();
     // always update Cesium externs before adding a property
-    var hierarchy = {};
-    var polygonHierarchy = hierarchy;
+    const hierarchy = {};
+    const polygonHierarchy = hierarchy;
     goog.asserts.assert(rings.length > 0);
 
-    for (var i = 0; i < rings.length; ++i) {
-      var olPos = rings[i].getCoordinates();
-      var positions = olcs.core.ol4326CoordinateArrayToCsCartesians(olPos);
+    for (let i = 0; i < rings.length; ++i) {
+      const olPos = rings[i].getCoordinates();
+      const positions = olcs.core.ol4326CoordinateArrayToCsCartesians(olPos);
       goog.asserts.assert(positions && positions.length > 0);
       if (i == 0) {
         hierarchy.positions = positions;
@@ -471,7 +471,7 @@ olcs.FeatureConverter.prototype.olPolygonGeometryToCesium = function(layer, feat
     });
   }
 
-  var primitives = this.wrapFillAndOutlineGeometries(
+  const primitives = this.wrapFillAndOutlineGeometries(
       layer, feature, olGeometry, fillGeometry, outlineGeometry, olStyle);
 
   return this.addTextStyle(layer, feature, olGeometry, olStyle, primitives);
@@ -488,7 +488,7 @@ olcs.FeatureConverter.prototype.olPolygonGeometryToCesium = function(layer, feat
 olcs.FeatureConverter.prototype.getHeightReference = function(layer, feature, geometry) {
 
   // Read from the geometry
-  var altitudeMode = geometry.get('altitudeMode');
+  let altitudeMode = geometry.get('altitudeMode');
 
   // Or from the feature
   if (altitudeMode === undefined) {
@@ -500,7 +500,7 @@ olcs.FeatureConverter.prototype.getHeightReference = function(layer, feature, ge
     altitudeMode = layer.get('altitudeMode');
   }
 
-  var heightReference = Cesium.HeightReference.NONE;
+  let heightReference = Cesium.HeightReference.NONE;
   if (altitudeMode === 'clampToGround') {
     heightReference = Cesium.HeightReference.CLAMP_TO_GROUND;
   } else if (altitudeMode === 'relativeToGround') {
@@ -529,21 +529,21 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium = function(layer, featur
   goog.asserts.assert(olGeometry.getType() == 'Point');
   olGeometry = olcs.core.olGeometryCloneTo4326(olGeometry, projection);
 
-  var imageStyle = style.getImage();
+  const imageStyle = style.getImage();
   if (imageStyle) {
     if (imageStyle instanceof ol.style.Icon) {
       // make sure the image is scheduled for load
       imageStyle.load();
     }
 
-    var image = imageStyle.getImage(1); // get normal density
-    var isImageLoaded = function(image) {
+    const image = imageStyle.getImage(1); // get normal density
+    const isImageLoaded = function(image) {
       return image.src != '' &&
           image.naturalHeight != 0 &&
           image.naturalWidth != 0 &&
           image.complete;
     };
-    var reallyCreateBillboard = (function() {
+    const reallyCreateBillboard = (function() {
       if (!image) {
         return;
       }
@@ -552,17 +552,17 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium = function(layer, featur
           image instanceof HTMLImageElement)) {
         return;
       }
-      var center = olGeometry.getCoordinates();
-      var position = olcs.core.ol4326CoordinateToCesiumCartesian(center);
-      var color;
-      var opacity = imageStyle.getOpacity();
+      const center = olGeometry.getCoordinates();
+      const position = olcs.core.ol4326CoordinateToCesiumCartesian(center);
+      let color;
+      const opacity = imageStyle.getOpacity();
       if (opacity !== undefined) {
         color = new Cesium.Color(1.0, 1.0, 1.0, opacity);
       }
 
-      var heightReference = this.getHeightReference(layer, feature, olGeometry);
+      const heightReference = this.getHeightReference(layer, feature, olGeometry);
 
-      var bbOptions = /** @type {Cesium.optionsBillboardCollectionAdd} */ ({
+      const bbOptions = /** @type {Cesium.optionsBillboardCollectionAdd} */ ({
         // always update Cesium externs before adding a property
         image: image,
         color: color,
@@ -571,7 +571,7 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium = function(layer, featur
         verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
         position: position
       });
-      var bb = this.csAddBillboard(billboards, bbOptions, layer, feature,
+      const bb = this.csAddBillboard(billboards, bbOptions, layer, feature,
           olGeometry, style);
       if (opt_newBillboardCallback) {
         opt_newBillboardCallback(bb);
@@ -580,22 +580,22 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium = function(layer, featur
 
     if (image instanceof Image && !isImageLoaded(image)) {
       // Cesium requires the image to be loaded
-      var cancelled = false;
-      var source = layer.getSource();
+      let cancelled = false;
+      let source = layer.getSource();
       if (source instanceof ol.source.ImageVector) {
         source = source.getSource();
       }
-      var canceller = function() {
+      const canceller = function() {
         cancelled = true;
       };
       source.on(['removefeature', 'clear'],
           this.boundOnRemoveOrClearFeatureListener_);
-      var cancellers = olcs.util.obj(source)['olcs_cancellers'];
+      let cancellers = olcs.util.obj(source)['olcs_cancellers'];
       if (!cancellers) {
         cancellers = olcs.util.obj(source)['olcs_cancellers'] = {};
       }
 
-      var fuid = ol.getUid(feature);
+      const fuid = ol.getUid(feature);
       if (cancellers[fuid]) {
         // When the feature change quickly, a canceller may still be present so
         // we cancel it here to prevent creation of a billboard.
@@ -603,7 +603,7 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium = function(layer, featur
       }
       cancellers[fuid] = canceller;
 
-      var listener = function() {
+      const listener = function() {
         if (!billboards.isDestroyed() && !cancelled) {
           // Create billboard if the feature is still displayed on the map.
           reallyCreateBillboard();
@@ -644,24 +644,24 @@ olcs.FeatureConverter.prototype.olMultiGeometryToCesium = function(layer, featur
 
   // FIXME: would be better to combine all child geometries in one primitive
   // instead we create n primitives for simplicity.
-  var accumulate = function(geometries, functor) {
-    var primitives = new Cesium.PrimitiveCollection();
+  const accumulate = function(geometries, functor) {
+    const primitives = new Cesium.PrimitiveCollection();
     geometries.forEach(function(geometry) {
       primitives.add(functor(layer, feature, geometry, projection, olStyle));
     });
     return primitives;
   };
 
-  var subgeos;
+  let subgeos;
   switch (geometry.getType()) {
     case 'MultiPoint':
       geometry = /** @type {!ol.geom.MultiPoint} */ (geometry);
       subgeos = geometry.getPoints();
       if (olStyle.getText()) {
-        var primitives = new Cesium.PrimitiveCollection();
+        const primitives = new Cesium.PrimitiveCollection();
         subgeos.forEach(function(geometry) {
           goog.asserts.assert(geometry);
-          var result = this.olPointGeometryToCesium(layer, feature, geometry,
+          const result = this.olPointGeometryToCesium(layer, feature, geometry,
               projection, olStyle, billboards, opt_newBillboardCallback);
           if (result) {
             primitives.add(result);
@@ -700,19 +700,19 @@ olcs.FeatureConverter.prototype.olMultiGeometryToCesium = function(layer, featur
  * @api
  */
 olcs.FeatureConverter.prototype.olGeometry4326TextPartToCesium = function(layer, feature, geometry, style) {
-  var text = style.getText();
+  const text = style.getText();
   goog.asserts.assert(text !== undefined);
 
 
-  var labels = new Cesium.LabelCollection({scene: this.scene});
+  const labels = new Cesium.LabelCollection({scene: this.scene});
   // TODO: export and use the text draw position from OpenLayers .
   // See src/ol/render/vector.js
-  var extentCenter = ol.extent.getCenter(geometry.getExtent());
+  const extentCenter = ol.extent.getCenter(geometry.getExtent());
   if (geometry instanceof ol.geom.SimpleGeometry) {
-    var first = geometry.getFirstCoordinate();
+    const first = geometry.getFirstCoordinate();
     extentCenter[2] = first.length == 3 ? first[2] : 0.0;
   }
-  var options = /** @type {Cesium.optionsLabelCollection} */ ({});
+  const options = /** @type {Cesium.optionsLabelCollection} */ ({});
 
   options.position = olcs.core.ol4326CoordinateToCesiumCartesian(extentCenter);
 
@@ -720,19 +720,19 @@ olcs.FeatureConverter.prototype.olGeometry4326TextPartToCesium = function(layer,
 
   options.heightReference = this.getHeightReference(layer, feature, geometry);
 
-  var offsetX = style.getOffsetX();
-  var offsetY = style.getOffsetY();
+  const offsetX = style.getOffsetX();
+  const offsetY = style.getOffsetY();
   if (offsetX != 0 && offsetY != 0) {
-    var offset = new Cesium.Cartesian2(offsetX, offsetY);
+    const offset = new Cesium.Cartesian2(offsetX, offsetY);
     options.pixelOffset = offset;
   }
 
-  var font = style.getFont();
+  const font = style.getFont();
   if (font !== undefined) {
     options.font = font;
   }
 
-  var labelStyle = undefined;
+  let labelStyle = undefined;
   if (style.getFill()) {
     options.fillColor = this.extractColorFromOlStyle(style, false);
     labelStyle = Cesium.LabelStyle.FILL;
@@ -747,7 +747,7 @@ olcs.FeatureConverter.prototype.olGeometry4326TextPartToCesium = function(layer,
   }
   options.style = labelStyle;
 
-  var horizontalOrigin;
+  let horizontalOrigin;
   switch (style.getTextAlign()) {
     case 'left':
       horizontalOrigin = Cesium.HorizontalOrigin.LEFT;
@@ -762,7 +762,7 @@ olcs.FeatureConverter.prototype.olGeometry4326TextPartToCesium = function(layer,
   options.horizontalOrigin = horizontalOrigin;
 
   if (style.getTextBaseline()) {
-    var verticalOrigin;
+    let verticalOrigin;
     switch (style.getTextBaseline()) {
       case 'top':
         verticalOrigin = Cesium.VerticalOrigin.TOP;
@@ -786,7 +786,7 @@ olcs.FeatureConverter.prototype.olGeometry4326TextPartToCesium = function(layer,
   }
 
 
-  var l = labels.add(options);
+  const l = labels.add(options);
   this.setReferenceForPicking(layer, feature, l);
   return labels;
 };
@@ -801,13 +801,13 @@ olcs.FeatureConverter.prototype.olGeometry4326TextPartToCesium = function(layer,
  * @api
  */
 olcs.FeatureConverter.prototype.olStyleToCesium = function(feature, style, outline) {
-  var fill = style.getFill();
-  var stroke = style.getStroke();
+  const fill = style.getFill();
+  const stroke = style.getStroke();
   if ((outline && !stroke) || (!outline && !fill)) {
     return null; // FIXME use a default style? Developer error?
   }
 
-  var color = outline ? stroke.getColor() : fill.getColor();
+  let color = outline ? stroke.getColor() : fill.getColor();
   color = olcs.core.convertColorToCesium(color);
 
   if (outline && stroke.getLineDash()) {
@@ -842,12 +842,12 @@ olcs.FeatureConverter.prototype.computePlainStyle = function(layer, feature, fal
   /**
    * @type {ol.FeatureStyleFunction|undefined}
    */
-  var featureStyleFunction = feature.getStyleFunction();
+  const featureStyleFunction = feature.getStyleFunction();
 
   /**
    * @type {ol.style.Style|Array.<ol.style.Style>}
    */
-  var style = null;
+  let style = null;
 
   if (featureStyleFunction) {
     style = featureStyleFunction.call(feature, resolution);
@@ -881,26 +881,26 @@ olcs.FeatureConverter.prototype.computePlainStyle = function(layer, feature, fal
  * @api
  */
 olcs.FeatureConverter.prototype.olFeatureToCesium = function(layer, feature, style, context, opt_geom) {
-  var geom = opt_geom || feature.getGeometry();
-  var proj = context.projection;
+  let geom = opt_geom || feature.getGeometry();
+  const proj = context.projection;
   if (!geom) {
     // OpenLayers features may not have a geometry
     // See http://geojson.org/geojson-spec.html#feature-objects
     return null;
   }
 
-  var newBillboardAddedCallback = function(bb) {
+  const newBillboardAddedCallback = function(bb) {
     context.featureToCesiumMap[ol.getUid(feature)] = bb;
   };
 
   switch (geom.getType()) {
     case 'GeometryCollection':
-      var primitives = new Cesium.PrimitiveCollection();
-      var collection = /** @type {!ol.geom.GeometryCollection} */ (geom);
+      const primitives = new Cesium.PrimitiveCollection();
+      const collection = /** @type {!ol.geom.GeometryCollection} */ (geom);
       // TODO: use getGeometriesArray() instead
       collection.getGeometries().forEach(function(geom) {
         if (geom) {
-          var prims = this.olFeatureToCesium(layer, feature, style, context,
+          const prims = this.olFeatureToCesium(layer, feature, style, context,
               geom);
           if (prims) {
             primitives.add(prims);
@@ -910,8 +910,8 @@ olcs.FeatureConverter.prototype.olFeatureToCesium = function(layer, feature, sty
       return primitives;
     case 'Point':
       geom = /** @type {!ol.geom.Point} */ (geom);
-      var bbs = context.billboards;
-      var result = this.olPointGeometryToCesium(layer, feature, geom, proj,
+      const bbs = context.billboards;
+      const result = this.olPointGeometryToCesium(layer, feature, geom, proj,
           style, bbs, newBillboardAddedCallback);
       if (!result) {
         // no wrapping primitive
@@ -934,7 +934,7 @@ olcs.FeatureConverter.prototype.olFeatureToCesium = function(layer, feature, sty
     case 'MultiPoint':
     case 'MultiLineString':
     case 'MultiPolygon':
-      var result2 = this.olMultiGeometryToCesium(layer, feature, geom, proj,
+      const result2 = this.olMultiGeometryToCesium(layer, feature, geom, proj,
           style, context.billboards, newBillboardAddedCallback);
       if (!result2) {
         // no wrapping primitive
@@ -961,8 +961,8 @@ olcs.FeatureConverter.prototype.olFeatureToCesium = function(layer, feature, sty
  * @api
  */
 olcs.FeatureConverter.prototype.olVectorLayerToCesium = function(olLayer, olView, featurePrimitiveMap) {
-  var proj = olView.getProjection();
-  var resolution = olView.getResolution();
+  const proj = olView.getProjection();
+  const resolution = olView.getResolution();
 
   if (resolution === undefined || !proj) {
     goog.asserts.fail('View not ready');
@@ -971,7 +971,7 @@ olcs.FeatureConverter.prototype.olVectorLayerToCesium = function(olLayer, olView
     throw new Error('View not ready');
   }
 
-  var source = olLayer.getSource();
+  let source = olLayer.getSource();
   if (olLayer instanceof ol.layer.Image) {
     if (source instanceof ol.source.ImageVector) {
       source = source.getSource();
@@ -982,32 +982,32 @@ olcs.FeatureConverter.prototype.olVectorLayerToCesium = function(olLayer, olView
   }
 
   goog.asserts.assertInstanceof(source, ol.source.Vector);
-  var features = source.getFeatures();
-  var counterpart = new olcs.core.VectorLayerCounterpart(proj, this.scene);
-  var context = counterpart.context;
-  for (var i = 0; i < features.length; ++i) {
-    var feature = features[i];
+  const features = source.getFeatures();
+  const counterpart = new olcs.core.VectorLayerCounterpart(proj, this.scene);
+  const context = counterpart.context;
+  for (let i = 0; i < features.length; ++i) {
+    const feature = features[i];
     if (!feature) {
       continue;
     }
     /**
      * @type {ol.StyleFunction|undefined}
      */
-    var layerStyle;
+    let layerStyle;
     if (olLayer instanceof ol.layer.Image) {
-      var imageSource = olLayer.getSource();
+      const imageSource = olLayer.getSource();
       goog.asserts.assertInstanceof(imageSource, ol.source.ImageVector);
       layerStyle = imageSource.getStyleFunction();
     } else {
       layerStyle = olLayer.getStyleFunction();
     }
-    var style = this.computePlainStyle(olLayer, feature, layerStyle,
+    const style = this.computePlainStyle(olLayer, feature, layerStyle,
         resolution);
     if (!style) {
       // only 'render' features with a style
       continue;
     }
-    var primitives = this.olFeatureToCesium(olLayer, feature, style, context);
+    const primitives = this.olFeatureToCesium(olLayer, feature, style, context);
     if (!primitives) {
       continue;
     }
@@ -1029,8 +1029,8 @@ olcs.FeatureConverter.prototype.olVectorLayerToCesium = function(olLayer, olView
  * @api
  */
 olcs.FeatureConverter.prototype.convert = function(layer, view, feature, context) {
-  var proj = view.getProjection();
-  var resolution = view.getResolution();
+  const proj = view.getProjection();
+  const resolution = view.getResolution();
 
   if (resolution == undefined || !proj) {
     return null;
@@ -1039,9 +1039,9 @@ olcs.FeatureConverter.prototype.convert = function(layer, view, feature, context
   /**
    * @type {ol.StyleFunction|undefined}
    */
-  var layerStyle;
+  let layerStyle;
   if (layer instanceof ol.layer.Image) {
-    var imageSource = layer.getSource();
+    const imageSource = layer.getSource();
     if (imageSource instanceof ol.source.ImageVector) {
       layerStyle = imageSource.getStyleFunction();
     } else {
@@ -1050,7 +1050,7 @@ olcs.FeatureConverter.prototype.convert = function(layer, view, feature, context
   } else {
     layerStyle = layer.getStyleFunction();
   }
-  var style = this.computePlainStyle(layer, feature, layerStyle, resolution);
+  const style = this.computePlainStyle(layer, feature, layerStyle, resolution);
 
   if (!style) {
     // only 'render' features with a style

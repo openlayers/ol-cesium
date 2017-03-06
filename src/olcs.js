@@ -30,13 +30,13 @@ olcs.util.imageRenderingValueResult_ = undefined;
  */
 olcs.util.supportsImageRenderingPixelated = function() {
   if (olcs.util.supportsImageRenderingPixelatedResult_ === undefined) {
-    var canvas = document.createElement('canvas');
+    const canvas = document.createElement('canvas');
     canvas.setAttribute('style',
                         'image-rendering: -moz-crisp-edges;' +
                         'image-rendering: pixelated;');
     // canvas.style.imageRendering will be undefined, null or an
     // empty string on unsupported browsers.
-    var tmp = canvas.style['imageRendering']; // non standard
+    const tmp = canvas.style['imageRendering']; // non standard
     olcs.util.supportsImageRenderingPixelatedResult_ = !!tmp;
     if (olcs.util.supportsImageRenderingPixelatedResult_) {
       olcs.util.imageRenderingValueResult_ = tmp;
