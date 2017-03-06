@@ -2,6 +2,9 @@
 
 # v 1.25
 
+* Breaking changes
+  * Stop returning promise from olcs.core.rotateAroundAxis function.
+
 * Changes
   * Port to Cesium 1.31.
   * Add example rotate.html about animating rotation of the Cesium globe.
