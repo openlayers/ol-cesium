@@ -181,7 +181,7 @@ olcs.core.OLImageryProvider.createCreditForSource = function(source) {
   let text = '';
   const attributions = source.getAttributions();
   if (attributions) {
-    attributions.forEach(function(el) {
+    attributions.forEach((el) => {
       // strip html tags (not supported in Cesium)
       text += `${el.getHTML().replace(/<\/?[^>]+(>|$)/g, '')} `;
     });

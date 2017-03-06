@@ -98,7 +98,7 @@ olcs.RasterSynchronizer.prototype.createSingleLayerCounterparts = function(olLay
   const cesiumObjects = this.convertLayerToCesiumImageries(olLayer, viewProj);
   if (cesiumObjects) {
     olLayer.on(['change:opacity', 'change:visible'],
-        function(e) {
+        (e) => {
           // the compiler does not seem to be able to infer this
           goog.asserts.assert(cesiumObjects);
           for (let i = 0; i < cesiumObjects.length; ++i) {
@@ -157,14 +157,14 @@ olcs.RasterSynchronizer.prototype.orderLayers = function() {
       const sublayers = olLayer.getLayers();
       if (sublayers) {
         // Prepend queue with sublayers in order
-        queue.unshift.apply(queue, sublayers.getArray());
+        queue.unshift(...sublayers.getArray());
       }
     }
   }
 
-  ol.array.stableSort(layers, function(layer1, layer2) {
-    return zIndices[ol.getUid(layer1)] - zIndices[ol.getUid(layer2)];
-  });
+  ol.array.stableSort(layers, (layer1, layer2) =>
+     zIndices[ol.getUid(layer1)] - zIndices[ol.getUid(layer2)]
+  );
 
   layers.forEach(function(olLayer) {
     const olLayerId = ol.getUid(olLayer).toString();

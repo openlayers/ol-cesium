@@ -320,9 +320,9 @@ Object.defineProperties(olcs.OLCesium.prototype, {
         // Create an invisible point entity for tracking.
         // It is independant from the primitive/geometry created by the vector synchronizer.
         const options = {
-          'position': new Cesium.CallbackProperty(function(time, result) {
-            return toCesiumPosition();
-          }, false),
+          'position': new Cesium.CallbackProperty((time, result) =>
+             toCesiumPosition()
+          , false),
           'point': {
             'pixelSize': 1,
             'color': Cesium.Color.TRANSPARENT
@@ -551,7 +551,7 @@ olcs.OLCesium.prototype.setEnabled = function(enable) {
   } else {
     if (this.isOverMap_) {
       interactions = this.map_.getInteractions();
-      this.pausedInteractions_.forEach(function(interaction) {
+      this.pausedInteractions_.forEach((interaction) => {
         interactions.push(interaction);
       });
       this.pausedInteractions_.length = 0;
@@ -591,9 +591,9 @@ olcs.OLCesium.prototype.warmUp = function(height, timeout) {
   this.warmingUp_ = true;
   this.render_();
 
-  setTimeout((function() {
+  setTimeout(() => {
     this.warmingUp_ = false;
-  }).bind(this), timeout);
+  }, timeout);
 };
 
 

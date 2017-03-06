@@ -112,7 +112,7 @@ olcs.VectorSynchronizer.prototype.createSingleLayerCounterparts = function(olLay
 
   csPrimitives.show = olLayer.getVisible();
 
-  olListenKeys.push(ol.events.listen(olLayer, 'change:visible', function(e) {
+  olListenKeys.push(ol.events.listen(olLayer, 'change:visible', (e) => {
     csPrimitives.show = olLayer.getVisible();
   }));
 
@@ -147,17 +147,17 @@ olcs.VectorSynchronizer.prototype.createSingleLayerCounterparts = function(olLay
     }
   }).bind(this);
 
-  olListenKeys.push(ol.events.listen(source, 'addfeature', function(e) {
+  olListenKeys.push(ol.events.listen(source, 'addfeature', (e) => {
     goog.asserts.assert(e.feature);
     onAddFeature(e.feature);
   }, this));
 
-  olListenKeys.push(ol.events.listen(source, 'removefeature', function(e) {
+  olListenKeys.push(ol.events.listen(source, 'removefeature', (e) => {
     goog.asserts.assert(e.feature);
     onRemoveFeature(e.feature);
   }, this));
 
-  olListenKeys.push(ol.events.listen(source, 'changefeature', function(e) {
+  olListenKeys.push(ol.events.listen(source, 'changefeature', (e) => {
     const feature = e.feature;
     goog.asserts.assert(feature);
     onRemoveFeature(feature);

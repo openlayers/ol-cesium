@@ -98,7 +98,7 @@ olcs.FeatureConverter.prototype.createColoredPrimitive = function(layer, feature
   const createInstance = function(geometry, color) {
     return new Cesium.GeometryInstance({
       // always update Cesium externs before adding a property
-      geometry: geometry,
+      geometry,
       attributes: {
         color: Cesium.ColorGeometryInstanceAttribute.fromColor(color)
       }
@@ -142,7 +142,7 @@ olcs.FeatureConverter.prototype.createColoredPrimitive = function(layer, feature
     primitive = new Cesium.Primitive({
       // always update Cesium externs before adding a property
       geometryInstances: instances,
-      appearance: appearance
+      appearance
     });
   }
 
@@ -309,17 +309,17 @@ olcs.FeatureConverter.prototype.olCircleGeometryToCesium = function(layer, featu
 
   const fillGeometry = new Cesium.CircleGeometry({
     // always update Cesium externs before adding a property
-    center: center,
-    radius: radius,
-    height: height
+    center,
+    radius,
+    height
   });
 
   const outlineGeometry = new Cesium.CircleOutlineGeometry({
     // always update Cesium externs before adding a property
-    center: center,
-    radius: radius,
+    center,
+    radius,
     extrudedHeight: height,
-    height: height
+    height
   });
 
   const primitives = this.wrapFillAndOutlineGeometries(
@@ -354,7 +354,7 @@ olcs.FeatureConverter.prototype.olLineStringGeometryToCesium = function(layer, f
 
   const geometryOptions = {
     // always update Cesium externs before adding a property
-    positions: positions,
+    positions,
     width: this.extractLineWidthFromOlStyle(olStyle),
     vertexFormat: appearance.vertexFormat
   };
@@ -379,7 +379,7 @@ olcs.FeatureConverter.prototype.olLineStringGeometryToCesium = function(layer, f
       geometryInstances: new Cesium.GeometryInstance({
         geometry: new Cesium.PolylineGeometry(geometryOptions)
       }),
-      appearance: appearance
+      appearance
     });
   }
 
@@ -426,13 +426,13 @@ olcs.FeatureConverter.prototype.olPolygonGeometryToCesium = function(layer, feat
     // Render the cartographic rectangle
     fillGeometry = new Cesium.RectangleGeometry({
       ellipsoid: Cesium.Ellipsoid.WGS84,
-      rectangle: rectangle,
+      rectangle,
       height: maxHeight
     });
 
     outlineGeometry = new Cesium.RectangleOutlineGeometry({
       ellipsoid: Cesium.Ellipsoid.WGS84,
-      rectangle: rectangle,
+      rectangle,
       height: maxHeight
     });
   } else {
@@ -453,14 +453,14 @@ olcs.FeatureConverter.prototype.olPolygonGeometryToCesium = function(layer, feat
           hierarchy.holes = [];
         }
         hierarchy.holes.push({
-          positions: positions
+          positions
         });
       }
     }
 
     fillGeometry = new Cesium.PolygonGeometry({
       // always update Cesium externs before adding a property
-      polygonHierarchy: polygonHierarchy,
+      polygonHierarchy,
       perPositionHeight: true
     });
 
@@ -564,12 +564,12 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium = function(layer, featur
 
       const bbOptions = /** @type {Cesium.optionsBillboardCollectionAdd} */ ({
         // always update Cesium externs before adding a property
-        image: image,
-        color: color,
+        image,
+        color,
         scale: imageStyle.getScale(),
-        heightReference: heightReference,
+        heightReference,
         verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-        position: position
+        position
       });
       const bb = this.csAddBillboard(billboards, bbOptions, layer, feature,
           olGeometry, style);
@@ -646,7 +646,7 @@ olcs.FeatureConverter.prototype.olMultiGeometryToCesium = function(layer, featur
   // instead we create n primitives for simplicity.
   const accumulate = function(geometries, functor) {
     const primitives = new Cesium.PrimitiveCollection();
-    geometries.forEach(function(geometry) {
+    geometries.forEach((geometry) => {
       primitives.add(functor(layer, feature, geometry, projection, olStyle));
     });
     return primitives;
@@ -659,21 +659,21 @@ olcs.FeatureConverter.prototype.olMultiGeometryToCesium = function(layer, featur
       subgeos = geometry.getPoints();
       if (olStyle.getText()) {
         const primitives = new Cesium.PrimitiveCollection();
-        subgeos.forEach(function(geometry) {
+        subgeos.forEach((geometry) => {
           goog.asserts.assert(geometry);
           const result = this.olPointGeometryToCesium(layer, feature, geometry,
               projection, olStyle, billboards, opt_newBillboardCallback);
           if (result) {
             primitives.add(result);
           }
-        }.bind(this));
+        });
         return primitives;
       } else {
-        subgeos.forEach(function(geometry) {
+        subgeos.forEach((geometry) => {
           goog.asserts.assert(geometry);
           this.olPointGeometryToCesium(layer, feature, geometry, projection,
               olStyle, billboards, opt_newBillboardCallback);
-        }.bind(this));
+        });
         return null;
       }
     case 'MultiLineString':
@@ -821,7 +821,7 @@ olcs.FeatureConverter.prototype.olStyleToCesium = function(feature, style, outli
   } else {
     return Cesium.Material.fromType('Color', {
       // always update Cesium externs before adding a property
-      color: color
+      color
     });
   }
 
@@ -898,7 +898,7 @@ olcs.FeatureConverter.prototype.olFeatureToCesium = function(layer, feature, sty
       const primitives = new Cesium.PrimitiveCollection();
       const collection = /** @type {!ol.geom.GeometryCollection} */ (geom);
       // TODO: use getGeometriesArray() instead
-      collection.getGeometries().forEach(function(geom) {
+      collection.getGeometries().forEach((geom) => {
         if (geom) {
           const prims = this.olFeatureToCesium(layer, feature, style, context,
               geom);
@@ -906,7 +906,7 @@ olcs.FeatureConverter.prototype.olFeatureToCesium = function(layer, feature, sty
             primitives.add(prims);
           }
         }
-      }.bind(this));
+      });
       return primitives;
     case 'Point':
       geom = /** @type {!ol.geom.Point} */ (geom);

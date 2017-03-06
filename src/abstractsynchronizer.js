@@ -110,7 +110,7 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
       this.listenForGroupChanges_(olLayer);
       cesiumObjects = this.createSingleLayerCounterparts(olLayer);
       if (!cesiumObjects) {
-        olLayer.getLayers().forEach(function(l) {
+        olLayer.getLayers().forEach((l) => {
           if (l) {
             fifo.push(l);
           }
@@ -168,7 +168,7 @@ olcs.AbstractSynchronizer.prototype.unlistenSingleGroup_ = function(group) {
   }
   const uid = ol.getUid(group).toString();
   const keys = this.olGroupListenKeys_[uid];
-  keys.forEach(function(key) {
+  keys.forEach((key) => {
     ol.Observable.unByKey(key);
   });
   delete this.olGroupListenKeys_[uid];
@@ -192,7 +192,7 @@ olcs.AbstractSynchronizer.prototype.removeLayer_ = function(root) {
         if (!done) {
           // No counterpart for the group itself so removing
           // each of the child layers.
-          olLayer.getLayers().forEach(function(l) {
+          olLayer.getLayers().forEach((l) => {
             fifo.push(l);
           });
         }
@@ -228,14 +228,14 @@ olcs.AbstractSynchronizer.prototype.listenForGroupChanges_ = function(group) {
           this.removeLayer_(event.element);
         }, this)
       ];
-      listenKeyArray.push.apply(listenKeyArray, contentKeys);
+      listenKeyArray.push(...contentKeys);
     }
   }).bind(this);
 
   listenAddRemove();
 
-  listenKeyArray.push(group.on('change:layers', function(e) {
-    contentKeys.forEach(function(el) {
+  listenKeyArray.push(group.on('change:layers', (e) => {
+    contentKeys.forEach((el) => {
       const i = listenKeyArray.indexOf(el);
       if (i >= 0) {
         listenKeyArray.splice(i, 1);

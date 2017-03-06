@@ -62,7 +62,7 @@ olcs.core.computeBoundingBoxAtTarget = function(scene, target, amount) {
  * @api
  */
 olcs.core.applyHeightOffsetToGeometry = function(geometry, height) {
-  geometry.applyTransform(function(input, output, stride) {
+  geometry.applyTransform((input, output, stride) => {
     goog.asserts.assert(input === output);
     if (stride !== undefined && stride >= 3) {
       for (let i = 0; i < output.length; i += stride) {
@@ -526,7 +526,7 @@ olcs.core.convertUrlToCesium = function(url) {
     }
   }
   return {
-    url: url,
-    subdomains: subdomains
+    url,
+    subdomains
   };
 };

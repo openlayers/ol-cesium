@@ -362,8 +362,8 @@ olcs.Camera.prototype.updateCamera_ = function() {
     roll: undefined
   };
   this.cam_.setView({
-    destination: destination,
-    orientation: orientation
+    destination,
+    orientation
   });
 
   this.cam_.moveBackward(this.distance_);
