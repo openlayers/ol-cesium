@@ -2,7 +2,6 @@ goog.provide('olcs.core');
 
 goog.require('goog.Promise');
 goog.require('goog.asserts');
-goog.require('goog.async.AnimationDelay');
 goog.require('ol.layer.Tile');
 goog.require('ol.proj');
 goog.require('ol.source.TileImage');
@@ -99,14 +98,16 @@ olcs.core.rotateAroundAxis = function(camera, angle, axis, transform,
   var easing = defaultValue(options.easing, ol.easing.linear);
   var callback = options.callback;
 
-  var start = Date.now();
   var lastProgress = 0;
   var oldTransform = new Cesium.Matrix4();
 
   return new goog.Promise(function(resolve, reject) {
-    var animation = new goog.async.AnimationDelay(function(millis) {
-      var progress = easing(clamp((millis - start) / duration, 0, 1));
-      goog.asserts.assert(progress > lastProgress);
+    var start = Date.now();
+    var step = function() {
+      var timestamp = Date.now();
+      var timeDifference = timestamp - start;
+      var progress = easing(clamp(timeDifference / duration, 0, 1));
+      goog.asserts.assert(progress >= lastProgress);
 
       camera.transform.clone(oldTransform);
       var stepAngle = (progress - lastProgress) * angle;
@@ -116,15 +117,15 @@ olcs.core.rotateAroundAxis = function(camera, angle, axis, transform,
       camera.lookAtTransform(oldTransform);
 
       if (progress < 1) {
-        animation.start();
+        window.requestAnimationFrame(step);
       } else {
         if (callback) {
           callback();
         }
         resolve();
       }
-    });
-    animation.start();
+    };
+    window.requestAnimationFrame(step);
   });
 };
 
