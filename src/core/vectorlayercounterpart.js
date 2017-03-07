@@ -11,8 +11,8 @@ goog.require('ol.Observable');
  * @param {!Cesium.Scene} scene
  */
 olcs.core.VectorLayerCounterpart = function(layerProjection, scene) {
-  var billboards = new Cesium.BillboardCollection({scene: scene});
-  var primitives = new Cesium.PrimitiveCollection();
+  const billboards = new Cesium.BillboardCollection({scene});
+  const primitives = new Cesium.PrimitiveCollection();
 
   /**
    * @type {!Array.<ol.EventsKey>}
@@ -25,9 +25,9 @@ olcs.core.VectorLayerCounterpart = function(layerProjection, scene) {
    */
   this.context = {
     projection: layerProjection,
-    billboards: billboards,
+    billboards,
     featureToCesiumMap: {},
-    primitives: primitives
+    primitives
   };
 
   this.rootCollection_.add(billboards);

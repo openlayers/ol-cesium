@@ -33,7 +33,7 @@
       "api", "observable"
     ],
     "compilation_level": "ADVANCED_OPTIMIZATIONS",
-    "language_in": "ECMASCRIPT5_STRICT",
+    "language_in": "ECMASCRIPT6_STRICT",
     "language_out": "ECMASCRIPT5_STRICT",
     "warning_level": "VERBOSE",
     "generate_exports": true,

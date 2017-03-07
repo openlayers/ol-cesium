@@ -40,7 +40,7 @@ olcs.core.OLImageryProvider = function(source, opt_fallbackProj) {
 
   this.ready_ = false;
 
-  var proxy = this.source_.get('olcs.proxy');
+  const proxy = this.source_.get('olcs.proxy');
   if (proxy) {
     if (typeof proxy === 'function') {
       this.proxy_ = {
@@ -80,7 +80,7 @@ Object.defineProperties(olcs.core.OLImageryProvider.prototype, {
   'tileWidth': {
     'get': /** @this {olcs.core.OLImageryProvider} */
         function() {
-          var tg = this.source_.getTileGrid();
+          const tg = this.source_.getTileGrid();
           return tg ? tg.getTileSize(0) : 256;
         }
   },
@@ -93,7 +93,7 @@ Object.defineProperties(olcs.core.OLImageryProvider.prototype, {
   'maximumLevel': {
     'get': /** @this {olcs.core.OLImageryProvider} */
         function() {
-          var tg = this.source_.getTileGrid();
+          const tg = this.source_.getTileGrid();
           return tg ? tg.getMaxZoom() : 18;
         }
   },
@@ -151,7 +151,7 @@ Object.defineProperties(olcs.core.OLImageryProvider.prototype, {
  */
 olcs.core.OLImageryProvider.prototype.handleSourceChanged_ = function() {
   if (!this.ready_ && this.source_.getState() == 'ready') {
-    var proj = this.source_.getProjection();
+    const proj = this.source_.getProjection();
     this.projection_ = proj ? proj : this.fallbackProj_;
     if (this.projection_ == ol.proj.get('EPSG:4326')) {
       this.tilingScheme_ = new Cesium.GeographicTilingScheme();
@@ -162,7 +162,7 @@ olcs.core.OLImageryProvider.prototype.handleSourceChanged_ = function() {
     }
     this.rectangle_ = this.tilingScheme_.rectangle;
 
-    var credit =
+    const credit =
         olcs.core.OLImageryProvider.createCreditForSource(this.source_);
     this.credit_ = credit || undefined;
 
@@ -178,21 +178,21 @@ olcs.core.OLImageryProvider.prototype.handleSourceChanged_ = function() {
  * @return {?Cesium.Credit}
  */
 olcs.core.OLImageryProvider.createCreditForSource = function(source) {
-  var text = '';
-  var attributions = source.getAttributions();
+  let text = '';
+  const attributions = source.getAttributions();
   if (attributions) {
-    attributions.forEach(function(el) {
+    attributions.forEach((el) => {
       // strip html tags (not supported in Cesium)
-      text += el.getHTML().replace(/<\/?[^>]+(>|$)/g, '') + ' ';
+      text += `${el.getHTML().replace(/<\/?[^>]+(>|$)/g, '')} `;
     });
   }
 
-  var imageUrl, link;
+  let imageUrl, link;
   if (text.length == 0) {
     // only use logo if no text is specified
     // otherwise the Cesium will automatically skip the text:
     // "The text to be displayed on the screen if no imageUrl is specified."
-    var logo = source.getLogo();
+    const logo = source.getLogo();
     if (logo) {
       if (typeof logo == 'string') {
         imageUrl = logo;
@@ -223,17 +223,17 @@ olcs.core.OLImageryProvider.prototype.getTileCredits = function(x, y, level) {
  * @override
  */
 olcs.core.OLImageryProvider.prototype.requestImage = function(x, y, level) {
-  var tileUrlFunction = this.source_.getTileUrlFunction();
+  const tileUrlFunction = this.source_.getTileUrlFunction();
   if (tileUrlFunction && this.projection_) {
 
     // Perform mapping of Cesium tile coordinates to OpenLayers tile coordinates:
     // 1) Cesium zoom level 0 is OpenLayers zoom level 1 for EPSG:4326
-    var z_ = this.tilingScheme_ instanceof Cesium.GeographicTilingScheme ?
+    const z_ = this.tilingScheme_ instanceof Cesium.GeographicTilingScheme ?
         level + 1 : level;
     // 2) OpenLayers tile coordinates increase from bottom to top
-    var y_ = -y - 1;
+    const y_ = -y - 1;
 
-    var url = tileUrlFunction.call(this.source_,
+    let url = tileUrlFunction.call(this.source_,
         [z_, x, y_], 1, this.projection_);
     if (this.proxy_) {
       url = this.proxy_.getURL(url);

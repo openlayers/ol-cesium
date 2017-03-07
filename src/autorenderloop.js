@@ -58,7 +58,7 @@ olcs.AutoRenderLoop = function(ol3d, debug) {
  * @private
  */
 olcs.AutoRenderLoop.prototype.repaintOn_ = function(key, capture) {
-  var canvas = this.scene_.canvas;
+  const canvas = this.scene_.canvas;
   canvas.addEventListener(key, this._boundNotifyRepaintRequired, capture);
 };
 
@@ -69,7 +69,7 @@ olcs.AutoRenderLoop.prototype.repaintOn_ = function(key, capture) {
  * @private
  */
 olcs.AutoRenderLoop.prototype.removeRepaintOn_ = function(key, capture) {
-  var canvas = this.scene_.canvas;
+  const canvas = this.scene_.canvas;
   canvas.removeEventListener(key, this._boundNotifyRepaintRequired, capture);
 };
 
@@ -96,7 +96,7 @@ olcs.AutoRenderLoop.prototype.enable = function() {
   window.addEventListener('resize', this._boundNotifyRepaintRequired, false);
 
   // Hacky way to force a repaint when an async load request completes
-  var that = this;
+  const that = this;
   Cesium.loadWithXhr.load = function(url, responseType, method, data,
       headers, deferred, overrideMimeType, preferText, timeout) {
     deferred['promise']['always'](that._boundNotifyRepaintRequired);
@@ -106,12 +106,12 @@ olcs.AutoRenderLoop.prototype.enable = function() {
 
   // Hacky way to force a repaint when a web worker sends something back.
   Cesium.TaskProcessor.prototype.scheduleTask = function(parameters, transferableObjects) {
-    var result = that._originalScheduleTask.call(this, parameters,
+    const result = that._originalScheduleTask.call(this, parameters,
         transferableObjects);
 
-    var taskProcessor = this;
+    const taskProcessor = this;
     if (!taskProcessor._originalWorkerMessageSinkRepaint) {
-      var worker = taskProcessor['_worker'];
+      const worker = taskProcessor['_worker'];
       taskProcessor._originalWorkerMessageSinkRepaint = worker.onmessage;
       worker.onmessage = function(event) {
         taskProcessor._originalWorkerMessageSinkRepaint(event);
@@ -122,24 +122,24 @@ olcs.AutoRenderLoop.prototype.enable = function() {
     return result;
   };
 
-  Cesium.Camera.prototype.setView = function() {
-    that._originalCameraSetView.apply(this, arguments);
+  Cesium.Camera.prototype.setView = function(...args) {
+    that._originalCameraSetView.apply(this, args);
     that.notifyRepaintRequired();
   };
-  Cesium.Camera.prototype.move = function() {
-    that._originalCameraMove.apply(this, arguments);
+  Cesium.Camera.prototype.move = function(...args) {
+    that._originalCameraMove.apply(this, args);
     that.notifyRepaintRequired();
   };
-  Cesium.Camera.prototype.rotate = function() {
-    that._originalCameraRotate.apply(this, arguments);
+  Cesium.Camera.prototype.rotate = function(...args) {
+    that._originalCameraRotate.apply(this, args);
     that.notifyRepaintRequired();
   };
-  Cesium.Camera.prototype.lookAt = function() {
-    that._originalCameraLookAt.apply(this, arguments);
+  Cesium.Camera.prototype.lookAt = function(...args) {
+    that._originalCameraLookAt.apply(this, args);
     that.notifyRepaintRequired();
   };
-  Cesium.Camera.prototype.flyTo = function() {
-    that._originalCameraFlyTo.apply(this, arguments);
+  Cesium.Camera.prototype.flyTo = function(...args) {
+    that._originalCameraFlyTo.apply(this, args);
     that.notifyRepaintRequired();
   };
 
@@ -198,29 +198,29 @@ olcs.AutoRenderLoop.prototype.postRender = function(date) {
   //  - the clock is not animating
   //  - there are no tweens in progress
 
-  var now = Date.now();
+  const now = Date.now();
 
-  var scene = this.scene_;
-  var camera = scene.camera;
+  const scene = this.scene_;
+  const camera = scene.camera;
 
   if (!Cesium.Matrix4.equalsEpsilon(this.lastCameraViewMatrix_,
       camera.viewMatrix, 1e-5)) {
     this.lastCameraMoveTime_ = now;
   }
 
-  var cameraMovedInLastSecond = now - this.lastCameraMoveTime_ < 1000;
+  const cameraMovedInLastSecond = now - this.lastCameraMoveTime_ < 1000;
 
-  var surface = scene.globe['_surface'];
-  var tilesWaiting = !surface['tileProvider'].ready ||
+  const surface = scene.globe['_surface'];
+  const tilesWaiting = !surface['tileProvider'].ready ||
       surface['_tileLoadQueueHigh'].length > 0 ||
       surface['_tileLoadQueueMedium'].length > 0 ||
       surface['_tileLoadQueueLow'].length > 0 ||
       surface['_debug']['tilesWaitingForChildren'] > 0;
 
-  var tweens = scene['tweens'];
+  const tweens = scene['tweens'];
   if (!cameraMovedInLastSecond && !tilesWaiting && tweens.length == 0) {
     if (this.verboseRendering) {
-      console.log('stopping rendering @ ' + Date.now());
+      console.log(`stopping rendering @ ${Date.now()}`);
     }
     this.ol3d.setBlockCesiumRendering(true);
     this.stoppedRendering = true;
@@ -245,7 +245,7 @@ olcs.AutoRenderLoop.prototype.restartRenderLoop = function() {
  */
 olcs.AutoRenderLoop.prototype.notifyRepaintRequired = function() {
   if (this.verboseRendering && this.stoppedRendering) {
-    console.log('starting rendering @ ' + Date.now());
+    console.log(`starting rendering @ ${Date.now()}`);
   }
   this.lastCameraMoveTime_ = Date.now();
   // TODO: do not unblock if not blocked by us

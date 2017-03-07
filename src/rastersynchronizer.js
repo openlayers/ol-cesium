@@ -66,7 +66,7 @@ olcs.RasterSynchronizer.prototype.removeSingleCesiumObject = function(object, de
  * @inheritDoc
  */
 olcs.RasterSynchronizer.prototype.removeAllCesiumObjects = function(destroy) {
-  for (var i = 0; i < this.ourLayers_.length; ++i) {
+  for (let i = 0; i < this.ourLayers_.length; ++i) {
     this.cesiumLayers_.remove(this.ourLayers_.get(i), destroy);
   }
   this.ourLayers_.removeAll(false);
@@ -85,7 +85,7 @@ olcs.RasterSynchronizer.prototype.removeAllCesiumObjects = function(destroy) {
  * @protected
  */
 olcs.RasterSynchronizer.prototype.convertLayerToCesiumImageries = function(olLayer, viewProj) {
-  var result = olcs.core.tileLayerToImageryLayer(olLayer, viewProj);
+  const result = olcs.core.tileLayerToImageryLayer(olLayer, viewProj);
   return result ? [result] : null;
 };
 
@@ -94,26 +94,26 @@ olcs.RasterSynchronizer.prototype.convertLayerToCesiumImageries = function(olLay
  * @inheritDoc
  */
 olcs.RasterSynchronizer.prototype.createSingleLayerCounterparts = function(olLayer) {
-  var viewProj = this.view.getProjection();
-  var cesiumObjects = this.convertLayerToCesiumImageries(olLayer, viewProj);
+  const viewProj = this.view.getProjection();
+  const cesiumObjects = this.convertLayerToCesiumImageries(olLayer, viewProj);
   if (cesiumObjects) {
     olLayer.on(['change:opacity', 'change:visible'],
-        function(e) {
+        (e) => {
           // the compiler does not seem to be able to infer this
           goog.asserts.assert(cesiumObjects);
-          for (var i = 0; i < cesiumObjects.length; ++i) {
+          for (let i = 0; i < cesiumObjects.length; ++i) {
             olcs.core.updateCesiumLayerProperties(olLayer, cesiumObjects[i]);
           }
         });
 
-    for (var i = 0; i < cesiumObjects.length; ++i) {
+    for (let i = 0; i < cesiumObjects.length; ++i) {
       olcs.core.updateCesiumLayerProperties(olLayer, cesiumObjects[i]);
     }
 
     // there is no way to modify Cesium layer extent,
     // we have to recreate when OpenLayers layer extent changes:
     olLayer.on('change:extent', function(e) {
-      for (var i = 0; i < cesiumObjects.length; ++i) {
+      for (let i = 0; i < cesiumObjects.length; ++i) {
         this.cesiumLayers_.remove(cesiumObjects[i], true); // destroy
         this.ourLayers_.remove(cesiumObjects[i], false);
       }
@@ -123,8 +123,8 @@ olcs.RasterSynchronizer.prototype.createSingleLayerCounterparts = function(olLay
 
     olLayer.on('change', function(e) {
       // when the source changes, re-add the layer to force update
-      for (var i = 0; i < cesiumObjects.length; ++i) {
-        var position = this.cesiumLayers_.indexOf(cesiumObjects[i]);
+      for (let i = 0; i < cesiumObjects.length; ++i) {
+        const position = this.cesiumLayers_.indexOf(cesiumObjects[i]);
         if (position >= 0) {
           this.cesiumLayers_.remove(cesiumObjects[i], false);
           this.cesiumLayers_.add(cesiumObjects[i], position);
@@ -144,31 +144,31 @@ olcs.RasterSynchronizer.prototype.createSingleLayerCounterparts = function(olLay
  * @protected
  */
 olcs.RasterSynchronizer.prototype.orderLayers = function() {
-  var layers = [];
-  var zIndices = {};
-  var queue = [this.mapLayerGroup];
+  const layers = [];
+  const zIndices = {};
+  const queue = [this.mapLayerGroup];
 
   while (queue.length > 0) {
-    var olLayer = queue.splice(0, 1)[0];
+    const olLayer = queue.splice(0, 1)[0];
     layers.push(olLayer);
     zIndices[ol.getUid(olLayer)] = olLayer.getZIndex();
 
     if (olLayer instanceof ol.layer.Group) {
-      var sublayers = olLayer.getLayers();
+      const sublayers = olLayer.getLayers();
       if (sublayers) {
         // Prepend queue with sublayers in order
-        queue.unshift.apply(queue, sublayers.getArray());
+        queue.unshift(...sublayers.getArray());
       }
     }
   }
 
-  ol.array.stableSort(layers, function(layer1, layer2) {
-    return zIndices[ol.getUid(layer1)] - zIndices[ol.getUid(layer2)];
-  });
+  ol.array.stableSort(layers, (layer1, layer2) =>
+     zIndices[ol.getUid(layer1)] - zIndices[ol.getUid(layer2)]
+  );
 
   layers.forEach(function(olLayer) {
-    var olLayerId = ol.getUid(olLayer).toString();
-    var cesiumObjects = this.layerMap[olLayerId];
+    const olLayerId = ol.getUid(olLayer).toString();
+    const cesiumObjects = this.layerMap[olLayerId];
     if (cesiumObjects) {
       cesiumObjects.forEach(this.raiseToTop, this);
     }

@@ -1,5 +1,8 @@
 {
-  "extends": "openlayers",
+  "extends": [
+    "openlayers",
+    ".eslintrc-es6.yaml"
+  ],
   "rules": {
     "no-console": 0,
     "no-extra-boolean-cast": 0,

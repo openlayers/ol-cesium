@@ -8,6 +8,7 @@
 * Changes
   * Port to Cesium 1.31.
   * Add example rotate.html about animating rotation of the Cesium globe.
+  * Convert source to Ecmascript 6. Continue to output Ecmascript 5.1.
 
 # v 1.24.3 - 2017-02-17
 

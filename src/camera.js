@@ -101,9 +101,9 @@ olcs.Camera = function(scene, map) {
  * @return {Array.<number>} Input coordinate array (same array as input).
  */
 olcs.Camera.identityProjection = function(input, opt_output, opt_dimension) {
-  var dim = opt_dimension || input.length;
+  const dim = opt_dimension || input.length;
   if (opt_output) {
-    for (var i = 0; i < dim; ++i) {
+    for (let i = 0; i < dim; ++i) {
       opt_output[i] = input[i];
     }
   }
@@ -123,8 +123,8 @@ olcs.Camera.prototype.setView_ = function(view) {
 
   this.view_ = view;
   if (view) {
-    var toLonLat = ol.proj.getTransform(view.getProjection(), 'EPSG:4326');
-    var fromLonLat = ol.proj.getTransform('EPSG:4326', view.getProjection());
+    const toLonLat = ol.proj.getTransform(view.getProjection(), 'EPSG:4326');
+    const fromLonLat = ol.proj.getTransform('EPSG:4326', view.getProjection());
     goog.asserts.assert(toLonLat && fromLonLat);
 
     this.toLonLat_ = toLonLat;
@@ -173,7 +173,7 @@ olcs.Camera.prototype.getHeading = function() {
   if (!this.view_) {
     return undefined;
   }
-  var rotation = this.view_.getRotation();
+  const rotation = this.view_.getRotation();
   return rotation || 0;
 };
 
@@ -252,10 +252,10 @@ olcs.Camera.prototype.setPosition = function(position) {
   if (!this.toLonLat_) {
     return;
   }
-  var ll = this.toLonLat_(position);
+  const ll = this.toLonLat_(position);
   goog.asserts.assert(ll);
 
-  var carto = new Cesium.Cartographic(ol.math.toRadians(ll[0]),
+  const carto = new Cesium.Cartographic(ol.math.toRadians(ll[0]),
                                       ol.math.toRadians(ll[1]),
                                       this.getAltitude());
 
@@ -273,10 +273,10 @@ olcs.Camera.prototype.getPosition = function() {
   if (!this.fromLonLat_) {
     return undefined;
   }
-  var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(
+  const carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(
       this.cam_.position);
 
-  var pos = this.fromLonLat_([
+  const pos = this.fromLonLat_([
     ol.math.toDegrees(carto.longitude),
     ol.math.toDegrees(carto.latitude)
   ]);
@@ -290,7 +290,7 @@ olcs.Camera.prototype.getPosition = function() {
  * @api
  */
 olcs.Camera.prototype.setAltitude = function(altitude) {
-  var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(
+  const carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(
       this.cam_.position);
   carto.height = altitude;
   this.cam_.position = Cesium.Ellipsoid.WGS84.cartographicToCartesian(carto);
@@ -304,7 +304,7 @@ olcs.Camera.prototype.setAltitude = function(altitude) {
  * @api
  */
 olcs.Camera.prototype.getAltitude = function() {
-  var carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(
+  const carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(
       this.cam_.position);
 
   return carto.height;
@@ -320,10 +320,10 @@ olcs.Camera.prototype.lookAt = function(position) {
   if (!this.toLonLat_) {
     return;
   }
-  var ll = this.toLonLat_(position);
+  const ll = this.toLonLat_(position);
   goog.asserts.assert(ll);
 
-  var carto = Cesium.Cartographic.fromDegrees(ll[0], ll[1]);
+  const carto = Cesium.Cartographic.fromDegrees(ll[0], ll[1]);
   olcs.core.lookAt(this.cam_, carto, this.scene_.globe);
 
   this.updateView();
@@ -339,31 +339,31 @@ olcs.Camera.prototype.updateCamera_ = function() {
   if (!this.view_ || !this.toLonLat_) {
     return;
   }
-  var center = this.view_.getCenter();
+  const center = this.view_.getCenter();
   if (!center) {
     return;
   }
-  var ll = this.toLonLat_(center);
+  const ll = this.toLonLat_(center);
   goog.asserts.assert(ll);
 
-  var carto = new Cesium.Cartographic(ol.math.toRadians(ll[0]),
+  const carto = new Cesium.Cartographic(ol.math.toRadians(ll[0]),
                                       ol.math.toRadians(ll[1]));
   if (this.scene_.globe) {
-    var height = this.scene_.globe.getHeight(carto);
+    const height = this.scene_.globe.getHeight(carto);
     carto.height = height || 0;
   }
 
-  var destination = Cesium.Ellipsoid.WGS84.cartographicToCartesian(carto);
+  const destination = Cesium.Ellipsoid.WGS84.cartographicToCartesian(carto);
 
   /** @type {Cesium.optionsOrientation} */
-  var orientation = {
+  const orientation = {
     pitch: this.tilt_ - Cesium.Math.PI_OVER_TWO,
     heading: -this.view_.getRotation(),
     roll: undefined
   };
   this.cam_.setView({
-    destination: destination,
-    orientation: orientation
+    destination,
+    orientation
   });
 
   this.cam_.moveBackward(this.distance_);
@@ -380,14 +380,14 @@ olcs.Camera.prototype.readFromView = function() {
   if (!this.view_ || !this.toLonLat_) {
     return;
   }
-  var center = this.view_.getCenter();
+  const center = this.view_.getCenter();
   if (center === undefined || center === null) {
     return;
   }
-  var ll = this.toLonLat_(center);
+  const ll = this.toLonLat_(center);
   goog.asserts.assert(ll);
 
-  var resolution = this.view_.getResolution();
+  const resolution = this.view_.getResolution();
   this.distance_ = this.calcDistanceForResolution_(
       resolution || 0, ol.math.toRadians(ll[1]));
 
@@ -407,21 +407,21 @@ olcs.Camera.prototype.updateView = function() {
   this.viewUpdateInProgress_ = true;
 
   // target & distance
-  var ellipsoid = Cesium.Ellipsoid.WGS84;
-  var scene = this.scene_;
-  var target = olcs.core.pickCenterPoint(scene);
+  const ellipsoid = Cesium.Ellipsoid.WGS84;
+  const scene = this.scene_;
+  const target = olcs.core.pickCenterPoint(scene);
 
-  var bestTarget = target;
+  let bestTarget = target;
   if (!bestTarget) {
     //TODO: how to handle this properly ?
-    var globe = scene.globe;
-    var carto = this.cam_.positionCartographic.clone();
-    var height = globe.getHeight(carto);
+    const globe = scene.globe;
+    const carto = this.cam_.positionCartographic.clone();
+    const height = globe.getHeight(carto);
     carto.height = height || 0;
     bestTarget = Cesium.Ellipsoid.WGS84.cartographicToCartesian(carto);
   }
   this.distance_ = Cesium.Cartesian3.distance(bestTarget, this.cam_.position);
-  var bestTargetCartographic = ellipsoid.cartesianToCartographic(bestTarget);
+  const bestTargetCartographic = ellipsoid.cartesianToCartographic(bestTarget);
   this.view_.setCenter(this.fromLonLat_([
     ol.math.toDegrees(bestTargetCartographic.longitude),
     ol.math.toDegrees(bestTargetCartographic.latitude)]));
@@ -437,30 +437,30 @@ olcs.Camera.prototype.updateView = function() {
    * need to be calculated _at the target_.
    */
   if (target) {
-    var pos = this.cam_.position;
+    const pos = this.cam_.position;
 
     // normal to the ellipsoid at the target
-    var targetNormal = new Cesium.Cartesian3();
+    const targetNormal = new Cesium.Cartesian3();
     ellipsoid.geocentricSurfaceNormal(target, targetNormal);
 
     // vector from the target to the camera
-    var targetToCamera = new Cesium.Cartesian3();
+    const targetToCamera = new Cesium.Cartesian3();
     Cesium.Cartesian3.subtract(pos, target, targetToCamera);
     Cesium.Cartesian3.normalize(targetToCamera, targetToCamera);
 
 
     // HEADING
-    var up = this.cam_.up;
-    var right = this.cam_.right;
-    var normal = new Cesium.Cartesian3(-target.y, target.x, 0); // what is it?
-    var heading = Cesium.Cartesian3.angleBetween(right, normal);
-    var cross = Cesium.Cartesian3.cross(target, up, new Cesium.Cartesian3());
-    var orientation = cross.z;
+    const up = this.cam_.up;
+    const right = this.cam_.right;
+    const normal = new Cesium.Cartesian3(-target.y, target.x, 0); // what is it?
+    const heading = Cesium.Cartesian3.angleBetween(right, normal);
+    const cross = Cesium.Cartesian3.cross(target, up, new Cesium.Cartesian3());
+    const orientation = cross.z;
 
     this.view_.setRotation((orientation < 0 ? heading : -heading));
 
     // TILT
-    var tiltAngle = Math.acos(
+    const tiltAngle = Math.acos(
         Cesium.Cartesian3.dot(targetNormal, targetToCamera));
     this.tilt_ = isNaN(tiltAngle) ? 0 : tiltAngle;
   } else {
@@ -478,8 +478,8 @@ olcs.Camera.prototype.updateView = function() {
  * @param {boolean=} opt_dontSync Do not synchronize the view.
  */
 olcs.Camera.prototype.checkCameraChange = function(opt_dontSync) {
-  var old = this.lastCameraViewMatrix_;
-  var current = this.cam_.viewMatrix;
+  const old = this.lastCameraViewMatrix_;
+  const current = this.cam_.viewMatrix;
 
   if (!old || !Cesium.Matrix4.equalsEpsilon(old, current, 1e-5)) {
     this.lastCameraViewMatrix_ = current.clone();
@@ -498,22 +498,22 @@ olcs.Camera.prototype.checkCameraChange = function(opt_dontSync) {
  */
 olcs.Camera.prototype.calcDistanceForResolution_ = function(resolution,
                                                             latitude) {
-  var canvas = this.scene_.canvas;
-  var fovy = this.cam_.frustum.fovy; // vertical field of view
+  const canvas = this.scene_.canvas;
+  const fovy = this.cam_.frustum.fovy; // vertical field of view
   goog.asserts.assert(!isNaN(fovy));
-  var metersPerUnit = this.view_.getProjection().getMetersPerUnit();
+  const metersPerUnit = this.view_.getProjection().getMetersPerUnit();
 
   // number of "map units" visible in 2D (vertically)
-  var visibleMapUnits = resolution * canvas.clientHeight;
+  const visibleMapUnits = resolution * canvas.clientHeight;
 
   // The metersPerUnit does not take latitude into account, but it should
   // be lower with increasing latitude -- we have to compensate.
   // In 3D it is not possible to maintain the resolution at more than one point,
   // so it only makes sense to use the latitude of the "target" point.
-  var relativeCircumference = Math.cos(Math.abs(latitude));
+  const relativeCircumference = Math.cos(Math.abs(latitude));
 
   // how many meters should be visible in 3D
-  var visibleMeters = visibleMapUnits * metersPerUnit * relativeCircumference;
+  const visibleMeters = visibleMapUnits * metersPerUnit * relativeCircumference;
 
   // distance required to view the calculated length in meters
   //
@@ -522,7 +522,7 @@ olcs.Camera.prototype.calcDistanceForResolution_ = function(resolution,
   //  x | \
   //    |--\
   // visibleMeters/2
-  var requiredDistance = (visibleMeters / 2) / Math.tan(fovy / 2);
+  const requiredDistance = (visibleMeters / 2) / Math.tan(fovy / 2);
 
   // NOTE: This calculation is not absolutely precise, because metersPerUnit
   // is a great simplification. It does not take ellipsoid/terrain into account.
@@ -540,14 +540,14 @@ olcs.Camera.prototype.calcDistanceForResolution_ = function(resolution,
 olcs.Camera.prototype.calcResolutionForDistance_ = function(distance,
                                                             latitude) {
   // See the reverse calculation (calcDistanceForResolution_) for details
-  var canvas = this.scene_.canvas;
-  var fovy = this.cam_.frustum.fovy;
-  var metersPerUnit = this.view_.getProjection().getMetersPerUnit();
+  const canvas = this.scene_.canvas;
+  const fovy = this.cam_.frustum.fovy;
+  const metersPerUnit = this.view_.getProjection().getMetersPerUnit();
 
-  var visibleMeters = 2 * distance * Math.tan(fovy / 2);
-  var relativeCircumference = Math.cos(Math.abs(latitude));
-  var visibleMapUnits = visibleMeters / metersPerUnit / relativeCircumference;
-  var resolution = visibleMapUnits / canvas.clientHeight;
+  const visibleMeters = 2 * distance * Math.tan(fovy / 2);
+  const relativeCircumference = Math.cos(Math.abs(latitude));
+  const visibleMapUnits = visibleMeters / metersPerUnit / relativeCircumference;
+  const resolution = visibleMapUnits / canvas.clientHeight;
 
   return resolution;
 };

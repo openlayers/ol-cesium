@@ -75,7 +75,7 @@ olcs.VectorSynchronizer.prototype.removeSingleCesiumObject = function(object, de
 olcs.VectorSynchronizer.prototype.removeAllCesiumObjects = function(destroy) {
   this.csAllPrimitives_.destroyPrimitives = destroy;
   if (destroy) {
-    for (var i = 0; i < this.csAllPrimitives_.length; ++i) {
+    for (let i = 0; i < this.csAllPrimitives_.length; ++i) {
       this.csAllPrimitives_.get(i)['counterpart'].destroy();
     }
   }
@@ -95,7 +95,7 @@ olcs.VectorSynchronizer.prototype.createSingleLayerCounterparts = function(olLay
   }
   goog.asserts.assertInstanceof(olLayer, ol.layer.Layer);
 
-  var source = olLayer.getSource();
+  let source = olLayer.getSource();
   if (source instanceof ol.source.ImageVector) {
     source = source.getSource();
   }
@@ -103,62 +103,62 @@ olcs.VectorSynchronizer.prototype.createSingleLayerCounterparts = function(olLay
   goog.asserts.assertInstanceof(source, ol.source.Vector);
   goog.asserts.assert(this.view);
 
-  var view = this.view;
-  var featurePrimitiveMap = {};
-  var counterpart = this.converter.olVectorLayerToCesium(olLayer, view,
+  const view = this.view;
+  const featurePrimitiveMap = {};
+  const counterpart = this.converter.olVectorLayerToCesium(olLayer, view,
       featurePrimitiveMap);
-  var csPrimitives = counterpart.getRootPrimitive();
-  var olListenKeys = counterpart.olListenKeys;
+  const csPrimitives = counterpart.getRootPrimitive();
+  const olListenKeys = counterpart.olListenKeys;
 
   csPrimitives.show = olLayer.getVisible();
 
-  olListenKeys.push(ol.events.listen(olLayer, 'change:visible', function(e) {
+  olListenKeys.push(ol.events.listen(olLayer, 'change:visible', (e) => {
     csPrimitives.show = olLayer.getVisible();
   }));
 
-  var onAddFeature = (function(feature) {
+  const onAddFeature = (function(feature) {
     goog.asserts.assert(
         (olLayer instanceof ol.layer.Vector) ||
         (olLayer instanceof ol.layer.Image)
     );
-    var context = counterpart.context;
-    var prim = this.converter.convert(olLayer, view, feature, context);
+    const context = counterpart.context;
+    const prim = this.converter.convert(olLayer, view, feature, context);
     if (prim) {
       featurePrimitiveMap[ol.getUid(feature)] = prim;
       csPrimitives.add(prim);
     }
   }).bind(this);
 
-  var onRemoveFeature = (function(feature) {
-    var geometry = feature.getGeometry();
-    var id = ol.getUid(feature);
+  const onRemoveFeature = (function(feature) {
+    const geometry = feature.getGeometry();
+    const id = ol.getUid(feature);
     if (!geometry || geometry.getType() == 'Point') {
-      var context = counterpart.context;
-      var bb = context.featureToCesiumMap[id];
+      const context = counterpart.context;
+      const bb = context.featureToCesiumMap[id];
       delete context.featureToCesiumMap[id];
       if (bb instanceof Cesium.Billboard) {
         context.billboards.remove(bb);
       }
     }
-    var csPrimitive = featurePrimitiveMap[id];
+    const csPrimitive = featurePrimitiveMap[id];
     delete featurePrimitiveMap[id];
     if (csPrimitive) {
       csPrimitives.remove(csPrimitive);
     }
   }).bind(this);
 
-  olListenKeys.push(ol.events.listen(source, 'addfeature', function(e) {
+  olListenKeys.push(ol.events.listen(source, 'addfeature', (e) => {
     goog.asserts.assert(e.feature);
     onAddFeature(e.feature);
   }, this));
 
-  olListenKeys.push(ol.events.listen(source, 'removefeature', function(e) {
+  olListenKeys.push(ol.events.listen(source, 'removefeature', (e) => {
     goog.asserts.assert(e.feature);
     onRemoveFeature(e.feature);
   }, this));
 
-  olListenKeys.push(ol.events.listen(source, 'changefeature', function(e) {
-    var feature = e.feature;
+  olListenKeys.push(ol.events.listen(source, 'changefeature', (e) => {
+    const feature = e.feature;
     goog.asserts.assert(feature);
     onRemoveFeature(feature);
     onAddFeature(feature);

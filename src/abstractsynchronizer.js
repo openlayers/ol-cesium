@@ -99,18 +99,18 @@ olcs.AbstractSynchronizer.prototype.orderLayers = function() {
  */
 olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
   /** @type {Array.<!ol.layer.Base>} */
-  var fifo = [root];
+  const fifo = [root];
   while (fifo.length > 0) {
-    var olLayer = fifo.splice(0, 1)[0];
-    var olLayerId = ol.getUid(olLayer).toString();
+    const olLayer = fifo.splice(0, 1)[0];
+    const olLayerId = ol.getUid(olLayer).toString();
     goog.asserts.assert(!this.layerMap[olLayerId]);
 
-    var cesiumObjects = null;
+    let cesiumObjects = null;
     if (olLayer instanceof ol.layer.Group) {
       this.listenForGroupChanges_(olLayer);
       cesiumObjects = this.createSingleLayerCounterparts(olLayer);
       if (!cesiumObjects) {
-        olLayer.getLayers().forEach(function(l) {
+        olLayer.getLayers().forEach((l) => {
           if (l) {
             fifo.push(l);
           }
@@ -142,8 +142,8 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
  * @private
  */
 olcs.AbstractSynchronizer.prototype.removeAndDestroySingleLayer_ = function(layer) {
-  var uid = ol.getUid(layer).toString();
-  var counterparts = this.layerMap[uid];
+  const uid = ol.getUid(layer).toString();
+  const counterparts = this.layerMap[uid];
   if (!!counterparts) {
     counterparts.forEach(function(counterpart) {
       this.removeSingleCesiumObject(counterpart, false);
@@ -166,9 +166,9 @@ olcs.AbstractSynchronizer.prototype.unlistenSingleGroup_ = function(group) {
   if (group === this.mapLayerGroup) {
     return;
   }
-  var uid = ol.getUid(group).toString();
-  var keys = this.olGroupListenKeys_[uid];
-  keys.forEach(function(key) {
+  const uid = ol.getUid(group).toString();
+  const keys = this.olGroupListenKeys_[uid];
+  keys.forEach((key) => {
     ol.Observable.unByKey(key);
   });
   delete this.olGroupListenKeys_[uid];
@@ -183,16 +183,16 @@ olcs.AbstractSynchronizer.prototype.unlistenSingleGroup_ = function(group) {
  */
 olcs.AbstractSynchronizer.prototype.removeLayer_ = function(root) {
   if (!!root) {
-    var fifo = [root];
+    const fifo = [root];
     while (fifo.length > 0) {
-      var olLayer = fifo.splice(0, 1)[0];
-      var done = this.removeAndDestroySingleLayer_(olLayer);
+      const olLayer = fifo.splice(0, 1)[0];
+      const done = this.removeAndDestroySingleLayer_(olLayer);
       if (olLayer instanceof ol.layer.Group) {
         this.unlistenSingleGroup_(olLayer);
         if (!done) {
           // No counterpart for the group itself so removing
           // each of the child layers.
-          olLayer.getLayers().forEach(function(l) {
+          olLayer.getLayers().forEach((l) => {
             fifo.push(l);
           });
         }
@@ -208,17 +208,17 @@ olcs.AbstractSynchronizer.prototype.removeLayer_ = function(root) {
  * @private
  */
 olcs.AbstractSynchronizer.prototype.listenForGroupChanges_ = function(group) {
-  var uuid = ol.getUid(group).toString();
+  const uuid = ol.getUid(group).toString();
 
   goog.asserts.assert(this.olGroupListenKeys_[uuid] === undefined);
 
-  var listenKeyArray = [];
+  const listenKeyArray = [];
   this.olGroupListenKeys_[uuid] = listenKeyArray;
 
   // only the keys that need to be relistened when collection changes
-  var contentKeys = [];
-  var listenAddRemove = (function() {
-    var collection = group.getLayers();
+  let contentKeys = [];
+  const listenAddRemove = (function() {
+    const collection = group.getLayers();
     if (collection) {
       contentKeys = [
         collection.on('add', function(event) {
@@ -228,15 +228,15 @@ olcs.AbstractSynchronizer.prototype.listenForGroupChanges_ = function(group) {
           this.removeLayer_(event.element);
         }, this)
       ];
-      listenKeyArray.push.apply(listenKeyArray, contentKeys);
+      listenKeyArray.push(...contentKeys);
     }
   }).bind(this);
 
   listenAddRemove();
 
-  listenKeyArray.push(group.on('change:layers', function(e) {
-    contentKeys.forEach(function(el) {
-      var i = listenKeyArray.indexOf(el);
+  listenKeyArray.push(group.on('change:layers', (e) => {
+    contentKeys.forEach((el) => {
+      const i = listenKeyArray.indexOf(el);
       if (i >= 0) {
         listenKeyArray.splice(i, 1);
       }
@@ -253,13 +253,13 @@ olcs.AbstractSynchronizer.prototype.listenForGroupChanges_ = function(group) {
  */
 olcs.AbstractSynchronizer.prototype.destroyAll = function() {
   this.removeAllCesiumObjects(true); // destroy
-  var objKey;
+  let objKey;
   for (objKey in this.olGroupListenKeys_) {
-    var keys = this.olGroupListenKeys_[objKey];
+    const keys = this.olGroupListenKeys_[objKey];
     keys.forEach(ol.Observable.unByKey);
   }
   for (objKey in this.olLayerListenKeys_) {
-    var key = this.olLayerListenKeys_[objKey];
+    const key = this.olLayerListenKeys_[objKey];
     ol.Observable.unByKey(key);
   }
   this.olGroupListenKeys_ = {};
