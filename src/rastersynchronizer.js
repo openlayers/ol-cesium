@@ -167,7 +167,7 @@ olcs.RasterSynchronizer.prototype.orderLayers = function() {
   });
 
   layers.forEach(function(olLayer) {
-    var olLayerId = ol.getUid(olLayer);
+    var olLayerId = ol.getUid(olLayer).toString();
     var cesiumObjects = this.layerMap[olLayerId];
     if (cesiumObjects) {
       cesiumObjects.forEach(this.raiseToTop, this);

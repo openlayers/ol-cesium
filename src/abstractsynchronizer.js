@@ -1,7 +1,6 @@
 goog.provide('olcs.AbstractSynchronizer');
 
 goog.require('goog.asserts');
-goog.require('goog.object');
 
 goog.require('ol');
 goog.require('ol.Observable');
@@ -52,21 +51,21 @@ olcs.AbstractSynchronizer = function(map, scene) {
   /**
    * Map of OpenLayers layer ids (from ol.getUid) to the Cesium ImageryLayers.
    * Null value means, that we are unable to create equivalent layers.
-   * @type {Object.<number, ?Array.<T>>}
+   * @type {Object.<string, ?Array.<T>>}
    * @protected
    */
   this.layerMap = {};
 
   /**
    * Map of listen keys for OpenLayers layer layers ids (from ol.getUid).
-   * @type {!Object.<number, ol.EventsKey>}
+   * @type {!Object.<string, ol.EventsKey>}
    * @private
    */
   this.olLayerListenKeys_ = {};
 
   /**
    * Map of listen keys for OpenLayers layer groups ids (from ol.getUid).
-   * @type {!Object.<number, !Array.<ol.EventsKey>>}
+   * @type {!Object.<string, !Array.<ol.EventsKey>>}
    * @private
    */
   this.olGroupListenKeys_ = {};
@@ -103,7 +102,7 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
   var fifo = [root];
   while (fifo.length > 0) {
     var olLayer = fifo.splice(0, 1)[0];
-    var olLayerId = ol.getUid(olLayer);
+    var olLayerId = ol.getUid(olLayer).toString();
     goog.asserts.assert(!this.layerMap[olLayerId]);
 
     var cesiumObjects = null;
@@ -143,7 +142,7 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
  * @private
  */
 olcs.AbstractSynchronizer.prototype.removeAndDestroySingleLayer_ = function(layer) {
-  var uid = ol.getUid(layer);
+  var uid = ol.getUid(layer).toString();
   var counterparts = this.layerMap[uid];
   if (!!counterparts) {
     counterparts.forEach(function(counterpart) {
@@ -167,7 +166,7 @@ olcs.AbstractSynchronizer.prototype.unlistenSingleGroup_ = function(group) {
   if (group === this.mapLayerGroup) {
     return;
   }
-  var uid = ol.getUid(group);
+  var uid = ol.getUid(group).toString();
   var keys = this.olGroupListenKeys_[uid];
   keys.forEach(function(key) {
     ol.Observable.unByKey(key);
@@ -209,7 +208,7 @@ olcs.AbstractSynchronizer.prototype.removeLayer_ = function(root) {
  * @private
  */
 olcs.AbstractSynchronizer.prototype.listenForGroupChanges_ = function(group) {
-  var uuid = ol.getUid(group);
+  var uuid = ol.getUid(group).toString();
 
   goog.asserts.assert(this.olGroupListenKeys_[uuid] === undefined);
 
@@ -254,10 +253,15 @@ olcs.AbstractSynchronizer.prototype.listenForGroupChanges_ = function(group) {
  */
 olcs.AbstractSynchronizer.prototype.destroyAll = function() {
   this.removeAllCesiumObjects(true); // destroy
-  goog.object.forEach(this.olGroupListenKeys_, function(keys) {
+  var objKey;
+  for (objKey in this.olGroupListenKeys_) {
+    var keys = this.olGroupListenKeys_[objKey];
     keys.forEach(ol.Observable.unByKey);
-  });
-  goog.object.forEach(this.olLayerListenKeys_, ol.Observable.unByKey);
+  }
+  for (objKey in this.olLayerListenKeys_) {
+    var key = this.olLayerListenKeys_[objKey];
+    ol.Observable.unByKey(key);
+  }
   this.olGroupListenKeys_ = {};
   this.olLayerListenKeys_ = {};
   this.layerMap = {};
