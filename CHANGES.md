@@ -1,6 +1,6 @@
 # Changelog
 
-# v 1.25
+# v 1.25 - 2017-03-28
 
 * Breaking changes
   * Stop returning promise from olcs.core.rotateAroundAxis function.
