@@ -1,5 +1,10 @@
 # Changelog
 
+# v 1.26
+
+* Changes
+  * WMTS OpenLayers layers are now automatically converted to Cesium layers.
+
 # v 1.25 - 2017-03-28
 
 * Breaking changes
