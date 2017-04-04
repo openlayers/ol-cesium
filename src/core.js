@@ -4,7 +4,6 @@ goog.require('goog.asserts');
 goog.require('ol.layer.Tile');
 goog.require('ol.proj');
 goog.require('ol.source.TileImage');
-goog.require('ol.source.WMTS');
 goog.require('olcs.core.OLImageryProvider');
 
 
@@ -368,11 +367,6 @@ olcs.core.tileLayerToImageryLayer = function(olLayer, viewProj) {
   let provider = null;
 
   const source = olLayer.getSource();
-  // handle special cases before the general synchronization
-  if (source instanceof ol.source.WMTS) {
-    // WMTS uses different TileGrid which is not currently supported
-    return null;
-  }
   if (source instanceof ol.source.TileImage) {
     let projection = source.getProjection();
 
