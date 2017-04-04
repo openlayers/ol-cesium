@@ -1,5 +1,10 @@
 # Changelog
 
+* v 1.27
+
+* Changes
+  * Improve support for dashed polylines.
+
 # v 1.26 - 2017-04-04
 
 * Changes

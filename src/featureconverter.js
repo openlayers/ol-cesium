@@ -811,13 +811,13 @@ olcs.FeatureConverter.prototype.olStyleToCesium = function(feature, style, outli
   color = olcs.core.convertColorToCesium(color);
 
   if (outline && stroke.getLineDash()) {
-    return Cesium.Material.fromType('Stripe', {
-      // always update Cesium externs before adding a property
-      horizontal: false,
-      repeat: 500, // TODO how to calculate this?
-      evenColor: color,
-      oddColor: new Cesium.Color(0, 0, 0, 0) // transparent
-    });
+    const dash = stroke.getLineDash();
+    goog.asserts.assert(dash.length === 1);
+    const dashDescription = {
+      color,
+      dashLength: dash[0]
+    };
+    return Cesium.Material.fromType('PolylineDash', dashDescription);
   } else {
     return Cesium.Material.fromType('Color', {
       // always update Cesium externs before adding a property

@@ -1010,7 +1010,10 @@ Cesium.Globe.prototype.pick = function(ray, scene, opt_result) {};
  *   horizontal: (boolean | undefined),
  *   repeat: (number | undefined),
  *   evenColor: (Cesium.Color | undefined),
- *   oddColor: (Cesium.Color | undefined)
+ *   oddColor: (Cesium.Color | undefined),
+ *   gapColor: (Cesium.Color | undefined),
+ *   dashLength: (number | undefined),
+ *   dashPattern: (number | undefined)
  * }}
  */
 Cesium.optionsMaterialFromTypeAny;
