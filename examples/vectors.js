@@ -69,7 +69,7 @@ var styles = {
   'LineString': [new ol.style.Style({
     stroke: new ol.style.Stroke({
       color: 'green',
-      lineDash: [4],
+      lineDash: [12],
       width: 10
     })
   })],
