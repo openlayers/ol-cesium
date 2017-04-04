@@ -691,7 +691,10 @@ Cesium.Camera.prototype.pickEllipsoid = function(windowPos, opt_ellipsoid) {};
  *   endTransform: (Cesium.Matrix4|undefined),
  *   convert: (boolean|undefined),
  *   maximumHeight: (number|undefined),
- *   easingFunction: (function(number): number|undefined)
+ *   easingFunction: (function(number): number|undefined),
+ *   flyOverLongitude: (number|undefined),
+ *   flyOverLongitudeWeight: (number|undefined),
+ *   pitchAdjustHeight: (number|undefined)
  * }}
  */
 Cesium.optionsCameraFlyTo;
