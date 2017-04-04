@@ -6,6 +6,7 @@ Each month, a new release is published in accordance to https://github.com/openl
 ## Steps
 - Update OpenLayers and Cesium dependencies to latest stable version
 - Check the Cesium CHANGES.md for API changes and update the Cesium externs
+- Update the version number in `package.json`
 - Compile from scratch and run all tests:
   - `make dist && make check && make dist-examples && make dist-apidoc && make serve`
   - check examples both in development and hosted modes
