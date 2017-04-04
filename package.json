@@ -12,7 +12,7 @@
     "url": "https://github.com/openlayers/ol-cesium/issues"
   },
   "dependencies": {
-    "async": "2.2.0",
+    "async": "2.3.0",
     "htmlparser2": "3.9.2"
   },
   "devDependencies": {
@@ -20,7 +20,7 @@
     "@mapbox/geojsonhint": "2.0.1",
     "fs-extra": "2.1.2",
     "jsdoc": "~3.4.0",
-    "eslint": "3.18.0",
+    "eslint": "3.19.0",
     "eslint-config-openlayers": "7.0.0",
     "nomnom": "1.8.1",
     "temp": "0.8.3",
