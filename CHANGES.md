@@ -1,5 +1,11 @@
 # Changelog
 
+# v 1.27- 2017-05-04
+
+* Changes
+  * Port to OpenLayers 4.1.1.
+  * Port to cesium 1.33.
+
 # v 1.26 - 2017-04-04
 
 * Changes
