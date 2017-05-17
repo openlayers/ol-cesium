@@ -80,7 +80,21 @@ function getNewer(date, callback) {
       walker.on('file', function(root, stats, next) {
         var sourcePath = path.join(root, stats.name);
         if (/\.js$/.test(sourcePath)) {
-          paths.push(sourcePath);
+
+        /**
+         * Windows has restrictions on length of command line, so passing all the
+         * changed paths to a task will fail if this limit is exceeded.
+         * To get round this, if this is Windows and there are newer files, just
+         * pass the sourceDir to the task so it can do the walking.
+         */
+
+          if (isWindows) {
+            if (paths.indexOf(sourceDir) < 0) {
+              paths.push(sourceDir);
+            }
+          } else {
+            paths.push(sourcePath);
+          }
           if (stats.mtime > date) {
             newer = true;
           }
