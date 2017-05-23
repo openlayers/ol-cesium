@@ -3,7 +3,7 @@ var iconFeature = new ol.Feature({
 });
 
 var textFeature = new ol.Feature({
-  geometry: new ol.geom.Point([1000000, 3000000, 50000])
+  geometry: new ol.geom.Point([1000000, 3000000, 500000])
 });
 
 var cervinFeature = new ol.Feature({
@@ -34,7 +34,7 @@ var iconStyle = new ol.style.Style({
   })
 });
 
-var textStyle = new ol.style.Style({
+var textStyle = [new ol.style.Style({
   text: new ol.style.Text({
     text: 'Only text',
     textAlign: 'center',
@@ -47,7 +47,16 @@ var textStyle = new ol.style.Style({
       color: 'rgba(0, 0, 155, 0.3)'
     })
   })
-});
+}), new ol.style.Style({
+  geometry: new ol.geom.Circle([1000000, 3000000, 10000], 2e6),
+  stroke: new ol.style.Stroke({
+    color: 'blue',
+    width: 2
+  }),
+  fill:new ol.style.Fill({
+    color: 'rgba(0, 0, 255, 0.2)'
+  })
+})]
 
 iconFeature.setStyle(iconStyle);
 

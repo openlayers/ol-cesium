@@ -835,7 +835,7 @@ olcs.FeatureConverter.prototype.olStyleToCesium = function(feature, style, outli
  * @param {!ol.Feature} feature
  * @param {ol.StyleFunction|undefined} fallbackStyleFunction
  * @param {number} resolution
- * @return {ol.style.Style} null if no style is available
+ * @return {Array.<!ol.style.Style>} null if no style is available
  * @api
  */
 olcs.FeatureConverter.prototype.computePlainStyle = function(layer, feature, fallbackStyleFunction, resolution) {
@@ -866,7 +866,7 @@ olcs.FeatureConverter.prototype.computePlainStyle = function(layer, feature, fal
   // then this function must return a custom material
   // More simply, could blend the colors like described in
   // http://en.wikipedia.org/wiki/Alpha_compositing
-  return Array.isArray(style) ? style[0] : style;
+  return Array.isArray(style) ? style : [style];
 };
 
 
@@ -883,6 +883,14 @@ olcs.FeatureConverter.prototype.computePlainStyle = function(layer, feature, fal
 olcs.FeatureConverter.prototype.olFeatureToCesium = function(layer, feature, style, context, opt_geom) {
   let geom = opt_geom || feature.getGeometry();
   const proj = context.projection;
+
+  if (!opt_geom && style) {
+    const geomFuncRes = style.getGeometryFunction()(feature);
+    if (geomFuncRes instanceof ol.geom.Geometry) {
+      geom = geomFuncRes;
+    }
+  }
+
   if (!geom) {
     // OpenLayers features may not have a geometry
     // See http://geojson.org/geojson-spec.html#feature-objects
@@ -1001,13 +1009,31 @@ olcs.FeatureConverter.prototype.olVectorLayerToCesium = function(olLayer, olView
     } else {
       layerStyle = olLayer.getStyleFunction();
     }
-    const style = this.computePlainStyle(olLayer, feature, layerStyle,
+    const styles = this.computePlainStyle(olLayer, feature, layerStyle,
         resolution);
-    if (!style) {
+    if (!styles.length) {
       // only 'render' features with a style
       continue;
     }
-    const primitives = this.olFeatureToCesium(olLayer, feature, style, context);
+
+    /**
+     * @type {Cesium.Primitive|null}
+     */
+    let primitives = null;
+    for (let i = 0; i < styles.length; i++) {
+      const prims = this.olFeatureToCesium(olLayer, feature, styles[i], context);
+      if (prims) {
+        if (!primitives) {
+          primitives = prims;
+        } else {
+          let i = 0, prim;
+          while ((prim = prims.get(i))) {
+            primitives.add(prim);
+            i++;
+          }
+        }
+      }
+    }
     if (!primitives) {
       continue;
     }
@@ -1050,13 +1076,31 @@ olcs.FeatureConverter.prototype.convert = function(layer, view, feature, context
   } else {
     layerStyle = layer.getStyleFunction();
   }
-  const style = this.computePlainStyle(layer, feature, layerStyle, resolution);
 
-  if (!style) {
+  const styles = this.computePlainStyle(layer, feature, layerStyle, resolution);
+
+  if (!styles.length) {
     // only 'render' features with a style
     return null;
   }
 
   context.projection = proj;
-  return this.olFeatureToCesium(layer, feature, style, context);
+
+  /**
+   * @type {Cesium.Primitive|null}
+   */
+  let primitives = null;
+  for (let i = 0; i < styles.length; i++) {
+    const prims = this.olFeatureToCesium(layer, feature, styles[i], context);
+    if (!primitives) {
+      primitives = prims;
+    } else {
+      let i = 0, prim;
+      while ((prim = prims.get(i))) {
+        primitives.add(prim);
+        i++;
+      }
+    }
+  }
+  return primitives;
 };
