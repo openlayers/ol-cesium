@@ -1,5 +1,11 @@
 # Changelog
 
+# v 1.28
+
+* Changes
+  * Use all the styles defined for a feature.
+  * Display geometries coming from style (using getGeometryFunction()).
+
 # v 1.27- 2017-05-04
 
 * Changes
