@@ -3,6 +3,7 @@
 # v 1.28
 
 * Changes
+  * Port to Cesium 1.34.
   * Use all the styles defined for a feature.
   * Display geometries coming from style (using getGeometryFunction()).
 
