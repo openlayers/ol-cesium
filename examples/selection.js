@@ -1,15 +1,15 @@
-var raster = new ol.layer.Tile({
+const raster = new ol.layer.Tile({
   source: new ol.source.OSM()
 });
 
-var vector = new ol.layer.Vector({
+const vector = new ol.layer.Vector({
   source: new ol.source.Vector({
     format: new ol.format.GeoJSON(),
     url: 'data/geojson/countries.geojson'
   })
 });
 
-var map = new ol.Map({
+const map = new ol.Map({
   layers: [raster, vector],
   target: 'map2d',
   view: new ol.View({
@@ -19,12 +19,12 @@ var map = new ol.Map({
 });
 
 
-var ol3d = new olcs.OLCesium({map: map, target: 'map3d'});
+const ol3d = new olcs.OLCesium({map, target: 'map3d'});
 ol3d.setEnabled(true);
 
 
 
-var selectionStyle = new ol.style.Style({
+const selectionStyle = new ol.style.Style({
   fill: new ol.style.Fill({
     color: [255, 255, 255, 0.6]
   }),
@@ -34,16 +34,14 @@ var selectionStyle = new ol.style.Style({
   })
 });
 
-var selectedFeature;
-map.on('click', function(e) {
+let selectedFeature;
+map.on('click', (e) => {
   if (selectedFeature) {
     selectedFeature.setStyle(null);
   }
   selectedFeature = map.forEachFeatureAtPixel(
       e.pixel,
-      function(feature, layer) {
-        return feature;
-      });
+      (feature, layer) => feature);
   if (selectedFeature) {
     selectedFeature.setStyle(selectionStyle);
   }

@@ -1,4 +1,4 @@
-var ol2d = new ol.Map({
+const ol2d = new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM()
@@ -16,34 +16,34 @@ var ol2d = new ol.Map({
   })
 });
 
-var ol3d = new olcs.OLCesium({
+const timeElt = document.getElementById('time');
+const ol3d = new olcs.OLCesium({
   map: ol2d,
-  time: function() {
-    var val = timeElt.value;
-    if (scene.globe.enableLighting && val) {
-      var d = new Date();
+  time() {
+    const val = timeElt.value;
+    if (ol3d.getCesiumScene().globe.enableLighting && val) {
+      const d = new Date();
       d.setUTCHours(val);
       return Cesium.JulianDate.fromDate(d);
     }
     return Cesium.JulianDate.now();
   }
 });
-var scene = ol3d.getCesiumScene();
-var terrainProvider = new Cesium.CesiumTerrainProvider({
-  url : '//assets.agi.com/stk-terrain/world',
+const scene = ol3d.getCesiumScene();
+const terrainProvider = new Cesium.CesiumTerrainProvider({
+  url: '//assets.agi.com/stk-terrain/world',
   requestVertexNormals: true
 });
 scene.terrainProvider = terrainProvider;
 
 
-var timeElt = document.getElementById('time');
 timeElt.style.display = 'none';
-var toggleTime = function() {
+const toggleTime = function() { // eslint-disable-line no-unused-vars
   scene.globe.enableLighting = !scene.globe.enableLighting;
   if (timeElt.style.display == 'none') {
     timeElt.style.display = 'inline-block';
   } else {
     timeElt.style.display = 'none';
   }
-}
+};
 

@@ -1,18 +1,18 @@
-var iconFeature = new ol.Feature({
+const iconFeature = new ol.Feature({
   geometry: new ol.geom.Point([700000, 200000, 100000])
 });
 
-var textFeature = new ol.Feature({
+const textFeature = new ol.Feature({
   geometry: new ol.geom.Point([1000000, 3000000, 500000])
 });
 
-var cervinFeature = new ol.Feature({
+const cervinFeature = new ol.Feature({
   geometry: new ol.geom.Point([852541, 5776649])
 });
 cervinFeature.getGeometry().set('altitudeMode', 'clampToGround');
 
 
-var iconStyle = new ol.style.Style({
+const iconStyle = new ol.style.Style({
   image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
     anchor: [0.5, 46],
     anchorXUnits: 'fraction',
@@ -34,7 +34,7 @@ var iconStyle = new ol.style.Style({
   })
 });
 
-var textStyle = [new ol.style.Style({
+const textStyle = [new ol.style.Style({
   text: new ol.style.Text({
     text: 'Only text',
     textAlign: 'center',
@@ -48,15 +48,15 @@ var textStyle = [new ol.style.Style({
     })
   })
 }), new ol.style.Style({
-  geometry: new ol.geom.Circle([1000000, 3000000, 10000], 2e6),
-  stroke: new ol.style.Stroke({
-    color: 'blue',
-    width: 2
-  }),
-  fill:new ol.style.Fill({
-    color: 'rgba(0, 0, 255, 0.2)'
-  })
-})]
+    geometry: new ol.geom.Circle([1000000, 3000000, 10000], 2e6),
+    stroke: new ol.style.Stroke({
+      color: 'blue',
+      width: 2
+    }),
+    fill: new ol.style.Fill({
+      color: 'rgba(0, 0, 255, 0.2)'
+    })
+  })];
 
 iconFeature.setStyle(iconStyle);
 
@@ -65,15 +65,15 @@ textFeature.setStyle(textStyle);
 cervinFeature.setStyle(iconStyle);
 
 
-var image = new ol.style.Circle({
+const image = new ol.style.Circle({
   radius: 5,
   fill: null,
   stroke: new ol.style.Stroke({color: 'red', width: 1})
 });
 
-var styles = {
+const styles = {
   'Point': [new ol.style.Style({
-    image: image
+    image
   })],
   'LineString': [new ol.style.Style({
     stroke: new ol.style.Stroke({
@@ -89,7 +89,7 @@ var styles = {
     })
   })],
   'MultiPoint': [new ol.style.Style({
-    image: image,
+    image,
     text: new ol.style.Text({
       text: 'MP',
       stroke: new ol.style.Stroke({
@@ -143,21 +143,21 @@ var styles = {
   })]
 };
 
-var styleFunction = function(feature, resolution) {
-  var geo = feature.getGeometry();
+const styleFunction = function(feature, resolution) {
+  const geo = feature.getGeometry();
   // always assign a style to prevent feature skipping
   return geo ? styles[geo.getType()] : styles['Point'];
 };
 
-var vectorSource = new ol.source.Vector({
+const vectorSource = new ol.source.Vector({
   format: new ol.format.GeoJSON(),
   url: 'data/geojson/vector_data.geojson'
 });
 
-var theCircle = new ol.Feature(new ol.geom.Circle([5e6, 7e6, 5e5], 1e6));
+const theCircle = new ol.Feature(new ol.geom.Circle([5e6, 7e6, 5e5], 1e6));
 
 // Add a Cesium rectangle, via setting the property olcs.polygon_kind
-var cartographicRectangleStyle = new ol.style.Style({
+const cartographicRectangleStyle = new ol.style.Style({
   fill: new ol.style.Fill({
     color: 'rgba(255, 69, 0, 0.7)'
   }),
@@ -166,16 +166,16 @@ var cartographicRectangleStyle = new ol.style.Style({
     width: 1
   })
 });
-var cartographicRectangleGeometry = new ol.geom.Polygon([[[-5e6, 11e6],
-        [4e6, 11e6], [4e6, 10.5e6], [-5e6, 10.5e6], [-5e6, 11e6]]]);
+const cartographicRectangleGeometry = new ol.geom.Polygon([[[-5e6, 11e6],
+  [4e6, 11e6], [4e6, 10.5e6], [-5e6, 10.5e6], [-5e6, 11e6]]]);
 cartographicRectangleGeometry.set('olcs.polygon_kind', 'rectangle');
-var cartographicRectangle = new ol.Feature({
+const cartographicRectangle = new ol.Feature({
   geometry: cartographicRectangleGeometry
 });
 cartographicRectangle.setStyle(cartographicRectangleStyle);
 
 // Add two Cesium rectangles with height and the property olcs.polygon_kind
-var cartographicRectangleGeometry2 = new ol.geom.MultiPolygon([
+const cartographicRectangleGeometry2 = new ol.geom.MultiPolygon([
   [[
     [-5e6, 12e6, 0], [4e6, 12e6, 0], [4e6, 11.5e6, 0], [-5e6, 11.5e6, 0],
     [-5e6, 12e6, 0]
@@ -186,28 +186,28 @@ var cartographicRectangleGeometry2 = new ol.geom.MultiPolygon([
   ]]
 ]);
 cartographicRectangleGeometry2.set('olcs.polygon_kind', 'rectangle');
-var cartographicRectangle2 = new ol.Feature({
+const cartographicRectangle2 = new ol.Feature({
   geometry: cartographicRectangleGeometry2
 });
 cartographicRectangle2.setStyle(cartographicRectangleStyle);
 
-var vectorLayer = new ol.layer.Vector({
+const vectorLayer = new ol.layer.Vector({
   source: vectorSource,
   style: styleFunction
 });
 
-var vectorSource2 = new ol.source.Vector({
+const vectorSource2 = new ol.source.Vector({
   features: [iconFeature, textFeature, cervinFeature, cartographicRectangle,
     cartographicRectangle2]
 });
-var imageVectorSource = new ol.source.ImageVector({
+const imageVectorSource = new ol.source.ImageVector({
   source: vectorSource2
 });
-var vectorLayer2 = new ol.layer.Image({
+const vectorLayer2 = new ol.layer.Image({
   source: imageVectorSource
 });
 
-var dragAndDropInteraction = new ol.interaction.DragAndDrop({
+const dragAndDropInteraction = new ol.interaction.DragAndDrop({
   formatConstructors: [
     ol.format.GPX,
     ol.format.GeoJSON,
@@ -217,7 +217,7 @@ var dragAndDropInteraction = new ol.interaction.DragAndDrop({
   ]
 });
 
-var map = new ol.Map({
+const map = new ol.Map({
   interactions: ol.interaction.defaults().extend([dragAndDropInteraction]),
   layers: [
     new ol.layer.Tile({
@@ -238,8 +238,8 @@ var map = new ol.Map({
   })
 });
 
-dragAndDropInteraction.on('addfeatures', function(event) {
-  var vectorSource = new ol.source.Vector({
+dragAndDropInteraction.on('addfeatures', (event) => {
+  const vectorSource = new ol.source.Vector({
     features: event.features,
     projection: event.projection
   });
@@ -247,15 +247,15 @@ dragAndDropInteraction.on('addfeatures', function(event) {
     source: vectorSource,
     style: styleFunction
   }));
-  var view = map.getView();
+  const view = map.getView();
   view.fitExtent(
       vectorSource.getExtent(), /** @type {ol.Size} */ (map.getSize()));
 });
 
 
-var ol3d = new olcs.OLCesium({map: map, target: 'map3d'});
-var scene = ol3d.getCesiumScene();
-var terrainProvider = new Cesium.CesiumTerrainProvider({
+const ol3d = new olcs.OLCesium({map, target: 'map3d'});
+const scene = ol3d.getCesiumScene();
+const terrainProvider = new Cesium.CesiumTerrainProvider({
   url: '//assets.agi.com/stk-terrain/world',
   requestVertexNormals: true
 });
@@ -263,7 +263,7 @@ scene.terrainProvider = terrainProvider;
 scene.globe.enableLighting = true;
 ol3d.setEnabled(true);
 
-var csLabels = new Cesium.LabelCollection();
+const csLabels = new Cesium.LabelCollection();
 csLabels.add({
   position: Cesium.Cartesian3.fromRadians(20, 20, 0),
   text: 'Pre-existing primitive'
@@ -273,8 +273,8 @@ scene.primitives.add(csLabels);
 // Adding a feature after the layer has been synchronized.
 vectorSource.addFeature(theCircle);
 
-var hasTheVectorLayer = true;
-function addOrRemoveOneVectorLayer() {
+let hasTheVectorLayer = true;
+function addOrRemoveOneVectorLayer() { // eslint-disable-line no-unused-vars
   if (hasTheVectorLayer) {
     map.getLayers().remove(vectorLayer);
   } else {
@@ -283,8 +283,8 @@ function addOrRemoveOneVectorLayer() {
   hasTheVectorLayer = !hasTheVectorLayer;
 }
 
-function addOrRemoveOneFeature() {
-  var found = vectorSource2.getFeatures().indexOf(iconFeature);
+function addOrRemoveOneFeature() { // eslint-disable-line no-unused-vars
+  const found = vectorSource2.getFeatures().indexOf(iconFeature);
   if (found === -1) {
     vectorSource2.addFeature(iconFeature);
   } else {
@@ -292,7 +292,7 @@ function addOrRemoveOneFeature() {
   }
 }
 
-var oldStyle = new ol.style.Style({
+let oldStyle = new ol.style.Style({
   stroke: new ol.style.Stroke({
     color: 'blue',
     width: 2
@@ -301,14 +301,14 @@ var oldStyle = new ol.style.Style({
     color: 'green'
   })
 });
-function toggleStyle() {
-  var swap = theCircle.getStyle();
+function toggleStyle() { // eslint-disable-line no-unused-vars
+  const swap = theCircle.getStyle();
   theCircle.setStyle(oldStyle);
   oldStyle = swap;
 }
 
-function toggleClampToGround() {
-  var altitudeMode;
+function toggleClampToGround() { // eslint-disable-line no-unused-vars
+  let altitudeMode;
   if (!vectorLayer.get('altitudeMode')) {
     altitudeMode = 'clampToGround';
   }
@@ -320,9 +320,9 @@ function toggleClampToGround() {
   map.addLayer(vectorLayer2);
 }
 
-function setTargetFrameRate() {
-  var fps;
-  var fpsEl = document.querySelector('#framerate');
+function setTargetFrameRate() { // eslint-disable-line no-unused-vars
+  let fps;
+  const fpsEl = document.querySelector('#framerate');
   if (fpsEl) {
     fps = Number(fpsEl.value);
     ol3d.setTargetFrameRate(fps);

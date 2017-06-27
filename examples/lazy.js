@@ -1,4 +1,4 @@
-var ol2d = new ol.Map({
+const ol2d = new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM()
@@ -17,7 +17,7 @@ var ol2d = new ol.Map({
 });
 
 
-var ol3d;
+let ol3d;
 
 
 function _doToggle() {
@@ -25,9 +25,9 @@ function _doToggle() {
 }
 
 
-function toggle3D() {
+function toggle3D() { // eslint-disable-line no-unused-vars
   if (!ol3d) {
-    var s = window.lazyLoadCesium();
+    const s = window.lazyLoadCesium();
     s.onload = function() {
       init3D();
       _doToggle();
@@ -40,9 +40,9 @@ function toggle3D() {
 
 function init3D() {
   ol3d = new olcs.OLCesium({map: ol2d});
-  var scene = ol3d.getCesiumScene();
-  var terrainProvider = new Cesium.CesiumTerrainProvider({
-    url : '//assets.agi.com/stk-terrain/world'
+  const scene = ol3d.getCesiumScene();
+  const terrainProvider = new Cesium.CesiumTerrainProvider({
+    url: '//assets.agi.com/stk-terrain/world'
   });
   scene.terrainProvider = terrainProvider;
 }

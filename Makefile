@@ -81,8 +81,8 @@ cleanall: clean
 	mkdir -p $(dir $@)
 	touch $@
 
-.build/eslint.timestamp: $(SRC_JS_FILES)
-	./node_modules/.bin/eslint $?
+.build/eslint.timestamp: $(SRC_JS_FILES) $(EXAMPLES_JS_FILES)
+	./node_modules/.bin/eslint --ignore-pattern examples/Jugl.js --ignore-pattern examples/example-list.js $^
 	touch $@
 
 .build/dist-examples.timestamp: cesium/Build/Cesium/Cesium.js cesium/Build/CesiumUnminified/Cesium.js dist/olcesium.js $(EXAMPLES_JS_FILES) $(EXAMPLES_HTML_FILES)

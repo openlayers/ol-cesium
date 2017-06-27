@@ -1,11 +1,11 @@
-var point = new ol.geom.Point([700000, 200000, 100000]);
+const point = new ol.geom.Point([700000, 200000, 100000]);
 
-var iconFeature = new ol.Feature({
+const iconFeature = new ol.Feature({
   geometry: point
 });
 
 
-var iconStyle = new ol.style.Style({
+const iconStyle = new ol.style.Style({
   image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
     anchor: [0.5, 46],
     anchorXUnits: 'fraction',
@@ -18,18 +18,18 @@ var iconStyle = new ol.style.Style({
 iconFeature.setStyle(iconStyle);
 
 
-var vectorSource2 = new ol.source.Vector({
+const vectorSource2 = new ol.source.Vector({
   features: [iconFeature]
 });
-var imageVectorSource = new ol.source.ImageVector({
+const imageVectorSource = new ol.source.ImageVector({
   source: vectorSource2
 });
-var vectorLayer2 = new ol.layer.Image({
+const vectorLayer2 = new ol.layer.Image({
   source: imageVectorSource
 });
 
 
-var map = new ol.Map({
+const map = new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM()
@@ -49,23 +49,23 @@ var map = new ol.Map({
 });
 
 
-var ol3d = new olcs.OLCesium({map: map/*, target: 'map3d'*/});
-var scene = ol3d.getCesiumScene();
-var terrainProvider = new Cesium.CesiumTerrainProvider({
+const ol3d = new olcs.OLCesium({map/*, target: 'map3d'*/});
+const scene = ol3d.getCesiumScene();
+const terrainProvider = new Cesium.CesiumTerrainProvider({
   url: '//assets.agi.com/stk-terrain/world',
   requestVertexNormals: false
 });
 scene.terrainProvider = terrainProvider;
 ol3d.setEnabled(true);
 
-var tracking = false;
-function toggleTracking() {
+let tracking = false;
+function toggleTracking() { // eslint-disable-line no-unused-vars
   tracking = !tracking;
   ol3d.trackedFeature = tracking ? iconFeature : undefined;
 }
 
-setInterval(function() {
-  var old = point.getCoordinates();
+setInterval(() => {
+  const old = point.getCoordinates();
   point.setCoordinates([
     old[0] + 1000 * Math.random(),
     old[1] + 1000 * Math.random(),

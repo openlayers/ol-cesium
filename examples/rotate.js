@@ -1,5 +1,5 @@
 
-var map = new ol.Map({
+const map = new ol.Map({
   layers: [
     new ol.layer.Tile({
       source: new ol.source.OSM()
@@ -18,9 +18,9 @@ var map = new ol.Map({
 });
 
 
-var ol3d = new olcs.OLCesium({map: map/*, target: 'map3d'*/});
-var scene = ol3d.getCesiumScene();
-var terrainProvider = new Cesium.CesiumTerrainProvider({
+const ol3d = new olcs.OLCesium({map/*, target: 'map3d'*/});
+const scene = ol3d.getCesiumScene();
+const terrainProvider = new Cesium.CesiumTerrainProvider({
   url: '//assets.agi.com/stk-terrain/world',
   requestVertexNormals: false
 });
@@ -33,7 +33,7 @@ ol3d.setEnabled(true);
  * @param {!olcs.OLCesium} ol3d
  * @constructor
  */
-var OlcsControl = function(ol3d) {
+const OlcsControl = function(ol3d) {
 
   /**
    * @type {!olcs.OLCesium}
@@ -86,8 +86,8 @@ OlcsControl.prototype.getHeading = function() {
  * @return {number|undefined}
  */
 OlcsControl.prototype.getTiltOnGlobe = function() {
-  var scene = this.ol3d_.getCesiumScene();
-  var tiltOnGlobe = olcs.core.computeSignedTiltAngleOnGlobe(scene);
+  const scene = this.ol3d_.getCesiumScene();
+  const tiltOnGlobe = olcs.core.computeSignedTiltAngleOnGlobe(scene);
   return -tiltOnGlobe;
 };
 
@@ -96,25 +96,25 @@ OlcsControl.prototype.getTiltOnGlobe = function() {
  * @param {function()} callback
  */
 OlcsControl.prototype.resetToNorthZenith = function(callback) {
-  var scene = this.ol3d_.getCesiumScene();
-  var camera = scene.camera;
-  var pivot = olcs.core.pickBottomPoint(scene);
+  const scene = this.ol3d_.getCesiumScene();
+  const camera = scene.camera;
+  const pivot = olcs.core.pickBottomPoint(scene);
 
   if (!pivot) {
     callback();
     return;
   }
 
-  var currentHeading = this.getHeading();
-  var angle = olcs.core.computeAngleToZenith(scene, pivot);
+  const currentHeading = this.getHeading();
+  const angle = olcs.core.computeAngleToZenith(scene, pivot);
 
   // Point to North
   olcs.core.setHeadingUsingBottomCenter(scene, currentHeading, pivot);
 
   // Go to zenith
-  var transform = Cesium.Matrix4.fromTranslation(pivot);
-  var axis = camera.right;
-  var options = {callback: callback};
+  const transform = Cesium.Matrix4.fromTranslation(pivot);
+  const axis = camera.right;
+  const options = {callback};
   olcs.core.rotateAroundAxis(camera, -angle, axis, transform, options);
 };
 
@@ -123,8 +123,8 @@ OlcsControl.prototype.resetToNorthZenith = function(callback) {
  * @param {number} angle
  */
 OlcsControl.prototype.setHeading = function(angle) {
-  var scene = this.ol3d_.getCesiumScene();
-  var bottom = olcs.core.pickBottomPoint(scene);
+  const scene = this.ol3d_.getCesiumScene();
+  const bottom = olcs.core.pickBottomPoint(scene);
   if (bottom) {
     olcs.core.setHeadingUsingBottomCenter(scene, angle, bottom);
   }
@@ -135,22 +135,21 @@ OlcsControl.prototype.setHeading = function(angle) {
  * @param {number} angle
  */
 OlcsControl.prototype.tiltOnGlobe = function(angle) {
-  var scene = this.ol3d_.getCesiumScene();
-  var camera = scene.camera;
-  var pivot = olcs.core.pickBottomPoint(scene);
+  const scene = this.ol3d_.getCesiumScene();
+  const camera = scene.camera;
+  const pivot = olcs.core.pickBottomPoint(scene);
   if (!pivot) {
     // Could not find the bottom point
     return;
   }
 
-  var options = {};
-  var transform = Cesium.Matrix4.fromTranslation(pivot);
-  var axis = camera.right;
-  var rotateAroundAxis = olcs.core.rotateAroundAxis;
+  const options = {};
+  const transform = Cesium.Matrix4.fromTranslation(pivot);
+  const axis = camera.right;
+  const rotateAroundAxis = olcs.core.rotateAroundAxis;
   rotateAroundAxis(camera, -angle, axis, transform, options);
 };
 
 
 
-var control = new OlcsControl(ol3d);
-
+const control = new OlcsControl(ol3d); // eslint-disable-line no-unused-vars
