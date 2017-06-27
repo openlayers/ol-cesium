@@ -5,12 +5,41 @@ var spawn = require('child_process').spawn;
 var async = require('async');
 var fse = require('fs-extra');
 var walk = require('walk').walk;
+var isWindows = process.platform.indexOf('win') === 0;
 
 var sourceDirOL = path.join(__dirname, '..', 'ol', 'src');
 var sourceDirSelf = path.join(__dirname, '..', 'src');
 var sourceDirs = [sourceDirOL, sourceDirSelf];
 var infoPath = path.join(__dirname, '..', '.build', 'info.json');
-var jsdoc = path.join(__dirname, '..', 'node_modules', '.bin', 'jsdoc');
+
+/**
+ * Get checked path of a binary.
+ * @param {string} binaryName Binary name of the binary path to find.
+ * @return {string} Path.
+ */
+function getBinaryPath(binaryName) {
+  if (isWindows) {
+    binaryName += '.cmd';
+  }
+
+  var jsdocResolved = require.resolve('jsdoc/jsdoc.js');
+  var expectedPaths = [
+    path.join(__dirname, '..', 'node_modules', '.bin', binaryName),
+    path.resolve(path.join(path.dirname(jsdocResolved), '..', '.bin', binaryName))
+  ];
+
+  for (var i = 0; i < expectedPaths.length; i++) {
+    var expectedPath = expectedPaths[i];
+    if (fs.existsSync(expectedPath)) {
+      return expectedPath;
+    }
+  }
+
+  throw Error('JsDoc binary was not found in any of the expected paths: ' + expectedPaths);
+}
+
+var jsdoc = getBinaryPath('jsdoc');
+
 var jsdocConfig = path.join(__dirname, 'jsdoc', 'info', 'conf.json');
 
 
@@ -51,7 +80,21 @@ function getNewer(date, callback) {
       walker.on('file', function(root, stats, next) {
         var sourcePath = path.join(root, stats.name);
         if (/\.js$/.test(sourcePath)) {
-          paths.push(sourcePath);
+
+        /**
+         * Windows has restrictions on length of command line, so passing all the
+         * changed paths to a task will fail if this limit is exceeded.
+         * To get round this, if this is Windows and there are newer files, just
+         * pass the sourceDir to the task so it can do the walking.
+         */
+
+          if (isWindows) {
+            if (paths.indexOf(sourceDir) < 0) {
+              paths.push(sourceDir);
+            }
+          } else {
+            paths.push(sourcePath);
+          }
           if (stats.mtime > date) {
             newer = true;
           }
