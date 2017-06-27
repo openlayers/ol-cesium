@@ -255,9 +255,10 @@ olcs.Camera.prototype.setPosition = function(position) {
   const ll = this.toLonLat_(position);
   goog.asserts.assert(ll);
 
-  const carto = new Cesium.Cartographic(ol.math.toRadians(ll[0]),
-                                      ol.math.toRadians(ll[1]),
-                                      this.getAltitude());
+  const carto = new Cesium.Cartographic(
+      ol.math.toRadians(ll[0]),
+      ol.math.toRadians(ll[1]),
+      this.getAltitude());
 
   this.cam_.position = Cesium.Ellipsoid.WGS84.cartographicToCartesian(carto);
   this.updateView();
@@ -273,8 +274,7 @@ olcs.Camera.prototype.getPosition = function() {
   if (!this.fromLonLat_) {
     return undefined;
   }
-  const carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(
-      this.cam_.position);
+  const carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(this.cam_.position);
 
   const pos = this.fromLonLat_([
     ol.math.toDegrees(carto.longitude),
@@ -347,7 +347,7 @@ olcs.Camera.prototype.updateCamera_ = function() {
   goog.asserts.assert(ll);
 
   const carto = new Cesium.Cartographic(ol.math.toRadians(ll[0]),
-                                      ol.math.toRadians(ll[1]));
+      ol.math.toRadians(ll[1]));
   if (this.scene_.globe) {
     const height = this.scene_.globe.getHeight(carto);
     carto.height = height || 0;
@@ -496,8 +496,7 @@ olcs.Camera.prototype.checkCameraChange = function(opt_dontSync) {
  * @return {number} The calculated distance.
  * @private
  */
-olcs.Camera.prototype.calcDistanceForResolution_ = function(resolution,
-                                                            latitude) {
+olcs.Camera.prototype.calcDistanceForResolution_ = function(resolution, latitude) {
   const canvas = this.scene_.canvas;
   const fovy = this.cam_.frustum.fovy; // vertical field of view
   goog.asserts.assert(!isNaN(fovy));
@@ -537,8 +536,7 @@ olcs.Camera.prototype.calcDistanceForResolution_ = function(resolution,
  * @return {number} The calculated resolution.
  * @private
  */
-olcs.Camera.prototype.calcResolutionForDistance_ = function(distance,
-                                                            latitude) {
+olcs.Camera.prototype.calcResolutionForDistance_ = function(distance, latitude) {
   // See the reverse calculation (calcDistanceForResolution_) for details
   const canvas = this.scene_.canvas;
   const fovy = this.cam_.frustum.fovy;

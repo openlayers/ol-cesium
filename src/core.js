@@ -431,8 +431,8 @@ olcs.core.updateCesiumLayerProperties = function(olLayer, csLayer) {
 olcs.core.ol4326CoordinateToCesiumCartesian = function(coordinate) {
   const coo = coordinate;
   return coo.length > 2 ?
-      Cesium.Cartesian3.fromDegrees(coo[0], coo[1], coo[2]) :
-      Cesium.Cartesian3.fromDegrees(coo[0], coo[1]);
+    Cesium.Cartesian3.fromDegrees(coo[0], coo[1], coo[2]) :
+    Cesium.Cartesian3.fromDegrees(coo[0], coo[1]);
 };
 
 

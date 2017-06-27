@@ -203,8 +203,7 @@ olcs.core.OLImageryProvider.createCreditForSource = function(source) {
     }
   }
 
-  return (imageUrl || text.length > 0) ?
-         new Cesium.Credit(text, imageUrl, link) : null;
+  return (imageUrl || text.length > 0) ? new Cesium.Credit(text, imageUrl, link) : null;
 };
 
 
@@ -228,8 +227,7 @@ olcs.core.OLImageryProvider.prototype.requestImage = function(x, y, level) {
 
     // Perform mapping of Cesium tile coordinates to OpenLayers tile coordinates:
     // 1) Cesium zoom level 0 is OpenLayers zoom level 1 for EPSG:4326
-    const z_ = this.tilingScheme_ instanceof Cesium.GeographicTilingScheme ?
-        level + 1 : level;
+    const z_ = this.tilingScheme_ instanceof Cesium.GeographicTilingScheme ? level + 1 : level;
     // 2) OpenLayers tile coordinates increase from bottom to top
     const y_ = -y - 1;
 

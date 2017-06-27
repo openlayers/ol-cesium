@@ -31,9 +31,7 @@ olcs.util.imageRenderingValueResult_ = undefined;
 olcs.util.supportsImageRenderingPixelated = function() {
   if (olcs.util.supportsImageRenderingPixelatedResult_ === undefined) {
     const canvas = document.createElement('canvas');
-    canvas.setAttribute('style',
-                        'image-rendering: -moz-crisp-edges;' +
-                        'image-rendering: pixelated;');
+    canvas.setAttribute('style', 'image-rendering: -moz-crisp-edges; image-rendering: pixelated;');
     // canvas.style.imageRendering will be undefined, null or an
     // empty string on unsupported browsers.
     const tmp = canvas.style['imageRendering']; // non standard

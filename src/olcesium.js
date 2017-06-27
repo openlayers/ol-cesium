@@ -105,8 +105,7 @@ olcs.OLCesium = function(options) {
    * @type {!HTMLCanvasElement}
    * @private
    */
-  this.canvas_ = /** @type {!HTMLCanvasElement} */ (
-      document.createElement('CANVAS'));
+  this.canvas_ = /** @type {!HTMLCanvasElement} */ (document.createElement('CANVAS'));
   const canvasAttribute = document.createAttribute('style');
   canvasAttribute.value = fillArea;
   this.canvas_.setAttributeNode(canvasAttribute);
@@ -188,10 +187,10 @@ olcs.OLCesium = function(options) {
   });
 
   const synchronizers = options.createSynchronizers ?
-      options.createSynchronizers(this.map_, this.scene_, this.dataSourceCollection_) : [
-        new olcs.RasterSynchronizer(this.map_, this.scene_),
-        new olcs.VectorSynchronizer(this.map_, this.scene_)
-      ];
+    options.createSynchronizers(this.map_, this.scene_, this.dataSourceCollection_) : [
+      new olcs.RasterSynchronizer(this.map_, this.scene_),
+      new olcs.VectorSynchronizer(this.map_, this.scene_)
+    ];
 
   // Assures correct canvas size after initialisation
   this.handleResize_();
@@ -320,9 +319,7 @@ Object.defineProperties(olcs.OLCesium.prototype, {
         // Create an invisible point entity for tracking.
         // It is independant from the primitive/geometry created by the vector synchronizer.
         const options = {
-          'position': new Cesium.CallbackProperty((time, result) =>
-             toCesiumPosition()
-          , false),
+          'position': new Cesium.CallbackProperty((time, result) => toCesiumPosition(), false),
           'point': {
             'pixelSize': 1,
             'color': Cesium.Color.TRANSPARENT
