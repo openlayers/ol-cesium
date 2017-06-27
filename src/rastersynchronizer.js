@@ -163,7 +163,7 @@ olcs.RasterSynchronizer.prototype.orderLayers = function() {
   }
 
   ol.array.stableSort(layers, (layer1, layer2) =>
-     zIndices[ol.getUid(layer1)] - zIndices[ol.getUid(layer2)]
+    zIndices[ol.getUid(layer1)] - zIndices[ol.getUid(layer2)]
   );
 
   layers.forEach(function(olLayer) {
