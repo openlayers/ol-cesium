@@ -1,6 +1,6 @@
 {
   "name": "ol-cesium",
-  "version": "1.28.0",
+  "version": "1.29.0",
   "description": "OpenLayers Cesium integration library",
   "scripts": {},
   "repository": {
@@ -20,7 +20,7 @@
     "@mapbox/geojsonhint": "2.0.1",
     "fs-extra": "3.0.1",
     "jsdoc": "~3.4.0",
-    "eslint": "3.19.0",
+    "eslint": "4.1.1",
     "eslint-config-openlayers": "7.0.0",
     "nomnom": "1.8.1",
     "temp": "0.8.3",

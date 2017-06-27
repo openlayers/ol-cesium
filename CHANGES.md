@@ -1,6 +1,11 @@
 # Changelog
 
-# v 1.28
+# v 1.29
+
+* Changes
+  * Port to OpenLayers 4.2.0.
+
+# v 1.28 - 2017-06-02
 
 * Changes
   * Port to Cesium 1.34.
