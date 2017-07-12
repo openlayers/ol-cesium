@@ -1,11 +1,12 @@
 # Changelog
 
-# v 1.29
+# v 1.29 - 2017-07-12
 
 * Changes
   * Port to OpenLayers 4.2.0.
   * Lint the examples with the same rules as the rest of the code, making
     it necessary to display the examples using an ES6-capable browser.
+  * Port to Cesium 1.35.2.
 
 # v 1.28 - 2017-06-02
 
