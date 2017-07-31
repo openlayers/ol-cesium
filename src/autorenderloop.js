@@ -143,9 +143,16 @@ olcs.AutoRenderLoop.prototype.enable = function() {
     that.notifyRepaintRequired();
   };
 
-  // Listen for changes on the layer group
-  this.ol3d.getOlMap().getLayerGroup().on('change',
+  // Listen for changes on the main layer group
+  this.ol3d.getOlMap().getLayerGroup().on('change:layers',
       this._boundNotifyRepaintRequired);
+
+  this.ol3d.getOlMap().getLayers().forEach((layer) => {
+    // Listen for changes on layer group
+    layer.on('change', that._boundNotifyRepaintRequired);
+    // Listen for property changes on simple layer (opacity, visibility, ...)
+    layer.on('propertychange', that._boundNotifyRepaintRequired);
+  });
 };
 
 
@@ -183,8 +190,14 @@ olcs.AutoRenderLoop.prototype.disable = function() {
   Cesium.Camera.prototype.lookAt = this._originalCameraLookAt;
   Cesium.Camera.prototype.flyTo = this._originalCameraFlyTo;
 
-  this.ol3d.getOlMap().getLayerGroup().un('change',
+  this.ol3d.getOlMap().getLayerGroup().un('change:layers',
       this._boundNotifyRepaintRequired);
+
+  const that = this;
+  this.ol3d.getOlMap().getLayers().forEach((layer) => {
+    layer.un('change', that._boundNotifyRepaintRequired);
+    layer.un('propertychange', that._boundNotifyRepaintRequired);
+  });
 };
 
 
