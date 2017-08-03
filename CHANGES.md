@@ -1,5 +1,11 @@
 # Changelog
 
+# v 1.30 - 2017-08-03
+
+* Changes
+  * Port to Cesium 1.36. This fixes blinking of the vector example
+    https://github.com/openlayers/ol-cesium/issues/465.
+
 # v 1.29 - 2017-07-12
 
 * Changes
