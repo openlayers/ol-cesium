@@ -58,10 +58,10 @@ olcs.AbstractSynchronizer = function(map, scene) {
 
   /**
    * Map of listen keys for OpenLayers layer layers ids (from ol.getUid).
-   * @type {!Object.<string, ol.EventsKey>}
-   * @private
+   * @type {!Object.<string, Array<ol.EventsKey>>}
+   * @protected
    */
-  this.olLayerListenKeys_ = {};
+  this.olLayerListenKeys = {};
 
   /**
    * Map of listen keys for OpenLayers layer groups ids (from ol.getUid).
@@ -103,6 +103,7 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
   while (fifo.length > 0) {
     const olLayer = fifo.splice(0, 1)[0];
     const olLayerId = ol.getUid(olLayer).toString();
+    this.olLayerListenKeys[olLayerId] = [];
     goog.asserts.assert(!this.layerMap[olLayerId]);
 
     let cesiumObjects = null;
@@ -123,8 +124,8 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
     // add Cesium layers
     if (cesiumObjects) {
       this.layerMap[olLayerId] = cesiumObjects;
-      this.olLayerListenKeys_[olLayerId] = ol.events.listen(olLayer,
-          'change:zIndex', this.orderLayers, this);
+      this.olLayerListenKeys[olLayerId].push(ol.events.listen(olLayer,
+          'change:zIndex', this.orderLayers, this));
       cesiumObjects.forEach(function(cesiumObject) {
         this.addCesiumObject(cesiumObject);
       }, this);
@@ -149,8 +150,8 @@ olcs.AbstractSynchronizer.prototype.removeAndDestroySingleLayer_ = function(laye
       this.removeSingleCesiumObject(counterpart, false);
       this.destroyCesiumObject(counterpart);
     }, this);
-    ol.Observable.unByKey(this.olLayerListenKeys_[uid]);
-    delete this.olLayerListenKeys_[uid];
+    this.olLayerListenKeys[uid].forEach(ol.Observable.unByKey);
+    delete this.olLayerListenKeys[uid];
   }
   delete this.layerMap[uid];
   return !!counterparts;
@@ -258,12 +259,11 @@ olcs.AbstractSynchronizer.prototype.destroyAll = function() {
     const keys = this.olGroupListenKeys_[objKey];
     keys.forEach(ol.Observable.unByKey);
   }
-  for (objKey in this.olLayerListenKeys_) {
-    const key = this.olLayerListenKeys_[objKey];
-    ol.Observable.unByKey(key);
+  for (objKey in this.olLayerListenKeys) {
+    this.olLayerListenKeys[objKey].forEach(ol.Observable.unByKey);
   }
   this.olGroupListenKeys_ = {};
-  this.olLayerListenKeys_ = {};
+  this.olLayerListenKeys = {};
   this.layerMap = {};
 };
 

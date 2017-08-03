@@ -94,17 +94,19 @@ olcs.RasterSynchronizer.prototype.convertLayerToCesiumImageries = function(olLay
  * @inheritDoc
  */
 olcs.RasterSynchronizer.prototype.createSingleLayerCounterparts = function(olLayer) {
+  const uid = ol.getUid(olLayer).toString();
   const viewProj = this.view.getProjection();
   const cesiumObjects = this.convertLayerToCesiumImageries(olLayer, viewProj);
   if (cesiumObjects) {
-    olLayer.on(['change:opacity', 'change:visible'],
+    const listenKeyArray = [];
+    listenKeyArray.push(olLayer.on(['change:opacity', 'change:visible'],
         (e) => {
           // the compiler does not seem to be able to infer this
           goog.asserts.assert(cesiumObjects);
           for (let i = 0; i < cesiumObjects.length; ++i) {
             olcs.core.updateCesiumLayerProperties(olLayer, cesiumObjects[i]);
           }
-        });
+        }));
 
     for (let i = 0; i < cesiumObjects.length; ++i) {
       olcs.core.updateCesiumLayerProperties(olLayer, cesiumObjects[i]);
@@ -112,16 +114,16 @@ olcs.RasterSynchronizer.prototype.createSingleLayerCounterparts = function(olLay
 
     // there is no way to modify Cesium layer extent,
     // we have to recreate when OpenLayers layer extent changes:
-    olLayer.on('change:extent', function(e) {
+    listenKeyArray.push(olLayer.on('change:extent', function(e) {
       for (let i = 0; i < cesiumObjects.length; ++i) {
         this.cesiumLayers_.remove(cesiumObjects[i], true); // destroy
         this.ourLayers_.remove(cesiumObjects[i], false);
       }
       delete this.layerMap[ol.getUid(olLayer)]; // invalidate the map entry
       this.synchronize();
-    }, this);
+    }, this));
 
-    olLayer.on('change', function(e) {
+    listenKeyArray.push(olLayer.on('change', function(e) {
       // when the source changes, re-add the layer to force update
       for (let i = 0; i < cesiumObjects.length; ++i) {
         const position = this.cesiumLayers_.indexOf(cesiumObjects[i]);
@@ -130,7 +132,9 @@ olcs.RasterSynchronizer.prototype.createSingleLayerCounterparts = function(olLay
           this.cesiumLayers_.add(cesiumObjects[i], position);
         }
       }
-    }, this);
+    }, this));
+
+    this.olLayerListenKeys[uid].push(...listenKeyArray);
   }
 
   return Array.isArray(cesiumObjects) ? cesiumObjects : null;
