@@ -1,5 +1,10 @@
 # Changelog
 
+# v 1.31
+
+* Changes
+  * Update OpenLayers to v4.3.1 to fix https://github.com/openlayers/ol-cesium/issues/479
+
 # v 1.30 - 2017-08-03
 
 * Changes
