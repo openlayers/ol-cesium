@@ -1025,7 +1025,7 @@ olcs.FeatureConverter.prototype.olVectorLayerToCesium = function(olLayer, olView
       if (prims) {
         if (!primitives) {
           primitives = prims;
-        } else {
+        } else if (prims) {
           let i = 0, prim;
           while ((prim = prims.get(i))) {
             primitives.add(prim);
