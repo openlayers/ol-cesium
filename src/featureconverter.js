@@ -1094,7 +1094,7 @@ olcs.FeatureConverter.prototype.convert = function(layer, view, feature, context
     const prims = this.olFeatureToCesium(layer, feature, styles[i], context);
     if (!primitives) {
       primitives = prims;
-    } else {
+    } else if (prims) {
       let i = 0, prim;
       while ((prim = prims.get(i))) {
         primitives.add(prim);
