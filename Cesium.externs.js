@@ -2665,6 +2665,11 @@ Cesium.GeoJsonDataSource.load = function(data, options) {};
 Cesium.KmlDataSource = function() {};
 
 /**
+ * @type {Cesium.EntityCollection}
+ */
+Cesium.KmlDataSource.prototype.entities;
+
+/**
  * @typedef {{
  *   camera: Cesium.Camera,
  *   canvas: HTMLCanvasElement,
@@ -2763,6 +2768,11 @@ Cesium.CustomDataSource.prototype.entities;
  */
 Cesium.EntityCollection = function() {}
 
+/**
+ * @param {string|number} id
+ * @return {Cesium.Entity}
+ */
+Cesium.EntityCollection.prototype.getById = function(id) {}
 
 /**
  * @param {Cesium.Entity} entity
