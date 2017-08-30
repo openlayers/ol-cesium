@@ -34,7 +34,7 @@ help:
 npm-install: .build/node_modules.timestamp
 
 .PHONY: serve
-serve: npm-install cesium/Build/Cesium/Cesium.js
+serve: npm-install
 	node build/serve.js
 
 .PHONY: dist
@@ -62,11 +62,6 @@ check: lint dist .build/geojsonhint.timestamp
 .PHONY: clean
 clean:
 	rm -f dist/olcesium.js
-	rm -f ol/build/ol.js
-	rm -f ol/build/ol-debug.js
-	rm -f ol/build/ol.css
-	rm -rf cesium/Build/Cesium
-	rm -rf cesium/Build/CesiumUnminified
 	rm -rf dist/ol
 	rm -rf dist/examples
 	rm -rf dist/Cesium
@@ -85,17 +80,17 @@ cleanall: clean
 	./node_modules/.bin/eslint --ignore-pattern examples/Jugl.js --ignore-pattern examples/example-list.js $^
 	touch $@
 
-.build/dist-examples.timestamp: cesium/Build/Cesium/Cesium.js cesium/Build/CesiumUnminified/Cesium.js dist/olcesium.js $(EXAMPLES_JS_FILES) $(EXAMPLES_HTML_FILES)
+.build/dist-examples.timestamp: dist/olcesium.js $(EXAMPLES_JS_FILES) $(EXAMPLES_HTML_FILES)
 	node build/parse-examples.js
 	mkdir -p $(dir $@)
-	cp -R cesium/Build/Cesium dist/
-	cp -R cesium/Build/CesiumUnminified dist/
+	cp -R node_modules/@camptocamp/cesium/Build/Cesium dist/
+	cp -R node_modules/@camptocamp/cesium/Build/CesiumUnminified dist/
 	cp -R examples dist/
-	cp ol/css/ol.css dist/
+	cp node_modules/openlayers/css/ol.css dist/
 	$(SEDI) 'sYDIST = falseYDIST = trueY' dist/examples/inject_ol_cesium.js
 	$(SEDI) 'sY@loaderYolcesium.jsY' dist/examples/inject_ol_cesium.js
-	$(SEDI) 'sY../cesium/Build/Y../Y' dist/examples/inject_ol_cesium.js
-	for f in dist/examples/*.html; do $(SEDI) 'sY../ol/css/ol.cssY../ol.cssY' $$f; done
+	$(SEDI) 'sY../node_modules/@camptocamp/cesium/Build/Y../Y' dist/examples/inject_ol_cesium.js
+	for f in dist/examples/*.html; do $(SEDI) 'sY../node_modules/openlayers/css/ol.cssY../ol.cssY' $$f; done
 	touch $@
 
 dist/olcesium-debug.js: build/olcesium-debug.json $(SRC_JS_FILES) Cesium.externs.js build/build.js npm-install
@@ -103,41 +98,11 @@ dist/olcesium-debug.js: build/olcesium-debug.json $(SRC_JS_FILES) Cesium.externs
 	node build/build.js $< $@
 
 
-ol/node_modules/rbush/package.json: ol/package.json
-	(cd ol && npm install --production)
-
-ol/build/ol.ext/rbush.js: ol/node_modules/rbush/package.json
-	(cd ol && node tasks/build-ext.js)
-
-
 # A sourcemap is prepared, the source is exected to be deployed in 'source' directory
-dist/olcesium.js: build/olcesium.json $(SRC_JS_FILES) Cesium.externs.js build/build.js npm-install ol/build/ol.ext/rbush.js
+dist/olcesium.js: build/olcesium.json $(SRC_JS_FILES) Cesium.externs.js build/build.js npm-install
 	mkdir -p $(dir $@)
 	node build/build.js $< $@
 	$(SEDI) 's!$(shell pwd)/dist!source!g' dist/olcesium.js.map
 	$(SEDI) 's!$(shell pwd)!source!g' dist/olcesium.js.map
 #	echo '//# sourceMappingURL=olcesium.js.map' >> dist/olcesium.js
 #	-ln -s .. dist/source
-
-cesium/node_modules/.bin/gulp: cesium/package.json
-	cd cesium && npm install
-
-# Only generated when cesium/Build/Cesium/Cesium.js does not exist
-# or CHANGES.md changed
-ifndef NO_CESIUM
-cesium/Build/Cesium/Cesium.js: cesium/CHANGES.md cesium/node_modules/.bin/gulp
-	(cd cesium && node_modules/.bin/gulp $(CESIUM_COMPILE_TARGET))
-else
-cesium/Build/Cesium/Cesium.js:
-	mkdir -p cesium/Build/Cesium/
-endif
-
-# Only generated when cesium/Build/CesiumUnminified/Cesium.js does not exist
-# or CHANGES.md changed
-ifndef NO_CESIUM
-cesium/Build/CesiumUnminified/Cesium.js: cesium/CHANGES.md cesium/node_modules/.bin/gulp
-	(cd cesium && node_modules/.bin/gulp combine)
-else
-cesium/Build/CesiumUnminified/Cesium.js:
-	mkdir -p cesium/Build/CesiumUnminified/
-endif

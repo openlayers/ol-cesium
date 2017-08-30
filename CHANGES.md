@@ -4,6 +4,12 @@
 
 * Changes
   * Update OpenLayers to v4.3.1 to fix https://github.com/openlayers/ol-cesium/issues/479
+  * Get OpenLayers and Cesium dependencies through npm instead of git
+    submodules. On old clones you must remove manually the unused "ol" and
+    "cesium" directories.
+  * Switch to @camptocamp/closure-util fork to allow using goog.modules.
+  * Switch to @camptocamp/cesium to allow examples based on vector tiles and
+    advanced performance optimizations.
 
 # v 1.30 - 2017-08-03
 
