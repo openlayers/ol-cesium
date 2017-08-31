@@ -2769,7 +2769,7 @@ Cesium.CustomDataSource.prototype.entities;
 Cesium.EntityCollection = function() {}
 
 /**
- * @param {string|number} id
+ * @param {string} id
  * @return {Cesium.Entity}
  */
 Cesium.EntityCollection.prototype.getById = function(id) {}
