@@ -9,14 +9,8 @@ cache:
   directories:
     - node_modules
 
-git:
-  submodules: false
-
-before_install:
-  - git submodule update --init ol
-
 script:
-  - NO_CESIUM=1 make dist
-  - NO_CESIUM=1 make check
-  - NO_CESIUM=1 make dist-examples
+  - make dist
+  - make check
+  - make dist-examples
   - ./build/goog-count.sh

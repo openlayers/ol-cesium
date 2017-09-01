@@ -1,8 +1,8 @@
 {
   "src": [
     "src/**/*.js",
-    "ol/src/**/*.js",
-    "ol/build/ol.ext/*.js"
+    "node_modules/openlayers/src/**/*.js",
+    "node_modules/openlayers/build/ol.ext/*.js"
   ],
   "exports": ["*"]
 }

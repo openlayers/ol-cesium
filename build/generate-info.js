@@ -7,7 +7,7 @@ var fse = require('fs-extra');
 var walk = require('walk').walk;
 var isWindows = process.platform.indexOf('win') === 0;
 
-var sourceDirOL = path.join(__dirname, '..', 'ol', 'src');
+var sourceDirOL = path.join(__dirname, '..', 'node_modules', 'openlayers', 'src');
 var sourceDirSelf = path.join(__dirname, '..', 'src');
 var sourceDirs = [sourceDirOL, sourceDirSelf];
 var infoPath = path.join(__dirname, '..', '.build', 'info.json');

@@ -4,7 +4,7 @@
 var path = require('path');
 
 var async = require('async');
-var closure = require('closure-util');
+var closure = require('@camptocamp/closure-util');
 var fs = require('fs-extra');
 var nomnom = require('nomnom');
 var exec = require('child_process').exec;
@@ -168,7 +168,7 @@ function build(config, paths, callback) {
     concatenate(paths, callback);
   } else {
     log.info('ol-cesium', 'Compiling ' + paths.length + ' sources');
-    paths = paths.concat('ol/src/ol/typedefs.js');
+    paths = paths.concat('node_modules/openlayers/src/ol/typedefs.js');
     options.compile.js = paths.concat(options.compile.js || []);
     closure.compile(options, callback);
   }

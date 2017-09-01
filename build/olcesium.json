@@ -2,22 +2,22 @@
   "exports": ["*"],
   "src": [
     "src/**/*.js",
-    "ol/src/**/*.js",
-    "ol/build/ol.ext/*.js"
+    "node_modules/openlayers/src/**/*.js",
+    "node_modules/openlayers/build/ol.ext/*.js"
   ],
   "compile": {
     "externs": [
       "externs/olcsx.js",
-      "ol/externs/oli.js",
-      "ol/externs/olx.js",
-      "ol/externs/cartodb.js",
-      "ol/externs/proj4js.js",
-      "ol/externs/tilejson.js",
-      "ol/externs/topojson.js",
-      "ol/externs/esrijson.js",
-      "ol/externs/geojson.js",
-      "ol/externs/bingmaps.js",
-      "ol/externs/closure-compiler.js",
+      "node_modules/openlayers/externs/oli.js",
+      "node_modules/openlayers/externs/olx.js",
+      "node_modules/openlayers/externs/cartodb.js",
+      "node_modules/openlayers/externs/proj4js.js",
+      "node_modules/openlayers/externs/tilejson.js",
+      "node_modules/openlayers/externs/topojson.js",
+      "node_modules/openlayers/externs/esrijson.js",
+      "node_modules/openlayers/externs/geojson.js",
+      "node_modules/openlayers/externs/bingmaps.js",
+      "node_modules/openlayers/externs/closure-compiler.js",
       "Cesium.externs.js"
     ],
     "js": [

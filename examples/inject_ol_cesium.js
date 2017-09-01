@@ -6,7 +6,7 @@
   const ol = (DIST && isDev) ? 'olcesium-debug.js' : '@loader';
 
   if (!window.LAZY_CESIUM) {
-    document.write(`${'<scr' + 'ipt type="text/javascript" src="../cesium/Build/'}${cs}"></scr` + 'ipt>');
+    document.write(`${'<scr' + 'ipt type="text/javascript" src="../node_modules/@camptocamp/cesium/Build/'}${cs}"></scr` + 'ipt>');
   }
   document.write(`${'<scr' + 'ipt type="text/javascript" src="../'}${ol}"></scr` + 'ipt>');
 
