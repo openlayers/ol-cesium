@@ -3,6 +3,8 @@
 # v 1.31
 
 * Changes
+  * Port to OpenLayers 4.3.2
+  * Port to Cesium 1.37
   * Update OpenLayers to v4.3.1 to fix https://github.com/openlayers/ol-cesium/issues/479
   * Get OpenLayers and Cesium dependencies through npm instead of git
     submodules. On old clones you must remove manually the unused "ol" and
