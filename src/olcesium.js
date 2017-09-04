@@ -139,7 +139,7 @@ olcs.OLCesium = function(options) {
   this.hiddenRootGroup_ = null;
 
   const sceneOptions = options.sceneOptions !== undefined ? options.sceneOptions :
-      /** @type {Cesium.SceneOptions} */ ({});
+    /** @type {Cesium.SceneOptions} */ ({});
   sceneOptions.canvas = this.canvas_;
   sceneOptions.scene3DOnly = true;
 
