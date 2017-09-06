@@ -35,6 +35,7 @@ const terrainProvider = new Cesium.CesiumTerrainProvider({
   requestVertexNormals: true
 });
 scene.terrainProvider = terrainProvider;
+ol3d.setEnabled(true);
 
 
 timeElt.style.display = 'none';

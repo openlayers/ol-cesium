@@ -15,7 +15,7 @@
     if (!s) {
       s = document.createElement('script');
       s.type = 'text/javascript';
-      s.src = `../cesium/Build/${cs}`;
+      s.src = `../node_modules/@camptocamp/cesium/Build/${cs}`;
       console.log('loading Cesium...');
       document.body.appendChild(s);
     }

@@ -48,15 +48,15 @@ const textStyle = [new ol.style.Style({
     })
   })
 }), new ol.style.Style({
-    geometry: new ol.geom.Circle([1000000, 3000000, 10000], 2e6),
-    stroke: new ol.style.Stroke({
-      color: 'blue',
-      width: 2
-    }),
-    fill: new ol.style.Fill({
-      color: 'rgba(0, 0, 255, 0.2)'
-    })
-  })];
+  geometry: new ol.geom.Circle([1000000, 3000000, 10000], 2e6),
+  stroke: new ol.style.Stroke({
+    color: 'blue',
+    width: 2
+  }),
+  fill: new ol.style.Fill({
+    color: 'rgba(0, 0, 255, 0.2)'
+  })
+})];
 
 iconFeature.setStyle(iconStyle);
 
@@ -256,11 +256,9 @@ dragAndDropInteraction.on('addfeatures', (event) => {
 const ol3d = new olcs.OLCesium({map, target: 'map3d'});
 const scene = ol3d.getCesiumScene();
 const terrainProvider = new Cesium.CesiumTerrainProvider({
-  url: '//assets.agi.com/stk-terrain/world',
-  requestVertexNormals: true
+  url: '//assets.agi.com/stk-terrain/world'
 });
 scene.terrainProvider = terrainProvider;
-scene.globe.enableLighting = true;
 ol3d.setEnabled(true);
 
 const csLabels = new Cesium.LabelCollection();
