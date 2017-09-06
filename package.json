@@ -18,7 +18,7 @@
   "devDependencies": {
     "@camptocamp/closure-util": "1.23.0",
     "openlayers": "4.3.2",
-    "@camptocamp/cesium": "1.36.0",
+    "@camptocamp/cesium": "1.37.0",
     "@mapbox/geojsonhint": "2.0.1",
     "fs-extra": "3.0.1",
     "jsdoc": "3.5.4",
