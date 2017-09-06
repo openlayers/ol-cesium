@@ -256,11 +256,9 @@ dragAndDropInteraction.on('addfeatures', (event) => {
 const ol3d = new olcs.OLCesium({map, target: 'map3d'});
 const scene = ol3d.getCesiumScene();
 const terrainProvider = new Cesium.CesiumTerrainProvider({
-  url: '//assets.agi.com/stk-terrain/world',
-  requestVertexNormals: true
+  url: '//assets.agi.com/stk-terrain/world'
 });
 scene.terrainProvider = terrainProvider;
-scene.globe.enableLighting = true;
 ol3d.setEnabled(true);
 
 const csLabels = new Cesium.LabelCollection();
