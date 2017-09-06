@@ -93,13 +93,13 @@ cleanall: clean
 	for f in dist/examples/*.html; do $(SEDI) 'sY../node_modules/openlayers/css/ol.cssY../ol.cssY' $$f; done
 	touch $@
 
-dist/olcesium-debug.js: build/olcesium-debug.json $(SRC_JS_FILES) Cesium.externs.js build/build.js npm-install
+dist/olcesium-debug.js: build/olcesium-debug.json $(SRC_JS_FILES) Cesium.externs.js build/build.js .build/node_modules.timestamp
 	mkdir -p $(dir $@)
 	node build/build.js $< $@
 
 
 # A sourcemap is prepared, the source is exected to be deployed in 'source' directory
-dist/olcesium.js: build/olcesium.json $(SRC_JS_FILES) Cesium.externs.js build/build.js npm-install
+dist/olcesium.js: build/olcesium.json $(SRC_JS_FILES) Cesium.externs.js build/build.js .build/node_modules.timestamp
 	mkdir -p $(dir $@)
 	node build/build.js $< $@
 	$(SEDI) 's!$(shell pwd)/dist!source!g' dist/olcesium.js.map
