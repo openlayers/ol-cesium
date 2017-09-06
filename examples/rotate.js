@@ -12,8 +12,8 @@ const map = new ol.Map({
     })
   }),
   view: new ol.View({
-    center: [0, 0],
-    zoom: 2
+    center: [333333, 1500000],
+    zoom: 6
   })
 });
 
@@ -116,6 +116,12 @@ OlcsControl.prototype.resetToNorthZenith = function(callback) {
   const axis = camera.right;
   const options = {callback};
   olcs.core.rotateAroundAxis(camera, -angle, axis, transform, options);
+};
+
+
+OlcsControl.prototype.rotate = function(angle) {
+  const current = this.ol3d_.getOlMap().getView().getRotation();
+  this.ol3d_.getOlMap().getView().setRotation(current + angle);
 };
 
 
