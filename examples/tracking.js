@@ -1,3 +1,22 @@
+/* eslint googshift/valid-provide-and-module: 0 */
+
+goog.provide('examples.tracking');
+
+goog.require('olcs.OLCesium');
+goog.require('ol.View');
+goog.require('ol.control');
+goog.require('ol.source.OSM');
+goog.require('ol.layer.Tile');
+goog.require('ol.source.Vector');
+goog.require('ol.style.Icon');
+goog.require('ol.style.Style');
+goog.require('ol.Feature');
+goog.require('ol.geom.Point');
+goog.require('ol.source.ImageVector');
+goog.require('ol.Map');
+goog.require('ol.layer.Image');
+
+
 const point = new ol.geom.Point([700000, 200000, 100000]);
 
 const iconFeature = new ol.Feature({

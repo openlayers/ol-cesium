@@ -1,3 +1,21 @@
+/* eslint googshift/valid-provide-and-module: 0 */
+
+goog.provide('examples.synthvectors');
+
+goog.require('ol.layer.Vector');
+goog.require('ol.source.Vector');
+goog.require('ol.style.Fill');
+goog.require('ol.style.Circle');
+goog.require('ol.style.Style');
+goog.require('olcs.OLCesium');
+goog.require('ol.View');
+goog.require('ol.Map');
+goog.require('ol.source.OSM');
+goog.require('ol.layer.Tile');
+goog.require('ol.Feature');
+goog.require('ol.geom.Point');
+
+
 let total = 0;
 let created = 0;
 let added = 0;

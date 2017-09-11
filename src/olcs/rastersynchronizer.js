@@ -1,4 +1,5 @@
 goog.provide('olcs.RasterSynchronizer');
+goog.require('ol.layer.Group');
 
 goog.require('goog.asserts');
 goog.require('ol.array');

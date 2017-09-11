@@ -1,4 +1,9 @@
 goog.provide('olcs.FeatureConverter');
+goog.require('ol.layer.Image');
+goog.require('ol.geom.Geometry');
+goog.require('ol.source.ImageVector');
+goog.require('ol.style.Icon');
+goog.require('ol.source.Vector');
 
 goog.require('goog.asserts');
 goog.require('ol');

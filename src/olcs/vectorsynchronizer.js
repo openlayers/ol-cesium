@@ -1,4 +1,8 @@
 goog.provide('olcs.VectorSynchronizer');
+goog.require('ol.source.Vector');
+goog.require('ol.layer.Layer');
+goog.require('ol.source.ImageVector');
+goog.require('ol.layer.Image');
 
 goog.require('goog.asserts');
 goog.require('ol');

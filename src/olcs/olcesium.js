@@ -1,4 +1,5 @@
 goog.provide('olcs.OLCesium');
+goog.require('ol.geom.Point');
 
 goog.require('goog.asserts');
 goog.require('ol.proj');
