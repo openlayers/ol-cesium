@@ -77,7 +77,7 @@ cleanall: clean
 	touch $@
 
 .build/eslint.timestamp: $(SRC_JS_FILES) $(EXAMPLES_JS_FILES)
-	./node_modules/.bin/eslint --ignore-pattern examples/Jugl.js --ignore-pattern examples/example-list.js $^
+	./node_modules/.bin/eslint $^
 	touch $@
 
 .build/dist-examples.timestamp: dist/olcesium.js $(EXAMPLES_JS_FILES) $(EXAMPLES_HTML_FILES)
