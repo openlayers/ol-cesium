@@ -1,6 +1,14 @@
 # Changelog
 
-# v 1.31
+
+# v 1.32
+
+* Changes
+  * Enable googshift eslint rules to prepare for ES6 modules migration; move
+    source to the olcs directory and fix filenames.
+
+
+# v 1.31 - 2017-09-06
 
 * Changes
   * Port to OpenLayers 4.3.2
