@@ -1,3 +1,19 @@
+/* eslint googshift/valid-provide-and-module: 0 */
+
+goog.provide('examples.rastersync');
+
+goog.require('ol.source.TileWMS');
+goog.require('ol.source.Stamen');
+goog.require('olcs.OLCesium');
+goog.require('ol.layer.Group');
+goog.require('ol.Map');
+goog.require('ol.source.TileJSON');
+goog.require('ol.source.OSM');
+goog.require('ol.layer.Tile');
+goog.require('ol.proj');
+goog.require('ol.View');
+
+
 const view = new ol.View({
   center: ol.proj.transform([-112.2, 36.06], 'EPSG:4326', 'EPSG:3857'),
   zoom: 11

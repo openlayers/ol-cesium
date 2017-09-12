@@ -1,4 +1,8 @@
 goog.provide('olcs.VectorSynchronizer');
+goog.require('ol.source.Vector');
+goog.require('ol.layer.Layer');
+goog.require('ol.source.ImageVector');
+goog.require('ol.layer.Image');
 
 goog.require('goog.asserts');
 goog.require('ol');
@@ -6,11 +10,6 @@ goog.require('ol.events');
 goog.require('ol.layer.Vector');
 goog.require('olcs.AbstractSynchronizer');
 goog.require('olcs.FeatureConverter');
-goog.require('olcs.core');
-goog.require('olcs.core.VectorLayerCounterpart');
-
-
-
 /**
  * Unidirectionally synchronize OpenLayers vector layers to Cesium.
  * @param {!ol.Map} map

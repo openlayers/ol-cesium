@@ -1,4 +1,5 @@
 goog.provide('olcs.core');
+goog.require('ol.easing');
 
 goog.require('goog.asserts');
 goog.require('ol.layer.Tile');

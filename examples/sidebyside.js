@@ -1,3 +1,15 @@
+/* eslint googshift/valid-provide-and-module: 0 */
+
+goog.provide('examples.sidebyside');
+
+goog.require('olcs.OLCesium');
+goog.require('ol.source.OSM');
+goog.require('ol.layer.Tile');
+goog.require('ol.Map');
+goog.require('ol.proj');
+goog.require('ol.View');
+
+
 const view = new ol.View({
   center: ol.proj.transform([25, 20], 'EPSG:4326', 'EPSG:3857'),
   zoom: 3,

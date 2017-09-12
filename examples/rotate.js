@@ -1,3 +1,15 @@
+/* eslint googshift/valid-provide-and-module: 0 */
+
+goog.provide('examples.rotate');
+goog.require('olcs.core');
+
+goog.require('olcs.OLCesium');
+goog.require('ol.View');
+goog.require('ol.control');
+goog.require('ol.source.OSM');
+goog.require('ol.layer.Tile');
+goog.require('ol.Map');
+
 
 const map = new ol.Map({
   layers: [

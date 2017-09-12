@@ -1,0 +1,60 @@
+{
+  extends: [
+    'openlayers',
+    '.eslintrc-es6.yaml'
+  ],
+  plugins: [
+    'googshift',
+  ],
+  rules: {
+    'googshift/no-duplicate-requires': 'error',
+
+    'googshift/no-missing-requires': ['error', {
+      prefixes: ['olcs', 'ol']
+    }],
+
+    'googshift/no-unused-requires': 'error',
+
+    'googshift/one-provide-or-module': ['error', {
+      entryPoints: ['olcs'],
+      root: 'src'
+    }],
+
+    'googshift/requires-first': 'error',
+
+    'googshift/valid-provide-and-module': ['error', {
+      entryPoints: ['olcs'],
+      root: 'src'
+    }],
+
+    'googshift/valid-requires': 'error',
+    no-console: 0,
+    no-extra-boolean-cast: 0,
+    brace-style: 0,
+    no-multiple-empty-lines: 0,
+    valid-jsdoc: 0,
+    indent: [2, 2, {
+      VariableDeclarator: 2,
+      SwitchCase: 1,
+      MemberExpression: 2,
+      FunctionDeclaration: {
+        parameters: 2,
+        body: 1
+      },
+      FunctionExpression: {
+        parameters: 2,
+        body: 1
+      },
+      CallExpression: {
+        arguments: 2
+      }
+    }]
+  },
+  globals: {
+    ol: false,
+    goog: false,
+    Cesium: false,
+    olcs: false,
+    proj4: false
+  }
+}

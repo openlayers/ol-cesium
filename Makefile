@@ -77,7 +77,7 @@ cleanall: clean
 	touch $@
 
 .build/eslint.timestamp: $(SRC_JS_FILES) $(EXAMPLES_JS_FILES)
-	./node_modules/.bin/eslint --ignore-pattern examples/Jugl.js --ignore-pattern examples/example-list.js $^
+	./node_modules/.bin/eslint $^
 	touch $@
 
 .build/dist-examples.timestamp: dist/olcesium.js $(EXAMPLES_JS_FILES) $(EXAMPLES_HTML_FILES)
@@ -90,7 +90,15 @@ cleanall: clean
 	$(SEDI) 'sYDIST = falseYDIST = trueY' dist/examples/inject_ol_cesium.js
 	$(SEDI) 'sY@loaderYolcesium.jsY' dist/examples/inject_ol_cesium.js
 	$(SEDI) 'sY../node_modules/@camptocamp/cesium/Build/Y../Y' dist/examples/inject_ol_cesium.js
-	for f in dist/examples/*.html; do $(SEDI) 'sY../node_modules/openlayers/css/ol.cssY../ol.cssY' $$f; done
+	for f in dist/examples/*.html; \
+	do \
+	  $(SEDI) 'sY../node_modules/openlayers/css/ol.cssY../ol.cssY' $$f; \
+	done
+	for f in dist/examples/*.js; \
+	do \
+	  $(SEDI) '/goog.provide.*/d' $$f; \
+	  $(SEDI) '/goog.require.*/d' $$f; \
+	done
 	touch $@
 
 dist/olcesium-debug.js: build/olcesium-debug.json $(SRC_JS_FILES) Cesium.externs.js build/build.js .build/node_modules.timestamp
