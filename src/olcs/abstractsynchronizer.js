@@ -98,10 +98,11 @@ olcs.AbstractSynchronizer.prototype.orderLayers = function() {
  * @private
  */
 olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
-  /** @type {Array.<!ol.layer.Base>} */
-  const fifo = [root];
+  /** @type {Array.<Array.<!ol.layer.Base>>} */
+  const fifo = [[root]];
   while (fifo.length > 0) {
-    const olLayer = fifo.splice(0, 1)[0];
+    const olLayerList = fifo.splice(0, 1)[0];
+    const olLayer = olLayerList[0];
     const olLayerId = ol.getUid(olLayer).toString();
     this.olLayerListenKeys[olLayerId] = [];
     goog.asserts.assert(!this.layerMap[olLayerId]);
@@ -109,16 +110,20 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
     let cesiumObjects = null;
     if (olLayer instanceof ol.layer.Group) {
       this.listenForGroupChanges_(olLayer);
-      cesiumObjects = this.createSingleLayerCounterparts(olLayer);
+      if (olLayer !== this.mapLayerGroup) {
+        cesiumObjects = this.createSingleLayerCounterparts(olLayerList);
+      }
       if (!cesiumObjects) {
         olLayer.getLayers().forEach((l) => {
           if (l) {
-            fifo.push(l);
+            const llist = olLayer === this.mapLayerGroup ? [] : olLayerList.slice();
+            llist.unshift(l);
+            fifo.push(llist);
           }
         });
       }
     } else {
-      cesiumObjects = this.createSingleLayerCounterparts(olLayer);
+      cesiumObjects = this.createSingleLayerCounterparts(olLayerList);
     }
 
     // add Cesium layers
@@ -305,9 +310,9 @@ olcs.AbstractSynchronizer.prototype.removeAllCesiumObjects = function(destroy) {
 
 
 /**
- * @param {!ol.layer.Base} olLayer
+ * @param {Array.<!ol.layer.Base>} olLayerList
  * @return {?Array.<T>}
  * @abstract
  * @protected
  */
-olcs.AbstractSynchronizer.prototype.createSingleLayerCounterparts = function(olLayer) {};
+olcs.AbstractSynchronizer.prototype.createSingleLayerCounterparts = function(olLayerList) {};

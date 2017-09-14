@@ -83,11 +83,29 @@ olcs.VectorSynchronizer.prototype.removeAllCesiumObjects = function(destroy) {
   this.csAllPrimitives_.destroyPrimitives = false;
 };
 
-
+/**
+ * Synchronizes the layer visibility properties
+ * to the given Cesium Primitive.
+ * @param {Array.<!ol.layer.Base>} olLayerList
+ * @param {!Cesium.Primitive} csPrimitive
+ */
+olcs.VectorSynchronizer.prototype.updateLayerVisibility = function(olLayerList, csPrimitive) {
+  let visible = true;
+  olLayerList.forEach((olLayer) => {
+    const layerVisible = olLayer.getVisible();
+    if (layerVisible !== undefined) {
+      visible &= layerVisible;
+    } else {
+      visible = false;
+    }
+  });
+  csPrimitive.show = visible;
+};
 /**
  * @inheritDoc
  */
-olcs.VectorSynchronizer.prototype.createSingleLayerCounterparts = function(olLayer) {
+olcs.VectorSynchronizer.prototype.createSingleLayerCounterparts = function(olLayerList) {
+  const olLayer = olLayerList[0];
   if (!(olLayer instanceof ol.layer.Vector) &&
       !(olLayer instanceof ol.layer.Image &&
       olLayer.getSource() instanceof ol.source.ImageVector)) {
@@ -113,11 +131,12 @@ olcs.VectorSynchronizer.prototype.createSingleLayerCounterparts = function(olLay
   const csPrimitives = counterpart.getRootPrimitive();
   const olListenKeys = counterpart.olListenKeys;
 
-  csPrimitives.show = olLayer.getVisible();
-
-  olListenKeys.push(ol.events.listen(olLayer, 'change:visible', (e) => {
-    csPrimitives.show = olLayer.getVisible();
-  }));
+  olLayerList.forEach((olLayerItem) => {
+    olListenKeys.push(ol.events.listen(olLayerItem, 'change:visible', () => {
+      this.updateLayerVisibility(olLayerList, csPrimitives);
+    }));
+  });
+  this.updateLayerVisibility(olLayerList, csPrimitives);
 
   const onAddFeature = (function(feature) {
     goog.asserts.assert(
