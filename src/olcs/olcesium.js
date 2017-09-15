@@ -3,6 +3,8 @@ goog.require('ol.geom.Point');
 
 goog.require('goog.asserts');
 goog.require('ol.proj');
+goog.require('ol.events');
+goog.require('ol.MapBrowserEventType');
 
 goog.require('olcs.util');
 goog.require('olcs.core');
@@ -101,6 +103,24 @@ olcs.OLCesium = function(options) {
    * @private
    */
   this.isOverMap_ = !targetElement;
+
+
+  if (this.isOverMap_) {
+    const overlayEvents = [
+      ol.events.EventType.CLICK,
+      ol.events.EventType.DBLCLICK,
+      ol.events.EventType.MOUSEDOWN,
+      ol.events.EventType.TOUCHSTART,
+      ol.events.EventType.MSPOINTERDOWN,
+      ol.MapBrowserEventType.POINTERDOWN,
+      ol.events.EventType.MOUSEWHEEL,
+      ol.events.EventType.WHEEL
+    ];
+    for (let i = 0, ii = overlayEvents.length; i < ii; ++i) {
+      ol.events.listen(this.container_, overlayEvents[i], ol.events.Event.stopPropagation);
+    }
+  }
+
 
   /**
    * @type {!HTMLCanvasElement}
