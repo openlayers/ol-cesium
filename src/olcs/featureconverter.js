@@ -1016,7 +1016,7 @@ olcs.FeatureConverter.prototype.olVectorLayerToCesium = function(olLayer, olView
     }
     const styles = this.computePlainStyle(olLayer, feature, layerStyle,
         resolution);
-    if (!styles.length) {
+    if (!styles || !styles.length) {
       // only 'render' features with a style
       continue;
     }
