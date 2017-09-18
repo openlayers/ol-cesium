@@ -4,6 +4,7 @@ goog.require('ol.geom.Geometry');
 goog.require('ol.source.ImageVector');
 goog.require('ol.style.Icon');
 goog.require('ol.source.Vector');
+goog.require('ol.source.Cluster');
 
 goog.require('goog.asserts');
 goog.require('ol');
@@ -992,6 +993,9 @@ olcs.FeatureConverter.prototype.olVectorLayerToCesium = function(olLayer, olView
       // Not supported
       return new olcs.core.VectorLayerCounterpart(proj, this.scene);
     }
+  }
+  if (source instanceof ol.source.Cluster) {
+    source = source.getSource();
   }
 
   goog.asserts.assertInstanceof(source, ol.source.Vector);
