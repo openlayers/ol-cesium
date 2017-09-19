@@ -12,6 +12,7 @@ goog.require('olcs.AutoRenderLoop');
 goog.require('olcs.Camera');
 goog.require('olcs.RasterSynchronizer');
 goog.require('olcs.VectorSynchronizer');
+goog.require('olcs.OverlaySynchronizer');
 
 
 
@@ -210,7 +211,8 @@ olcs.OLCesium = function(options) {
   const synchronizers = options.createSynchronizers ?
     options.createSynchronizers(this.map_, this.scene_, this.dataSourceCollection_) : [
       new olcs.RasterSynchronizer(this.map_, this.scene_),
-      new olcs.VectorSynchronizer(this.map_, this.scene_)
+      new olcs.VectorSynchronizer(this.map_, this.scene_),
+      new olcs.OverlaySynchronizer(this.map_, this.scene_)
     ];
 
   // Assures correct canvas size after initialisation
@@ -532,6 +534,15 @@ olcs.OLCesium.prototype.getEnabled = function() {
   return this.enabled_;
 };
 
+/**
+ * @return {Element}
+ * @api
+ */
+olcs.OLCesium.prototype.getCanvas = function() {
+  const viewport = this.map_.getViewport();
+  return viewport.firstElementChild;
+};
+
 
 /**
  * Enables/disables the Cesium.
@@ -563,7 +574,11 @@ olcs.OLCesium.prototype.setEnabled = function(enable) {
         this.hiddenRootGroup_ = rootGroup;
         this.hiddenRootGroup_.setVisible(false);
       }
+
+      this.map_.getOverlayContainer().classList.add('olcs-hideoverlay');
+      this.map_.getOverlayContainerStopEvent().classList.add('olcs-hideoverlay');
     }
+
     this.camera_.readFromView();
     this.render_();
   } else {
@@ -573,7 +588,8 @@ olcs.OLCesium.prototype.setEnabled = function(enable) {
         interactions.push(interaction);
       });
       this.pausedInteractions_.length = 0;
-
+      this.map_.getOverlayContainer().classList.remove('olcs-hideoverlay');
+      this.map_.getOverlayContainerStopEvent().classList.remove('olcs-hideoverlay');
       if (this.hiddenRootGroup_) {
         this.hiddenRootGroup_.setVisible(true);
         this.hiddenRootGroup_ = null;
@@ -709,3 +725,4 @@ olcs.OLCesium.prototype.throwOnUnitializedMap_ = function() {
     throw new Error(`The OpenLayers map is not properly initialized: ${center} / ${view.getResolution()}`);
   }
 };
+
