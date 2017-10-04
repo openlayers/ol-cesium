@@ -98,11 +98,14 @@ olcs.AbstractSynchronizer.prototype.orderLayers = function() {
  * @private
  */
 olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
-  /** @type {Array.<Array.<!ol.layer.Base>>} */
-  const fifo = [[root]];
+  /** @type {Array<olcsx.LayerWithParents>} */
+  const fifo = [{
+    layer: root,
+    parents: []
+  }];
   while (fifo.length > 0) {
-    const olLayerList = fifo.splice(0, 1)[0];
-    const olLayer = olLayerList[0];
+    const olLayerWithParents = fifo.splice(0, 1)[0];
+    const olLayer = olLayerWithParents.layer;
     const olLayerId = ol.getUid(olLayer).toString();
     this.olLayerListenKeys[olLayerId] = [];
     goog.asserts.assert(!this.layerMap[olLayerId]);
@@ -111,26 +114,28 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
     if (olLayer instanceof ol.layer.Group) {
       this.listenForGroupChanges_(olLayer);
       if (olLayer !== this.mapLayerGroup) {
-        cesiumObjects = this.createSingleLayerCounterparts(olLayerList);
+        cesiumObjects = this.createSingleLayerCounterparts(olLayerWithParents);
       }
       if (!cesiumObjects) {
         olLayer.getLayers().forEach((l) => {
           if (l) {
-            const llist = olLayer === this.mapLayerGroup ? [] : olLayerList.slice();
-            llist.unshift(l);
-            fifo.push(llist);
+            const newOlLayerWithParents = {
+              layer: l,
+              parents: olLayer === this.mapLayerGroup ?
+                [] :
+                [olLayerWithParents.layer].concat(olLayerWithParents.parents)
+            };
+            fifo.push(newOlLayerWithParents);
           }
         });
       }
     } else {
-      cesiumObjects = this.createSingleLayerCounterparts(olLayerList);
+      cesiumObjects = this.createSingleLayerCounterparts(olLayerWithParents);
     }
-
     // add Cesium layers
     if (cesiumObjects) {
       this.layerMap[olLayerId] = cesiumObjects;
-      this.olLayerListenKeys[olLayerId].push(ol.events.listen(olLayer,
-          'change:zIndex', this.orderLayers, this));
+      this.olLayerListenKeys[olLayerId].push(ol.events.listen(olLayer, 'change:zIndex', this.orderLayers, this));
       cesiumObjects.forEach(function(cesiumObject) {
         this.addCesiumObject(cesiumObject);
       }, this);
@@ -310,9 +315,9 @@ olcs.AbstractSynchronizer.prototype.removeAllCesiumObjects = function(destroy) {
 
 
 /**
- * @param {Array.<!ol.layer.Base>} olLayerList
+ * @param {olcsx.LayerWithParents} olLayerWithParents
  * @return {?Array.<T>}
  * @abstract
  * @protected
  */
-olcs.AbstractSynchronizer.prototype.createSingleLayerCounterparts = function(olLayerList) {};
+olcs.AbstractSynchronizer.prototype.createSingleLayerCounterparts = function(olLayerWithParents) {};

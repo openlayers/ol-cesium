@@ -86,12 +86,12 @@ olcs.VectorSynchronizer.prototype.removeAllCesiumObjects = function(destroy) {
 /**
  * Synchronizes the layer visibility properties
  * to the given Cesium Primitive.
- * @param {Array.<!ol.layer.Base>} olLayerList
+ * @param {olcsx.LayerWithParents} olLayerWithParents
  * @param {!Cesium.Primitive} csPrimitive
  */
-olcs.VectorSynchronizer.prototype.updateLayerVisibility = function(olLayerList, csPrimitive) {
+olcs.VectorSynchronizer.prototype.updateLayerVisibility = function(olLayerWithParents, csPrimitive) {
   let visible = true;
-  olLayerList.forEach((olLayer) => {
+  [olLayerWithParents.layer].concat(olLayerWithParents.parents).forEach((olLayer) => {
     const layerVisible = olLayer.getVisible();
     if (layerVisible !== undefined) {
       visible &= layerVisible;
@@ -104,8 +104,8 @@ olcs.VectorSynchronizer.prototype.updateLayerVisibility = function(olLayerList, 
 /**
  * @inheritDoc
  */
-olcs.VectorSynchronizer.prototype.createSingleLayerCounterparts = function(olLayerList) {
-  const olLayer = olLayerList[0];
+olcs.VectorSynchronizer.prototype.createSingleLayerCounterparts = function(olLayerWithParents) {
+  const olLayer = olLayerWithParents.layer;
   if (!(olLayer instanceof ol.layer.Vector) &&
       !(olLayer instanceof ol.layer.Image &&
       olLayer.getSource() instanceof ol.source.ImageVector)) {
@@ -131,12 +131,12 @@ olcs.VectorSynchronizer.prototype.createSingleLayerCounterparts = function(olLay
   const csPrimitives = counterpart.getRootPrimitive();
   const olListenKeys = counterpart.olListenKeys;
 
-  olLayerList.forEach((olLayerItem) => {
+  [olLayerWithParents.layer].concat(olLayerWithParents.parents).forEach((olLayerItem) => {
     olListenKeys.push(ol.events.listen(olLayerItem, 'change:visible', () => {
-      this.updateLayerVisibility(olLayerList, csPrimitives);
+      this.updateLayerVisibility(olLayerWithParents, csPrimitives);
     }));
   });
-  this.updateLayerVisibility(olLayerList, csPrimitives);
+  this.updateLayerVisibility(olLayerWithParents, csPrimitives);
 
   const onAddFeature = (function(feature) {
     goog.asserts.assert(

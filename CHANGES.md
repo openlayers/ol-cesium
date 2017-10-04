@@ -3,6 +3,10 @@
 
 # v 1.32
 
+* Breaking changes
+  * Changed dAbstractSynchronizer.createSingleLayerCounterparts Plugin API
+    in existing plugins the function has to be modified.
+
 * Changes
   * Allow features to specify a dedicated geometry for rendering in Cesium
     using the `olcs.3d_geometry` property.
@@ -13,6 +17,7 @@
     initialization of an application. olcs.contrib.Manager is an abstract class
     which must be extended before use.
   * Added calcResolutionForDistance and calcDistanceForResolution functions to Camera API
+  * Added ol.layer.Group synchronization
 
 # v 1.31 - 2017-09-06
 
