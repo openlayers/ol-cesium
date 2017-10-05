@@ -4,8 +4,10 @@
 # v 1.32
 
 * Breaking changes
-  * Changed dAbstractSynchronizer.createSingleLayerCounterparts Plugin API
+  * Changed AbstractSynchronizer.createSingleLayerCounterparts Plugin API
     in existing plugins the function has to be modified.
+    It now takes an object {layer: !ol.layer.Base, parents: Array<ol.layer.Group>}.
+    The parents are ordered with the first parent coming first and the last parent coming last.
 
 * Changes
   * Allow features to specify a dedicated geometry for rendering in Cesium
