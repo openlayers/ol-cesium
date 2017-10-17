@@ -1,6 +1,6 @@
 goog.provide('olcs.OverlaySynchronizer');
 
-goog.require('olcs.Overlay');
+goog.require('olcs.SynchronizedOverlay');
 
 goog.require('ol');
 goog.require('ol.events');
@@ -54,7 +54,16 @@ olcs.OverlaySynchronizer = function(map, scene) {
   this.scene.canvas.parentElement.appendChild(this.overlayContainerStopEvent_);
 
   /**
-   * @type {!Object<?,olcs.Overlay>}
+   * @private
+   * @type {!Element}
+   */
+  this.overlayContainer_ = document.createElement('DIV');
+  this.overlayContainer_.className = 'ol-overlaycontainer';
+  this.scene.canvas.parentElement.appendChild(this.overlayContainer_);
+
+
+  /**
+   * @type {!Object<?,olcs.SynchronizedOverlay>}
    * @private
    */
   this.overlayMap_ = {};
@@ -74,15 +83,11 @@ olcs.OverlaySynchronizer.prototype.getOverlayContainerStopEvent = function() {
 };
 
 /**
- * Get the element that serves as a container for overlays that don't allow
- * event propagation. Elements added to this container won't let mousedown and
- * touchstart events through to the map, so clicks and gestures on an overlay
- * don't trigger any {@link ol.MapBrowserEvent}.
- * @return {!Element} The map's overlay container that stops events.
- * @todo return the non-stop equivalent, see the olcs.Overlay todos
+ * Get the element that serves as a container for overlays.
+ * @return {!Element} The map's overlay container.
  */
 olcs.OverlaySynchronizer.prototype.getOverlayContainer = function() {
-  return this.overlayContainerStopEvent_;
+  return this.overlayContainer_;
 };
 
 /**
@@ -120,13 +125,12 @@ olcs.OverlaySynchronizer.prototype.addOverlay = function(overlay) {
   if (!overlay) {
     return;
   }
-  const cesiumOverlay = new olcs.Overlay({
+  const cesiumOverlay = new olcs.SynchronizedOverlay({
     scene: this.scene,
     synchronizer: this,
     parent: overlay
   });
 
-  cesiumOverlay.init();
   const overlayId = ol.getUid(overlay).toString();
   this.overlayMap_[overlayId] = cesiumOverlay;
 };

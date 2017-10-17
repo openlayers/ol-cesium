@@ -3483,4 +3483,4 @@ Cesium.CullingVolume = function(planes) {};
  * @param {Object} boundingVolume
  * @return {Cesium.Intersect}
  */
-Cesium.Occluder.prototype.computeVisibility  = function(boundingVolume) {};
+Cesium.CullingVolume.prototype.computeVisibility  = function(boundingVolume) {};

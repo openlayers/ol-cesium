@@ -156,7 +156,7 @@ class OverlayHandler {
     if (add) {
       this.ol2d.removeOverlay(overlay);
     } else {
-      overlay.setVisible(false);
+      overlay.setPosition(undefined);
     }
   }
 
