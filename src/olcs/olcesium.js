@@ -1,6 +1,6 @@
 goog.provide('olcs.OLCesium');
 goog.require('ol.geom.Point');
-
+goog.require('ol.Observable');
 goog.require('goog.asserts');
 goog.require('ol.proj');
 
@@ -271,6 +271,8 @@ olcs.OLCesium = function(options) {
    * @type {!Cesium.BoundingSphere}
    */
   this.boundingSphereScratch_ = new Cesium.BoundingSphere();
+
+  this.eventObserver = new ol.Observable();
 
   const eventHelper = new Cesium.EventHelper();
   eventHelper.add(this.scene_.postRender, olcs.OLCesium.prototype.updateTrackedEntity_, this);
@@ -562,8 +564,16 @@ olcs.OLCesium.prototype.setEnabled = function(enable) {
 
     this.camera_.updateView();
   }
+  this.eventObserver.dispatchEvent(olcs.OLCesium.EVENTTYPES.ENABLE3D);
 };
 
+olcs.OLCesium.prototype.on = function(type, listener, pt_this) {
+    this.eventObserver.on(type, listener, pt_this);
+}
+
+olcs.OLCesium.prototype.un = function(type, listener, pt_this) {
+    this.eventObserver.un(type, listener, pt_this);
+}
 
 /**
  * Preload Cesium so that it is ready when transitioning from 2D to 3D.
@@ -689,3 +699,7 @@ olcs.OLCesium.prototype.throwOnUnitializedMap_ = function() {
     throw new Error(`The OpenLayers map is not properly initialized: ${center} / ${view.getResolution()}`);
   }
 };
+
+olcs.OLCesium.EVENTTYPES = {
+    ENABLE3D: 'enable3d'
+}
