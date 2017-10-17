@@ -567,13 +567,26 @@ olcs.OLCesium.prototype.setEnabled = function(enable) {
   this.eventObserver.dispatchEvent(olcs.OLCesium.EVENTTYPES.ENABLE3D);
 };
 
-olcs.OLCesium.prototype.on = function(type, listener, pt_this) {
-    this.eventObserver.on(type, listener, pt_this);
-}
+/**
+ * Listen for a certain type of event
+ * @param {string|Array.<string>} type The event type or array of event types.
+ * @param {function(?): ?} listener The listener function.
+ * @param {Object=} opt_this The object to use as `this` in `listener`.
+ */
+olcs.OLCesium.prototype.on = function(type, listener, opt_this) {
+  this.eventObserver.on(type, listener, opt_this);
+};
 
-olcs.OLCesium.prototype.un = function(type, listener, pt_this) {
-    this.eventObserver.un(type, listener, pt_this);
-}
+/**
+ * Unlisten for a certain type of event
+ * @param {string|Array.<string>} type The event type or array of event types.
+ * @param {function(?): ?} listener The listener function.
+ * @param {Object=} opt_this The object which was used as `this` by the
+ * `listener`.
+ */
+olcs.OLCesium.prototype.un = function(type, listener, opt_this) {
+  this.eventObserver.un(type, listener, opt_this);
+};
 
 /**
  * Preload Cesium so that it is ready when transitioning from 2D to 3D.
@@ -700,6 +713,10 @@ olcs.OLCesium.prototype.throwOnUnitializedMap_ = function() {
   }
 };
 
+/**
+ * Event type name
+ * @type {{ENABLE3D: string}}
+ */
 olcs.OLCesium.EVENTTYPES = {
-    ENABLE3D: 'enable3d'
-}
+  ENABLE3D: 'enable3d'
+};
