@@ -534,15 +534,6 @@ olcs.OLCesium.prototype.getEnabled = function() {
   return this.enabled_;
 };
 
-/**
- * @return {Element}
- * @api
- */
-olcs.OLCesium.prototype.getCanvas = function() {
-  const viewport = this.map_.getViewport();
-  return viewport.firstElementChild;
-};
-
 
 /**
  * Enables/disables the Cesium.

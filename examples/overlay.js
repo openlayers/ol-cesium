@@ -39,8 +39,7 @@ const ol3d = new olcs.OLCesium({
 });
 const scene = ol3d.getCesiumScene();
 const terrainProvider = new Cesium.CesiumTerrainProvider({
-  url: '//assets.agi.com/stk-terrain/world',
-  requestVertexNormals: true
+  url: '//assets.agi.com/stk-terrain/world'
 });
 scene.terrainProvider = terrainProvider;
 
