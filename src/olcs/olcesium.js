@@ -572,6 +572,7 @@ olcs.OLCesium.prototype.setEnabled = function(enable) {
  * @param {string|Array.<string>} type The event type or array of event types.
  * @param {function(?): ?} listener The listener function.
  * @param {Object=} opt_this The object to use as `this` in `listener`.
+ * @api
  */
 olcs.OLCesium.prototype.on = function(type, listener, opt_this) {
   this.eventObserver.on(type, listener, opt_this);
@@ -583,6 +584,7 @@ olcs.OLCesium.prototype.on = function(type, listener, opt_this) {
  * @param {function(?): ?} listener The listener function.
  * @param {Object=} opt_this The object which was used as `this` by the
  * `listener`.
+ * @api
  */
 olcs.OLCesium.prototype.un = function(type, listener, opt_this) {
   this.eventObserver.un(type, listener, opt_this);
