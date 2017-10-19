@@ -4,6 +4,7 @@
 
 * Changes
   * Animate olcs.contrib.Manager#toggle3d.
+  * Add support for Overlay synchronization, see example Overlays
 
 
 # v 1.32 - 2017-10-26
