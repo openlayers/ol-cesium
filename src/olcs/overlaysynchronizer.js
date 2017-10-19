@@ -24,7 +24,7 @@ olcs.OverlaySynchronizer = function(map, scene) {
    * @type {ol.Collection.<ol.Overlay>}
    * @private
    */
-  this.overlays = this.map.getOverlays();
+  this.overlays_ = this.map.getOverlays();
 
   /**
    * @type {!Cesium.Scene}
@@ -97,8 +97,8 @@ olcs.OverlaySynchronizer.prototype.getOverlayContainer = function() {
 olcs.OverlaySynchronizer.prototype.synchronize = function() {
   this.destroyAll();
   this.addOverlays();
-  this.overlays.on('add', this.addOverlayFromEvent_.bind(this));
-  this.overlays.on('remove', this.removeOverlayFromEvent_.bind(this));
+  this.overlays_.on('add', this.addOverlayFromEvent_.bind(this));
+  this.overlays_.on('remove', this.removeOverlayFromEvent_.bind(this));
 };
 
 /**
@@ -114,7 +114,7 @@ olcs.OverlaySynchronizer.prototype.addOverlayFromEvent_ = function(event) {
  * @api
  */
 olcs.OverlaySynchronizer.prototype.addOverlays = function() {
-  this.overlays.forEach(this.addOverlay, this);
+  this.overlays_.forEach(this.addOverlay, this);
 };
 
 /**
