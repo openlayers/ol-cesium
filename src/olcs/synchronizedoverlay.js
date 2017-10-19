@@ -40,15 +40,20 @@ olcs.SynchronizedOverlay = function(options) {
 
   /**
    * @private
-   * @type {ol.Coordinate|null}
+   * @type {ol.Coordinate|undefined}
    */
-  this.positionWGS84_ = null;
+  this.positionWGS84_ = undefined;
 
   /**
    * @private
    * @type {MutationObserver}
    */
   this.observer_ = new MutationObserver(this.handleElementChanged.bind(this));
+  /**
+   * @private
+   * @type {Array.<MutationObserver>}
+   */
+  this.attributeObserver_ = [];
 
   /**
    * @private
@@ -78,9 +83,24 @@ olcs.SynchronizedOverlay.prototype.observeTarget_ = function(target) {
   this.observer_.observe(target, {
     attributes: false,
     childList: true,
-    characterData: false,
+    characterData: true,
     subtree: true
   });
+  this.attributeObserver_.forEach((observer) => {
+    observer.disconnect();
+  });
+  this.attributeObserver_.length = 0;
+  for (let i = 0; i < target.childNodes.length; i++) {
+    const node = target.childNodes[i];
+    if (node.nodeType === 1) {
+      const observer = new MutationObserver(this.handleElementChanged.bind(this));
+      observer.observe(node, {
+        attributes: true,
+        subtree: true
+      });
+      this.attributeObserver_.push(observer);
+    }
+  }
 };
 
 /**
@@ -135,6 +155,8 @@ olcs.SynchronizedOverlay.prototype.handlePositionChanged = function() {
   if (position) {
     const sourceProjection = this.parent_.getMap().getView().getProjection();
     this.positionWGS84_ = ol.proj.transform(position, sourceProjection, 'EPSG:4326');
+  } else {
+    this.positionWGS84_ = undefined;
   }
   this.updatePixelPosition();
 };
