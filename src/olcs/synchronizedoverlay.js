@@ -131,19 +131,19 @@ olcs.SynchronizedOverlay.prototype.getScene = function() {
 olcs.SynchronizedOverlay.prototype.handleMapChanged = function() {
   if (this.scenePostRenderListenerRemover_) {
     this.scenePostRenderListenerRemover_();
-    ol.dom.removeNode(this.element_);
+    ol.dom.removeNode(this.element);
   }
   this.scenePostRenderListenerRemover_ = null;
   const scene = this.getScene();
   if (scene) {
     this.scenePostRenderListenerRemover_ = scene.postRender.addEventListener(this.updatePixelPosition.bind(this));
     this.updatePixelPosition();
-    const container = this.stopEvent_ ?
+    const container = this.stopEvent ?
       this.synchronizer_.getOverlayContainerStopEvent() : this.synchronizer_.getOverlayContainer();
-    if (this.insertFirst_) {
-      container.insertBefore(this.element_, container.childNodes[0] || null);
+    if (this.insertFirst) {
+      container.insertBefore(this.element, container.childNodes[0] || null);
     } else {
-      container.appendChild(this.element_);
+      container.appendChild(this.element);
     }
   }
 };
@@ -187,13 +187,13 @@ olcs.SynchronizedOverlay.prototype.handleElementChanged = function() {
     }
     return clone;
   }
-  ol.dom.removeChildren(this.element_);
+  ol.dom.removeChildren(this.element);
   const element = this.getElement();
   if (element) {
     if (element.parentNode) {
       element.parentNode.childNodes.forEach((node) => {
         const clonedNode = cloneNode(node, null);
-        this.element_.appendChild(clonedNode);
+        this.element.appendChild(clonedNode);
       });
     }
   }
@@ -254,10 +254,10 @@ olcs.SynchronizedOverlay.prototype.destroy = function() {
   }
   ol.Observable.unByKey(this.listenerKeys_);
   this.listenerKeys_.splice(0);
-  if (this.element_.removeNode) {
-    this.element_.removeNode(true);
+  if (this.element.removeNode) {
+    this.element.removeNode(true);
   } else {
-    this.element_.remove();
+    this.element.remove();
   }
-  this.element_ = null;
+  this.element = null;
 };
