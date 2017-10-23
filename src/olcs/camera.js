@@ -388,7 +388,7 @@ olcs.Camera.prototype.readFromView = function() {
   goog.asserts.assert(ll);
 
   const resolution = this.view_.getResolution();
-  this.distance_ = this.calcDistanceForResolution_(
+  this.distance_ = this.calcDistanceForResolution(
       resolution || 0, ol.math.toRadians(ll[1]));
 
   this.updateCamera_();
@@ -428,7 +428,7 @@ olcs.Camera.prototype.updateView = function() {
 
   // resolution
   this.view_.setResolution(
-      this.calcResolutionForDistance_(this.distance_,
+      this.calcResolutionForDistance(this.distance_,
           bestTargetCartographic ? bestTargetCartographic.latitude : 0));
 
 
@@ -491,12 +491,13 @@ olcs.Camera.prototype.checkCameraChange = function(opt_dontSync) {
 
 
 /**
+ * calculate the distance between camera and centerpoint based on the resolution and latitude value
  * @param {number} resolution Number of map units per pixel.
  * @param {number} latitude Latitude in radians.
  * @return {number} The calculated distance.
- * @private
+ * @api
  */
-olcs.Camera.prototype.calcDistanceForResolution_ = function(resolution, latitude) {
+olcs.Camera.prototype.calcDistanceForResolution = function(resolution, latitude) {
   const canvas = this.scene_.canvas;
   const fovy = this.cam_.frustum.fovy; // vertical field of view
   goog.asserts.assert(!isNaN(fovy));
@@ -531,13 +532,14 @@ olcs.Camera.prototype.calcDistanceForResolution_ = function(resolution, latitude
 
 
 /**
+ * calculate the resolution based on a distance(camera to position) and latitude value
  * @param {number} distance
  * @param {number} latitude
  * @return {number} The calculated resolution.
- * @private
+ * @api
  */
-olcs.Camera.prototype.calcResolutionForDistance_ = function(distance, latitude) {
-  // See the reverse calculation (calcDistanceForResolution_) for details
+olcs.Camera.prototype.calcResolutionForDistance = function(distance, latitude) {
+  // See the reverse calculation (calcDistanceForResolution) for details
   const canvas = this.scene_.canvas;
   const fovy = this.cam_.frustum.fovy;
   const metersPerUnit = this.view_.getProjection().getMetersPerUnit();
