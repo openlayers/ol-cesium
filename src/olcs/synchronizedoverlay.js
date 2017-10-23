@@ -109,7 +109,9 @@ olcs.SynchronizedOverlay.prototype.observeTarget_ = function(target) {
  * @private
  */
 olcs.SynchronizedOverlay.prototype.setPropertyFromEvent_ = function(event) {
-  this.set(event.key, event.target.get(event.key));
+  if (event.target && event.key) {
+    this.set(event.key, event.target.get(event.key));
+  }
 };
 /**
  * Get the scene associated with this overlay.
