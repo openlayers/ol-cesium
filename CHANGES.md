@@ -7,6 +7,9 @@
   * Enable googshift eslint rules to prepare for ES6 modules migration; move
     source to the olcs directory and fix filenames.
   * Add basic support for clustered sources: see https://github.com/openlayers/ol-cesium/pull/496.
+  * Introduce olcs.contrib.LazyLoader and olcs.contrib.Manager classes to ease
+    initialization of an application. olcs.contrib.Manager is an abstract class
+    which must be extended before use.
 
 
 # v 1.31 - 2017-09-06
