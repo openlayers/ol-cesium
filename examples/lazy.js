@@ -10,6 +10,8 @@ goog.require('ol.source.OSM');
 goog.require('ol.layer.Tile');
 goog.require('ol.Map');
 
+goog.require('olcs.contrib.LazyLoader');
+
 
 const ol2d = new ol.Map({
   layers: [
@@ -37,14 +39,14 @@ function _doToggle() {
   ol3d.setEnabled(!ol3d.getEnabled());
 }
 
+const lazyLoader = new olcs.contrib.LazyLoader(window.CESIUM_URL);
 
 function toggle3D() { // eslint-disable-line no-unused-vars
   if (!ol3d) {
-    const s = window.lazyLoadCesium();
-    s.onload = function() {
+    lazyLoader.load().then(() => {
       init3D();
       _doToggle();
-    };
+    });
   } else {
     _doToggle();
   }
