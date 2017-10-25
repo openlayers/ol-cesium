@@ -10,7 +10,7 @@ goog.require('ol.source.OSM');
 goog.require('ol.layer.Tile');
 goog.require('ol.Map');
 
-goog.require('olcs.contrib.LazyLoader');
+goog.require('olcs.contrib.Manager');
 
 
 const ol2d = new ol.Map({
@@ -32,32 +32,17 @@ const ol2d = new ol.Map({
 });
 
 
-let ol3d;
-
-
-function _doToggle() {
-  ol3d.setEnabled(!ol3d.getEnabled());
-}
-
-const lazyLoader = new olcs.contrib.LazyLoader(window.CESIUM_URL);
-
-function toggle3D() { // eslint-disable-line no-unused-vars
-  if (!ol3d) {
-    lazyLoader.load().then(() => {
-      init3D();
-      _doToggle();
+class Manager extends olcs.contrib.Manager {
+  instantiateOLCesium() {
+    const ol3d = new olcs.OLCesium({map: ol2d});
+    const scene = ol3d.getCesiumScene();
+    const terrainProvider = new Cesium.CesiumTerrainProvider({
+      url: '//assets.agi.com/stk-terrain/world'
     });
-  } else {
-    _doToggle();
+    scene.terrainProvider = terrainProvider;
+    return ol3d;
   }
 }
 
-
-function init3D() {
-  ol3d = new olcs.OLCesium({map: ol2d});
-  const scene = ol3d.getCesiumScene();
-  const terrainProvider = new Cesium.CesiumTerrainProvider({
-    url: '//assets.agi.com/stk-terrain/world'
-  });
-  scene.terrainProvider = terrainProvider;
-}
+// eslint-disable-line no-unused-vars
+window.manager = new Manager(window.CESIUM_URL, {debug: window.IS_DEV});

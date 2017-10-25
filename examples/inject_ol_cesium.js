@@ -2,6 +2,7 @@
   const mode = window.location.href.match(/mode=([a-z0-9\-]+)\&?/i);
   const DIST = false;
   const isDev = mode && mode[1] === 'dev';
+  window.IS_DEV = isDev;
   const cs = isDev ? 'CesiumUnminified/Cesium.js' : 'Cesium/Cesium.js';
   const ol = (DIST && isDev) ? 'olcesium-debug.js' : '@loader';
 

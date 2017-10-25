@@ -4,7 +4,7 @@ goog.provide('olcs.contrib.LazyLoader');
 olcs.contrib.LazyLoader = class {
   /**
    * @param {string} url
-   * @api
+   * @export
    */
   constructor(url) {
     /**
@@ -22,7 +22,7 @@ olcs.contrib.LazyLoader = class {
 
   /**
    * @return {Promise<undefined>}
-   * @export
+   * @api
    */
   load() {
     if (!this.promise) {
