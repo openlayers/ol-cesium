@@ -1,24 +1,31 @@
 goog.provide('olcs.contrib.Manager');
 
 goog.require('olcs.contrib.LazyLoader');
+goog.require('olcs.OLCesium');
+
 goog.require('ol.extent');
+goog.require('goog.asserts');
 
 
-/**
- * @abstract
- */
 olcs.contrib.Manager = class {
   /**
    * @param {string} cesiumUrl
-   * @param {{cameraExtentInRadians: ol.Extent}} options
+   * @param {{map: ol.Map, cameraExtentInRadians: ol.Extent}} options
+   * @api
    */
-  constructor(cesiumUrl, {cameraExtentInRadians} = {}) {
+  constructor(cesiumUrl, {map, cameraExtentInRadians} = {}) {
 
     /**
      * @type {string}
      * @private
      */
     this.cesiumUrl_ = cesiumUrl;
+
+    /**
+     * @type {ol.Map}
+     * @protected
+     */
+    this.map = map;
 
     /**
      * @type {ol.Extent}
@@ -66,10 +73,17 @@ olcs.contrib.Manager = class {
 
   /**
    * Application code should override this method.
-   * @abstract
    * @return {olcs.OLCesium}
    */
   instantiateOLCesium() {
+    goog.asserts.assert(this.map);
+    const ol3d = new olcs.OLCesium({map: this.map});
+    const scene = ol3d.getCesiumScene();
+    const terrainProvider = new Cesium.CesiumTerrainProvider({
+      url: '//assets.agi.com/stk-terrain/world'
+    });
+    scene.terrainProvider = terrainProvider;
+    return ol3d;
   }
 
 
@@ -97,13 +111,16 @@ olcs.contrib.Manager = class {
     // To avoid getting lost in space, limit the maximum distance to 10'000km
     sscController.maximumZoomDistance = 10000000;
 
-    // Disable seeing through the terrain. Seeing through the terrain does not make
+    // Do not see through the terrain. Seeing through the terrain does not make
     // sense anyway, except for debugging
     scene.globe.depthTestAgainstTerrain = true;
 
     if (this.cameraExtentInRadians_) {
       scene.postRender.addEventListener(this.limitCameraToExtent.bind(this), scene);
     }
+
+    // Stop rendering Cesium when there is nothing to do. This drastically reduces CPU/GPU consumption.
+    this.ol3d.enableAutoRenderLoop();
   }
 
 

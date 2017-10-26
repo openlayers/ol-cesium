@@ -36,16 +36,17 @@ exports.publish = function(data, opts) {
     }
     return include;
   }).forEach(function(doc) {
+    var longname = doc.longname.replace(/.*~/, '')
     if (doc.define) {
       defines.push({
-        name: doc.longname,
+        name: longname,
         description: doc.description,
         path: path.join(doc.meta.path, doc.meta.filename),
         default: doc.define.default
       });
     } else {
       symbols.push({
-        name: doc.longname,
+        name: longname,
         kind: doc.kind,
         description: doc.classdesc || doc.description,
         path: path.join(doc.meta.path, doc.meta.filename)
