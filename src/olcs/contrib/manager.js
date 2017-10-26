@@ -10,21 +10,15 @@ goog.require('ol.extent');
 olcs.contrib.Manager = class {
   /**
    * @param {string} cesiumUrl
-   * @param {{debug: boolean, cameraExtentInRadians: ol.Extent}} options
+   * @param {{cameraExtentInRadians: ol.Extent}} options
    */
-  constructor(cesiumUrl, {debug, cameraExtentInRadians} = {debug: false}) {
+  constructor(cesiumUrl, {cameraExtentInRadians} = {}) {
 
     /**
      * @type {string}
      * @private
      */
     this.cesiumUrl_ = cesiumUrl;
-
-    /**
-     * @type {boolean}
-     * @private
-     */
-    this.debug_ = debug;
 
     /**
      * @type {ol.Extent}
@@ -60,19 +54,13 @@ olcs.contrib.Manager = class {
 
   /**
    * @protected
+   * @return {olcs.OLCesium}
    */
   onCesiumLoaded() {
-    try {
-      this.ol3d = this.instantiateOLCesium();
-    } catch (error) {
-      if (this.debug_ && console.trace) {
-        console.error(error);
-      }
-      return Promise.reject('Cesium initialization failed');
-    }
+    this.ol3d = this.instantiateOLCesium();
     this.configureForUsability();
     this.configureForPerformance();
-    return Promise.resolve(this.ol3d);
+    return this.ol3d;
   }
 
 

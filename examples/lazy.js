@@ -45,4 +45,4 @@ class Manager extends olcs.contrib.Manager {
 }
 
 // eslint-disable-line no-unused-vars
-window.manager = new Manager(window.CESIUM_URL, {debug: window.IS_DEV});
+window.manager = new Manager(window.CESIUM_URL);
