@@ -16,8 +16,7 @@
     source to the olcs directory and fix filenames.
   * Add basic support for clustered sources: see https://github.com/openlayers/ol-cesium/pull/496.
   * Introduce olcs.contrib.LazyLoader and olcs.contrib.Manager classes to ease
-    initialization of an application. olcs.contrib.Manager is an abstract class
-    which must be extended before use.
+    initialization of an application. For extending these classes, see the plugins below.
   * Add calcResolutionForDistance and calcDistanceForResolution functions to Camera API
   * Add ol.layer.Group synchronization
   * Port to OpenLayers 4.4.2 and Cesium 1.38.
