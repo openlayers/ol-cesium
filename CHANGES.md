@@ -18,8 +18,9 @@
   * Introduce olcs.contrib.LazyLoader and olcs.contrib.Manager classes to ease
     initialization of an application. olcs.contrib.Manager is an abstract class
     which must be extended before use.
-  * Added calcResolutionForDistance and calcDistanceForResolution functions to Camera API
-  * Added ol.layer.Group synchronization
+  * Add calcResolutionForDistance and calcDistanceForResolution functions to Camera API
+  * Add ol.layer.Group synchronization
+  * Port to OpenLayers 4.4.2 and Cesium 1.38.
 
 # v 1.31 - 2017-09-06
 
