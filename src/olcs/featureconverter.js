@@ -877,6 +877,34 @@ olcs.FeatureConverter.prototype.computePlainStyle = function(layer, feature, fal
 
 
 /**
+ * @protected
+ * @param {!ol.Feature} feature
+ * @param {!ol.style.Style} style
+ * @param {!ol.geom.Geometry=} opt_geom Geometry to be converted.
+ * @return {ol.geom.Geometry|undefined}
+ */
+olcs.FeatureConverter.prototype.getGeometryFromFeature = function(feature, style, opt_geom) {
+  if (opt_geom) {
+    return opt_geom;
+  }
+
+  const geom3d = /** @type {!ol.geom.Geometry} */(feature.get('olcs.3d_geometry'));
+  if (geom3d && geom3d instanceof ol.geom.Geometry) {
+    return geom3d;
+  }
+
+  if (style) {
+    const geomFuncRes = style.getGeometryFunction()(feature);
+    if (geomFuncRes instanceof ol.geom.Geometry) {
+      return geomFuncRes;
+    }
+  }
+
+  return feature.getGeometry();
+};
+
+
+/**
  * Convert one OpenLayers feature up to a collection of Cesium primitives.
  * @param {ol.layer.Vector|ol.layer.Image} layer
  * @param {!ol.Feature} feature OpenLayers feature.
@@ -887,15 +915,7 @@ olcs.FeatureConverter.prototype.computePlainStyle = function(layer, feature, fal
  * @api
  */
 olcs.FeatureConverter.prototype.olFeatureToCesium = function(layer, feature, style, context, opt_geom) {
-  let geom = opt_geom || feature.getGeometry();
-  const proj = context.projection;
-
-  if (!opt_geom && style) {
-    const geomFuncRes = style.getGeometryFunction()(feature);
-    if (geomFuncRes instanceof ol.geom.Geometry) {
-      geom = geomFuncRes;
-    }
-  }
+  let geom = this.getGeometryFromFeature(feature, style, opt_geom);
 
   if (!geom) {
     // OpenLayers features may not have a geometry
@@ -903,6 +923,7 @@ olcs.FeatureConverter.prototype.olFeatureToCesium = function(layer, feature, sty
     return null;
   }
 
+  const proj = context.projection;
   const newBillboardAddedCallback = function(bb) {
     context.featureToCesiumMap[ol.getUid(feature)] = bb;
   };
