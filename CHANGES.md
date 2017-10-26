@@ -12,7 +12,7 @@
   * Introduce olcs.contrib.LazyLoader and olcs.contrib.Manager classes to ease
     initialization of an application. olcs.contrib.Manager is an abstract class
     which must be extended before use.
-
+  * Added calcResolutionForDistance and calcDistanceForResolution functions to Camera API
 
 # v 1.31 - 2017-09-06
 
