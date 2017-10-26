@@ -101,3 +101,12 @@ olcsx.core.RotateAroundAxisOption;
  * @api
  */
 olcsx.core.CesiumUrlDefinition;
+
+
+/**
+ * @typedef {{
+ *  layer: !ol.layer.Base,
+ *  parents: Array<ol.layer.Group>
+ * }}
+ */
+olcsx.LayerWithParents;

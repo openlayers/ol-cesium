@@ -407,19 +407,25 @@ olcs.core.tileLayerToImageryLayer = function(olLayer, viewProj) {
 /**
  * Synchronizes the layer rendering properties (opacity, visible)
  * to the given Cesium ImageryLayer.
- * @param {!ol.layer.Base} olLayer
+ * @param {olcsx.LayerWithParents} olLayerWithParents
  * @param {!Cesium.ImageryLayer} csLayer
  * @api
  */
-olcs.core.updateCesiumLayerProperties = function(olLayer, csLayer) {
-  const opacity = olLayer.getOpacity();
-  if (opacity !== undefined) {
-    csLayer.alpha = opacity;
-  }
-  const visible = olLayer.getVisible();
-  if (visible !== undefined) {
-    csLayer.show = visible;
-  }
+olcs.core.updateCesiumLayerProperties = function(olLayerWithParents, csLayer) {
+  let opacity = 1;
+  let visible = true;
+  [olLayerWithParents.layer].concat(olLayerWithParents.parents).forEach((olLayer) => {
+    const layerOpacity = olLayer.getOpacity();
+    if (layerOpacity !== undefined) {
+      opacity *= layerOpacity;
+    }
+    const layerVisible = olLayer.getVisible();
+    if (layerVisible !== undefined) {
+      visible &= layerVisible;
+    }
+  });
+  csLayer.alpha = opacity;
+  csLayer.show = visible;
 };
 
 
