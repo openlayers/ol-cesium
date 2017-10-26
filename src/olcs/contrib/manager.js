@@ -111,13 +111,16 @@ olcs.contrib.Manager = class {
     // To avoid getting lost in space, limit the maximum distance to 10'000km
     sscController.maximumZoomDistance = 10000000;
 
-    // Disable seeing through the terrain. Seeing through the terrain does not make
+    // Do not see through the terrain. Seeing through the terrain does not make
     // sense anyway, except for debugging
     scene.globe.depthTestAgainstTerrain = true;
 
     if (this.cameraExtentInRadians_) {
       scene.postRender.addEventListener(this.limitCameraToExtent.bind(this), scene);
     }
+
+    // Stop rendering Cesium when there is nothing to do. This drastically reduces CPU/GPU consumption.
+    this.ol3d.enableAutoRenderLoop();
   }
 
 
