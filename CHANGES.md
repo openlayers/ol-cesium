@@ -4,6 +4,8 @@
 # v 1.32
 
 * Changes
+  * Allow features to specify a dedicated geometry for rendering in Cesium
+    using the `olcs.3d_geometry` property.
   * Enable googshift eslint rules to prepare for ES6 modules migration; move
     source to the olcs directory and fix filenames.
   * Add basic support for clustered sources: see https://github.com/openlayers/ol-cesium/pull/496.
