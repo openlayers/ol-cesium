@@ -8,7 +8,7 @@
 
   window.CESIUM_URL = `../node_modules/@camptocamp/cesium/Build/${cs}`;
   if (!window.LAZY_CESIUM) {
-    document.write(`<scr${'i'}pt type="text/javascript" src="${window.CESIUM_URL}"></scr${'i'}ipt>`);
+    document.write(`<scr${'i'}pt type="text/javascript" src="${window.CESIUM_URL}"></scr${'i'}pt>`);
   }
   document.write(`<scr${'i'}pt type="text/javascript" src="../${ol}"></scr${'i'}pt>`);
 })();
