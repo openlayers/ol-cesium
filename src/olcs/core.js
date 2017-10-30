@@ -531,3 +531,83 @@ olcs.core.convertUrlToCesium = function(url) {
     subdomains
   };
 };
+
+
+/**
+ * Animate the return to a top-down view from the zenith.
+ * The camera is rotated to orient to the North.
+ * @param {!ol.Map} map
+ * @param {!Cesium.Scene} scene
+ * @return {Promise<undefined>}
+ * @api
+ */
+olcs.core.resetToNorthZenith = function(map, scene) {
+  return new Promise((resolve, reject) => {
+    const camera = scene.camera;
+    const pivot = olcs.core.pickBottomPoint(scene);
+    if (!pivot) {
+      reject('Could not get bottom pivot');
+      return;
+    }
+
+    const currentHeading = map.getView().getRotation();
+    if (currentHeading === undefined) {
+      reject('The view is not initialized');
+      return;
+    }
+    const angle = olcs.core.computeAngleToZenith(scene, pivot);
+
+    // Point to North
+    olcs.core.setHeadingUsingBottomCenter(scene, currentHeading, pivot);
+
+    // Go to zenith
+    const transform = Cesium.Matrix4.fromTranslation(pivot);
+    const axis = camera.right;
+    const options = {
+      callback: () => {
+        const view = map.getView();
+        olcs.core.normalizeView(view);
+        resolve();
+      }
+    };
+    olcs.core.rotateAroundAxis(camera, -angle, axis, transform, options);
+  });
+};
+
+
+/**
+ * @param {!Cesium.Scene} scene
+ * @param {number} angle in radian
+ * @return {Promise<undefined>}
+ * @api
+ */
+olcs.core.rotateAroundBottomCenter = function(scene, angle) {
+  return new Promise((resolve, reject) => {
+    const camera = scene.camera;
+    const pivot = olcs.core.pickBottomPoint(scene);
+    if (!pivot) {
+      reject('could not get bottom pivot');
+      return;
+    }
+
+    const options = {callback: resolve};
+    const transform = Cesium.Matrix4.fromTranslation(pivot);
+    const axis = camera.right;
+    const rotateAroundAxis = olcs.core.rotateAroundAxis;
+    rotateAroundAxis(camera, -angle, axis, transform, options);
+  });
+};
+
+
+/**
+ * Set the OpenLayers view to a specific rotation and
+ * the nearest resolution.
+ * @param {ol.View} view
+ * @param {number=} angle
+ * @api
+ */
+olcs.core.normalizeView = function(view, angle = 0) {
+  const resolution = view.getResolution();
+  view.setRotation(angle);
+  view.setResolution(view.constrainResolution(resolution));
+};

@@ -16,7 +16,7 @@
     "htmlparser2": "3.9.2"
   },
   "devDependencies": {
-    "@camptocamp/closure-util": "1.24.0",
+    "@camptocamp/closure-util": "1.25.0",
     "openlayers": "4.4.2",
     "@camptocamp/cesium": "1.38.0",
     "@mapbox/geojsonhint": "2.0.1",

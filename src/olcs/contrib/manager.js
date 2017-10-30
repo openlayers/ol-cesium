@@ -2,8 +2,10 @@ goog.provide('olcs.contrib.Manager');
 
 goog.require('olcs.contrib.LazyLoader');
 goog.require('olcs.OLCesium');
+goog.require('olcs.core');
 
 goog.require('ol.extent');
+goog.require('ol.math');
 goog.require('goog.asserts');
 
 
@@ -44,6 +46,12 @@ olcs.contrib.Manager = class {
      * @protected
      */
     this.ol3d;
+
+    /**
+     * @const {number} Tilt angle in radians
+     * @private
+     */
+    this.cesiumInitialTilt_ = ol.math.toRadians(50);
   }
 
 
@@ -65,8 +73,9 @@ olcs.contrib.Manager = class {
    */
   onCesiumLoaded() {
     this.ol3d = this.instantiateOLCesium();
-    this.configureForUsability();
-    this.configureForPerformance();
+    const scene = this.ol3d.getCesiumScene();
+    this.configureForUsability(scene);
+    this.configureForPerformance(scene);
     return this.ol3d;
   }
 
@@ -88,10 +97,10 @@ olcs.contrib.Manager = class {
 
 
   /**
+   * @param {!Cesium.Scene} scene The scene, passed as parameter for convenience.
    * @protected
    */
-  configureForPerformance() {
-    const scene = this.ol3d.getCesiumScene();
+  configureForPerformance(scene) {
     const fog = scene.fog;
     fog.density = 0.0001;
     fog.screenSpaceErrorFactor = 25;
@@ -99,10 +108,10 @@ olcs.contrib.Manager = class {
 
 
   /**
+   * @param {!Cesium.Scene} scene The scene, passed as parameter for convenience.
    * @protected
    */
-  configureForUsability() {
-    const scene = this.ol3d.getCesiumScene();
+  configureForUsability(scene) {
     const sscController = scene.screenSpaceCameraController;
 
     // To avoid going under the terrain, limit the minimum distance to 30m
@@ -162,10 +171,23 @@ olcs.contrib.Manager = class {
   /**
    * Enable or disable ol3d with a default animation.
    * @api
+   * @return {Promise<undefined>}
    */
-  toggle3D() {
-    this.load().then((ol3d) => {
-      ol3d.setEnabled(!ol3d.getEnabled());
+  toggle3d() {
+    return this.load().then((/** @const {!olcs.OLCesium} */ ol3d) => {
+      const is3DCurrentlyEnabled = ol3d.getEnabled();
+      const scene = ol3d.getCesiumScene();
+      if (is3DCurrentlyEnabled) {
+        // Disable 3D
+        goog.asserts.assert(this.map);
+        return olcs.core.resetToNorthZenith(this.map, scene).then(() => {
+          ol3d.setEnabled(false);
+        });
+      } else {
+        // Enable 3D
+        ol3d.setEnabled(true);
+        return olcs.core.rotateAroundBottomCenter(scene, this.cesiumInitialTilt_);
+      }
     });
   }
 
@@ -176,5 +198,35 @@ olcs.contrib.Manager = class {
    */
   is3dEnabled() {
     return !!this.ol3d && this.ol3d.getEnabled();
+  }
+
+
+  /**
+   * @return {number}
+   */
+  getHeading() {
+    return this.map ? this.map.getView().getRotation() || 0 : 0;
+  }
+
+
+  /**
+   * @return {number|undefined}
+   */
+  getTiltOnGlobe() {
+    const scene = this.ol3d.getCesiumScene();
+    const tiltOnGlobe = olcs.core.computeSignedTiltAngleOnGlobe(scene);
+    return -tiltOnGlobe;
+  }
+
+
+  /**
+   * @param {number} angle
+   */
+  setHeading(angle) {
+    const scene = this.ol3d.getCesiumScene();
+    const bottom = olcs.core.pickBottomPoint(scene);
+    if (bottom) {
+      olcs.core.setHeadingUsingBottomCenter(scene, angle, bottom);
+    }
   }
 };

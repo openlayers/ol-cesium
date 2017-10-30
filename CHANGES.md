@@ -1,7 +1,12 @@
 # Changelog
 
+# v 1.33
 
-# v 1.32
+* Changes
+  * Animate olcs.contrib.Manager#toggle3d.
+
+
+# v 1.32 - 2017-10-26
 
 * Breaking changes
   * Changed AbstractSynchronizer.createSingleLayerCounterparts Plugin API
