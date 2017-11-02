@@ -2,6 +2,10 @@
  * @externs
  * @see http://cesium.agi.com/
  */
+
+/**
+ * @const
+ */
 var Cesium = {};
 
 /**
@@ -2784,13 +2788,6 @@ Cesium.EntityCollection.prototype.remove = function(entity) {}
  * @return {Cesium.Entity}
  */
 Cesium.EntityCollection.prototype.add = function(options) {}
-
-
-
-/**
- * @type {!Cesium.UniformState}
- */
-Cesium.Context.prototype.uniformState;
 
 
 
