@@ -9,6 +9,15 @@
 var Cesium = {};
 
 /**
+ * @param {T} value .
+ * @param {T} fallback .
+ * @return {T}
+ * @template T
+ */
+Cesium.defaultValue = function(value, fallback) {};
+
+
+/**
  * Prevent using a removed API.
  * @constructor
  */
