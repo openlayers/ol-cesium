@@ -1,6 +1,6 @@
 goog.provide('olcs.OLCesium');
 goog.require('ol.geom.Point');
-
+goog.require('ol.Observable');
 goog.require('goog.asserts');
 goog.require('ol.proj');
 
@@ -271,6 +271,8 @@ olcs.OLCesium = function(options) {
    * @type {!Cesium.BoundingSphere}
    */
   this.boundingSphereScratch_ = new Cesium.BoundingSphere();
+
+  this.eventObserver = new ol.Observable();
 
   const eventHelper = new Cesium.EventHelper();
   eventHelper.add(this.scene_.postRender, olcs.OLCesium.prototype.updateTrackedEntity_, this);
@@ -562,8 +564,31 @@ olcs.OLCesium.prototype.setEnabled = function(enable) {
 
     this.camera_.updateView();
   }
+  this.eventObserver.dispatchEvent(olcs.OLCesium.EVENTTYPES.ENABLE3D);
 };
 
+/**
+ * Listen for a certain type of event
+ * @param {string|Array.<string>} type The event type or array of event types.
+ * @param {function(?): ?} listener The listener function.
+ * @param {Object=} opt_this The object to use as `this` in `listener`.
+ * @api
+ */
+olcs.OLCesium.prototype.on = function(type, listener, opt_this) {
+  this.eventObserver.on(type, listener, opt_this);
+};
+
+/**
+ * Unlisten for a certain type of event
+ * @param {string|Array.<string>} type The event type or array of event types.
+ * @param {function(?): ?} listener The listener function.
+ * @param {Object=} opt_this The object which was used as `this` by the
+ * `listener`.
+ * @api
+ */
+olcs.OLCesium.prototype.un = function(type, listener, opt_this) {
+  this.eventObserver.un(type, listener, opt_this);
+};
 
 /**
  * Preload Cesium so that it is ready when transitioning from 2D to 3D.
@@ -688,4 +713,12 @@ olcs.OLCesium.prototype.throwOnUnitializedMap_ = function() {
   if (!view.isDef() || isNaN(center[0]) || isNaN(center[1])) {
     throw new Error(`The OpenLayers map is not properly initialized: ${center} / ${view.getResolution()}`);
   }
+};
+
+/**
+ * Event type name
+ * @type {{ENABLE3D: string}}
+ */
+olcs.OLCesium.EVENTTYPES = {
+  ENABLE3D: 'enable3d'
 };
