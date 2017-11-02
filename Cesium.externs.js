@@ -2,7 +2,20 @@
  * @externs
  * @see http://cesium.agi.com/
  */
+
+/**
+ * @const
+ */
 var Cesium = {};
+
+/**
+ * @param {T} value .
+ * @param {T} fallback .
+ * @return {T}
+ * @template T
+ */
+Cesium.defaultValue = function(value, fallback) {};
+
 
 /**
  * Prevent using a removed API.
@@ -2784,13 +2797,6 @@ Cesium.EntityCollection.prototype.remove = function(entity) {}
  * @return {Cesium.Entity}
  */
 Cesium.EntityCollection.prototype.add = function(options) {}
-
-
-
-/**
- * @type {!Cesium.UniformState}
- */
-Cesium.Context.prototype.uniformState;
 
 
 
