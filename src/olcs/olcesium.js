@@ -3,6 +3,8 @@ goog.require('ol.geom.Point');
 
 goog.require('goog.asserts');
 goog.require('ol.proj');
+goog.require('ol.events');
+goog.require('ol.MapBrowserEventType');
 
 goog.require('olcs.util');
 goog.require('olcs.core');
@@ -10,6 +12,7 @@ goog.require('olcs.AutoRenderLoop');
 goog.require('olcs.Camera');
 goog.require('olcs.RasterSynchronizer');
 goog.require('olcs.VectorSynchronizer');
+goog.require('olcs.OverlaySynchronizer');
 
 
 
@@ -102,6 +105,24 @@ olcs.OLCesium = function(options) {
    */
   this.isOverMap_ = !targetElement;
 
+
+  if (this.isOverMap_) {
+    const overlayEvents = [
+      ol.events.EventType.CLICK,
+      ol.events.EventType.DBLCLICK,
+      ol.events.EventType.MOUSEDOWN,
+      ol.events.EventType.TOUCHSTART,
+      ol.events.EventType.MSPOINTERDOWN,
+      ol.MapBrowserEventType.POINTERDOWN,
+      ol.events.EventType.MOUSEWHEEL,
+      ol.events.EventType.WHEEL
+    ];
+    for (let i = 0, ii = overlayEvents.length; i < ii; ++i) {
+      ol.events.listen(this.container_, overlayEvents[i], ol.events.Event.stopPropagation);
+    }
+  }
+
+
   /**
    * @type {!HTMLCanvasElement}
    * @private
@@ -190,7 +211,8 @@ olcs.OLCesium = function(options) {
   const synchronizers = options.createSynchronizers ?
     options.createSynchronizers(this.map_, this.scene_, this.dataSourceCollection_) : [
       new olcs.RasterSynchronizer(this.map_, this.scene_),
-      new olcs.VectorSynchronizer(this.map_, this.scene_)
+      new olcs.VectorSynchronizer(this.map_, this.scene_),
+      new olcs.OverlaySynchronizer(this.map_, this.scene_)
     ];
 
   // Assures correct canvas size after initialisation
@@ -543,7 +565,11 @@ olcs.OLCesium.prototype.setEnabled = function(enable) {
         this.hiddenRootGroup_ = rootGroup;
         this.hiddenRootGroup_.setVisible(false);
       }
+
+      this.map_.getOverlayContainer().classList.add('olcs-hideoverlay');
+      this.map_.getOverlayContainerStopEvent().classList.add('olcs-hideoverlay');
     }
+
     this.camera_.readFromView();
     this.render_();
   } else {
@@ -553,7 +579,8 @@ olcs.OLCesium.prototype.setEnabled = function(enable) {
         interactions.push(interaction);
       });
       this.pausedInteractions_.length = 0;
-
+      this.map_.getOverlayContainer().classList.remove('olcs-hideoverlay');
+      this.map_.getOverlayContainerStopEvent().classList.remove('olcs-hideoverlay');
       if (this.hiddenRootGroup_) {
         this.hiddenRootGroup_.setVisible(true);
         this.hiddenRootGroup_ = null;
@@ -689,3 +716,4 @@ olcs.OLCesium.prototype.throwOnUnitializedMap_ = function() {
     throw new Error(`The OpenLayers map is not properly initialized: ${center} / ${view.getResolution()}`);
   }
 };
+

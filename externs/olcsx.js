@@ -110,3 +110,15 @@ olcsx.core.CesiumUrlDefinition;
  * }}
  */
 olcsx.LayerWithParents;
+
+
+/**
+ * Options for SynchronizedOverlay
+ * @typedef {{
+ *  scene: !Cesium.Scene,
+ *  parent: !ol.Overlay,
+ *  synchronizer: !olcs.OverlaySynchronizer
+ * }}
+ * @api
+ */
+olcsx.SynchronizedOverlayOptions;
