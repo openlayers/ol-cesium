@@ -498,6 +498,15 @@ olcs.OLCesium.prototype.getOlMap = function() {
   return this.map_;
 };
 
+/**
+ * @return {!ol.View}
+ * @api
+ */
+olcs.OLCesium.prototype.getOlView = function() {
+  const view = this.map_.getView();
+  goog.asserts.assert(view);
+  return view;
+};
 
 /**
  * @return {!Cesium.Scene}
