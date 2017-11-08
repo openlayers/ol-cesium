@@ -190,11 +190,11 @@ olcs.SynchronizedOverlay.prototype.handleElementChanged = function() {
   ol.dom.removeChildren(this.element);
   const element = this.getElement();
   if (element) {
-    if (element.parentNode) {
-      element.parentNode.childNodes.forEach((node) => {
+    if (element.parentNode && element.parentNode.childNodes) {
+      for (const node of element.parentNode.childNodes) {
         const clonedNode = cloneNode(node, null);
         this.element.appendChild(clonedNode);
-      });
+      }
     }
   }
   if (element.parentNode) {
