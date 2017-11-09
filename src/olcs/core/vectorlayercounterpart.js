@@ -7,6 +7,7 @@ goog.require('ol.Observable');
 /**
  * Result of the conversion of an OpenLayers layer to Cesium.
  * @constructor
+ * @struct
  * @param {!(ol.proj.Projection|string)} layerProjection
  * @param {!Cesium.Scene} scene
  */
