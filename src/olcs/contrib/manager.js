@@ -12,7 +12,7 @@ goog.require('goog.asserts');
 olcs.contrib.Manager = class {
   /**
    * @param {string} cesiumUrl
-   * @param {{map: ol.Map, cameraExtentInRadians: ol.Extent}} options
+   * @param {{map: ol.Map, cameraExtentInRadians: (ol.Extent|undefined)}} options
    * @api
    */
   constructor(cesiumUrl, {map, cameraExtentInRadians} = {}) {
@@ -33,7 +33,7 @@ olcs.contrib.Manager = class {
      * @type {ol.Extent}
      * @private
      */
-    this.cameraExtentInRadians_ = cameraExtentInRadians;
+    this.cameraExtentInRadians_ = cameraExtentInRadians || null;
 
     /**
      * @type {Promise.<olcs.OLCesium>}
@@ -228,5 +228,39 @@ olcs.contrib.Manager = class {
     if (bottom) {
       olcs.core.setHeadingUsingBottomCenter(scene, angle, bottom);
     }
+  }
+
+  /**
+   * @export
+   * @return {olcs.OLCesium}
+   */
+  getOl3d() {
+    return this.ol3d;
+  }
+
+  /**
+   * @export
+   * @return {!ol.View}
+   */
+  getOlView() {
+    const view = this.map.getView();
+    goog.asserts.assert(view);
+    return view;
+  }
+
+  /**
+   * @export
+   * @return {Cesium.Matrix4}
+   */
+  getCesiumViewMatrix() {
+    return this.ol3d.getCesiumScene().camera.viewMatrix;
+  }
+
+  /**
+   * @export
+   * @return {!Cesium.Scene}
+   */
+  getCesiumScene() {
+    return this.ol3d.getCesiumScene();
   }
 };

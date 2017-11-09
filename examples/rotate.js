@@ -74,7 +74,7 @@ OlcsControl.MIN_TILT = 0;
  * @return {ol.View}
  */
 OlcsControl.prototype.getOlView = function() {
-  return this.ol3d_.getOlMap().getView();
+  return this.ol3d_.getOlView();
 };
 
 
@@ -132,8 +132,8 @@ OlcsControl.prototype.resetToNorthZenith = function(callback) {
 
 
 OlcsControl.prototype.rotate = function(angle) {
-  const current = this.ol3d_.getOlMap().getView().getRotation();
-  this.ol3d_.getOlMap().getView().setRotation(current + angle);
+  const current = this.ol3d_.getOlView().getRotation();
+  this.ol3d_.getOlView().setRotation(current + angle);
 };
 
 
