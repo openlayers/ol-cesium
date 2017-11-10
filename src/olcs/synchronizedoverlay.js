@@ -11,6 +11,7 @@ goog.require('ol.Observable');
  * @constructor
  * @param {olcsx.SynchronizedOverlayOptions} options SynchronizedOverlay Options.
  * @extends {ol.Overlay}
+ * @struct
  * @api
  */
 olcs.SynchronizedOverlay = function(options) {

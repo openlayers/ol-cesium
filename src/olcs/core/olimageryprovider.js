@@ -13,6 +13,7 @@ goog.require('ol.proj');
  *                                               projection of the source
  *                                               is not defined.
  * @constructor
+ * @struct
  * @extends {Cesium.ImageryProvider}
  */
 olcs.core.OLImageryProvider = function(source, opt_fallbackProj) {
@@ -38,7 +39,29 @@ olcs.core.OLImageryProvider = function(source, opt_fallbackProj) {
    */
   this.fallbackProj_ = opt_fallbackProj || null;
 
+  /**
+   * @type {boolean}
+   * @private
+   */
   this.ready_ = false;
+
+  /**
+   * @type {?Cesium.Credit}
+   * @private
+   */
+  this.credit_ = null;
+
+  /**
+   * @type {?Cesium.TilingScheme}
+   * @private
+   */
+  this.tilingScheme_ = null;
+
+  /**
+   * @type {?Cesium.Rectangle}
+   * @private
+   */
+  this.rectangle_ = null;
 
   const proxy = this.source_.get('olcs.proxy');
   if (proxy) {
@@ -162,9 +185,8 @@ olcs.core.OLImageryProvider.prototype.handleSourceChanged_ = function() {
     }
     this.rectangle_ = this.tilingScheme_.rectangle;
 
-    const credit =
-        olcs.core.OLImageryProvider.createCreditForSource(this.source_);
-    this.credit_ = credit || undefined;
+    const credit = olcs.core.OLImageryProvider.createCreditForSource(this.source_);
+    this.credit_ = credit || null;
 
     this.ready_ = true;
   }

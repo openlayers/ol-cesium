@@ -4,6 +4,7 @@ goog.provide('olcs.contrib.LazyLoader');
 olcs.contrib.LazyLoader = class {
   /**
    * @param {string} url
+   * @struct
    * @api
    */
   constructor(url) {
