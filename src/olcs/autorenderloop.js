@@ -15,6 +15,7 @@ goog.provide('olcs.AutoRenderLoop');
 olcs.AutoRenderLoop = function(ol3d, debug) {
   this.ol3d = ol3d;
   this.scene_ = ol3d.getCesiumScene();
+  this.canvas_ = this.scene_.canvas;
   this.verboseRendering = debug;
   this._boundNotifyRepaintRequired = this.notifyRepaintRequired.bind(this);
 
@@ -22,55 +23,31 @@ olcs.AutoRenderLoop = function(ol3d, debug) {
   this.lastCameraMoveTime_ = 0;
   this.stoppedRendering = false;
 
-  this._removePostRenderListener = this.scene_.postRender.addEventListener(
-      this.postRender.bind(this));
+  this._removePostRenderListener = this.scene_.postRender.addEventListener(this.postRender.bind(this));
 
+  this.repaintEventNames_ = [
+    'mousemove', 'mousedown', 'mouseup',
+    'touchstart', 'touchend', 'touchmove',
+    'pointerdown', 'pointerup', 'pointermove',
+    'wheel'
+  ];
 
-  // Detect available wheel event
-  this._wheelEvent = '';
-  if ('onwheel' in this.scene_.canvas) {
-    // spec event type
-    this._wheelEvent = 'wheel';
-  } else if (!!document['onmousewheel']) {
-    // legacy event type
-    this._wheelEvent = 'mousewheel';
-  } else {
-    // older Firefox
-    this._wheelEvent = 'DOMMouseScroll';
-  }
+  const CameraPrototype = Cesium.Camera.prototype;
+  this.interceptedAPIs_ = [
+    [CameraPrototype, 'setView'],
+    [CameraPrototype, 'move'],
+    [CameraPrototype, 'rotate'],
+    [CameraPrototype, 'lookAt'],
+    [CameraPrototype, 'flyTo'],
+    [CameraPrototype, 'flyToHome'],
+    [CameraPrototype, 'flyToBoundingSphere']
+  ];
 
-  this._originalLoadWithXhr = Cesium.loadWithXhr.load;
-  this._originalScheduleTask = Cesium.TaskProcessor.prototype.scheduleTask;
-  this._originalCameraSetView = Cesium.Camera.prototype.setView;
-  this._originalCameraMove = Cesium.Camera.prototype.move;
-  this._originalCameraRotate = Cesium.Camera.prototype.rotate;
-  this._originalCameraLookAt = Cesium.Camera.prototype.lookAt;
-  this._originalCameraFlyTo = Cesium.Camera.prototype.flyTo;
+  this.originalAPIs_ = this.interceptedAPIs_.map(tuple => tuple[0][tuple[1]]);
 
+  this.originalLoadWithXhr_ = Cesium.loadWithXhr.load;
+  this.originalScheduleTask_ = Cesium.TaskProcessor.prototype.scheduleTask;
   this.enable();
-};
-
-
-/**
- * Force a repaint when the mouse moves or the window changes size.
- * @param {string} key
- * @param {boolean} capture
- * @private
- */
-olcs.AutoRenderLoop.prototype.repaintOn_ = function(key, capture) {
-  const canvas = this.scene_.canvas;
-  canvas.addEventListener(key, this._boundNotifyRepaintRequired, capture);
-};
-
-
-/**
- * @param {string} key
- * @param {boolean} capture
- * @private
- */
-olcs.AutoRenderLoop.prototype.removeRepaintOn_ = function(key, capture) {
-  const canvas = this.scene_.canvas;
-  canvas.removeEventListener(key, this._boundNotifyRepaintRequired, capture);
 };
 
 
@@ -78,36 +55,22 @@ olcs.AutoRenderLoop.prototype.removeRepaintOn_ = function(key, capture) {
  * Enable.
  */
 olcs.AutoRenderLoop.prototype.enable = function() {
-  this.repaintOn_('mousemove', false);
-  this.repaintOn_('mousedown', false);
-  this.repaintOn_('mouseup', false);
-  this.repaintOn_('touchstart', false);
-  this.repaintOn_('touchend', false);
-  this.repaintOn_('touchmove', false);
-
-  if (!!window['PointerEvent']) {
-    this.repaintOn_('pointerdown', false);
-    this.repaintOn_('pointerup', false);
-    this.repaintOn_('pointermove', false);
+  for (const repaintKey of this.repaintEventNames_) {
+    this.canvas_.addEventListener(repaintKey, this._boundNotifyRepaintRequired, false);
   }
-
-  this.repaintOn_(this._wheelEvent, false);
 
   window.addEventListener('resize', this._boundNotifyRepaintRequired, false);
 
   // Hacky way to force a repaint when an async load request completes
   const that = this;
-  Cesium.loadWithXhr.load = function(url, responseType, method, data,
-      headers, deferred, overrideMimeType, preferText, timeout) {
+  Cesium.loadWithXhr.load = function(url, responseType, method, data, headers, deferred, overrideMimeType, preferText, timeout) {
     deferred['promise']['always'](that._boundNotifyRepaintRequired);
-    that._originalLoadWithXhr(url, responseType, method, data, headers,
-        deferred, overrideMimeType, preferText, timeout);
+    that.originalLoadWithXhr_(...arguments); // eslint-disable-line prefer-rest-params
   };
 
   // Hacky way to force a repaint when a web worker sends something back.
   Cesium.TaskProcessor.prototype.scheduleTask = function(parameters, transferableObjects) {
-    const result = that._originalScheduleTask.call(this, parameters,
-        transferableObjects);
+    const result = that.originalScheduleTask_.call(this, parameters, transferableObjects);
 
     const taskProcessor = this;
     if (!taskProcessor._originalWorkerMessageSinkRepaint) {
@@ -122,30 +85,20 @@ olcs.AutoRenderLoop.prototype.enable = function() {
     return result;
   };
 
-  Cesium.Camera.prototype.setView = function(...args) {
-    that._originalCameraSetView.apply(this, args);
-    that.notifyRepaintRequired();
-  };
-  Cesium.Camera.prototype.move = function(...args) {
-    that._originalCameraMove.apply(this, args);
-    that.notifyRepaintRequired();
-  };
-  Cesium.Camera.prototype.rotate = function(...args) {
-    that._originalCameraRotate.apply(this, args);
-    that.notifyRepaintRequired();
-  };
-  Cesium.Camera.prototype.lookAt = function(...args) {
-    that._originalCameraLookAt.apply(this, args);
-    that.notifyRepaintRequired();
-  };
-  Cesium.Camera.prototype.flyTo = function(...args) {
-    that._originalCameraFlyTo.apply(this, args);
-    that.notifyRepaintRequired();
-  };
+  // Intercept API calls to trigger a repaint
+  for (let i = 0; i < this.interceptedAPIs_.length; ++i) {
+    const api = this.interceptedAPIs_[i];
+    const parent = api[0];
+    const original = this.originalAPIs_[i];
+    // Not using an arrow function to keep the "this" unbounded.
+    parent[api[1]] = function(...args) {
+      original.apply(this, args);
+      that.notifyRepaintRequired();
+    };
+  }
 
   // Listen for changes on the layer group
-  this.ol3d.getOlMap().getLayerGroup().on('change',
-      this._boundNotifyRepaintRequired);
+  this.ol3d.getOlMap().getLayerGroup().on('change', this._boundNotifyRepaintRequired);
 };
 
 
@@ -157,34 +110,24 @@ olcs.AutoRenderLoop.prototype.disable = function() {
     this._removePostRenderListener();
     this._removePostRenderListener = undefined;
   }
-
-  this.removeRepaintOn_('mousemove', false);
-  this.removeRepaintOn_('mousedown', false);
-  this.removeRepaintOn_('mouseup', false);
-  this.removeRepaintOn_('touchstart', false);
-  this.removeRepaintOn_('touchend', false);
-  this.removeRepaintOn_('touchmove', false);
-
-  if (!!window['PointerEvent']) {
-    this.removeRepaintOn_('pointerdown', false);
-    this.removeRepaintOn_('pointerup', false);
-    this.removeRepaintOn_('pointermove', false);
+  for (const repaintKey of this.repaintEventNames_) {
+    this.canvas_.removeEventListener(repaintKey, this._boundNotifyRepaintRequired, false);
   }
-
-  this.removeRepaintOn_(this._wheelEvent, false);
 
   window.removeEventListener('resize', this._boundNotifyRepaintRequired, false);
 
-  Cesium.loadWithXhr.load = this._originalLoadWithXhr;
-  Cesium.TaskProcessor.prototype.scheduleTask = this._originalScheduleTask;
-  Cesium.Camera.prototype.setView = this._originalCameraSetView;
-  Cesium.Camera.prototype.move = this._originalCameraMove;
-  Cesium.Camera.prototype.rotate = this._originalCameraRotate;
-  Cesium.Camera.prototype.lookAt = this._originalCameraLookAt;
-  Cesium.Camera.prototype.flyTo = this._originalCameraFlyTo;
+  Cesium.loadWithXhr.load = this.originalLoadWithXhr_;
+  Cesium.TaskProcessor.prototype.scheduleTask = this.originalScheduleTask_;
 
-  this.ol3d.getOlMap().getLayerGroup().un('change',
-      this._boundNotifyRepaintRequired);
+  // Restore original APIs
+  for (let i = 0; i < this.interceptedAPIs_.length; ++i) {
+    const api = this.interceptedAPIs_[i];
+    const parent = api[0];
+    const original = this.originalAPIs_[i];
+    parent[api[1]] = original;
+  }
+
+  this.ol3d.getOlMap().getLayerGroup().un('change', this._boundNotifyRepaintRequired);
 };
 
 
@@ -203,8 +146,7 @@ olcs.AutoRenderLoop.prototype.postRender = function(date) {
   const scene = this.scene_;
   const camera = scene.camera;
 
-  if (!Cesium.Matrix4.equalsEpsilon(this.lastCameraViewMatrix_,
-      camera.viewMatrix, 1e-5)) {
+  if (!Cesium.Matrix4.equalsEpsilon(this.lastCameraViewMatrix_, camera.viewMatrix, 1e-5)) {
     this.lastCameraMoveTime_ = now;
   }
 
