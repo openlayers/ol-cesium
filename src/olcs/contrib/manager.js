@@ -4,7 +4,6 @@ goog.require('olcs.contrib.LazyLoader');
 goog.require('olcs.OLCesium');
 goog.require('olcs.core');
 
-goog.require('ol.extent');
 goog.require('ol.math');
 goog.require('goog.asserts');
 
@@ -34,6 +33,18 @@ olcs.contrib.Manager = class {
      * @private
      */
     this.cameraExtentInRadians_ = cameraExtentInRadians || null;
+
+    /**
+     * @private
+     * @type {Cesium.BoundingSphere}
+     */
+    this.boundingSphere_;
+
+    /**
+     * @type {boolean}
+     * @private
+     */
+    this.blockLimiter_ = false;
 
     /**
      * @type {Promise.<olcs.OLCesium>}
@@ -99,6 +110,13 @@ olcs.contrib.Manager = class {
    * @return {olcs.OLCesium}
    */
   onCesiumLoaded() {
+    if (this.cameraExtentInRadians_) {
+      const rect = new Cesium.Rectangle(...this.cameraExtentInRadians_);
+      // Set the fly home rectangle
+      Cesium.Camera.DEFAULT_VIEW_RECTANGLE = rect;
+      this.boundingSphere_ = Cesium.BoundingSphere.fromRectangle3D(rect, Cesium.Ellipsoid.WGS84, 300); // lux mean height is 300m
+    }
+
     this.ol3d = this.instantiateOLCesium();
     const scene = this.ol3d.getCesiumScene();
     this.configureForUsability(scene);
@@ -139,11 +157,6 @@ olcs.contrib.Manager = class {
    * @protected
    */
   configureForUsability(scene) {
-    if (this.cameraExtentInRadians_) {
-      // Set the fly home rectangle
-      Cesium.Camera.DEFAULT_VIEW_RECTANGLE = new Cesium.Rectangle(...this.cameraExtentInRadians_);
-    }
-
     const sscController = scene.screenSpaceCameraController;
     sscController.minimumZoomDistance = this.minimumZoomDistance;
     sscController.maximumZoomDistance = this.maximumZoomDistance;
@@ -153,7 +166,8 @@ olcs.contrib.Manager = class {
     scene.globe.depthTestAgainstTerrain = true;
 
     if (this.cameraExtentInRadians_) {
-      scene.postRender.addEventListener(this.limitCameraToExtent.bind(this), scene);
+      //scene.postRender.addEventListener(this.limitCameraToExtent.bind(this), scene);
+      scene.postRender.addEventListener(this.limitCameraToBoundingSphere.bind(this), scene);
     }
 
     // Stop rendering Cesium when there is nothing to do. This drastically reduces CPU/GPU consumption.
@@ -162,36 +176,23 @@ olcs.contrib.Manager = class {
 
 
   /**
-   * Constrain the camera so that it stays in a 3D volume above a map extent.
-   * Near the ground the extent is small. Far from the ground the extent is larger.
+   * Constrain the camera so that it stays close to the bounding sphere of the map extent.
+   * Near the ground the allowed distance is shorter.
    * @protected
    */
-  limitCameraToExtent() {
-    const scene = this.ol3d.getCesiumScene();
-    const camera = scene.camera;
-    const extent = this.cameraExtentInRadians_;
-    const pos = camera.positionCartographic.clone();
-    const inside = ol.extent.containsXY(extent, pos.longitude, pos.latitude);
-    if (!inside) {
-      // add a padding based on the camera height
-      const padding = Math.max(0, pos.height * this.cameraPaddingRatio);
-      let lon = pos.longitude;
-      let lat = pos.latitude;
-      lon = Math.max(extent[0] - padding, lon);
-      lat = Math.max(extent[1] - padding, lat);
-      lon = Math.min(extent[2] + padding, lon);
-      lat = Math.min(extent[3] + padding, lat);
-      if (lon !== pos.longitude || lat !== pos.latitude) {
-        pos.longitude = lon;
-        pos.latitude = lat;
-        camera.setView({
-          destination: Cesium.Ellipsoid.WGS84.cartographicToCartesian(pos),
-          orientation: {
-            heading: camera.heading,
-            pitch: camera.pitch
-          },
-          duration: this.flyCameraConstraintDuration,
-          endTransform: Cesium.Matrix4.IDENTITY
+  limitCameraToBoundingSphere() {
+    if (this.boundingSphere_ && !this.blockLimiter_) {
+      const scene = this.ol3d.getCesiumScene();
+      const camera = scene.camera;
+      const position = camera.position;
+      const carto = Cesium.Cartographic.fromCartesian(position);
+      const ratio = carto.height > 3000 ? 10 : 5; // when closer to 3000m, restrict the available positions harder
+      if (Cesium.Cartesian3.distance(this.boundingSphere_.center, position) > this.boundingSphere_.radius * ratio) {
+        this.blockLimiter_ = true;
+        const unblockLimiter = () => this.blockLimiter_ = false;
+        camera.flyToBoundingSphere(this.boundingSphere_, {
+          complete: unblockLimiter,
+          cancel: unblockLimiter
         });
       }
     }
