@@ -47,11 +47,38 @@ olcs.contrib.Manager = class {
      */
     this.ol3d;
 
+
     /**
      * @const {number} Tilt angle in radians
      * @private
      */
     this.cesiumInitialTilt_ = ol.math.toRadians(50);
+
+    /**
+     * @protected
+     * @type {number}
+     */
+    this.fogDensity = 0.0001;
+
+    /**
+     * @protected
+     * @type {number}
+     */
+    this.fogSSEFactor = 25;
+
+    /**
+     * Limit the minimum distance to the terrain to 2m.
+     * @protected
+     * @type {number}
+     */
+    this.minimumZoomDistance = 2;
+
+    /**
+     * Limit the maximum distance to the earth to 10'000km.
+     * @protected
+     * @type {number}
+     */
+    this.maximumZoomDistance = 10000000;
   }
 
 
@@ -102,8 +129,8 @@ olcs.contrib.Manager = class {
    */
   configureForPerformance(scene) {
     const fog = scene.fog;
-    fog.density = 0.0001;
-    fog.screenSpaceErrorFactor = 25;
+    fog.density = this.fogDensity;
+    fog.screenSpaceErrorFactor = this.fogSSEFactor;
   }
 
 
@@ -112,13 +139,14 @@ olcs.contrib.Manager = class {
    * @protected
    */
   configureForUsability(scene) {
+    if (this.cameraExtentInRadians_) {
+      // Set the fly home rectangle
+      Cesium.Camera.DEFAULT_VIEW_RECTANGLE = new Cesium.Rectangle(...this.cameraExtentInRadians_);
+    }
+
     const sscController = scene.screenSpaceCameraController;
-
-    // To avoid going under the terrain, limit the minimum distance to 30m
-    sscController.minimumZoomDistance = 30;
-
-    // To avoid getting lost in space, limit the maximum distance to 10'000km
-    sscController.maximumZoomDistance = 10000000;
+    sscController.minimumZoomDistance = this.minimumZoomDistance;
+    sscController.maximumZoomDistance = this.maximumZoomDistance;
 
     // Do not see through the terrain. Seeing through the terrain does not make
     // sense anyway, except for debugging
@@ -146,7 +174,7 @@ olcs.contrib.Manager = class {
     const inside = ol.extent.containsXY(extent, pos.longitude, pos.latitude);
     if (!inside) {
       // add a padding based on the camera height
-      const padding = Math.max(0, pos.height * 0.05 / 500000);
+      const padding = Math.max(0, pos.height * this.cameraPaddingRatio);
       let lon = pos.longitude;
       let lat = pos.latitude;
       lon = Math.max(extent[0] - padding, lon);
@@ -161,7 +189,9 @@ olcs.contrib.Manager = class {
           orientation: {
             heading: camera.heading,
             pitch: camera.pitch
-          }
+          },
+          duration: this.flyCameraConstraintDuration,
+          endTransform: Cesium.Matrix4.IDENTITY
         });
       }
     }
