@@ -582,7 +582,7 @@ Cesium.optionsOrientation;
  *   positionCartographic: (Cesium.RemovedAPI|undefined),
  *   heading: (undefined|Cesium.RemovedAPI),
  *   pitch: (undefined|Cesium.RemovedAPI),
- *   roll: (undefined|Cesium.RemovedAPI)
+ *   roll: (undefined|Cesium.RemovedAPI),
  *   endTransform: (Cesium.Matrix4|undefined)
  * }}
  */
