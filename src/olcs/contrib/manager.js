@@ -294,4 +294,33 @@ olcs.contrib.Manager = class {
   getCesiumScene() {
     return this.ol3d.getCesiumScene();
   }
+
+  /**
+   * @export
+   * @param {!Cesium.Rectangle} rectangle
+   * @param {number=} offset in meters
+   * @return {Promise<undefined>}
+   */
+  flyToRectangle(rectangle, offset = 0) {
+    const camera = this.getCesiumScene().camera;
+    const destination = camera.getRectangleCameraCoordinates(rectangle);
+
+    const mag = Cesium.Cartesian3.magnitude(destination) + offset;
+    Cesium.Cartesian3.normalize(destination, destination);
+    Cesium.Cartesian3.multiplyByScalar(destination, mag, destination);
+
+    return new Promise((resolve, reject) => {
+      if (!this.cameraExtentInRadians_) {
+        reject();
+        return;
+      }
+
+      camera.flyTo({
+        destination,
+        complete: () => resolve(),
+        cancel: () => reject(),
+        endTransform: Cesium.Matrix4.IDENTITY
+      });
+    });
+  }
 };
