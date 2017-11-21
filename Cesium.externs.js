@@ -302,6 +302,11 @@ Cesium.Camera.DEFAULT_VIEW_RECTANGLE;
 Cesium.Camera.DEFAULT_VIEW_FACTOR;
 
 /**
+ * @type {!boolean}
+ */
+Cesium.Camera.prototype.flying;
+
+/**
  * @type {!Cesium.Cartesian3}
  */
 Cesium.Camera.prototype.direction;
