@@ -173,6 +173,10 @@ olcs.contrib.Manager = class {
     // sense anyway, except for debugging
     scene.globe.depthTestAgainstTerrain = true;
 
+    // Use white instead of the black default colour for the globe when tiles are missing
+    scene.globe.baseColor = Cesium.Color.WHITE;
+    scene.backgroundColor = Cesium.Color.WHITE;
+
     if (this.boundingSphere_) {
       scene.postRender.addEventListener(this.limitCameraToBoundingSphere.bind(this), scene);
     }
