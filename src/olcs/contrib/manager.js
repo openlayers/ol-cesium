@@ -154,6 +154,7 @@ olcs.contrib.Manager = class {
    */
   configureForPerformance(scene) {
     const fog = scene.fog;
+    fog.enabled = true;
     fog.density = this.fogDensity;
     fog.screenSpaceErrorFactor = this.fogSSEFactor;
   }
