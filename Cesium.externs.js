@@ -749,11 +749,27 @@ Cesium.Camera.prototype.flyHome = function(opt_duration) {};
  */
 Cesium.optionsCameraFlyToBoundingSphere;
 
+
 /**
  * @param {!Cesium.BoundingSphere} boundingSphere
  * @param {!Cesium.optionsCameraFlyToBoundingSphere} options
  */
 Cesium.Camera.prototype.flyToBoundingSphere = function(boundingSphere, options) {};
+
+
+/**
+ * @param {!Cesium.BoundingSphere} boundingSphere
+ * @param {!Cesium.HeadingPitchRange=} opt_offset
+ */
+Cesium.Camera.prototype.viewBoundingSphere = function(boundingSphere, opt_offset) {};
+
+
+/**
+ * @param {!Cesium.Rectangle} rect
+ * @return {!Cesium.Cartesian3}
+ */
+Cesium.Camera.prototype.getRectangleCameraCoordinates = function(rect) {};
+
 
 /**
  * @constructor
@@ -891,6 +907,16 @@ Cesium.Cartesian3.cross = function(left, right, opt_result) {};
  * @return {!Cesium.Cartesian3}
  */
 Cesium.Cartesian3.clone = function(cartesian, opt_result) {};
+
+
+/**
+ * @param {!Cesium.Cartesian3} cartesian
+ * @param {!number} scalar
+ * @param {Cesium.Cartesian3=} opt_result
+ * @return {!Cesium.Cartesian3}
+ */
+Cesium.Cartesian3.multiplyByScalar = function(cartesian, scalar, opt_result) {};
+
 
 /**
  * @param {Cesium.Cartesian3=} opt_result
