@@ -90,6 +90,13 @@ olcs.contrib.Manager = class {
      * @type {number}
      */
     this.maximumZoomDistance = 10000000;
+
+    // when closer to 3000m, restrict the available positions harder
+    /**
+     * @protected
+     * @param {number} height
+     */
+    this.limitCameraToBoundingSphereRatio = height => (height > 3000 ? 9 : 3);
   }
 
 
@@ -165,11 +172,9 @@ olcs.contrib.Manager = class {
     // sense anyway, except for debugging
     scene.globe.depthTestAgainstTerrain = true;
 
-    if (this.cameraExtentInRadians_) {
-      //scene.postRender.addEventListener(this.limitCameraToExtent.bind(this), scene);
+    if (this.boundingSphere_) {
       scene.postRender.addEventListener(this.limitCameraToBoundingSphere.bind(this), scene);
     }
-
     // Stop rendering Cesium when there is nothing to do. This drastically reduces CPU/GPU consumption.
     this.ol3d.enableAutoRenderLoop();
   }
@@ -186,14 +191,20 @@ olcs.contrib.Manager = class {
       const camera = scene.camera;
       const position = camera.position;
       const carto = Cesium.Cartographic.fromCartesian(position);
-      const ratio = carto.height > 3000 ? 10 : 5; // when closer to 3000m, restrict the available positions harder
+      const ratio = this.limitCameraToBoundingSphereRatio(carto.height);
       if (Cesium.Cartesian3.distance(this.boundingSphere_.center, position) > this.boundingSphere_.radius * ratio) {
-        this.blockLimiter_ = true;
-        const unblockLimiter = () => this.blockLimiter_ = false;
-        camera.flyToBoundingSphere(this.boundingSphere_, {
-          complete: unblockLimiter,
-          cancel: unblockLimiter
-        });
+        const currentlyFlying = camera.flying;
+        if (currentlyFlying === true) {
+          // There is a flying property and its value is true
+          return;
+        } else {
+          this.blockLimiter_ = true;
+          const unblockLimiter = () => this.blockLimiter_ = false;
+          camera.flyToBoundingSphere(this.boundingSphere_, {
+            complete: unblockLimiter,
+            cancel: unblockLimiter
+          });
+        }
       }
     }
   }
