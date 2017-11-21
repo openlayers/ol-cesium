@@ -30,9 +30,9 @@ olcs.contrib.Manager = class {
 
     /**
      * @type {ol.Extent}
-     * @private
+     * @protected
      */
-    this.cameraExtentInRadians_ = cameraExtentInRadians || null;
+    this.cameraExtentInRadians = cameraExtentInRadians || null;
 
     /**
      * @private
@@ -117,8 +117,8 @@ olcs.contrib.Manager = class {
    * @return {olcs.OLCesium}
    */
   onCesiumLoaded() {
-    if (this.cameraExtentInRadians_) {
-      const rect = new Cesium.Rectangle(...this.cameraExtentInRadians_);
+    if (this.cameraExtentInRadians) {
+      const rect = new Cesium.Rectangle(...this.cameraExtentInRadians);
       // Set the fly home rectangle
       Cesium.Camera.DEFAULT_VIEW_RECTANGLE = rect;
       this.boundingSphere_ = Cesium.BoundingSphere.fromRectangle3D(rect, Cesium.Ellipsoid.WGS84, 300); // lux mean height is 300m
@@ -321,7 +321,7 @@ olcs.contrib.Manager = class {
     Cesium.Cartesian3.multiplyByScalar(destination, mag, destination);
 
     return new Promise((resolve, reject) => {
-      if (!this.cameraExtentInRadians_) {
+      if (!this.cameraExtentInRadians) {
         reject();
         return;
       }
