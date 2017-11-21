@@ -1,6 +1,7 @@
 /**
+ * @fileoverview Externs for Cesium JS.
+ * @see https://cesiumjs.org/refdoc/
  * @externs
- * @see http://cesium.agi.com/
  */
 
 /**
@@ -557,22 +558,22 @@ Cesium.Camera.prototype.setPositionCartographic;
 
 /**
  * @typedef {{
- *    heading: (number|undefined),
- *    pitch: (number|undefined),
- *    roll: (number|undefined)
+ *   heading: (number|undefined),
+ *   pitch: (number|undefined),
+ *   roll: (number|undefined)
  * }}
  */
 Cesium.optionsOrientation;
 
 /**
  * @typedef {{
- *  destination: (Cesium.Cartesian3|Cesium.Rectangle|undefined),
- *  orientation: (Cesium.optionsOrientation|undefined),
- *  position: (Cesium.RemovedAPI|undefined),
- *  positionCartographic: (Cesium.RemovedAPI|undefined),
- *  heading: (undefined|Cesium.RemovedAPI),
- *  pitch: (undefined|Cesium.RemovedAPI),
- *  roll: (undefined|Cesium.RemovedAPI)
+ *   destination: (Cesium.Cartesian3|Cesium.Rectangle|undefined),
+ *   orientation: (Cesium.optionsOrientation|undefined),
+ *   position: (Cesium.RemovedAPI|undefined),
+ *   positionCartographic: (Cesium.RemovedAPI|undefined),
+ *   heading: (undefined|Cesium.RemovedAPI),
+ *   pitch: (undefined|Cesium.RemovedAPI),
+ *   roll: (undefined|Cesium.RemovedAPI)
  * }}
  */
 Cesium.optionsCameraSetView;
@@ -1263,10 +1264,10 @@ Cesium.Geometry = function() {};
 
 /**
  * @typedef {{
- * center: !Cesium.Cartesian3,
- * height: (number|undefined),
- * extrudedHeight: (number|undefined),
- * radius: number
+ *   center: !Cesium.Cartesian3,
+ *   height: (number|undefined),
+ *   extrudedHeight: (number|undefined),
+ *   radius: number
  * }}
  */
 Cesium.optionsCircleGeometry;
@@ -1280,10 +1281,10 @@ Cesium.CircleGeometry = function(opt_opts) {};
 
 /**
  * @typedef {{
- * center: !Cesium.Cartesian3,
- * height: (number|undefined),
- * extrudedHeight: (number|undefined),
- * radius: number
+ *   center: !Cesium.Cartesian3,
+ *   height: (number|undefined),
+ *   extrudedHeight: (number|undefined),
+ *   radius: number
  * }}
  */
 Cesium.optionsCircleOutlineGeometry;
@@ -1369,25 +1370,25 @@ Cesium.HorizontalOrigin.RIGHT;
 
 /**
  * @typedef {{
- * enabled: (boolean| undefined)
+ *   enabled: (boolean| undefined)
  * }}
  */
 Cesium.optionsDepthTest;
 
 /**
  * @typedef {{
- * lineWidth: (number| undefined),
- * depthTest: (Cesium.optionsDepthTest | undefined)
+ *   lineWidth: (number| undefined),
+ *   depthTest: (Cesium.optionsDepthTest | undefined)
  * }}
  */
 Cesium.optionsRenderState;
 
 /**
  * @typedef {{
- * flat: (boolean| undefined),
- * close: (boolean| undefined),
- * translucent: (boolean| undefined),
- * renderState: (Cesium.optionsRenderState | undefined)
+ *   flat: (boolean| undefined),
+ *   close: (boolean| undefined),
+ *   translucent: (boolean| undefined),
+ *   renderState: (Cesium.optionsRenderState | undefined)
  * }}
  */
 Cesium.optionsPerInstanceColorAppearance;
@@ -1414,8 +1415,8 @@ Cesium.PerInstanceColorAppearance.VERTEX_FORMAT;
 
 /**
  * @typedef {{
- * positions: !Array.<Cesium.Cartesian3>,
- * holes: !Array.<Cesium.optionsPolygonHierarchy>
+ *   positions: !Array.<Cesium.Cartesian3>,
+ *   holes: !Array.<Cesium.optionsPolygonHierarchy>
  * }}
  */
 Cesium.optionsPolygonHierarchy;
@@ -1423,11 +1424,11 @@ Cesium.optionsPolygonHierarchy;
 
 /**
  * @typedef {{
- * width: (number|undefined),
- * height: (number|undefined),
- * extrudedHeight: (number|undefined),
- * perPositionHeight: (boolean|undefined),
- * polygonHierarchy: !Cesium.optionsPolygonHierarchy
+ *   width: (number|undefined),
+ *   height: (number|undefined),
+ *   extrudedHeight: (number|undefined),
+ *   perPositionHeight: (boolean|undefined),
+ *   polygonHierarchy: !Cesium.optionsPolygonHierarchy
  * }}
  */
 Cesium.optionsPolygonOutlineGeometry;
@@ -1435,11 +1436,11 @@ Cesium.optionsPolygonOutlineGeometry;
 
 /**
  * @typedef {{
- * positions: !Array.<Cesium.Cartesian3>,
- * height: (number|undefined),
- * extrudedHeight: (number|undefined),
- * perPositionHeight: (boolean|undefined),
- * polygonHierarchy: !Cesium.optionsPolygonHierarchy
+ *   positions: !Array.<Cesium.Cartesian3>,
+ *   height: (number|undefined),
+ *   extrudedHeight: (number|undefined),
+ *   perPositionHeight: (boolean|undefined),
+ *   polygonHierarchy: !Cesium.optionsPolygonHierarchy
  * }}
  */
 Cesium.optionsPolygonGeometry;
@@ -1456,10 +1457,10 @@ Cesium.PolygonGeometry = function(object) {};
 
 /**
  * @typedef {{
- * positions: !Array.<Cesium.Cartesian3>,
- * height: (number|undefined),
- * extrudedHeight: (number|undefined),
- * vertexFormat: number
+ *   positions: !Array.<Cesium.Cartesian3>,
+ *   height: (number|undefined),
+ *   extrudedHeight: (number|undefined),
+ *   vertexFormat: number
  * }}
  */
 Cesium.optionsPolylineGeometry;
@@ -1476,12 +1477,12 @@ Cesium.PolygonOutlineGeometry = function(object) {};
 
 /**
  * @typedef {{
- * rectangle: !Cesium.Rectangle,
- * ellipsoid: (Cesium.Ellipsoid|undefined),
- * granularity: (number|undefined),
- * height: (number|undefined),
- * rotation: (number|undefined),
- * extrudedHeight: (number|undefined)
+ *   rectangle: !Cesium.Rectangle,
+ *   ellipsoid: (Cesium.Ellipsoid|undefined),
+ *   granularity: (number|undefined),
+ *   height: (number|undefined),
+ *   rotation: (number|undefined),
+ *   extrudedHeight: (number|undefined)
  * }}
  */
 Cesium.optionsRectangleOutlineGeometry;
@@ -1497,8 +1498,8 @@ Cesium.RectangleOutlineGeometry = function(opt_opts) {};
 
 /**
  * @typedef {{
- * positions: !Array.<Cesium.Cartesian3>,
- * vertexFormat: number
+ *   positions: !Array.<Cesium.Cartesian3>,
+ *   vertexFormat: number
  * }}
  */
 Cesium.optionsPolylineGeometry;
@@ -1514,16 +1515,16 @@ Cesium.PolylineGeometry = function(object) {};
 
 /**
  * @typedef {{
- * rectangle: !Cesium.Rectangle,
- * vertexFormat: (Cesium.VertexFormat|undefined),
- * ellipsoid: (Cesium.Ellipsoid|undefined),
- * granularity: (number|undefined),
- * height: (number|undefined),
- * rotation: (number|undefined),
- * stRotation: (number|undefined),
- * extrudedHeight: (number|undefined),
- * closeTop: (boolean|undefined),
- * closeBottom: (boolean|undefined)
+ *   rectangle: !Cesium.Rectangle,
+ *   vertexFormat: (Cesium.VertexFormat|undefined),
+ *   ellipsoid: (Cesium.Ellipsoid|undefined),
+ *   granularity: (number|undefined),
+ *   height: (number|undefined),
+ *   rotation: (number|undefined),
+ *   stRotation: (number|undefined),
+ *   extrudedHeight: (number|undefined),
+ *   closeTop: (boolean|undefined),
+ *   closeBottom: (boolean|undefined)
  * }}
  */
 Cesium.optionsRectangleGeometry;
@@ -1545,14 +1546,14 @@ Cesium.CorridorGeometry = function(opt_opts) {};
 
 /**
  * @typedef {{
- * positions: !Array.<Cesium.Cartesian3>,
- * width: (number|undefined),
- * ellipsoid: (Cesium.Ellipsoid|undefined),
- * granularity: (number|undefined),
- * height: (number|undefined),
- * extrudedHeight: (number|undefined),
- * vertexFormat: number,
- * cornerType: (number|undefined),
+ *   positions: !Array.<Cesium.Cartesian3>,
+ *   width: (number|undefined),
+ *   ellipsoid: (Cesium.Ellipsoid|undefined),
+ *   granularity: (number|undefined),
+ *   height: (number|undefined),
+ *   extrudedHeight: (number|undefined),
+ *   vertexFormat: number,
+ *   cornerType: (number|undefined),
  * }}
  */
 Cesium.optionsCorridorGeometry;
@@ -2828,7 +2829,7 @@ Cesium.EntityCollection.prototype.add = function(options) {}
 
 /**
  * @typedef {{
- *  primitive: Cesium.Primitive
+ *   primitive: Cesium.Primitive
  * }}
  */
 Cesium.DrillObject;
@@ -3005,8 +3006,10 @@ Cesium.ScreenSpaceCameraController.prototype.zoomEventTypes;
 
 
 /**
- * @typedef {{position: Cesium.Cartesian2,
- *     endPosition: Cesium.Cartesian2}}
+ * @typedef {{
+ *   position: Cesium.Cartesian2,
+ *   endPosition: Cesium.Cartesian2
+ * }}
  */
 Cesium.ScreenSpaceEventHandlerEvent;
 
@@ -3069,7 +3072,9 @@ Cesium.SingleTileImageryProvider = function(options) {};
 
 
 /**
- * @typedef {{url: string}}
+ * @typedef {{
+ *   url: string
+ * }}
  */
 Cesium.SingleTileImageryProviderOptions;
 
@@ -3208,7 +3213,7 @@ Cesium.Ray.getPoint = function(ray, distance) {};
  * @typedef {{
  *   url: (!string|undefined),
  *   credit: (!string|undefined)
- *   }}
+ * }}
  */
 Cesium.CesiumTerrainProviderOptions;
 
