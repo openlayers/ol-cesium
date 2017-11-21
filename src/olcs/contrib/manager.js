@@ -335,4 +335,14 @@ olcs.contrib.Manager = class {
       });
     });
   }
+
+  /**
+   * @protected
+   * @return {Cesium.Rectangle|undefined}
+   */
+  getCameraExtentRectangle() {
+    if (this.cameraExtentInRadians) {
+      return new Cesium.Rectangle(...this.cameraExtentInRadians);
+    }
+  }
 };
