@@ -3,6 +3,7 @@
   "version": "1.32.0",
   "description": "OpenLayers Cesium integration library",
   "scripts": {},
+  "main": "./dist/olcesium.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/openlayers/ol-cesium.git"
