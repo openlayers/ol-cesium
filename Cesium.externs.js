@@ -292,6 +292,12 @@ Cesium.BoundingRectangle.prototype.height;
 Cesium.Camera = function() {};
 
 /**
+ * Camptocamp addition.
+ * @type {!boolean}
+ */
+Cesium.Camera.enableSuspendTerrainAdjustment;
+
+/**
  * @type {Cesium.Rectangle}
  */
 Cesium.Camera.DEFAULT_VIEW_RECTANGLE;
