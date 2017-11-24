@@ -292,6 +292,12 @@ Cesium.BoundingRectangle.prototype.height;
 Cesium.Camera = function() {};
 
 /**
+ * Camptocamp addition.
+ * @type {!boolean}
+ */
+Cesium.Camera.enableSuspendTerrainAdjustment;
+
+/**
  * @type {Cesium.Rectangle}
  */
 Cesium.Camera.DEFAULT_VIEW_RECTANGLE;
@@ -3581,3 +3587,10 @@ Cesium.CullingVolume.prototype.computeVisibility  = function(boundingVolume) {};
  * @constructor
  */
 Cesium.HeadingPitchRange = function(heading, pitch, range) {};
+
+/**
+ * @param {string} url
+ * @param {boolean=} opt_anonymous
+ * @return {Promise<Image>}
+ */
+Cesium.loadImage = function(url, opt_anonymous) {};
