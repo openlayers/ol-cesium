@@ -12,6 +12,7 @@ var olcsx;
  *   target: (Element|string|undefined),
  *   createSynchronizers: (undefined|function(!ol.Map, !Cesium.Scene, !Cesium.DataSourceCollection): Array.<olcs.AbstractSynchronizer>),
  *   time: (undefined|function(): Cesium.JulianDate),
+ *   stopOpenLayersEventsPropagation: (boolean|undefined),
  *   sceneOptions: (Cesium.SceneOptions|undefined)
  * }}
  * @api
@@ -47,7 +48,6 @@ olcsx.OLCesiumOptions.prototype.sceneOptions;
  */
 olcsx.OLCesiumOptions.prototype.target;
 
-
 /**
  * Callback function which will be called by the {@link olcs.OLCesium}
  * constructor to create custom synchronizers. Receives an `ol.Map` and a
@@ -57,6 +57,12 @@ olcsx.OLCesiumOptions.prototype.target;
  * @api
  */
 olcsx.OLCesiumOptions.prototype.createSynchronizers;
+
+/**
+ * Prevent propagation of mouse/touch events to OpenLayers when Cesium is active.
+ * @type {boolean|undefined}
+ */
+olcsx.OLCesiumOptions.prototype.stopOpenLayersEventsPropagation;
 
 
 /**

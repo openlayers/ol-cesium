@@ -106,7 +106,7 @@ olcs.OLCesium = function(options) {
   this.isOverMap_ = !targetElement;
 
 
-  if (this.isOverMap_) {
+  if (this.isOverMap_ && options.stopOpenLayersEventsPropagation) {
     const overlayEvents = [
       ol.events.EventType.CLICK,
       ol.events.EventType.DBLCLICK,
