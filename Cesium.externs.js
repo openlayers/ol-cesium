@@ -3581,3 +3581,10 @@ Cesium.CullingVolume.prototype.computeVisibility  = function(boundingVolume) {};
  * @constructor
  */
 Cesium.HeadingPitchRange = function(heading, pitch, range) {};
+
+/**
+ * @param {string} url
+ * @param {boolean=} opt_anonymous
+ * @return {Promise<Image>}
+ */
+Cesium.loadImage = function(url, opt_anonymous) {};
