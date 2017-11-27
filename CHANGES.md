@@ -7,6 +7,9 @@
   * Add support for Overlay synchronization, see example Overlays.
   * Port to Cesium 1.39.
   * Restore OpenLayers events propagation.
+  * Workaround camera sinking under the terrain and finally jumping above it.
+    See https://github.com/AnalyticalGraphicsInc/cesium/issues/5999. The
+    workaround requires the Camptocamp version of Cesium (otherwise it has no effect).
 
 
 # v 1.32 - 2017-10-26

@@ -296,6 +296,14 @@ olcs.OLCesium = function(options) {
 
   const eventHelper = new Cesium.EventHelper();
   eventHelper.add(this.scene_.postRender, olcs.OLCesium.prototype.updateTrackedEntity_, this);
+
+  // Cesium has a mechanism to prevent the camera to go under the terrain.
+  // Unfortunately, it is only active when all the terrain has been loaded, which:
+  // - does not prevent the camera to sink under terrain anymore;
+  // - introduce a jumping effect once all terrain has been loaded and the position of the camera is finally fixed.
+  // The property below enables a workaround found in the Camptocamp Cesium fork.
+  // See also https://github.com/AnalyticalGraphicsInc/cesium/issues/5999.
+  Cesium.Camera.enableSuspendTerrainAdjustment = false;
 };
 
 

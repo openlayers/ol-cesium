@@ -3291,9 +3291,11 @@ Cesium.Ray.getPoint = function(ray, distance) {};
 
 
 /**
+ * availableLevels is found in @camptocamp/Cesium.
  * @typedef {{
  *   url: (!string|undefined),
- *   credit: (!string|undefined)
+ *   credit: (!string|undefined),
+ *   availableLevels: (Array<number>|undefined)
  * }}
  */
 Cesium.CesiumTerrainProviderOptions;
@@ -3400,6 +3402,7 @@ Cesium.UrlTemplateImageryProvider = function(options) {};
 
 
 /**
+ * availableLevels is found in @camptocamp/Cesium.
  * @typedef {{
  *   url: string,
  *   subdomains: (string|Array.<string>|undefined),
@@ -3411,7 +3414,8 @@ Cesium.UrlTemplateImageryProvider = function(options) {};
  *   tilingScheme: (Cesium.TilingScheme|undefined),
  *   tileWidth: (number|undefined),
  *   tileHeight: (number|undefined),
- *   hasAlphaChannel: (boolean|undefined)
+ *   hasAlphaChannel: (boolean|undefined),
+ *   availableLevels: (Array<number>|undefined)
  * }}
  */
 Cesium.UrlTemplateImageryProviderOptions;

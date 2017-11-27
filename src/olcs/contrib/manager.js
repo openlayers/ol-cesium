@@ -30,9 +30,9 @@ olcs.contrib.Manager = class {
 
     /**
      * @type {ol.Extent}
-     * @private
+     * @protected
      */
-    this.cameraExtentInRadians_ = cameraExtentInRadians || null;
+    this.cameraExtentInRadians = cameraExtentInRadians || null;
 
     /**
      * @private
@@ -117,8 +117,8 @@ olcs.contrib.Manager = class {
    * @return {olcs.OLCesium}
    */
   onCesiumLoaded() {
-    if (this.cameraExtentInRadians_) {
-      const rect = new Cesium.Rectangle(...this.cameraExtentInRadians_);
+    if (this.cameraExtentInRadians) {
+      const rect = new Cesium.Rectangle(...this.cameraExtentInRadians);
       // Set the fly home rectangle
       Cesium.Camera.DEFAULT_VIEW_RECTANGLE = rect;
       this.boundingSphere_ = Cesium.BoundingSphere.fromRectangle3D(rect, Cesium.Ellipsoid.WGS84, 300); // lux mean height is 300m
@@ -154,6 +154,7 @@ olcs.contrib.Manager = class {
    */
   configureForPerformance(scene) {
     const fog = scene.fog;
+    fog.enabled = true;
     fog.density = this.fogDensity;
     fog.screenSpaceErrorFactor = this.fogSSEFactor;
   }
@@ -171,6 +172,10 @@ olcs.contrib.Manager = class {
     // Do not see through the terrain. Seeing through the terrain does not make
     // sense anyway, except for debugging
     scene.globe.depthTestAgainstTerrain = true;
+
+    // Use white instead of the black default colour for the globe when tiles are missing
+    scene.globe.baseColor = Cesium.Color.WHITE;
+    scene.backgroundColor = Cesium.Color.WHITE;
 
     if (this.boundingSphere_) {
       scene.postRender.addEventListener(this.limitCameraToBoundingSphere.bind(this), scene);
@@ -321,7 +326,7 @@ olcs.contrib.Manager = class {
     Cesium.Cartesian3.multiplyByScalar(destination, mag, destination);
 
     return new Promise((resolve, reject) => {
-      if (!this.cameraExtentInRadians_) {
+      if (!this.cameraExtentInRadians) {
         reject();
         return;
       }
@@ -333,5 +338,15 @@ olcs.contrib.Manager = class {
         endTransform: Cesium.Matrix4.IDENTITY
       });
     });
+  }
+
+  /**
+   * @protected
+   * @return {Cesium.Rectangle|undefined}
+   */
+  getCameraExtentRectangle() {
+    if (this.cameraExtentInRadians) {
+      return new Cesium.Rectangle(...this.cameraExtentInRadians);
+    }
   }
 };
