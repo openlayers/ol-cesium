@@ -128,3 +128,13 @@ olcsx.LayerWithParents;
  * @api
  */
 olcsx.SynchronizedOverlayOptions;
+
+
+/**
+ * @typedef {{
+ *   map: ol.Map,
+ *   cameraExtentInRadians: (ol.Extent|undefined)
+ * }}
+ * @api
+ */
+olcsx.contrib.ManagerOptions;
