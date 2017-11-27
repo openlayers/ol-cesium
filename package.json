@@ -19,7 +19,7 @@
   "devDependencies": {
     "@camptocamp/closure-util": "1.25.0",
     "openlayers": "4.5.0",
-    "@camptocamp/cesium": "1.39.0",
+    "@camptocamp/cesium": "1.39.1",
     "@mapbox/geojsonhint": "2.0.1",
     "eslint-plugin-googshift": "0.9.1",
     "googshift": "0.9.1",
