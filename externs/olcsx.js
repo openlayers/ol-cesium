@@ -1,9 +1,11 @@
-// Ol3-Cesium typedef externs, sorted alphabetically
+/**
+ * @externs
+ */
 
 /**
- * @type {Object}
+ * @const
  */
-var olcsx;
+var olcsx = {};
 
 
 /**
@@ -67,9 +69,9 @@ olcsx.OLCesiumOptions.prototype.stopOpenLayersEventsPropagation;
 
 /**
  * Core namespace.
- * @type {Object}
+ * @const
  */
-olcsx.core;
+olcsx.core = {};
 
 
 /**
@@ -129,6 +131,11 @@ olcsx.LayerWithParents;
  */
 olcsx.SynchronizedOverlayOptions;
 
+
+/**
+ * @const
+ */
+olcsx.contrib = {};
 
 /**
  * @typedef {{
