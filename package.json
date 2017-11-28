@@ -17,17 +17,17 @@
     "htmlparser2": "3.9.2"
   },
   "devDependencies": {
-    "@camptocamp/closure-util": "1.25.0",
-    "openlayers": "4.5.0",
     "@camptocamp/cesium": "1.39.1",
+    "@camptocamp/closure-util": "1.26.0",
     "@mapbox/geojsonhint": "2.0.1",
-    "eslint-plugin-googshift": "0.9.1",
-    "googshift": "0.9.1",
-    "fs-extra": "3.0.1",
-    "jsdoc": "3.5.5",
-    "eslint": "4.10.0",
+    "eslint": "4.12.0",
     "eslint-config-openlayers": "7.0.0",
+    "eslint-plugin-googshift": "0.9.2",
+    "fs-extra": "3.0.1",
+    "googshift": "0.9.2",
+    "jsdoc": "3.5.5",
     "nomnom": "1.8.1",
+    "openlayers": "4.5.0",
     "temp": "0.8.3",
     "walk": "2.3.9"
   }

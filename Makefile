@@ -27,6 +27,8 @@ help:
 	@echo "- dist-apidoc             Create a "distribution" for the api docs (dist/apidoc/)"
 	@echo "- clean                   Remove generated files"
 	@echo "- cleanall                Remove all the build artefacts"
+	@echo "- package                 Build the ES6 version of the library (.build/package)"
+	@echo "- es6-doc                 Create a "distribution" for the ES6 api docs (dist/es6doc/)"
 	@echo "- help                    Display this help message"
 	@echo
 
@@ -38,7 +40,7 @@ serve: npm-install
 	node build/serve.js
 
 .PHONY: dist
-dist: dist/olcesium.js dist/olcesium-debug.js CHANGES.md
+dist: dist/olcesium.js dist/olcesium-debug.js CHANGES.md .build/es6_package.timestamp
 	cp CHANGES.md dist/
 
 .PHONY: dist-examples
@@ -114,3 +116,25 @@ dist/olcesium.js: build/olcesium.json $(SRC_JS_FILES) Cesium.externs.js build/bu
 	$(SEDI) 's!$(shell pwd)!source!g' dist/olcesium.js.map
 #	echo '//# sourceMappingURL=olcesium.js.map' >> dist/olcesium.js
 #	-ln -s .. dist/source
+
+
+.PHONY: package
+package: .build/es6_package.timestamp
+
+
+.build/es6_package.timestamp: .build/node_modules.timestamp
+	@rm -rf .build/package
+	@cp -r package .build
+	@cd ./src && cp -r olcs/* ../.build/package
+	@cp css/olcs.css .build/package
+	node node_modules/googshift/filename-case-from-module.js .build/package '*.js'
+	node_modules/.bin/jscodeshift --transform node_modules/googshift/transforms/goog_provide_to_goog_module.js .build/package
+	node_modules/.bin/jscodeshift --transform node_modules/googshift/transforms/goog_module_to_es6_module.js .build/package
+	node_modules/.bin/eslint --fix .build/package
+
+
+.PHONY: es6-doc
+es6-doc: .build/es6_package.timestamp
+
+.build/es6_doc.timestamp: .build/es6_package.timestamp
+	node_modules/.bin/jsdoc .build/package --destination dist/es6doc

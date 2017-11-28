@@ -10,6 +10,7 @@
   * Workaround camera sinking under the terrain and finally jumping above it.
     See https://github.com/AnalyticalGraphicsInc/cesium/issues/5999. The
     workaround requires the Camptocamp version of Cesium (otherwise it has no effect).
+  * Add preliminary work for an ES6 package https://www.npmjs.com/package/olcs.
 
 
 # v 1.32 - 2017-10-26
