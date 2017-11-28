@@ -11,7 +11,7 @@ goog.require('goog.asserts');
 olcs.contrib.Manager = class {
   /**
    * @param {string} cesiumUrl
-   * @param {{map: ol.Map, cameraExtentInRadians: (ol.Extent|undefined)}} options
+   * @param {olcsx.contrib.ManagerOptions} options
    * @api
    */
   constructor(cesiumUrl, {map, cameraExtentInRadians} = {}) {
@@ -217,7 +217,7 @@ olcs.contrib.Manager = class {
 
   /**
    * Enable or disable ol3d with a default animation.
-   * @api
+   * @export
    * @return {Promise<undefined>}
    */
   toggle3d() {
@@ -240,7 +240,7 @@ olcs.contrib.Manager = class {
 
 
   /**
-   * @api
+   * @export
    * @return {boolean}
    */
   is3dEnabled() {
