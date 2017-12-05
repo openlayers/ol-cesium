@@ -27,7 +27,7 @@
     "googshift": "0.9.2",
     "jsdoc": "3.5.5",
     "nomnom": "1.8.1",
-    "openlayers": "4.5.0",
+    "openlayers": "openlayers/openlayers#8afcd1c",
     "temp": "0.8.3",
     "walk": "2.3.9"
   }

@@ -1,7 +1,6 @@
 goog.provide('olcs.VectorSynchronizer');
 goog.require('ol.source.Vector');
 goog.require('ol.layer.Layer');
-goog.require('ol.source.ImageVector');
 goog.require('ol.source.Cluster');
 goog.require('ol.layer.Image');
 
@@ -106,17 +105,12 @@ olcs.VectorSynchronizer.prototype.updateLayerVisibility = function(olLayerWithPa
  */
 olcs.VectorSynchronizer.prototype.createSingleLayerCounterparts = function(olLayerWithParents) {
   const olLayer = olLayerWithParents.layer;
-  if (!(olLayer instanceof ol.layer.Vector) &&
-      !(olLayer instanceof ol.layer.Image &&
-      olLayer.getSource() instanceof ol.source.ImageVector)) {
+  if (!(olLayer instanceof ol.layer.Vector)) {
     return null;
   }
   goog.asserts.assertInstanceof(olLayer, ol.layer.Layer);
 
   let source = olLayer.getSource();
-  if (source instanceof ol.source.ImageVector) {
-    source = source.getSource();
-  }
   if (source instanceof ol.source.Cluster) {
     source = source.getSource();
   }

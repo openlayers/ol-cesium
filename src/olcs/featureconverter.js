@@ -1,7 +1,5 @@
 goog.provide('olcs.FeatureConverter');
-goog.require('ol.layer.Image');
 goog.require('ol.geom.Geometry');
-goog.require('ol.source.ImageVector');
 goog.require('ol.style.Icon');
 goog.require('ol.source.Vector');
 goog.require('ol.source.Cluster');
@@ -587,10 +585,7 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium = function(layer, featur
     if (image instanceof Image && !isImageLoaded(image)) {
       // Cesium requires the image to be loaded
       let cancelled = false;
-      let source = layer.getSource();
-      if (source instanceof ol.source.ImageVector) {
-        source = source.getSource();
-      }
+      const source = layer.getSource();
       const canceller = function() {
         cancelled = true;
       };
@@ -1007,14 +1002,6 @@ olcs.FeatureConverter.prototype.olVectorLayerToCesium = function(olLayer, olView
   }
 
   let source = olLayer.getSource();
-  if (olLayer instanceof ol.layer.Image) {
-    if (source instanceof ol.source.ImageVector) {
-      source = source.getSource();
-    } else {
-      // Not supported
-      return new olcs.core.VectorLayerCounterpart(proj, this.scene);
-    }
-  }
   if (source instanceof ol.source.Cluster) {
     source = source.getSource();
   }
@@ -1031,14 +1018,7 @@ olcs.FeatureConverter.prototype.olVectorLayerToCesium = function(olLayer, olView
     /**
      * @type {ol.StyleFunction|undefined}
      */
-    let layerStyle;
-    if (olLayer instanceof ol.layer.Image) {
-      const imageSource = olLayer.getSource();
-      goog.asserts.assertInstanceof(imageSource, ol.source.ImageVector);
-      layerStyle = imageSource.getStyleFunction();
-    } else {
-      layerStyle = olLayer.getStyleFunction();
-    }
+    const layerStyle = olLayer.getStyleFunction();
     const styles = this.computePlainStyle(olLayer, feature, layerStyle,
         resolution);
     if (!styles || !styles.length) {
@@ -1095,17 +1075,7 @@ olcs.FeatureConverter.prototype.convert = function(layer, view, feature, context
   /**
    * @type {ol.StyleFunction|undefined}
    */
-  let layerStyle;
-  if (layer instanceof ol.layer.Image) {
-    const imageSource = layer.getSource();
-    if (imageSource instanceof ol.source.ImageVector) {
-      layerStyle = imageSource.getStyleFunction();
-    } else {
-      return null;
-    }
-  } else {
-    layerStyle = layer.getStyleFunction();
-  }
+  const layerStyle = layer.getStyleFunction();
 
   const styles = this.computePlainStyle(layer, feature, layerStyle, resolution);
 
