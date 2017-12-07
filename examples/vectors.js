@@ -27,9 +27,7 @@ goog.require('ol.format.GPX');
 goog.require('ol.geom.Polygon');
 goog.require('ol.interaction.DragAndDrop');
 goog.require('ol.geom.MultiPolygon');
-goog.require('ol.layer.Image');
 goog.require('ol.layer.Vector');
-goog.require('ol.source.ImageVector');
 
 
 const iconFeature = new ol.Feature({
@@ -234,11 +232,8 @@ const vectorSource2 = new ol.source.Vector({
   features: [iconFeature, textFeature, cervinFeature, cartographicRectangle,
     cartographicRectangle2]
 });
-const imageVectorSource = new ol.source.ImageVector({
+const vectorLayer2 = new ol.layer.Vector({
   source: vectorSource2
-});
-const vectorLayer2 = new ol.layer.Image({
-  source: imageVectorSource
 });
 
 const dragAndDropInteraction = new ol.interaction.DragAndDrop({
