@@ -5,12 +5,13 @@
 * Changes
   * Animate olcs.contrib.Manager#toggle3d.
   * Add support for Overlay synchronization, see example Overlays.
-  * Port to Cesium 1.39.
+  * Port to OpenLayers 4.6.2 and Cesium 1.39.
   * Restore OpenLayers events propagation.
   * Workaround camera sinking under the terrain and finally jumping above it.
     See https://github.com/AnalyticalGraphicsInc/cesium/issues/5999. The
     workaround requires the Camptocamp version of Cesium (otherwise it has no effect).
   * Add preliminary work for an ES6 package https://www.npmjs.com/package/olcs.
+  * Remove management of ol.source.ImageVector. This class is deprecated in OpenLayers 4.6.2.
 
 
 # v 1.32 - 2017-10-26
