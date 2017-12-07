@@ -1,11 +1,11 @@
 # Changelog
 
-# v 1.33
+# v 1.33 - 2017-12-07
 
 * Changes
   * Animate olcs.contrib.Manager#toggle3d.
   * Add support for Overlay synchronization, see example Overlays.
-  * Port to OpenLayers 4.6.2 and Cesium 1.39.
+  * Port to OpenLayers 4.6.2 and Cesium 1.40.
   * Restore OpenLayers events propagation.
   * Workaround camera sinking under the terrain and finally jumping above it.
     See https://github.com/AnalyticalGraphicsInc/cesium/issues/5999. The
