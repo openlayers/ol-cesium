@@ -1,6 +1,6 @@
 # Changelog
 
-# v 1.33
+# v 1.33 - 2017-12-07
 
 * Changes
   * Animate olcs.contrib.Manager#toggle3d.
