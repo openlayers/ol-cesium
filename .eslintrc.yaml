@@ -1,4 +1,5 @@
 {
+  root: true,
   extends: [
     'openlayers',
     '.eslintrc-es6.yaml'
