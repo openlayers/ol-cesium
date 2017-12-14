@@ -1,5 +1,10 @@
 # Changelog
 
+# v 1.34
+
+* Changes
+  * Allow overriding the 3D extent by setting an olcs.extent property in raster layers.
+
 # v 1.33 - 2017-12-07
 
 * Changes
@@ -12,7 +17,6 @@
     workaround requires the Camptocamp version of Cesium (otherwise it has no effect).
   * Add preliminary work for an ES6 package https://www.npmjs.com/package/olcs.
   * Remove management of ol.source.ImageVector. This class is deprecated in OpenLayers 4.6.2.
-
 
 # v 1.32 - 2017-10-26
 

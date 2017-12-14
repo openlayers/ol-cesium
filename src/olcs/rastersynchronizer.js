@@ -80,7 +80,7 @@ olcs.RasterSynchronizer.prototype.removeAllCesiumObjects = function(destroy) {
  * The default implementation handles tiled imageries in EPSG:4326 or
  * EPSG:3859.
  * @param {!ol.layer.Base} olLayer
- * @param {?ol.proj.Projection} viewProj Projection of the view.
+ * @param {!ol.proj.Projection} viewProj Projection of the view.
  * @return {?Array.<!Cesium.ImageryLayer>} array or null if not possible
  * (or supported)
  * @protected
@@ -98,6 +98,7 @@ olcs.RasterSynchronizer.prototype.createSingleLayerCounterparts = function(olLay
   const olLayer = olLayerWithParents.layer;
   const uid = ol.getUid(olLayer).toString();
   const viewProj = this.view.getProjection();
+  goog.asserts.assert(viewProj);
   const cesiumObjects = this.convertLayerToCesiumImageries(olLayer, viewProj);
   if (cesiumObjects) {
     const listenKeyArray = [];
