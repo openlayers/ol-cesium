@@ -5,16 +5,19 @@ goog.require('olcs.OLCesium');
 goog.require('olcs.core');
 
 goog.require('ol.math');
+goog.require('ol.Observable');
 goog.require('goog.asserts');
 
 
-olcs.contrib.Manager = class {
+olcs.contrib.Manager = class extends ol.Observable {
   /**
    * @param {string} cesiumUrl
    * @param {olcsx.contrib.ManagerOptions} options
    * @api
    */
   constructor(cesiumUrl, {map, cameraExtentInRadians} = {}) {
+
+    super();
 
     /**
      * @type {string}
@@ -229,10 +232,12 @@ olcs.contrib.Manager = class {
         goog.asserts.assert(this.map);
         return olcs.core.resetToNorthZenith(this.map, scene).then(() => {
           ol3d.setEnabled(false);
+          this.dispatchEvent('toggle');
         });
       } else {
         // Enable 3D
         ol3d.setEnabled(true);
+        this.dispatchEvent('toggle');
         return olcs.core.rotateAroundBottomCenter(scene, this.cesiumInitialTilt_);
       }
     });
