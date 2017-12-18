@@ -131,6 +131,7 @@ olcs.contrib.Manager = class extends ol.Observable {
     const scene = this.ol3d.getCesiumScene();
     this.configureForUsability(scene);
     this.configureForPerformance(scene);
+    this.dispatchEvent('load');
     return this.ol3d;
   }
 
