@@ -50,10 +50,24 @@ olcs.contrib.Manager = class extends ol.Observable {
     this.blockLimiter_ = false;
 
     /**
+     * @type {function(Promise.<olcs.OLCesium>)}
+     * @private
+     */
+    this.loadPromiseResolver;
+
+    /**
      * @type {Promise.<olcs.OLCesium>}
      * @private
      */
-    this.promise_;
+    this.loadPromise_ = new Promise((resolve) => {
+      this.loadPromiseResolver = resolve;
+    });
+
+    /**
+     * @type {boolean}
+     * @private
+     */
+    this.waitForLoad_ = false;
 
     /**
      * @type {olcs.OLCesium}
@@ -107,11 +121,21 @@ olcs.contrib.Manager = class extends ol.Observable {
    * @return {Promise.<olcs.OLCesium>}
    */
   load() {
-    if (!this.promise_) {
+    if (!this.waitForLoad_) {
       const cesiumLazyLoader = new olcs.contrib.LazyLoader(this.cesiumUrl_);
-      this.promise_ = cesiumLazyLoader.load().then(() => this.onCesiumLoaded());
+      this.waitForLoad_ = true;
+      this.loadPromiseResolver(cesiumLazyLoader.load().then(
+          () => this.onCesiumLoaded())
+      );
     }
-    return this.promise_;
+    return this.loadPromise_;
+  }
+
+  /**
+   * @return {Promise.<olcs.OLCesium>}
+   */
+  getLoadPromise() {
+    return this.loadPromise_;
   }
 
 
