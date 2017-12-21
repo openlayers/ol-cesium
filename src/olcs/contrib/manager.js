@@ -246,6 +246,41 @@ olcs.contrib.Manager = class extends ol.Observable {
 
 
   /**
+   * Enable ol3d with a view built from parameters.
+   *
+   * @export
+   * @param {number} lon
+   * @param {number} lat
+   * @param {number} elevation
+   * @param {number} headingDeg Heading value in degrees.
+   * @param {number} pitchDeg Pitch value in degrees.
+   * @returns {Promise<undefined>}
+   */
+  set3dWithView(lon, lat, elevation, headingDeg, pitchDeg) {
+    return this.load().then((/** @const {!olcs.OLCesium} */ ol3d) => {
+      const is3DCurrentlyEnabled = ol3d.getEnabled();
+      const scene = ol3d.getCesiumScene();
+      const camera = scene.camera;
+      const destination = Cesium.Cartesian3.fromDegrees(lon, lat, elevation);
+      const heading = Cesium.Math.toRadians(headingDeg);
+      const pitch = Cesium.Math.toRadians(pitchDeg);
+      const roll = 0;
+      const orientation = {heading, pitch, roll};
+
+      if (!is3DCurrentlyEnabled) {
+        ol3d.setEnabled(true);
+        this.dispatchEvent('toggle');
+      }
+
+      camera.setView({
+        destination,
+        orientation
+      });
+    });
+  }
+
+
+  /**
    * @export
    * @return {boolean}
    */
