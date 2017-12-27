@@ -131,6 +131,23 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
       }
     } else {
       cesiumObjects = this.createSingleLayerCounterparts(olLayerWithParents);
+      if (!cesiumObjects) {
+        // keep an eye on the layers that once failed to be added (might work when the layer is updated)
+        // for example when a source is set after the layer is added to the map
+        const layerId = olLayerId;
+        const layerWithParents = olLayerWithParents;
+        layerWithParents.layer.on('change', (e) => {
+          const cesiumObjs = this.createSingleLayerCounterparts(layerWithParents);
+          if (cesiumObjs) {
+            this.layerMap[layerId] = cesiumObjs;
+            this.olLayerListenKeys[layerId].push(ol.events.listen(layerWithParents.layer, 'change:zIndex', this.orderLayers, this));
+            cesiumObjs.forEach(function(cesiumObject) {
+              this.addCesiumObject(cesiumObject);
+            }, this);
+            this.orderLayers();
+          }
+        });
+      }
     }
     // add Cesium layers
     if (cesiumObjects) {
