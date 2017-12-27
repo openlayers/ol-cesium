@@ -136,9 +136,11 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
         // for example when a source is set after the layer is added to the map
         const layerId = olLayerId;
         const layerWithParents = olLayerWithParents;
-        layerWithParents.layer.on('change', (e) => {
+        const onLayerChange = (e) => {
           const cesiumObjs = this.createSingleLayerCounterparts(layerWithParents);
           if (cesiumObjs) {
+            // unsubscribe event listener
+            layerWithParents.layer.un('change', onLayerChange, this);
             this.layerMap[layerId] = cesiumObjs;
             this.olLayerListenKeys[layerId].push(ol.events.listen(layerWithParents.layer, 'change:zIndex', this.orderLayers, this));
             cesiumObjs.forEach(function(cesiumObject) {
@@ -146,7 +148,8 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
             }, this);
             this.orderLayers();
           }
-        });
+        };
+        layerWithParents.layer.on('change', onLayerChange, this);
       }
     }
     // add Cesium layers
