@@ -141,11 +141,7 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
           if (cesiumObjs) {
             // unsubscribe event listener
             layerWithParents.layer.un('change', onLayerChange, this);
-            this.layerMap[layerId] = cesiumObjs;
-            this.olLayerListenKeys[layerId].push(ol.events.listen(layerWithParents.layer, 'change:zIndex', this.orderLayers, this));
-            cesiumObjs.forEach(function(cesiumObject) {
-              this.addCesiumObject(cesiumObject);
-            }, this);
+            this.addCesiumObjects_(cesiumObjs, layerId, layerWithParents.layer);
             this.orderLayers();
           }
         };
@@ -154,15 +150,26 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
     }
     // add Cesium layers
     if (cesiumObjects) {
-      this.layerMap[olLayerId] = cesiumObjects;
-      this.olLayerListenKeys[olLayerId].push(ol.events.listen(olLayer, 'change:zIndex', this.orderLayers, this));
-      cesiumObjects.forEach(function(cesiumObject) {
-        this.addCesiumObject(cesiumObject);
-      }, this);
+      this.addCesiumObjects_(cesiumObjects, olLayerId, olLayer);
     }
   }
 
   this.orderLayers();
+};
+
+/**
+ * Add Cesium objects.
+ * @param cesiumObjects
+ * @param layerId
+ * @param layer
+ * @private
+ */
+olcs.AbstractSynchronizer.prototype.addCesiumObjects_ = function(cesiumObjects, layerId, layer) {
+  this.layerMap[layerId] = cesiumObjects;
+  this.olLayerListenKeys[layerId].push(ol.events.listen(layer, 'change:zIndex', this.orderLayers, this));
+  cesiumObjects.forEach(function(cesiumObject) {
+    this.addCesiumObject(cesiumObject);
+  }, this);
 };
 
 
