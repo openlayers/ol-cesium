@@ -3,8 +3,12 @@ goog.require('ol.easing');
 
 goog.require('goog.asserts');
 goog.require('ol.layer.Tile');
+goog.require('ol.layer.Image');
 goog.require('ol.proj');
+goog.require('ol.source.Image');
+goog.require('ol.source.ImageWMS');
 goog.require('ol.source.TileImage');
+goog.require('ol.source.TileWMS');
 goog.require('olcs.core.OLImageryProvider');
 
 
@@ -361,13 +365,28 @@ olcs.core.extentToRectangle = function(extent, projection) {
  * @api
  */
 olcs.core.tileLayerToImageryLayer = function(olLayer, viewProj) {
-  if (!(olLayer instanceof ol.layer.Tile)) {
+
+  if (!(olLayer instanceof ol.layer.Tile) && !(olLayer instanceof ol.layer.Image)) {
     return null;
   }
 
   let provider = null;
+  let source = olLayer.getSource();
 
-  const source = olLayer.getSource();
+  // Convert ImageWMS to TileWMS
+  if (source instanceof ol.source.ImageWMS && source.getUrl() &&
+    source.getImageLoadFunction() === ol.source.Image.defaultImageLoadFunction) {
+    source = new ol.source.TileWMS({
+      url: source.getUrl(),
+      params: source.getParams(),
+      attributions: source.getAttributions(),
+      projection: source.getProjection(),
+      logo: source.getLogo(),
+      'olcs.proxy': source.get('olcs.proxy'),
+      'olcs.imagesource': source
+    });
+  }
+
   if (source instanceof ol.source.TileImage) {
     let projection = source.getProjection();
 
