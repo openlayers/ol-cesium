@@ -1076,6 +1076,10 @@ Cesium.Ray.prototype.direction;
  */
 Cesium.Globe = function(ellipsoid) {};
 
+/**
+ * @type {!Cesium.ImageryLayerCollection}
+ */
+Cesium.Globe.prototype.imageryLayers;
 
 /**
  * @type {Cesium.Ellipsoid}
@@ -1929,8 +1933,9 @@ Cesium.ImageryLayerCollection = function() {};
 
 /**
  * @param {Cesium.ImageryProvider} provider
+ * @param {number=} index
  */
-Cesium.ImageryLayerCollection.prototype.addImageryProvider = function(provider) {};
+Cesium.ImageryLayerCollection.prototype.addImageryProvider = function(provider, index) {};
 
 
 /**
@@ -3154,7 +3159,8 @@ Cesium.SingleTileImageryProvider = function(options) {};
 
 /**
  * @typedef {{
- *   url: string
+ *   url: string,
+ *   rectangle: (Cesium.Rectangle|undefined)
  * }}
  */
 Cesium.SingleTileImageryProviderOptions;
