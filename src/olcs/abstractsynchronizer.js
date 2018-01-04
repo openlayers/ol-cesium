@@ -159,9 +159,9 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
 
 /**
  * Add Cesium objects.
- * @param cesiumObjects
- * @param layerId
- * @param layer
+ * @param {Array.<T>} cesiumObjects
+ * @param {number} layerId
+ * @param {ol.layer.Base} layer
  * @private
  */
 olcs.AbstractSynchronizer.prototype.addCesiumObjects_ = function(cesiumObjects, layerId, layer) {
