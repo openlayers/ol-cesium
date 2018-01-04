@@ -202,6 +202,14 @@ olcs.OLCesium = function(options) {
   this.scene_.globe = this.globe_;
   this.scene_.skyAtmosphere = new Cesium.SkyAtmosphere();
 
+  // The first layer of Cesium is special; using a 1x1 transparent image to workaround it.
+  // See https://github.com/AnalyticalGraphicsInc/cesium/issues/1323 for details.
+  const firstImageryProvider = new Cesium.SingleTileImageryProvider({
+    url: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
+    rectangle: Cesium.Rectangle.fromDegrees(0, 0, 1, 1) // the Rectangle dimensions are arbitrary
+  });
+  this.globe_.imageryLayers.addImageryProvider(firstImageryProvider, 0);
+
   this.dataSourceCollection_ = new Cesium.DataSourceCollection();
   this.dataSourceDisplay_ = new Cesium.DataSourceDisplay({
     scene: this.scene_,
