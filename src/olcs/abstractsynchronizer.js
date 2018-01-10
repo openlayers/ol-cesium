@@ -145,7 +145,7 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
             this.orderLayers();
           }
         };
-        this.olLayerListenKeys[olLayerId].push(layerWithParents.layer.on('change', onLayerChange, this));
+        this.olLayerListenKeys[olLayerId].push(ol.events.listen(layerWithParents.layer, 'change', onLayerChange, this));
       }
     }
     // add Cesium layers
@@ -160,7 +160,7 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
 /**
  * Add Cesium objects.
  * @param {Array.<T>} cesiumObjects
- * @param {number} layerId
+ * @param {string} layerId
  * @param {ol.layer.Base} layer
  * @private
  */
