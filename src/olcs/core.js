@@ -10,6 +10,7 @@ goog.require('ol.source.ImageWMS');
 goog.require('ol.source.TileImage');
 goog.require('ol.source.TileWMS');
 goog.require('olcs.core.OLImageryProvider');
+goog.require('olcs.util');
 
 
 /**
@@ -376,15 +377,20 @@ olcs.core.tileLayerToImageryLayer = function(olLayer, viewProj) {
   // Convert ImageWMS to TileWMS
   if (source instanceof ol.source.ImageWMS && source.getUrl() &&
     source.getImageLoadFunction() === ol.source.Image.defaultImageLoadFunction) {
+    const sourceProps = {
+      'olcs.proxy': source.get('olcs.proxy'),
+      'olcs.extent': source.get('olcs.extent'),
+      'olcs.projection': source.get('olcs.projection'),
+      'olcs.imagesource': source
+    };
     source = new ol.source.TileWMS({
       url: source.getUrl(),
-      params: source.getParams(),
       attributions: source.getAttributions(),
       projection: source.getProjection(),
       logo: source.getLogo(),
-      'olcs.proxy': source.get('olcs.proxy'),
-      'olcs.imagesource': source
+      params: source.getParams()
     });
+    source.setProperties(sourceProps);
   }
 
   if (source instanceof ol.source.TileImage) {
@@ -393,17 +399,16 @@ olcs.core.tileLayerToImageryLayer = function(olLayer, viewProj) {
     if (!projection) {
       // if not explicit, assume the same projection as view
       projection = viewProj;
-    } else if (projection !== viewProj) {
-      return null; // do not sync layers with projections different than view
     }
 
-    const is3857 = projection === ol.proj.get('EPSG:3857');
-    const is4326 = projection === ol.proj.get('EPSG:4326');
-    if (is3857 || is4326) {
+    if (olcs.core.isCesiumProjection(olcs.util.getSourceProjection(source)))  {
       provider = new olcs.core.OLImageryProvider(source, viewProj);
-    } else {
+    }
+    // Projection not supported by Cesium
+    else {
       return null;
     }
+
   } else {
     // sources other than TileImage are currently not supported
     return null;
@@ -631,3 +636,16 @@ olcs.core.normalizeView = function(view, angle = 0) {
   view.setRotation(angle);
   view.setResolution(view.constrainResolution(resolution));
 };
+
+/**
+ * Check if the given projection is managed by Cesium (WGS84 or Mercator Spheric)
+ *
+ * @param {ol.proj.Projection} projection Projection to check.
+ * @returns {boolean} Whether it's managed by Cesium.
+ */
+olcs.core.isCesiumProjection = function(projection) {
+  const is3857 = projection === ol.proj.get('EPSG:3857');
+  const is4326 = projection === ol.proj.get('EPSG:4326');
+  return is3857 || is4326;
+};
+

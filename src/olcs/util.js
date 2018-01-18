@@ -52,3 +52,13 @@ olcs.util.imageRenderingValue = function() {
   return olcs.util.imageRenderingValueResult_ || '';
 };
 
+/**
+ * Return the projection of the source that Cesium should use.
+ *
+ * @param {ol.source.Source} source Source.
+ * @returns {ol.proj.Projection} The projection of the source.
+ */
+olcs.util.getSourceProjection = function(source) {
+  return /** @type {ol.proj.Projection} */ (source.get('olcs.projection'))
+    || source.getProjection();
+};
