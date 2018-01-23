@@ -2,6 +2,7 @@ goog.provide('olcs.core.OLImageryProvider');
 
 goog.require('ol.events');
 goog.require('ol.proj');
+goog.require('olcs.util');
 
 
 
@@ -174,8 +175,7 @@ Object.defineProperties(olcs.core.OLImageryProvider.prototype, {
  */
 olcs.core.OLImageryProvider.prototype.handleSourceChanged_ = function() {
   if (!this.ready_ && this.source_.getState() == 'ready') {
-    const proj = this.source_.getProjection();
-    this.projection_ = proj ? proj : this.fallbackProj_;
+    this.projection_ = olcs.util.getSourceProjection(this.source_) || this.fallbackProj_;
     if (this.projection_ == ol.proj.get('EPSG:4326')) {
       this.tilingScheme_ = new Cesium.GeographicTilingScheme();
     } else if (this.projection_ == ol.proj.get('EPSG:3857')) {
