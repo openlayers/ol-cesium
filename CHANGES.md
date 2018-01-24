@@ -1,9 +1,10 @@
 # Changelog
 
-# v 1.34
+# v 1.34 - 2018-01-24
 
 * Changes
   * Allow overriding the 3D extent by setting an olcs.extent property in raster layers.
+  * Port to OpenLayers 4.6.4 and Cesium 1.41.
 
 # v 1.33 - 2017-12-07
 
