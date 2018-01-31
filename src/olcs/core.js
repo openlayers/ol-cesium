@@ -394,14 +394,14 @@ olcs.core.tileLayerToImageryLayer = function(olLayer, viewProj) {
   }
 
   if (source instanceof ol.source.TileImage) {
-    let projection = source.getProjection();
+    let projection = olcs.util.getSourceProjection(source);
 
     if (!projection) {
       // if not explicit, assume the same projection as view
       projection = viewProj;
     }
 
-    if (olcs.core.isCesiumProjection(olcs.util.getSourceProjection(source)))  {
+    if (olcs.core.isCesiumProjection(projection))  {
       provider = new olcs.core.OLImageryProvider(source, viewProj);
     }
     // Projection not supported by Cesium
