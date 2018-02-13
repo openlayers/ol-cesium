@@ -334,6 +334,44 @@ olcs.FeatureConverter.prototype.olCircleGeometryToCesium = function(layer, featu
 
 
 /**
+ * @param {ol.layer.Vector|ol.layer.Image} layer
+ * @param {!ol.Feature} feature OpenLayers feature..
+ * @param {!number} width The width of the line.
+ * @param {!Cesium.Color} color The color of the line.
+ * @param {!Array<Cesium.Cartesian3>} positions The vertices of the line.
+ * @return {!Cesium.GroundPrimitive} primitive
+ */
+olcs.FeatureConverter.prototype.createStackedGroundCorridors = function(layer, feature, width, color, positions) {
+  let previousDistance = 0;
+  const geometryInstances = [];
+  // A stack of ground lines with increasing width (in meters) are created.
+  // Only one of these lines is displayed at any time giving a feeling of continuity.
+  // The values for the distance and width factor are more or less arbitrary.
+  // Applications can override this logics by subclassing the FeatureConverter class.
+  for (const distance of [1000, 4000, 16000, 64000, 254000, 1000000, 10000000]) {
+    width *= 2.14;
+    const geometryOptions = {
+      // always update Cesium externs before adding a property
+      positions,
+      width,
+      vertexFormat: Cesium.VertexFormat.POSITION_ONLY
+    };
+    geometryInstances.push(new Cesium.GeometryInstance({
+      geometry: new Cesium.CorridorGeometry(geometryOptions),
+      attributes: {
+        color: Cesium.ColorGeometryInstanceAttribute.fromColor(color),
+        distanceDisplayCondition: new Cesium.DistanceDisplayConditionGeometryInstanceAttribute(previousDistance, distance - 1)
+      }
+    }));
+    previousDistance = distance;
+  }
+  return new Cesium.GroundPrimitive({
+    // always update Cesium externs before adding a property
+    geometryInstances
+  });
+};
+
+/**
  * Convert an OpenLayers line string geometry to Cesium.
  * @param {ol.layer.Vector|ol.layer.Image} layer
  * @param {!ol.Feature} feature OpenLayers feature..
@@ -348,36 +386,26 @@ olcs.FeatureConverter.prototype.olLineStringGeometryToCesium = function(layer, f
   olGeometry = olcs.core.olGeometryCloneTo4326(olGeometry, projection);
   goog.asserts.assert(olGeometry.getType() == 'LineString');
 
-  const positions = olcs.core.ol4326CoordinateArrayToCsCartesians(
-      olGeometry.getCoordinates());
-
-  const appearance = new Cesium.PolylineMaterialAppearance({
-    // always update Cesium externs before adding a property
-    material: this.olStyleToCesium(feature, olStyle, true)
-  });
-
-  const geometryOptions = {
-    // always update Cesium externs before adding a property
-    positions,
-    width: this.extractLineWidthFromOlStyle(olStyle),
-    vertexFormat: appearance.vertexFormat
-  };
+  const positions = olcs.core.ol4326CoordinateArrayToCsCartesians(olGeometry.getCoordinates());
+  const width = this.extractLineWidthFromOlStyle(olStyle);
 
   let outlinePrimitive;
   const heightReference = this.getHeightReference(layer, feature, olGeometry);
 
   if (heightReference == Cesium.HeightReference.CLAMP_TO_GROUND) {
     const color = this.extractColorFromOlStyle(olStyle, true);
-    outlinePrimitive = new Cesium.GroundPrimitive({
-      // always update Cesium externs before adding a property
-      geometryInstances: new Cesium.GeometryInstance({
-        geometry: new Cesium.CorridorGeometry(geometryOptions),
-        attributes: {
-          color: Cesium.ColorGeometryInstanceAttribute.fromColor(color)
-        }
-      })
-    });
+    outlinePrimitive = this.createStackedGroundCorridors(layer, feature, width, color, positions);
   } else {
+    const appearance = new Cesium.PolylineMaterialAppearance({
+      // always update Cesium externs before adding a property
+      material: this.olStyleToCesium(feature, olStyle, true)
+    });
+    const geometryOptions = {
+      // always update Cesium externs before adding a property
+      positions,
+      width,
+      vertexFormat: appearance.vertexFormat
+    };
     outlinePrimitive = new Cesium.Primitive({
       // always update Cesium externs before adding a property
       geometryInstances: new Cesium.GeometryInstance({
@@ -389,8 +417,7 @@ olcs.FeatureConverter.prototype.olLineStringGeometryToCesium = function(layer, f
 
   this.setReferenceForPicking(layer, feature, outlinePrimitive);
 
-  return this.addTextStyle(layer, feature, olGeometry, olStyle,
-      outlinePrimitive);
+  return this.addTextStyle(layer, feature, olGeometry, olStyle, outlinePrimitive);
 };
 
 

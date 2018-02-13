@@ -1,5 +1,13 @@
 # Changelog
 
+# v 1.35
+
+* Changes
+  * Implement stacked ground corridors to improve the rendering of lines on
+    terrain. A stack of ground corridors with increasing widths is created;
+    Cesium will render the best one depending on the distance from the camera
+    to the corridor.
+
 # v 1.34 - 2018-01-24
 
 * Changes
