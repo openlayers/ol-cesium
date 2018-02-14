@@ -81,7 +81,7 @@ olcsx.core = {};
  *  primitives: (!Cesium.PrimitiveCollection),
  *  featureToCesiumMap: (Object.<
  *    number,
- *    !Cesium.Primitive|!Cesium.Billboard>),
+ *    Array<!Cesium.Primitive|!Cesium.Billboard>>),
  *  billboards: (!Cesium.BillboardCollection)
  * }}
  * @api
