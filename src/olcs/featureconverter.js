@@ -549,6 +549,102 @@ olcs.FeatureConverter.prototype.getHeightReference = function(layer, feature, ge
  * @param {!ol.geom.Point} olGeometry OpenLayers point geometry.
  * @param {!ol.ProjectionLike} projection
  * @param {!ol.style.Style} style
+ * @param {!ol.style.Image} imageStyle
+ * @param {!Cesium.BillboardCollection} billboards
+ * @param {function(!Cesium.Billboard)=} opt_newBillboardCallback Called when the new billboard is added.
+ * @api
+ */
+olcs.FeatureConverter.prototype.createBillboardFromImage = function(layer, feature, olGeometry, projection, style,
+    imageStyle, billboards, opt_newBillboardCallback) {
+
+  if (imageStyle instanceof ol.style.Icon) {
+    // make sure the image is scheduled for load
+    imageStyle.load();
+  }
+
+  const image = imageStyle.getImage(1); // get normal density
+  const isImageLoaded = function(image) {
+    return image.src != '' &&
+        image.naturalHeight != 0 &&
+        image.naturalWidth != 0 &&
+        image.complete;
+  };
+  const reallyCreateBillboard = (function() {
+    if (!image) {
+      return;
+    }
+    if (!(image instanceof HTMLCanvasElement ||
+        image instanceof Image ||
+        image instanceof HTMLImageElement)) {
+      return;
+    }
+    const center = olGeometry.getCoordinates();
+    const position = olcs.core.ol4326CoordinateToCesiumCartesian(center);
+    let color;
+    const opacity = imageStyle.getOpacity();
+    if (opacity !== undefined) {
+      color = new Cesium.Color(1.0, 1.0, 1.0, opacity);
+    }
+
+    const heightReference = this.getHeightReference(layer, feature, olGeometry);
+
+    const bbOptions = /** @type {Cesium.optionsBillboardCollectionAdd} */ ({
+      // always update Cesium externs before adding a property
+      image,
+      color,
+      scale: imageStyle.getScale(),
+      heightReference,
+      verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+      position
+    });
+    const bb = this.csAddBillboard(billboards, bbOptions, layer, feature, olGeometry, style);
+    if (opt_newBillboardCallback) {
+      opt_newBillboardCallback(bb);
+    }
+  }).bind(this);
+
+  if (image instanceof Image && !isImageLoaded(image)) {
+    // Cesium requires the image to be loaded
+    let cancelled = false;
+    const source = layer.getSource();
+    const canceller = function() {
+      cancelled = true;
+    };
+    source.on(['removefeature', 'clear'],
+        this.boundOnRemoveOrClearFeatureListener_);
+    let cancellers = olcs.util.obj(source)['olcs_cancellers'];
+    if (!cancellers) {
+      cancellers = olcs.util.obj(source)['olcs_cancellers'] = {};
+    }
+
+    const fuid = ol.getUid(feature);
+    if (cancellers[fuid]) {
+      // When the feature change quickly, a canceller may still be present so
+      // we cancel it here to prevent creation of a billboard.
+      cancellers[fuid]();
+    }
+    cancellers[fuid] = canceller;
+
+    const listener = function() {
+      if (!billboards.isDestroyed() && !cancelled) {
+        // Create billboard if the feature is still displayed on the map.
+        reallyCreateBillboard();
+      }
+    };
+
+    ol.events.listenOnce(image, 'load', listener);
+  } else {
+    reallyCreateBillboard();
+  }
+};
+
+/**
+ * Convert a point geometry to a Cesium BillboardCollection.
+ * @param {ol.layer.Vector|ol.layer.Image} layer
+ * @param {!ol.Feature} feature OpenLayers feature..
+ * @param {!ol.geom.Point} olGeometry OpenLayers point geometry.
+ * @param {!ol.ProjectionLike} projection
+ * @param {!ol.style.Style} style
  * @param {!Cesium.BillboardCollection} billboards
  * @param {function(!Cesium.Billboard)=} opt_newBillboardCallback Called when
  * the new billboard is added.
@@ -560,95 +656,23 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium = function(layer, featur
   goog.asserts.assert(olGeometry.getType() == 'Point');
   olGeometry = olcs.core.olGeometryCloneTo4326(olGeometry, projection);
 
+  let modelPrimitive = null;
   const imageStyle = style.getImage();
   if (imageStyle) {
-    if (imageStyle instanceof ol.style.Icon) {
-      // make sure the image is scheduled for load
-      imageStyle.load();
-    }
-
-    const image = imageStyle.getImage(1); // get normal density
-    const isImageLoaded = function(image) {
-      return image.src != '' &&
-          image.naturalHeight != 0 &&
-          image.naturalWidth != 0 &&
-          image.complete;
-    };
-    const reallyCreateBillboard = (function() {
-      if (!image) {
-        return;
-      }
-      if (!(image instanceof HTMLCanvasElement ||
-          image instanceof Image ||
-          image instanceof HTMLImageElement)) {
-        return;
-      }
-      const center = olGeometry.getCoordinates();
-      const position = olcs.core.ol4326CoordinateToCesiumCartesian(center);
-      let color;
-      const opacity = imageStyle.getOpacity();
-      if (opacity !== undefined) {
-        color = new Cesium.Color(1.0, 1.0, 1.0, opacity);
-      }
-
-      const heightReference = this.getHeightReference(layer, feature, olGeometry);
-
-      const bbOptions = /** @type {Cesium.optionsBillboardCollectionAdd} */ ({
-        // always update Cesium externs before adding a property
-        image,
-        color,
-        scale: imageStyle.getScale(),
-        heightReference,
-        verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-        position
-      });
-      const bb = this.csAddBillboard(billboards, bbOptions, layer, feature,
-          olGeometry, style);
-      if (opt_newBillboardCallback) {
-        opt_newBillboardCallback(bb);
-      }
-    }).bind(this);
-
-    if (image instanceof Image && !isImageLoaded(image)) {
-      // Cesium requires the image to be loaded
-      let cancelled = false;
-      const source = layer.getSource();
-      const canceller = function() {
-        cancelled = true;
-      };
-      source.on(['removefeature', 'clear'],
-          this.boundOnRemoveOrClearFeatureListener_);
-      let cancellers = olcs.util.obj(source)['olcs_cancellers'];
-      if (!cancellers) {
-        cancellers = olcs.util.obj(source)['olcs_cancellers'] = {};
-      }
-
-      const fuid = ol.getUid(feature);
-      if (cancellers[fuid]) {
-        // When the feature change quickly, a canceller may still be present so
-        // we cancel it here to prevent creation of a billboard.
-        cancellers[fuid]();
-      }
-      cancellers[fuid] = canceller;
-
-      const listener = function() {
-        if (!billboards.isDestroyed() && !cancelled) {
-          // Create billboard if the feature is still displayed on the map.
-          reallyCreateBillboard();
-        }
-      };
-
-      ol.events.listenOnce(image, 'load', listener);
+    const olcsModelFunction = imageStyle['olcs_model'] || feature.get('olcs_model');
+    if (olcsModelFunction) {
+      const olcsModel = /** @type {olcsx.ModelStyle} */ (olcsModelFunction());
+      const options = /** @type {Cesium.ModelFromGltfOptions} */ (Object.assign({}, {scene: this.scene}, olcsModel.cesiumOptions));
+      modelPrimitive = Cesium.Model.fromGltf(options);
     } else {
-      reallyCreateBillboard();
+      this.createBillboardFromImage(layer, feature, olGeometry, projection, style, imageStyle, billboards, opt_newBillboardCallback);
     }
   }
 
   if (style.getText()) {
-    return this.addTextStyle(layer, feature, olGeometry, style,
-        new Cesium.Primitive());
+    return this.addTextStyle(layer, feature, olGeometry, style, modelPrimitive || new Cesium.Primitive());
   } else {
-    return null;
+    return modelPrimitive;
   }
 };
 

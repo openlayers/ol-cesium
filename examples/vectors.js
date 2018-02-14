@@ -28,6 +28,8 @@ goog.require('ol.geom.Polygon');
 goog.require('ol.interaction.DragAndDrop');
 goog.require('ol.geom.MultiPolygon');
 goog.require('ol.layer.Vector');
+goog.require('ol.proj');
+goog.require('olcs.core');
 
 
 const iconFeature = new ol.Feature({
@@ -42,6 +44,14 @@ const cervinFeature = new ol.Feature({
   geometry: new ol.geom.Point([852541, 5776649])
 });
 cervinFeature.getGeometry().set('altitudeMode', 'clampToGround');
+
+
+const modelFeatures = [-1, -1 / 2, 0, 1 / 2, 1, 3 / 2].map(
+    factor => new ol.Feature({
+      geometry: new ol.geom.Point([852641, 5776749, 4500]),
+      'rotation': factor * Math.PI
+    })
+);
 
 
 const iconStyle = new ol.style.Style({
@@ -95,6 +105,31 @@ iconFeature.setStyle(iconStyle);
 textFeature.setStyle(textStyle);
 
 cervinFeature.setStyle(iconStyle);
+modelFeatures.forEach((feature) => {
+  const modelStyle = new ol.style.Style({
+    image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+      anchor: [0.5, 46],
+      anchorXUnits: 'fraction',
+      anchorYUnits: 'pixels',
+      opacity: 0.75,
+      src: 'data/icon.png'
+    }))
+  });
+  modelStyle.getImage()['olcs_model'] = () => {
+    const coordinates = feature.getGeometry().getCoordinates();
+    const center = ol.proj.transform(coordinates, 'EPSG:3857', 'EPSG:4326');
+    const rotation = /** @type {number} */ (feature.get('rotation'));
+    return {
+      cesiumOptions: {
+        url: 'data/arrow.glb',
+        modelMatrix: olcs.core.createMatrixAtCoordinates(center, rotation),
+        heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+        minimumPixelSize: 64
+      }
+    };
+  };
+  feature.setStyle(modelStyle);
+});
 
 
 const image = new ol.style.Circle({
@@ -229,7 +264,7 @@ const vectorLayer = new ol.layer.Vector({
 });
 
 const vectorSource2 = new ol.source.Vector({
-  features: [iconFeature, textFeature, cervinFeature, cartographicRectangle,
+  features: [iconFeature, textFeature, cervinFeature, ...modelFeatures, cartographicRectangle,
     cartographicRectangle2]
 });
 const vectorLayer2 = new ol.layer.Vector({
