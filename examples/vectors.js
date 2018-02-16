@@ -105,7 +105,9 @@ iconFeature.setStyle(iconStyle);
 textFeature.setStyle(textStyle);
 
 cervinFeature.setStyle(iconStyle);
+let iCase = 0;
 modelFeatures.forEach((feature) => {
+  ++iCase;
   const modelStyle = new ol.style.Style({
     image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
       anchor: [0.5, 46],
@@ -115,7 +117,7 @@ modelFeatures.forEach((feature) => {
       src: 'data/icon.png'
     }))
   });
-  modelStyle.getImage()['olcs_model'] = () => {
+  const olcsModelFunction = () => {
     const coordinates = feature.getGeometry().getCoordinates();
     const center = ol.proj.transform(coordinates, 'EPSG:3857', 'EPSG:4326');
     const rotation = /** @type {number} */ (feature.get('rotation'));
@@ -128,6 +130,19 @@ modelFeatures.forEach((feature) => {
       }
     };
   };
+  let host = feature;
+  switch (iCase % 3) {
+    case 0:
+      host = feature.getGeometry();
+      break;
+    case 1:
+      modelStyle.setGeometry(feature.getGeometry().clone());
+      host = modelStyle.getGeometry();
+      break;
+    default:
+      host = feature;
+  }
+  host.set('olcs_model', olcsModelFunction);
   feature.setStyle(modelStyle);
 });
 

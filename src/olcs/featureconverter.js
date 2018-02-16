@@ -659,9 +659,9 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium = function(layer, featur
   let modelPrimitive = null;
   const imageStyle = style.getImage();
   if (imageStyle) {
-    const olcsModelFunction = imageStyle['olcs_model'] || feature.get('olcs_model');
+    const olcsModelFunction = /** @type {function():olcsx.ModelStyle} */ (olGeometry.get('olcs_model') || feature.get('olcs_model'));
     if (olcsModelFunction) {
-      const olcsModel = /** @type {olcsx.ModelStyle} */ (olcsModelFunction());
+      const olcsModel = olcsModelFunction();
       const options = /** @type {Cesium.ModelFromGltfOptions} */ (Object.assign({}, {scene: this.scene}, olcsModel.cesiumOptions));
       modelPrimitive = Cesium.Model.fromGltf(options);
     } else {
