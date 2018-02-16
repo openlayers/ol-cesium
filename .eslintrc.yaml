@@ -30,6 +30,7 @@
 
     'googshift/valid-requires': 'error',
     no-console: 0,
+    comma-dangle: 0,
     no-extra-boolean-cast: 0,
     brace-style: 0,
     no-multiple-empty-lines: 0,

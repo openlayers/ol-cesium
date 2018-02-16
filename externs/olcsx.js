@@ -5,7 +5,7 @@
 /**
  * @const
  */
-var olcsx = {};
+const olcsx = {};
 
 
 /**
@@ -145,3 +145,11 @@ olcsx.contrib = {};
  * @api
  */
 olcsx.contrib.ManagerOptions;
+
+
+/**
+ * @typedef {{
+ *  cesiumOptions: Cesium.ModelFromGltfOptions
+ * }}
+ */
+olcsx.ModelStyle;

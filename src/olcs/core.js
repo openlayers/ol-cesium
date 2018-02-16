@@ -80,6 +80,23 @@ olcs.core.applyHeightOffsetToGeometry = function(geometry, height) {
 
 
 /**
+ * @param {ol.Coordinate} coordinates
+ * @param {number=} rotation
+ * @param {!Cesium.Cartesian3=} translation
+ * @param {!Cesium.Cartesian3=} scale
+ * @return {!Cesium.Matrix4}
+ * @api
+ */
+olcs.core.createMatrixAtCoordinates = function(coordinates, rotation = 0, translation = Cesium.Cartesian3.ZERO, scale = new Cesium.Cartesian3(1, 1, 1)) {
+  const position = olcs.core.ol4326CoordinateToCesiumCartesian(coordinates);
+  const rawMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(position);
+  const quaternion = Cesium.Quaternion.fromAxisAngle(position, rotation);
+  const rotationMatrix = Cesium.Matrix4.fromTranslationQuaternionRotationScale(translation, quaternion, scale);
+  return Cesium.Matrix4.multiply(rotationMatrix, rawMatrix, new Cesium.Matrix4());
+};
+
+
+/**
  * @param {!Cesium.Camera} camera
  * @param {number} angle
  * @param {!Cesium.Cartesian3} axis

@@ -59,7 +59,7 @@ lint: .build/node_modules.timestamp .build/eslint.timestamp
 	touch $@
 
 .PHONY: check
-check: lint dist .build/geojsonhint.timestamp
+check: lint dist
 
 .PHONY: clean
 clean:

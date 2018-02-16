@@ -7,6 +7,8 @@
     terrain. A stack of ground corridors with increasing widths is created;
     Cesium will render the best one depending on the distance from the camera
     to the corridor.
+  * Implement basic support for transformation to Cesium Model. It allows applications
+    to notably implement arrows along a line clamped on terrain.
 
 # v 1.34 - 2018-01-24
 
