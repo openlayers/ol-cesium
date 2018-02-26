@@ -105,13 +105,16 @@ Object.defineProperties(olcs.core.OLImageryProvider.prototype, {
     'get': /** @this {olcs.core.OLImageryProvider} */
         function() {
           const tg = this.source_.getTileGrid();
-          return tg ? tg.getTileSize(0) : 256;
+          return tg ? (Array.isArray(tg.getTileSize(0)) ? tg.getTileSize(0)[0] : tg.getTileSize(0)) : 256;
         }
   },
 
   'tileHeight': {
     'get': /** @this {olcs.core.OLImageryProvider} */
-        function() {return this.tileWidth;}
+        function() {
+          const tg = this.source_.getTileGrid();
+          return tg ? (Array.isArray(tg.getTileSize(0)) ? tg.getTileSize(0)[1] : tg.getTileSize(0)) : 256;
+        }
   },
 
   'maximumLevel': {
