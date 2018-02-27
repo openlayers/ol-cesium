@@ -90,9 +90,9 @@ olcs.core.applyHeightOffsetToGeometry = function(geometry, height) {
 olcs.core.createMatrixAtCoordinates = function(coordinates, rotation = 0, translation = Cesium.Cartesian3.ZERO, scale = new Cesium.Cartesian3(1, 1, 1)) {
   const position = olcs.core.ol4326CoordinateToCesiumCartesian(coordinates);
   const rawMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(position);
-  const quaternion = Cesium.Quaternion.fromAxisAngle(position, rotation);
+  const quaternion = Cesium.Quaternion.fromAxisAngle(Cesium.Cartesian3.UNIT_Z, -rotation);
   const rotationMatrix = Cesium.Matrix4.fromTranslationQuaternionRotationScale(translation, quaternion, scale);
-  return Cesium.Matrix4.multiply(rotationMatrix, rawMatrix, new Cesium.Matrix4());
+  return Cesium.Matrix4.multiply(rawMatrix, rotationMatrix, new Cesium.Matrix4());
 };
 
 

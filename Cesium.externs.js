@@ -3691,3 +3691,21 @@ Cesium.DistanceDisplayCondition = function(near, far) {};
  * }}
  */
 Cesium.ModelFromGltfOptions;
+
+/**
+ * @typedef {{
+ *  length: (number|undefined),
+ *  width: (number|undefined),
+ *  modelMatrix: (Cesium.Matrix4|undefined),
+ *  show: (boolean|undefined),
+ *  id: (Object|undefined)
+ * }}
+ */
+Cesium.DebugModelMatrixPrimitiveOptions;
+
+/**
+ * @constructor
+ * @extends Cesium.Primitive
+ * @param {Cesium.DebugModelMatrixPrimitiveOptions} options
+ */
+Cesium.DebugModelMatrixPrimitive = function(options) {};

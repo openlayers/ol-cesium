@@ -123,7 +123,7 @@ modelFeatures.forEach((feature) => {
     const rotation = /** @type {number} */ (feature.get('rotation'));
     return {
       cesiumOptions: {
-        url: 'data/arrow.glb',
+        url: 'data/arrow5.glb',
         modelMatrix: olcs.core.createMatrixAtCoordinates(center, rotation),
         heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
         minimumPixelSize: 64
