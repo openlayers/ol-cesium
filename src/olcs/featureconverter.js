@@ -663,7 +663,14 @@ olcs.FeatureConverter.prototype.olPointGeometryToCesium = function(layer, featur
     if (olcsModelFunction) {
       const olcsModel = olcsModelFunction();
       const options = /** @type {Cesium.ModelFromGltfOptions} */ (Object.assign({}, {scene: this.scene}, olcsModel.cesiumOptions));
-      modelPrimitive = Cesium.Model.fromGltf(options);
+      const model = Cesium.Model.fromGltf(options);
+      modelPrimitive = new Cesium.PrimitiveCollection();
+      modelPrimitive.add(model);
+      if (olcsModel.debugModelMatrix) {
+        modelPrimitive.add(new Cesium.DebugModelMatrixPrimitive({
+          modelMatrix: olcsModel.debugModelMatrix
+        }));
+      }
     } else {
       this.createBillboardFromImage(layer, feature, olGeometry, projection, style, imageStyle, billboards, opt_newBillboardCallback);
     }

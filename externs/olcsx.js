@@ -149,6 +149,7 @@ olcsx.contrib.ManagerOptions;
 
 /**
  * @typedef {{
+ *  debugModelMatrix: (Cesium.Matrix4|undefined),
  *  cesiumOptions: Cesium.ModelFromGltfOptions
  * }}
  */
