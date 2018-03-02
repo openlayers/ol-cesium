@@ -131,18 +131,45 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
       }
     } else {
       cesiumObjects = this.createSingleLayerCounterparts(olLayerWithParents);
+      if (!cesiumObjects) {
+        // keep an eye on the layers that once failed to be added (might work when the layer is updated)
+        // for example when a source is set after the layer is added to the map
+        const layerId = olLayerId;
+        const layerWithParents = olLayerWithParents;
+        const onLayerChange = (e) => {
+          const cesiumObjs = this.createSingleLayerCounterparts(layerWithParents);
+          if (cesiumObjs) {
+            // unsubscribe event listener
+            layerWithParents.layer.un('change', onLayerChange, this);
+            this.addCesiumObjects_(cesiumObjs, layerId, layerWithParents.layer);
+            this.orderLayers();
+          }
+        };
+        this.olLayerListenKeys[olLayerId].push(ol.events.listen(layerWithParents.layer, 'change', onLayerChange, this));
+      }
     }
     // add Cesium layers
     if (cesiumObjects) {
-      this.layerMap[olLayerId] = cesiumObjects;
-      this.olLayerListenKeys[olLayerId].push(ol.events.listen(olLayer, 'change:zIndex', this.orderLayers, this));
-      cesiumObjects.forEach(function(cesiumObject) {
-        this.addCesiumObject(cesiumObject);
-      }, this);
+      this.addCesiumObjects_(cesiumObjects, olLayerId, olLayer);
     }
   }
 
   this.orderLayers();
+};
+
+/**
+ * Add Cesium objects.
+ * @param {Array.<T>} cesiumObjects
+ * @param {string} layerId
+ * @param {ol.layer.Base} layer
+ * @private
+ */
+olcs.AbstractSynchronizer.prototype.addCesiumObjects_ = function(cesiumObjects, layerId, layer) {
+  this.layerMap[layerId] = cesiumObjects;
+  this.olLayerListenKeys[layerId].push(ol.events.listen(layer, 'change:zIndex', this.orderLayers, this));
+  cesiumObjects.forEach(function(cesiumObject) {
+    this.addCesiumObject(cesiumObject);
+  }, this);
 };
 
 
