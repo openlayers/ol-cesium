@@ -1,6 +1,6 @@
 # Changelog
 
-# v 1.35
+# v 1.35 - 2018-03-02
 
 * Changes
   * Implement stacked ground corridors to improve the rendering of lines on
@@ -9,6 +9,7 @@
     to the corridor.
   * Implement basic support for transformation to Cesium Model. It allows applications
     to notably implement arrows along a line clamped on terrain.
+  * Port to Cesium 1.43.
 
 # v 1.34 - 2018-01-24
 
