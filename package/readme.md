@@ -36,3 +36,13 @@ const map = new Map({
 new OLCesium({map});
 
 ```
+
+Create an alias to the `goog` directory. With webpack:
+
+```
+resolve: {
+  alias: {
+    'goog': path_to_goog,
+  }
+}
+```
