@@ -24,7 +24,7 @@
     "eslint-config-openlayers": "9.0.0",
     "eslint-plugin-googshift": "0.9.3",
     "fs-extra": "3.0.1",
-    "googshift": "0.9.9",
+    "googshift": "0.9.10",
     "jsdoc": "3.5.5",
     "nomnom": "1.8.1",
     "openlayers": "4.6.4",
