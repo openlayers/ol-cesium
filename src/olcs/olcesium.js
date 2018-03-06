@@ -570,9 +570,9 @@ olcs.OLCesium.prototype.setEnabled = function(enable) {
     this.throwOnUnitializedMap_();
     if (this.isOverMap_) {
       interactions = this.map_.getInteractions();
-      interactions.forEach(function(el, i, arr) {
+      interactions.forEach((el, i, arr) => {
         this.pausedInteractions_.push(el);
-      }, this);
+      });
       interactions.clear();
 
       const rootGroup = this.map_.getLayerGroup();

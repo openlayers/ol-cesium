@@ -167,9 +167,9 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
 olcs.AbstractSynchronizer.prototype.addCesiumObjects_ = function(cesiumObjects, layerId, layer) {
   this.layerMap[layerId] = cesiumObjects;
   this.olLayerListenKeys[layerId].push(ol.events.listen(layer, 'change:zIndex', this.orderLayers, this));
-  cesiumObjects.forEach(function(cesiumObject) {
+  cesiumObjects.forEach((cesiumObject) => {
     this.addCesiumObject(cesiumObject);
-  }, this);
+  });
 };
 
 
@@ -183,10 +183,10 @@ olcs.AbstractSynchronizer.prototype.removeAndDestroySingleLayer_ = function(laye
   const uid = ol.getUid(layer).toString();
   const counterparts = this.layerMap[uid];
   if (!!counterparts) {
-    counterparts.forEach(function(counterpart) {
+    counterparts.forEach((counterpart) => {
       this.removeSingleCesiumObject(counterpart, false);
       this.destroyCesiumObject(counterpart);
-    }, this);
+    });
     this.olLayerListenKeys[uid].forEach(ol.Observable.unByKey);
     delete this.olLayerListenKeys[uid];
   }
