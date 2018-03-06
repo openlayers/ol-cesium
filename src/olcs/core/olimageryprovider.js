@@ -203,31 +203,18 @@ olcs.core.OLImageryProvider.prototype.handleSourceChanged_ = function() {
  */
 olcs.core.OLImageryProvider.createCreditForSource = function(source) {
   let text = '';
-  const attributions = source.getAttributions();
+  let attributions = source.getAttributions();
+  if (typeof attributions === 'function') {
+    attributions = attributions();
+  }
   if (attributions) {
-    attributions.forEach((el) => {
+    attributions.forEach((html) => {
       // strip html tags (not supported in Cesium)
-      text += `${el.getHTML().replace(/<\/?[^>]+(>|$)/g, '')} `;
+      text += `${html.replace(/<\/?[^>]+(>|$)/g, '')} `;
     });
   }
 
-  let imageUrl, link;
-  if (text.length == 0) {
-    // only use logo if no text is specified
-    // otherwise the Cesium will automatically skip the text:
-    // "The text to be displayed on the screen if no imageUrl is specified."
-    const logo = source.getLogo();
-    if (logo) {
-      if (typeof logo == 'string') {
-        imageUrl = logo;
-      } else {
-        imageUrl = logo.src;
-        link = logo.href;
-      }
-    }
-  }
-
-  return (imageUrl || text.length > 0) ? new Cesium.Credit(text, imageUrl, link) : null;
+  return text.length > 0 ? new Cesium.Credit(text, undefined, undefined) : null;
 };
 
 
