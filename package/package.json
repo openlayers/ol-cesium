@@ -6,7 +6,7 @@
   "module": "index.js",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "ol": "4.5.0"
+    "ol": "4.6.4"
   },
   "browserify": {
     "transform": [
