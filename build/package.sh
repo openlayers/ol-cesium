@@ -2,7 +2,7 @@
 
 rm -rf .build/package
 cp -r package .build
-(cd ./src && cp -r olcs/* ../.build/package)
+cp -r src/olcs/* .build/package
 cp css/olcs.css .build/package
 node node_modules/googshift/filename-case-from-module.js .build/package '*.js'
 node_modules/.bin/jscodeshift --transform node_modules/googshift/transforms/goog_provide_to_goog_module.js .build/package
