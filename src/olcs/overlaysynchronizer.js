@@ -38,18 +38,9 @@ olcs.OverlaySynchronizer = function(map, scene) {
    */
   this.overlayContainerStopEvent_ = document.createElement('DIV');
   this.overlayContainerStopEvent_.className = 'ol-overlaycontainer-stopevent';
-  const overlayEvents = [
-    ol.events.EventType.CLICK,
-    ol.events.EventType.DBLCLICK,
-    ol.events.EventType.MOUSEDOWN,
-    ol.events.EventType.TOUCHSTART,
-    ol.events.EventType.MSPOINTERDOWN,
-    ol.MapBrowserEventType.POINTERDOWN,
-    ol.events.EventType.MOUSEWHEEL,
-    ol.events.EventType.WHEEL
-  ];
+  const overlayEvents = ['click', 'dblclick', 'mousedown', 'touchstart', 'MSPointerDown', 'pointerdown', 'mousewheel', 'wheel'];
   overlayEvents.forEach((event) => {
-    ol.events.listen(this.overlayContainerStopEvent_, event, ol.events.Event.stopPropagation);
+    ol.events.listen(this.overlayContainerStopEvent_, event, evt => evt.stopPropagation());
   });
   this.scene.canvas.parentElement.appendChild(this.overlayContainerStopEvent_);
 

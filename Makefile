@@ -124,14 +124,7 @@ package: .build/es6_package.timestamp
 
 
 .build/es6_package.timestamp: .build/node_modules.timestamp
-	@rm -rf .build/package
-	@cp -r package .build
-	@cd ./src && cp -r olcs/* ../.build/package
-	@cp css/olcs.css .build/package
-	node node_modules/googshift/filename-case-from-module.js .build/package '*.js'
-	node_modules/.bin/jscodeshift --transform node_modules/googshift/transforms/goog_provide_to_goog_module.js .build/package
-	node_modules/.bin/jscodeshift --transform node_modules/googshift/transforms/goog_module_to_es6_module.js .build/package
-	node_modules/.bin/eslint --fix .build/package
+	build/package.sh
 
 
 .PHONY: es6-doc

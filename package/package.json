@@ -1,12 +1,12 @@
 {
   "name": "olcs",
-  "version": "0.0.4",
+  "version": "0.0.9",
   "description": "OL-Cesium as ES2015 modules",
   "main": "index.js",
   "module": "index.js",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "ol": "4.5.0"
+    "ol": "4.6.4"
   },
   "browserify": {
     "transform": [
