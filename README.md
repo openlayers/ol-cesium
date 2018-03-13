@@ -19,19 +19,20 @@ Switch smoothly between 2D and 3D and synchronize:
 - Map context (bounding box and zoom level);
 - Raster data sources;
 - Vector data sources in 2D and 3D;
-- Map selection (selected items).
+- Map selection (selected items);
+- Animated transitions between map and globe view.
 
 The library is configurable and extensible and allows:
 
 - Lazy or eager loading of Cesium
 - Limiting Cesium resource consumption (idle detection)
 
-Stay tuned for more exciting features like animated transitions between map and globe view, and synchronization of maps in projections other than EPSG:4326 and EPSG:3857.
+For synchronization of maps in projections other than EPSG:4326 and EPSG:3857, see [#562](https://github.com/openlayers/ol-cesium/pull/562) branch.
 
 Getting started
 ---------------
 
-To obtain Ol-Cesium, either download a release from https://github.com/openlayers/ol-cesium/releases, or clone the repository and build it yourself (see below).
+To obtain Ol-Cesium, either download a [release](https://github.com/openlayers/ol-cesium/releases), or clone the repository and build it yourself (see below).
 
 Applications using Ol-Cesium also need to load OpenLayers styles and Cesium resources (included in the distribution):
 ```html
@@ -55,6 +56,8 @@ scene.terrainProvider = new Cesium.CesiumTerrainProvider({
 });
 ol3d.setEnabled(true);
 ```
+
+See also the [examples](http://openlayers.org/ol-cesium/examples/).
 
 Building the library
 --------------------
