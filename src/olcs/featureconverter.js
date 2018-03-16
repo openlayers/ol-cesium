@@ -343,6 +343,7 @@ olcs.FeatureConverter.prototype.olCircleGeometryToCesium = function(layer, featu
  */
 olcs.FeatureConverter.prototype.createStackedGroundCorridors = function(layer, feature, width, color, positions) {
   let previousDistance = 0;
+  width = Math.max(3, width); // A <3px width is too small for ground primitives
   const geometryInstances = [];
   // A stack of ground lines with increasing width (in meters) are created.
   // Only one of these lines is displayed at any time giving a feeling of continuity.
@@ -786,10 +787,7 @@ olcs.FeatureConverter.prototype.olGeometry4326TextPartToCesium = function(layer,
     options.pixelOffset = offset;
   }
 
-  const font = style.getFont();
-  if (font !== undefined) {
-    options.font = font;
-  }
+  options.font = style.getFont() || '10px sans-serif'; // OpenLayers default
 
   let labelStyle = undefined;
   if (style.getFill()) {
