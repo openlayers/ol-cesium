@@ -343,7 +343,7 @@ olcs.FeatureConverter.prototype.olCircleGeometryToCesium = function(layer, featu
  */
 olcs.FeatureConverter.prototype.createStackedGroundCorridors = function(layer, feature, width, color, positions) {
   let previousDistance = 0;
-  width = Math.max(3, width); // A <=3px width is too small for ground primitives
+  width = Math.max(3, width); // A <3px width is too small for ground primitives
   const geometryInstances = [];
   // A stack of ground lines with increasing width (in meters) are created.
   // Only one of these lines is displayed at any time giving a feeling of continuity.
