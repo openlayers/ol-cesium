@@ -787,10 +787,7 @@ olcs.FeatureConverter.prototype.olGeometry4326TextPartToCesium = function(layer,
     options.pixelOffset = offset;
   }
 
-  const font = style.getFont();
-  if (font !== undefined) {
-    options.font = font;
-  }
+  options.font = style.getFont() || '10px sans-serif'; // OpenLayers default
 
   let labelStyle = undefined;
   if (style.getFill()) {
