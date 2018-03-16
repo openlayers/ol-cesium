@@ -208,8 +208,9 @@ olcs.core.OLImageryProvider.createCreditForSource = function(source) {
     attributions = attributions();
   }
   if (attributions) {
-    attributions.forEach((html) => {
+    attributions.forEach((htmlOrAttr) => {
       // strip html tags (not supported in Cesium)
+      const html = typeof htmlOrAttr === 'string' ? htmlOrAttr : htmlOrAttr.getHTML();
       text += `${html.replace(/<\/?[^>]+(>|$)/g, '')} `;
     });
   }
