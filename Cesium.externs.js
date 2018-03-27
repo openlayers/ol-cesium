@@ -3709,3 +3709,43 @@ Cesium.DebugModelMatrixPrimitiveOptions;
  * @param {Cesium.DebugModelMatrixPrimitiveOptions} options
  */
 Cesium.DebugModelMatrixPrimitive = function(options) {};
+
+/**
+ * @typedef {{
+ *  url: string,
+ *  maximumNumberOfLoadedTiles: (number|undefined),
+ *  show: (boolean|undefined),
+ *  maximumScreenSpaceError: (number|undefined),
+ *  maximumMemoryUsage: (number|undefined),
+ *  cullWithChildrenBounds: (boolean|undefined),
+ *  dynamicScreenSpaceError: (boolean|undefined),
+ *  dynamicScreenSpaceErrorDensity: (number|undefined),
+ *  dynamicScreenSpaceErrorFactor: (number|undefined),
+ *  dynamicScreenSpaceErrorHeightFalloff: (number|undefined),
+ *  skipLevelOfDetail: (boolean|undefined),
+ *  baseScreenSpaceError: (number|undefined),
+ *  skipScreenSpaceErrorFactor: (number|undefined),
+ *  skipLevels: (number|undefined),
+ *  immediatelyLoadDesiredLevelOfDetail: (boolean|undefined),
+ *  loadSiblings: (boolean|undefined),
+ *  debugFreezeFrame: (boolean|undefined),
+ *  debugColorizeTiles: (boolean|undefined),
+ *  debugWireframe: (boolean|undefined),
+ *  debugShowBoundingVolume: (boolean|undefined),
+ *  debugShowContentBoundingVolume: (boolean|undefined),
+ *  debugShowViewerRequestVolume: (boolean|undefined),
+ *  debugShowGeometricError: (boolean|undefined),
+ *  debugShowRenderingStatistics: (boolean|undefined),
+ *  debugShowMemoryUsage: (boolean|undefined),
+ *  debugShowUrl: (boolean|undefined)
+ * }}
+ */
+Cesium.Cesium3DTilesetOptions;
+
+/**
+ *
+ * @param {Cesium.Cesium3DTilesetOptions} options
+ * @extends Cesium.Primitive
+ * @constructor
+ */
+Cesium.Cesium3DTileset = function(options) {};
