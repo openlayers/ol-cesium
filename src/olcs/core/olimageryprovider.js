@@ -187,8 +187,7 @@ olcs.core.OLImageryProvider.prototype.handleSourceChanged_ = function() {
     }
     this.rectangle_ = this.tilingScheme_.rectangle;
 
-    const credit = olcs.core.OLImageryProvider.createCreditForSource(this.source_);
-    this.credit_ = credit || null;
+    this.credit_ = olcs.core.OLImageryProvider.createCreditForSource(this.source_);
 
     this.ready_ = true;
   }
@@ -215,7 +214,7 @@ olcs.core.OLImageryProvider.createCreditForSource = function(source) {
     });
   }
 
-  return text.length > 0 ? new Cesium.Credit(text, undefined, undefined) : null;
+  return text.length > 0 ? new Cesium.Credit({text}) : null;
 };
 
 
