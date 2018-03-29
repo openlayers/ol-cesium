@@ -124,8 +124,8 @@ modelFeatures.forEach((feature) => {
     return {
       cesiumOptions: {
         url: 'data/arrow5.glb',
-        modelMatrix: olcs.core.createMatrixAtCoordinates(center, rotation),
-        heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+        modelMatrix: olcs.core.createMatrixAtCoordinates(center, rotation, new Cesium.Cartesian3(0, 0, 20)),
+        heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND,
         minimumPixelSize: 64
       }
     };
