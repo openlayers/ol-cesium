@@ -244,7 +244,7 @@ olcs.core.OLImageryProvider.prototype.requestImage = function(x, y, level) {
 
   const tilegrid = this.source_.getTileGridForProjection(this.projection_);
   if (z_ < tilegrid.getMinZoom() || z_ > tilegrid.getMaxZoom()) {
-    return this.emptyCanvas_; // no data
+    return Promise.resolve(this.emptyCanvas_); // no data
   }
 
   const tile = this.source_.getTile(z_, x, y_, 1, this.projection_);
@@ -254,7 +254,7 @@ olcs.core.OLImageryProvider.prototype.requestImage = function(x, y, level) {
   // not yet loaded!
   // const image = tile.getImage();
   // if (!image || !image.src) {
-  //   return this.emptyCanvas_; // no data
+  //   return Promise.resolve(this.emptyCanvas_); // no data
   // }
 
 
