@@ -260,7 +260,7 @@ olcs.core.OLImageryProvider.prototype.requestImage = function(x, y, level) {
 
   const state = tile.getState();
   if (state === ol.TileState.LOADED || state === ol.TileState.EMPTY) {
-    return tile.getImage() || undefined;
+    return Promise.resolve(tile.getImage()) || undefined;
   } else if (state === ol.TileState.ERROR) {
     return undefined; // let Cesium continue retrieving later
   } else {
