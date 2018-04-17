@@ -2676,6 +2676,10 @@ Cesium.Scene.prototype.screenSpaceCameraController;
 Cesium.Scene.prototype.terrainProvider;
 
 
+/**
+ */
+Cesium.Scene.prototype.requestRender = function() {};
+
 
 /**
  */
@@ -3638,11 +3642,21 @@ Cesium.CullingVolume.prototype.computeVisibility  = function(boundingVolume) {};
 Cesium.HeadingPitchRange = function(heading, pitch, range) {};
 
 /**
- * @param {string} url
- * @param {boolean=} opt_anonymous
- * @return {Promise<Image>}
+ * @type {Cesium.RemovedAPI}
  */
-Cesium.loadImage = function(url, opt_anonymous) {};
+Cesium.loadJson;
+
+
+/**
+ * @type {Cesium.RemovedAPI}
+ */
+Cesium.loadWithXhr;
+
+
+/**
+ * @type {Cesium.RemovedAPI}
+ */
+Cesium.loadImage;
 
 
 /**
@@ -3748,6 +3762,12 @@ Cesium.Resource = function () {};
  * @return {Promise<Object>|undefined}
  */
 Cesium.Resource.prototype.fetch = function(url) {};
+
+/**
+ * @param {string} url
+ * @return {Promise<Image>|undefined}
+ */
+Cesium.Resource.prototype.fetchImage = function(url) {};
 
 /**
  * @param {string} url
