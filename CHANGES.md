@@ -1,5 +1,13 @@
 # Changelog
 
+# v 1.36
+
+* Changes
+  * Rework the autorenderloop using Cesium RenderMode.
+
+* Breaking changes
+  * Remove now useless debug switch of the autorenderloop.
+
 # v 1.35 - 2018-03-02
 
 * Changes
