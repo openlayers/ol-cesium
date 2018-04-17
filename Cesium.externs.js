@@ -3507,18 +3507,6 @@ Cesium.WebMapServiceImageryProvider = function(options) {};
 
 
 /**
- * @type {function(Object=)}
- */
-Cesium.loadWithXhr;
-
-
-/**
- * @type {function(...)}
- */
-Cesium.loadWithXhr.load;
-
-
-/**
  * @param {string} workerName
  * @param {number=} opt_maximumActiveTasks
  * @constructor
@@ -3749,3 +3737,20 @@ Cesium.Cesium3DTilesetOptions;
  * @constructor
  */
 Cesium.Cesium3DTileset = function(options) {};
+
+/**
+ * @constructor
+ */
+Cesium.Resource = function () {};
+
+/**
+ * @param {string} url
+ * @return {Promise<Object>|undefined}
+ */
+Cesium.Resource.prototype.fetch = function(url) {};
+
+/**
+ * @param {string} url
+ * @return {Promise<Object>|undefined}
+ */
+Cesium.Resource.fetchJson = function(url) {};

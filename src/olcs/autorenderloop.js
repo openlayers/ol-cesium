@@ -45,7 +45,7 @@ olcs.AutoRenderLoop = function(ol3d, debug) {
 
   this.originalAPIs_ = this.interceptedAPIs_.map(tuple => tuple[0][tuple[1]]);
 
-  this.originalLoadWithXhr_ = Cesium.loadWithXhr.load;
+  this.originalFetch_ = Cesium.Resource.prototype.fetch;
   this.originalScheduleTask_ = Cesium.TaskProcessor.prototype.scheduleTask;
   this.enable();
 };
@@ -63,9 +63,12 @@ olcs.AutoRenderLoop.prototype.enable = function() {
 
   // Hacky way to force a repaint when an async load request completes
   const that = this;
-  Cesium.loadWithXhr.load = function(url, responseType, method, data, headers, deferred, overrideMimeType, preferText, timeout) {
-    deferred['promise']['always'](that._boundNotifyRepaintRequired);
-    that.originalLoadWithXhr_(...arguments); // eslint-disable-line prefer-rest-params
+  Cesium.Resource.prototype.fetch = function(...args) {
+    const promise = that.originalFetch_.apply(this, args);
+    if (promise) {
+      promise['always'](that._boundNotifyRepaintRequired);
+      return promise;
+    }
   };
 
   // Hacky way to force a repaint when a web worker sends something back.
@@ -116,7 +119,7 @@ olcs.AutoRenderLoop.prototype.disable = function() {
 
   window.removeEventListener('resize', this._boundNotifyRepaintRequired, false);
 
-  Cesium.loadWithXhr.load = this.originalLoadWithXhr_;
+  Cesium.Resource.prototype.fetch = this.originalFetch_;
   Cesium.TaskProcessor.prototype.scheduleTask = this.originalScheduleTask_;
 
   // Restore original APIs
