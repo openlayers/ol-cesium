@@ -1805,11 +1805,10 @@ Cesium.Event.prototype.addEventListener = function(listener, opt_scope) {};
 
 /**
  * @constructor
- * @param {string=} opt_text
- * @param {string=} opt_imageUrl
- * @param {string=} opt_link
+ * @param {string} html
+ * @param {boolean=} showOnScreen
  */
-Cesium.Credit = function(opt_text, opt_imageUrl, opt_link) {};
+Cesium.Credit = function(html, showOnScreen) {};
 
 
 /**
@@ -2676,6 +2675,10 @@ Cesium.Scene.prototype.screenSpaceCameraController;
 Cesium.Scene.prototype.terrainProvider;
 
 
+/**
+ */
+Cesium.Scene.prototype.requestRender = function() {};
+
 
 /**
  */
@@ -3507,18 +3510,6 @@ Cesium.WebMapServiceImageryProvider = function(options) {};
 
 
 /**
- * @type {function(Object=)}
- */
-Cesium.loadWithXhr;
-
-
-/**
- * @type {function(...)}
- */
-Cesium.loadWithXhr.load;
-
-
-/**
  * @param {string} workerName
  * @param {number=} opt_maximumActiveTasks
  * @constructor
@@ -3650,11 +3641,21 @@ Cesium.CullingVolume.prototype.computeVisibility  = function(boundingVolume) {};
 Cesium.HeadingPitchRange = function(heading, pitch, range) {};
 
 /**
- * @param {string} url
- * @param {boolean=} opt_anonymous
- * @return {Promise<Image>}
+ * @type {Cesium.RemovedAPI}
  */
-Cesium.loadImage = function(url, opt_anonymous) {};
+Cesium.loadJson;
+
+
+/**
+ * @type {Cesium.RemovedAPI}
+ */
+Cesium.loadWithXhr;
+
+
+/**
+ * @type {Cesium.RemovedAPI}
+ */
+Cesium.loadImage;
 
 
 /**
@@ -3749,3 +3750,26 @@ Cesium.Cesium3DTilesetOptions;
  * @constructor
  */
 Cesium.Cesium3DTileset = function(options) {};
+
+/**
+ * @constructor
+ */
+Cesium.Resource = function () {};
+
+/**
+ * @param {string} url
+ * @return {Promise<Object>|undefined}
+ */
+Cesium.Resource.prototype.fetch = function(url) {};
+
+/**
+ * @param {string} url
+ * @return {Promise<Image>|undefined}
+ */
+Cesium.Resource.prototype.fetchImage = function(url) {};
+
+/**
+ * @param {string} url
+ * @return {Promise<Object>|undefined}
+ */
+Cesium.Resource.fetchJson = function(url) {};

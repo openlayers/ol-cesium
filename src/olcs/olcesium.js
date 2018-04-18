@@ -659,7 +659,7 @@ olcs.OLCesium.prototype.setBlockCesiumRendering = function(block) {
  */
 olcs.OLCesium.prototype.enableAutoRenderLoop = function() {
   if (!this.autoRenderLoop_) {
-    this.autoRenderLoop_ = new olcs.AutoRenderLoop(this, false);
+    this.autoRenderLoop_ = new olcs.AutoRenderLoop(this);
   }
 };
 
