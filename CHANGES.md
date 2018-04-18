@@ -9,6 +9,7 @@
 * Breaking changes
   * Remove now useless debug switch of the autorenderloop.
   * Remove buggy and unused camera.lookAt method.
+  * Make the camera.setPosition position the camera in the reference frame.
 
 # v 1.35 - 2018-03-02
 

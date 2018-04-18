@@ -260,7 +260,9 @@ olcs.Camera.prototype.setPosition = function(position) {
       ol.math.toRadians(ll[1]),
       this.getAltitude());
 
-  this.cam_.position = Cesium.Ellipsoid.WGS84.cartographicToCartesian(carto);
+  this.cam_.setView({
+    destination: Cesium.Ellipsoid.WGS84.cartographicToCartesian(carto)
+  });
   this.updateView();
 };
 
