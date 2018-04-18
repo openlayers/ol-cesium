@@ -4,6 +4,7 @@
 
 * Changes
   * Rework the autorenderloop using Cesium RenderMode.
+  * Adapt credit handling following Cesium API changes.
 
 * Breaking changes
   * Remove now useless debug switch of the autorenderloop.

@@ -1805,11 +1805,10 @@ Cesium.Event.prototype.addEventListener = function(listener, opt_scope) {};
 
 /**
  * @constructor
- * @param {string=} opt_text
- * @param {string=} opt_imageUrl
- * @param {string=} opt_link
+ * @param {string} html
+ * @param {boolean=} showOnScreen
  */
-Cesium.Credit = function(opt_text, opt_imageUrl, opt_link) {};
+Cesium.Credit = function(html, showOnScreen) {};
 
 
 /**

@@ -187,17 +187,14 @@ olcs.core.OLImageryProvider.prototype.handleSourceChanged_ = function() {
     }
     this.rectangle_ = this.tilingScheme_.rectangle;
 
-    const credit = olcs.core.OLImageryProvider.createCreditForSource(this.source_);
-    this.credit_ = credit || null;
-
+    this.credit_ = olcs.core.OLImageryProvider.createCreditForSource(this.source_);
     this.ready_ = true;
   }
 };
 
 
 /**
- * Tries to create proper Cesium.Credit for
- * the given ol.source.Source as closely as possible.
+ * Try to create proper Cesium.Credit for the given ol.source.Source as closely as possible.
  * @param {!ol.source.Source} source
  * @return {?Cesium.Credit}
  */
@@ -209,13 +206,12 @@ olcs.core.OLImageryProvider.createCreditForSource = function(source) {
   }
   if (attributions) {
     attributions.forEach((htmlOrAttr) => {
-      // strip html tags (not supported in Cesium)
       const html = typeof htmlOrAttr === 'string' ? htmlOrAttr : htmlOrAttr.getHTML();
-      text += `${html.replace(/<\/?[^>]+(>|$)/g, '')} `;
+      text += html;
     });
   }
 
-  return text.length > 0 ? new Cesium.Credit(text, undefined, undefined) : null;
+  return text.length > 0 ? new Cesium.Credit(text, true) : null;
 };
 
 
