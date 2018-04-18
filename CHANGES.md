@@ -8,6 +8,7 @@
 
 * Breaking changes
   * Remove now useless debug switch of the autorenderloop.
+  * Remove buggy and unused camera.lookAt method.
 
 # v 1.35 - 2018-03-02
 

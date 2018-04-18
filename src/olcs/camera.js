@@ -312,25 +312,6 @@ olcs.Camera.prototype.getAltitude = function() {
 
 
 /**
- * Rotates the camera to point at the specified target.
- * @param {!ol.Coordinate} position Same projection as the ol.View.
- * @api
- */
-olcs.Camera.prototype.lookAt = function(position) {
-  if (!this.toLonLat_) {
-    return;
-  }
-  const ll = this.toLonLat_(position);
-  goog.asserts.assert(ll);
-
-  const carto = Cesium.Cartographic.fromDegrees(ll[0], ll[1]);
-  olcs.core.lookAt(this.cam_, carto, this.scene_.globe);
-
-  this.updateView();
-};
-
-
-/**
  * Updates the state of the underlying Cesium.Camera
  * according to the current values of the properties.
  * @private
