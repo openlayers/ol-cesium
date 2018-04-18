@@ -333,31 +333,6 @@ olcs.core.computeAngleToZenith = function(scene, pivot) {
 
 
 /**
- * Rotate the camera so that its direction goes through the target point.
- * If a globe is given, the target height is first interpolated from terrain.
- * @param {!Cesium.Camera} camera
- * @param {!Cesium.Cartographic} target
- * @param {Cesium.Globe=} opt_globe
- * @api
- */
-olcs.core.lookAt = function(camera, target, opt_globe) {
-  if (opt_globe) {
-    const height = opt_globe.getHeight(target);
-    target.height = height || 0;
-  }
-
-  const ellipsoid = Cesium.Ellipsoid.WGS84;
-  const targetb = ellipsoid.cartographicToCartesian(target);
-
-  const position = camera.position;
-  const up = new Cesium.Cartesian3();
-  ellipsoid.geocentricSurfaceNormal(position, up);
-
-  camera.lookAt(position, targetb, up);
-};
-
-
-/**
  * Convert an OpenLayers extent to a Cesium rectangle.
  * @param {ol.Extent} extent Extent.
  * @param {ol.ProjectionLike} projection Extent projection.

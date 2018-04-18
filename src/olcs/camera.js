@@ -260,7 +260,9 @@ olcs.Camera.prototype.setPosition = function(position) {
       ol.math.toRadians(ll[1]),
       this.getAltitude());
 
-  this.cam_.position = Cesium.Ellipsoid.WGS84.cartographicToCartesian(carto);
+  this.cam_.setView({
+    destination: Cesium.Ellipsoid.WGS84.cartographicToCartesian(carto)
+  });
   this.updateView();
 };
 
@@ -308,25 +310,6 @@ olcs.Camera.prototype.getAltitude = function() {
       this.cam_.position);
 
   return carto.height;
-};
-
-
-/**
- * Rotates the camera to point at the specified target.
- * @param {!ol.Coordinate} position Same projection as the ol.View.
- * @api
- */
-olcs.Camera.prototype.lookAt = function(position) {
-  if (!this.toLonLat_) {
-    return;
-  }
-  const ll = this.toLonLat_(position);
-  goog.asserts.assert(ll);
-
-  const carto = Cesium.Cartographic.fromDegrees(ll[0], ll[1]);
-  olcs.core.lookAt(this.cam_, carto, this.scene_.globe);
-
-  this.updateView();
 };
 
 
