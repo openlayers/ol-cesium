@@ -2,9 +2,19 @@
 
 OL-Cesium as ES2015 modules.
 
+## Requirement
+
+At this stage (beta), you need a specific version of OpenLayers:
+```
+devDependencies:
+    "openlayers": "https://api.github.com/repos/openlayers/openlayers/tarball/bfae19c7e138533ad0c1a071d8886d55aac9bd35",
+```
+
+It might also work with OpenLayers master, which will be soon released as OL5.
+
 ## Usage
 
-Add the `olcs` (and `ol`) package as a dependency to your project.
+Add the `olcs` package as a dependency to your project.
 
     npm install olcs --save
 
@@ -43,6 +53,7 @@ Create an alias to the `goog` directory. With webpack:
 resolve: {
   alias: {
     'goog': path_to_goog,
+    'ol': path_to_openlayers_es6
   }
 }
 ```

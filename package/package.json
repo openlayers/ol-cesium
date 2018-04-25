@@ -1,12 +1,12 @@
 {
   "name": "olcs",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "OL-Cesium as ES2015 modules",
   "main": "index.js",
   "module": "index.js",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "ol": "4.6.4"
+    "openlayers": "https://api.github.com/repos/openlayers/openlayers/tarball/bfae19c7e138533ad0c1a071d8886d55aac9bd35"
   },
   "browserify": {
     "transform": [
