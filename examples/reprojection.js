@@ -9,6 +9,9 @@ goog.require('ol.Attribution');
 goog.require('ol.proj');
 goog.require('ol.layer.Tile');
 goog.require('ol.source.TileWMS');
+goog.require('olcs.core.OLImageryProvider');
+
+olcs.core.OLImageryProvider.ENABLE_RASTER_REPROJECTION = true;
 
 proj4.defs('EPSG:21781', '+proj=somerc +lat_0=46.95240555555556 ' +
     '+lon_0=7.439583333333333 +k_0=1 +x_0=600000 +y_0=200000 +ellps=bessel ' +

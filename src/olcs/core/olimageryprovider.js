@@ -183,7 +183,7 @@ olcs.core.OLImageryProvider.prototype.handleSourceChanged_ = function() {
       this.tilingScheme_ = new Cesium.GeographicTilingScheme();
     } else if (this.projection_ == ol.proj.get('EPSG:3857')) {
       this.tilingScheme_ = new Cesium.WebMercatorTilingScheme();
-    } else if (ol.ENABLE_RASTER_REPROJECTION) {
+    } else if (ol.ENABLE_RASTER_REPROJECTION && olcs.core.OLImageryProvider.ENABLE_RASTER_REPROJECTION) {
       this.tilingScheme_ = new Cesium.GeographicTilingScheme();
       this.projection_ = ol.proj.get('EPSG:4326'); // reproject
     } else {
@@ -279,3 +279,9 @@ olcs.core.OLImageryProvider.prototype.requestImage = function(x, y, level) {
     return promise;
   }
 };
+
+/**
+ * @type {boolean}
+ * @export
+ */
+olcs.core.OLImageryProvider.ENABLE_RASTER_REPROJECTION = false;
