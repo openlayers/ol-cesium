@@ -3,13 +3,13 @@
  */
 const exports = {};
 /* eslint googshift/valid-provide-and-module: 0 */
-import olcsOLCesium from 'olcs/OLCesium.js';
+import OLCesium from 'olcs/OLCesium.js';
 import olMap from 'ol/Map.js';
 import olSourceOSM from 'ol/source/OSM.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import * as olProj from 'ol/proj.js';
 import olView from 'ol/View.js';
-import olControl from 'ol/control.js';
+import {defaults as olControlDefaults} from 'ol/control.js';
 import olOverlay from 'ol/Overlay.js';
 import * as olCoordinate from 'ol/coordinate.js';
 /* global $ */
@@ -23,7 +23,7 @@ const ol2d = new olMap({
       source
     })
   ],
-  controls: olControl.defaults({
+  controls: olControlDefaults({
     attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
       collapsible: false
     })
@@ -34,7 +34,7 @@ const ol2d = new olMap({
     zoom: 11
   })
 });
-const ol3d = new olcsOLCesium({
+const ol3d = new OLCesium({
   map: ol2d,
   target: 'map3d'
 });

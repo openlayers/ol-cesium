@@ -10,7 +10,7 @@ import olLayerTile from 'ol/layer/Tile.js';
 import * as olProj from 'ol/proj.js';
 import olSourceOSM from 'ol/source/OSM.js';
 import olSourceTileJSON from 'ol/source/TileJSON.js';
-import olcsOLCesium from 'olcs/OLCesium.js';
+import OLCesium from 'olcs/OLCesium.js';
 
 const layer0 = new olLayerTile({
   source: new olSourceOSM()
@@ -46,7 +46,7 @@ const ol2d = new olMap({
   })
 });
 
-const ol3d = new olcsOLCesium({map: ol2d, target: 'map3d'});
+const ol3d = new OLCesium({map: ol2d, target: 'map3d'});
 ol3d.setEnabled(true);
 
 // eslint-disable-next-line no-unused-vars

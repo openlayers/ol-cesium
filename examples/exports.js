@@ -3,7 +3,7 @@
  */
 const exports = {};
 /* eslint googshift/valid-provide-and-module: 0 */
-import olcsOLCesium from 'olcs/OLCesium.js';
+import OLCesium from 'olcs/OLCesium.js';
 import * as olProj from 'ol/proj.js';
 import olView from 'ol/View.js';
 import olSourceOSM from 'ol/source/OSM.js';
@@ -24,7 +24,7 @@ const ol2d = new olMap({
   })
 });
 
-const ol3d = new olcsOLCesium({map: ol2d});
+const ol3d = new OLCesium({map: ol2d});
 const scene = ol3d.getCesiumScene();
 const terrainProvider = new Cesium.CesiumTerrainProvider({
   url: '//assets.agi.com/stk-terrain/world'

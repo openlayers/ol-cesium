@@ -2,7 +2,7 @@
  * @module olcs.contrib.Manager
  */
 import olcsContribLazyLoader from '../contrib/LazyLoader.js';
-import olcsOLCesium from '../OLCesium.js';
+import OLCesium from '../OLCesium.js';
 import olcsCore from '../core.js';
 import * as olMath from 'ol/math.js';
 import olObservable from 'ol/Observable.js';
@@ -141,7 +141,7 @@ const exports = class extends olObservable {
    */
   instantiateOLCesium() {
     googAsserts.assert(this.map);
-    const ol3d = new olcsOLCesium({map: this.map});
+    const ol3d = new OLCesium({map: this.map});
     const scene = ol3d.getCesiumScene();
     const terrainProvider = new Cesium.CesiumTerrainProvider({
       url: '//assets.agi.com/stk-terrain/world'

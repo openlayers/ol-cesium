@@ -3,19 +3,18 @@
  */
 const exports = {};
 /* eslint googshift/valid-provide-and-module: 0 */
-import olcsOLCesium from 'olcs/OLCesium.js';
+import OLCesium from 'olcs/OLCesium.js';
 import olView from 'ol/View.js';
-import olControl from 'ol/control.js';
+import {defaults as olControlDefaults} from 'ol/control.js';
 import olSourceOSM from 'ol/source/OSM.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olSourceVector from 'ol/source/Vector.js';
+import olLayerVector from 'ol/layer/Vector.js';
 import olStyleIcon from 'ol/style/Icon.js';
 import olStyleStyle from 'ol/style/Style.js';
 import olFeature from 'ol/Feature.js';
 import olGeomPoint from 'ol/geom/Point.js';
-import olSourceImageVector from 'ol/source/ImageVector.js';
 import olMap from 'ol/Map.js';
-import olLayerImage from 'ol/layer/Image.js';
 
 
 const point = new olGeomPoint([700000, 200000, 100000]);
@@ -41,11 +40,10 @@ iconFeature.setStyle(iconStyle);
 const vectorSource2 = new olSourceVector({
   features: [iconFeature]
 });
-const imageVectorSource = new olSourceImageVector({
+const vectorLayer2 = new olLayerVector({
+  renderMode: 'image',
+  style: myStyle,
   source: vectorSource2
-});
-const vectorLayer2 = new olLayerImage({
-  source: imageVectorSource
 });
 
 
@@ -57,7 +55,7 @@ const map = new olMap({
     vectorLayer2
   ],
   target: 'map2d',
-  controls: olControl.defaults({
+  controls: olControlDefaults({
     attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
       collapsible: false
     })
@@ -69,7 +67,7 @@ const map = new olMap({
 });
 
 
-const ol3d = new olcsOLCesium({map/*, target: 'map3d'*/});
+const ol3d = new OLCesium({map/*, target: 'map3d'*/});
 const scene = ol3d.getCesiumScene();
 const terrainProvider = new Cesium.CesiumTerrainProvider({
   url: '//assets.agi.com/stk-terrain/world',

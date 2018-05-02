@@ -3,9 +3,9 @@
  */
 const exports = {};
 /* eslint googshift/valid-provide-and-module: 0 */
-import olcsOLCesium from 'olcs/OLCesium.js';
+import OLCesium from 'olcs/OLCesium.js';
 import olView from 'ol/View.js';
-import olControl from 'ol/control.js';
+import {defaults as olControlDefaults} from 'ol/control.js';
 import olSourceOSM from 'ol/source/OSM.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olStyleText from 'ol/style/Text.js';
@@ -307,7 +307,7 @@ const map = new olMap({
     vectorLayer2
   ],
   target: 'map2d',
-  controls: olControl.defaults({
+  controls: olControlDefaults({
     attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
       collapsible: false
     })
@@ -333,7 +333,7 @@ dragAndDropInteraction.on('addfeatures', (event) => {
 });
 
 
-const ol3d = new olcsOLCesium({map, target: 'map3d'});
+const ol3d = new OLCesium({map, target: 'map3d'});
 const scene = ol3d.getCesiumScene();
 const terrainProvider = new Cesium.CesiumTerrainProvider({
   url: '//assets.agi.com/stk-terrain/world'

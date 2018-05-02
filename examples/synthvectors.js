@@ -8,7 +8,7 @@ import olSourceVector from 'ol/source/Vector.js';
 import olStyleFill from 'ol/style/Fill.js';
 import olStyleCircle from 'ol/style/Circle.js';
 import olStyleStyle from 'ol/style/Style.js';
-import olcsOLCesium from 'olcs/OLCesium.js';
+import OLCesium from 'olcs/OLCesium.js';
 import olView from 'ol/View.js';
 import olMap from 'ol/Map.js';
 import olSourceOSM from 'ol/source/OSM.js';
@@ -35,7 +35,7 @@ const map = new olMap({
   })
 });
 
-const ol3d = new olcsOLCesium({map});
+const ol3d = new OLCesium({map});
 const scene = ol3d.getCesiumScene();
 const terrainProvider = new Cesium.CesiumTerrainProvider({
   url: '//assets.agi.com/stk-terrain/world'

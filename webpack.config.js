@@ -18,7 +18,7 @@ switch (nodeEnv) {
 
 switch (process.env.TARGET) {
   case 'examples':
-    config = webpackMerge(config, require('./buildtools/webpack.ngeoexamples'));
+    config = webpackMerge(config, require('./buildtools/webpack.examples'));
     break;
   default:
     console.log(`The 'TARGET' environement variable is set to an invalide value: ${process.env.TARGET}.` )

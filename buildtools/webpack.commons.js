@@ -73,7 +73,6 @@ const config = {
     ]
   },
   plugins: [
-    providePlugin,
     new ExtractTextPlugin('[name].css')
   ],
   resolve: {
@@ -82,9 +81,8 @@ const config = {
     ],
     mainFields: ['jsnext:main', 'main'],
     alias: {
-      'olcs': path.resolve(__dirname, '../src'),
-      'goog/asserts': path.resolve(__dirname, '../src/goog.asserts.js'),
-      'goog/asserts.js': path.resolve(__dirname, '../src/goog.asserts.js'),
+      'olcs': path.resolve(__dirname, '../src/olcs'),
+      'goog': path.resolve(__dirname, '../src/goog'),
       'ol/ol.css': 'openlayers/css/ol.css',
       'ol': 'openlayers/src/ol'
     }

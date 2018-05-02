@@ -6,7 +6,7 @@ const exports = {};
 import olStyleStroke from 'ol/style/Stroke.js';
 import olStyleFill from 'ol/style/Fill.js';
 import olStyleStyle from 'ol/style/Style.js';
-import olcsOLCesium from 'olcs/OLCesium.js';
+import OLCesium from 'olcs/OLCesium.js';
 import olView from 'ol/View.js';
 import olFormatGeoJSON from 'ol/format/GeoJSON.js';
 import olSourceVector from 'ol/source/Vector.js';
@@ -37,7 +37,7 @@ const map = new olMap({
 });
 
 
-const ol3d = new olcsOLCesium({map, target: 'map3d'});
+const ol3d = new OLCesium({map, target: 'map3d'});
 ol3d.setEnabled(true);
 
 
