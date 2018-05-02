@@ -1,7 +1,7 @@
-goog.provide('olcs.contrib.LazyLoader');
-
-
-olcs.contrib.LazyLoader = class {
+/**
+ * @module olcs.contrib.LazyLoader
+ */
+const exports = class {
   /**
    * @param {string} url
    * @struct
@@ -39,3 +39,6 @@ olcs.contrib.LazyLoader = class {
     return this.promise;
   }
 };
+
+
+export default exports;

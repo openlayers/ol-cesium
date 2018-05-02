@@ -1,13 +1,11 @@
-goog.provide('olcs.AbstractSynchronizer');
-
-goog.require('goog.asserts');
-
-goog.require('ol');
-goog.require('ol.Observable');
-goog.require('ol.events');
-goog.require('ol.layer.Group');
-
-
+/**
+ * @module olcs.AbstractSynchronizer
+ */
+import googAsserts from 'goog/asserts.js';
+import * as olBase from 'ol/index.js';
+import olObservable from 'ol/Observable.js';
+import * as olEvents from 'ol/events.js';
+import olLayerGroup from 'ol/layer/Group.js';
 
 /**
  * @param {!ol.Map} map
@@ -18,7 +16,7 @@ goog.require('ol.layer.Group');
  * @abstract
  * @api
  */
-olcs.AbstractSynchronizer = function(map, scene) {
+const exports = function(map, scene) {
   /**
    * @type {!ol.Map}
    * @protected
@@ -76,7 +74,7 @@ olcs.AbstractSynchronizer = function(map, scene) {
  * Destroy all and perform complete synchronization of the layers.
  * @api
  */
-olcs.AbstractSynchronizer.prototype.synchronize = function() {
+exports.prototype.synchronize = function() {
   this.destroyAll();
   this.addLayers_(this.mapLayerGroup);
 };
@@ -87,7 +85,7 @@ olcs.AbstractSynchronizer.prototype.synchronize = function() {
  * z-index then original sequence order.
  * @protected
  */
-olcs.AbstractSynchronizer.prototype.orderLayers = function() {
+exports.prototype.orderLayers = function() {
   // Ordering logics is handled in subclasses.
 };
 
@@ -97,7 +95,7 @@ olcs.AbstractSynchronizer.prototype.orderLayers = function() {
  * @param {ol.layer.Base} root
  * @private
  */
-olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
+exports.prototype.addLayers_ = function(root) {
   /** @type {Array<olcsx.LayerWithParents>} */
   const fifo = [{
     layer: root,
@@ -106,12 +104,12 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
   while (fifo.length > 0) {
     const olLayerWithParents = fifo.splice(0, 1)[0];
     const olLayer = olLayerWithParents.layer;
-    const olLayerId = ol.getUid(olLayer).toString();
+    const olLayerId = olBase.getUid(olLayer).toString();
     this.olLayerListenKeys[olLayerId] = [];
-    goog.asserts.assert(!this.layerMap[olLayerId]);
+    googAsserts.assert(!this.layerMap[olLayerId]);
 
     let cesiumObjects = null;
-    if (olLayer instanceof ol.layer.Group) {
+    if (olLayer instanceof olLayerGroup) {
       this.listenForGroupChanges_(olLayer);
       if (olLayer !== this.mapLayerGroup) {
         cesiumObjects = this.createSingleLayerCounterparts(olLayerWithParents);
@@ -145,7 +143,7 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
             this.orderLayers();
           }
         };
-        this.olLayerListenKeys[olLayerId].push(ol.events.listen(layerWithParents.layer, 'change', onLayerChange, this));
+        this.olLayerListenKeys[olLayerId].push(olEvents.listen(layerWithParents.layer, 'change', onLayerChange, this));
       }
     }
     // add Cesium layers
@@ -164,9 +162,9 @@ olcs.AbstractSynchronizer.prototype.addLayers_ = function(root) {
  * @param {ol.layer.Base} layer
  * @private
  */
-olcs.AbstractSynchronizer.prototype.addCesiumObjects_ = function(cesiumObjects, layerId, layer) {
+exports.prototype.addCesiumObjects_ = function(cesiumObjects, layerId, layer) {
   this.layerMap[layerId] = cesiumObjects;
-  this.olLayerListenKeys[layerId].push(ol.events.listen(layer, 'change:zIndex', this.orderLayers, this));
+  this.olLayerListenKeys[layerId].push(olEvents.listen(layer, 'change:zIndex', this.orderLayers, this));
   cesiumObjects.forEach((cesiumObject) => {
     this.addCesiumObject(cesiumObject);
   });
@@ -179,15 +177,15 @@ olcs.AbstractSynchronizer.prototype.addCesiumObjects_ = function(cesiumObjects, 
  * @return {boolean} counterpart destroyed
  * @private
  */
-olcs.AbstractSynchronizer.prototype.removeAndDestroySingleLayer_ = function(layer) {
-  const uid = ol.getUid(layer).toString();
+exports.prototype.removeAndDestroySingleLayer_ = function(layer) {
+  const uid = olBase.getUid(layer).toString();
   const counterparts = this.layerMap[uid];
   if (!!counterparts) {
     counterparts.forEach((counterpart) => {
       this.removeSingleCesiumObject(counterpart, false);
       this.destroyCesiumObject(counterpart);
     });
-    this.olLayerListenKeys[uid].forEach(ol.Observable.unByKey);
+    this.olLayerListenKeys[uid].forEach(olObservable.unByKey);
     delete this.olLayerListenKeys[uid];
   }
   delete this.layerMap[uid];
@@ -200,14 +198,14 @@ olcs.AbstractSynchronizer.prototype.removeAndDestroySingleLayer_ = function(laye
  * @param {ol.layer.Group} group
  * @private
  */
-olcs.AbstractSynchronizer.prototype.unlistenSingleGroup_ = function(group) {
+exports.prototype.unlistenSingleGroup_ = function(group) {
   if (group === this.mapLayerGroup) {
     return;
   }
-  const uid = ol.getUid(group).toString();
+  const uid = olBase.getUid(group).toString();
   const keys = this.olGroupListenKeys_[uid];
   keys.forEach((key) => {
-    ol.Observable.unByKey(key);
+    olObservable.unByKey(key);
   });
   delete this.olGroupListenKeys_[uid];
   delete this.layerMap[uid];
@@ -219,13 +217,13 @@ olcs.AbstractSynchronizer.prototype.unlistenSingleGroup_ = function(group) {
  * @param {ol.layer.Base} root
  * @private
  */
-olcs.AbstractSynchronizer.prototype.removeLayer_ = function(root) {
+exports.prototype.removeLayer_ = function(root) {
   if (!!root) {
     const fifo = [root];
     while (fifo.length > 0) {
       const olLayer = fifo.splice(0, 1)[0];
       const done = this.removeAndDestroySingleLayer_(olLayer);
-      if (olLayer instanceof ol.layer.Group) {
+      if (olLayer instanceof olLayerGroup) {
         this.unlistenSingleGroup_(olLayer);
         if (!done) {
           // No counterpart for the group itself so removing
@@ -245,10 +243,10 @@ olcs.AbstractSynchronizer.prototype.removeLayer_ = function(root) {
  * @param {ol.layer.Group} group
  * @private
  */
-olcs.AbstractSynchronizer.prototype.listenForGroupChanges_ = function(group) {
-  const uuid = ol.getUid(group).toString();
+exports.prototype.listenForGroupChanges_ = function(group) {
+  const uuid = olBase.getUid(group).toString();
 
-  goog.asserts.assert(this.olGroupListenKeys_[uuid] === undefined);
+  googAsserts.assert(this.olGroupListenKeys_[uuid] === undefined);
 
   const listenKeyArray = [];
   this.olGroupListenKeys_[uuid] = listenKeyArray;
@@ -278,7 +276,7 @@ olcs.AbstractSynchronizer.prototype.listenForGroupChanges_ = function(group) {
       if (i >= 0) {
         listenKeyArray.splice(i, 1);
       }
-      ol.Observable.unByKey(el);
+      olObservable.unByKey(el);
     });
     listenAddRemove();
   }));
@@ -289,15 +287,15 @@ olcs.AbstractSynchronizer.prototype.listenForGroupChanges_ = function(group) {
  * Destroys all the created Cesium objects.
  * @protected
  */
-olcs.AbstractSynchronizer.prototype.destroyAll = function() {
+exports.prototype.destroyAll = function() {
   this.removeAllCesiumObjects(true); // destroy
   let objKey;
   for (objKey in this.olGroupListenKeys_) {
     const keys = this.olGroupListenKeys_[objKey];
-    keys.forEach(ol.Observable.unByKey);
+    keys.forEach(olObservable.unByKey);
   }
   for (objKey in this.olLayerListenKeys) {
-    this.olLayerListenKeys[objKey].forEach(ol.Observable.unByKey);
+    this.olLayerListenKeys[objKey].forEach(olObservable.unByKey);
   }
   this.olGroupListenKeys_ = {};
   this.olLayerListenKeys = {};
@@ -311,7 +309,7 @@ olcs.AbstractSynchronizer.prototype.destroyAll = function() {
  * @abstract
  * @protected
  */
-olcs.AbstractSynchronizer.prototype.addCesiumObject = function(object) {};
+exports.prototype.addCesiumObject = function(object) {};
 
 
 /**
@@ -319,7 +317,7 @@ olcs.AbstractSynchronizer.prototype.addCesiumObject = function(object) {};
  * @abstract
  * @protected
  */
-olcs.AbstractSynchronizer.prototype.destroyCesiumObject = function(object) {};
+exports.prototype.destroyCesiumObject = function(object) {};
 
 
 /**
@@ -329,7 +327,7 @@ olcs.AbstractSynchronizer.prototype.destroyCesiumObject = function(object) {};
  * @abstract
  * @protected
  */
-olcs.AbstractSynchronizer.prototype.removeSingleCesiumObject = function(object, destroy) {};
+exports.prototype.removeSingleCesiumObject = function(object, destroy) {};
 
 
 /**
@@ -338,7 +336,7 @@ olcs.AbstractSynchronizer.prototype.removeSingleCesiumObject = function(object, 
  * @abstract
  * @protected
  */
-olcs.AbstractSynchronizer.prototype.removeAllCesiumObjects = function(destroy) {};
+exports.prototype.removeAllCesiumObjects = function(destroy) {};
 
 
 /**
@@ -347,4 +345,7 @@ olcs.AbstractSynchronizer.prototype.removeAllCesiumObjects = function(destroy) {
  * @abstract
  * @protected
  */
-olcs.AbstractSynchronizer.prototype.createSingleLayerCounterparts = function(olLayerWithParents) {};
+exports.prototype.createSingleLayerCounterparts = function(olLayerWithParents) {};
+
+
+export default exports;

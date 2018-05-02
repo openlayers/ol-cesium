@@ -1,15 +1,14 @@
-goog.provide('olcs.contrib.Manager');
+/**
+ * @module olcs.contrib.Manager
+ */
+import olcsContribLazyLoader from '../contrib/LazyLoader.js';
+import olcsOLCesium from '../OLCesium.js';
+import olcsCore from '../core.js';
+import * as olMath from 'ol/math.js';
+import olObservable from 'ol/Observable.js';
+import googAsserts from 'goog/asserts.js';
 
-goog.require('olcs.contrib.LazyLoader');
-goog.require('olcs.OLCesium');
-goog.require('olcs.core');
-
-goog.require('ol.math');
-goog.require('ol.Observable');
-goog.require('goog.asserts');
-
-
-olcs.contrib.Manager = class extends ol.Observable {
+const exports = class extends olObservable {
   /**
    * @param {string} cesiumUrl
    * @param {olcsx.contrib.ManagerOptions} options
@@ -66,7 +65,7 @@ olcs.contrib.Manager = class extends ol.Observable {
      * @const {number} Tilt angle in radians
      * @private
      */
-    this.cesiumInitialTilt_ = ol.math.toRadians(50);
+    this.cesiumInitialTilt_ = olMath.toRadians(50);
 
     /**
      * @protected
@@ -108,7 +107,7 @@ olcs.contrib.Manager = class extends ol.Observable {
    */
   load() {
     if (!this.promise_) {
-      const cesiumLazyLoader = new olcs.contrib.LazyLoader(this.cesiumUrl_);
+      const cesiumLazyLoader = new olcsContribLazyLoader(this.cesiumUrl_);
       this.promise_ = cesiumLazyLoader.load().then(() => this.onCesiumLoaded());
     }
     return this.promise_;
@@ -141,8 +140,8 @@ olcs.contrib.Manager = class extends ol.Observable {
    * @return {olcs.OLCesium}
    */
   instantiateOLCesium() {
-    goog.asserts.assert(this.map);
-    const ol3d = new olcs.OLCesium({map: this.map});
+    googAsserts.assert(this.map);
+    const ol3d = new olcsOLCesium({map: this.map});
     const scene = ol3d.getCesiumScene();
     const terrainProvider = new Cesium.CesiumTerrainProvider({
       url: '//assets.agi.com/stk-terrain/world'
@@ -230,8 +229,8 @@ olcs.contrib.Manager = class extends ol.Observable {
       const scene = ol3d.getCesiumScene();
       if (is3DCurrentlyEnabled) {
         // Disable 3D
-        goog.asserts.assert(this.map);
-        return olcs.core.resetToNorthZenith(this.map, scene).then(() => {
+        googAsserts.assert(this.map);
+        return olcsCore.resetToNorthZenith(this.map, scene).then(() => {
           ol3d.setEnabled(false);
           this.dispatchEvent('toggle');
         });
@@ -239,7 +238,7 @@ olcs.contrib.Manager = class extends ol.Observable {
         // Enable 3D
         ol3d.setEnabled(true);
         this.dispatchEvent('toggle');
-        return olcs.core.rotateAroundBottomCenter(scene, this.cesiumInitialTilt_);
+        return olcsCore.rotateAroundBottomCenter(scene, this.cesiumInitialTilt_);
       }
     });
   }
@@ -302,7 +301,7 @@ olcs.contrib.Manager = class extends ol.Observable {
    */
   getTiltOnGlobe() {
     const scene = this.ol3d.getCesiumScene();
-    const tiltOnGlobe = olcs.core.computeSignedTiltAngleOnGlobe(scene);
+    const tiltOnGlobe = olcsCore.computeSignedTiltAngleOnGlobe(scene);
     return -tiltOnGlobe;
   }
 
@@ -312,9 +311,9 @@ olcs.contrib.Manager = class extends ol.Observable {
    */
   setHeading(angle) {
     const scene = this.ol3d.getCesiumScene();
-    const bottom = olcs.core.pickBottomPoint(scene);
+    const bottom = olcsCore.pickBottomPoint(scene);
     if (bottom) {
-      olcs.core.setHeadingUsingBottomCenter(scene, angle, bottom);
+      olcsCore.setHeadingUsingBottomCenter(scene, angle, bottom);
     }
   }
 
@@ -332,7 +331,7 @@ olcs.contrib.Manager = class extends ol.Observable {
    */
   getOlView() {
     const view = this.map.getView();
-    goog.asserts.assert(view);
+    googAsserts.assert(view);
     return view;
   }
 
@@ -391,3 +390,6 @@ olcs.contrib.Manager = class extends ol.Observable {
     }
   }
 };
+
+
+export default exports;

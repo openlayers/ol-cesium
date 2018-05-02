@@ -1,8 +1,7 @@
-goog.provide('olcs.core.VectorLayerCounterpart');
-
-goog.require('ol.Observable');
-
-
+/**
+ * @module olcs.core.VectorLayerCounterpart
+ */
+import olObservable from 'ol/Observable.js';
 
 /**
  * Result of the conversion of an OpenLayers layer to Cesium.
@@ -11,7 +10,7 @@ goog.require('ol.Observable');
  * @param {!(ol.proj.Projection|string)} layerProjection
  * @param {!Cesium.Scene} scene
  */
-olcs.core.VectorLayerCounterpart = function(layerProjection, scene) {
+const exports = function(layerProjection, scene) {
   const billboards = new Cesium.BillboardCollection({scene});
   const primitives = new Cesium.PrimitiveCollection();
 
@@ -39,8 +38,8 @@ olcs.core.VectorLayerCounterpart = function(layerProjection, scene) {
 /**
  * Unlisten.
  */
-olcs.core.VectorLayerCounterpart.prototype.destroy = function() {
-  this.olListenKeys.forEach(ol.Observable.unByKey);
+exports.prototype.destroy = function() {
+  this.olListenKeys.forEach(olObservable.unByKey);
   this.olListenKeys.length = 0;
 };
 
@@ -48,6 +47,9 @@ olcs.core.VectorLayerCounterpart.prototype.destroy = function() {
 /**
  * @return {!Cesium.Primitive}
  */
-olcs.core.VectorLayerCounterpart.prototype.getRootPrimitive = function() {
+exports.prototype.getRootPrimitive = function() {
   return this.rootCollection_;
 };
+
+
+export default exports;

@@ -1,13 +1,12 @@
-goog.provide('olcs.AutoRenderLoop');
-
-
-
+/**
+ * @module olcs.AutoRenderLoop
+ */
 /**
  * @constructor
  * @param {olcs.OLCesium} ol3d
  * @struct
  */
-olcs.AutoRenderLoop = function(ol3d) {
+const exports = function(ol3d) {
   this.ol3d = ol3d;
   this.scene_ = ol3d.getCesiumScene();
   this.canvas_ = this.scene_.canvas;
@@ -27,7 +26,7 @@ olcs.AutoRenderLoop = function(ol3d) {
 /**
  * Enable.
  */
-olcs.AutoRenderLoop.prototype.enable = function() {
+exports.prototype.enable = function() {
   this.scene_.requestRenderMode = true;
   for (const repaintKey of this.repaintEventNames_) {
     this.canvas_.addEventListener(repaintKey, this._boundNotifyRepaintRequired, false);
@@ -43,7 +42,7 @@ olcs.AutoRenderLoop.prototype.enable = function() {
 /**
  * Disable.
  */
-olcs.AutoRenderLoop.prototype.disable = function() {
+exports.prototype.disable = function() {
   for (const repaintKey of this.repaintEventNames_) {
     this.canvas_.removeEventListener(repaintKey, this._boundNotifyRepaintRequired, false);
   }
@@ -61,11 +60,14 @@ olcs.AutoRenderLoop.prototype.disable = function() {
  * Force a restart of the render loop.
  * @api
  */
-olcs.AutoRenderLoop.prototype.restartRenderLoop = function() {
+exports.prototype.restartRenderLoop = function() {
   this.notifyRepaintRequired();
 };
 
 
-olcs.AutoRenderLoop.prototype.notifyRepaintRequired = function() {
+exports.prototype.notifyRepaintRequired = function() {
   this.scene_.requestRender();
 };
+
+
+export default exports;

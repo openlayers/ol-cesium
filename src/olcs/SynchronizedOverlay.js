@@ -1,11 +1,11 @@
-goog.provide('olcs.SynchronizedOverlay');
-
-
-goog.require('ol');
-goog.require('ol.Overlay');
-goog.require('ol.proj');
-goog.require('ol.dom');
-goog.require('ol.Observable');
+/**
+ * @module olcs.SynchronizedOverlay
+ */
+import * as olBase from 'ol/index.js';
+import olOverlay from 'ol/Overlay.js';
+import * as olProj from 'ol/proj.js';
+import * as olDom from 'ol/dom.js';
+import olObservable from 'ol/Observable.js';
 
 /**
  * @constructor
@@ -14,7 +14,7 @@ goog.require('ol.Observable');
  * @struct
  * @api
  */
-olcs.SynchronizedOverlay = function(options) {
+const exports = function(options) {
   /**
    * @private
    * @type {?Function}
@@ -68,18 +68,19 @@ olcs.SynchronizedOverlay = function(options) {
   this.listenerKeys_.push(this.parent_.on('change:position', this.setPropertyFromEvent_.bind(this)));
   this.listenerKeys_.push(this.parent_.on('change:positioning', this.setPropertyFromEvent_.bind(this)));
 
-  ol.Overlay.call(this, this.parent_.getOptions());
+  olOverlay.call(this, this.parent_.getOptions());
   this.setProperties(this.parent_.getProperties());
 
   this.handleMapChanged();
 };
-ol.inherits(olcs.SynchronizedOverlay, ol.Overlay);
+
+olBase.inherits(exports, olOverlay);
 
 /**
  * @param {Node} target
  * @private
  */
-olcs.SynchronizedOverlay.prototype.observeTarget_ = function(target) {
+exports.prototype.observeTarget_ = function(target) {
   this.observer_.disconnect();
   this.observer_.observe(target, {
     attributes: false,
@@ -109,7 +110,7 @@ olcs.SynchronizedOverlay.prototype.observeTarget_ = function(target) {
  * @param {ol.Object.Event} event
  * @private
  */
-olcs.SynchronizedOverlay.prototype.setPropertyFromEvent_ = function(event) {
+exports.prototype.setPropertyFromEvent_ = function(event) {
   if (event.target && event.key) {
     this.set(event.key, event.target.get(event.key));
   }
@@ -120,7 +121,7 @@ olcs.SynchronizedOverlay.prototype.setPropertyFromEvent_ = function(event) {
  * @return {!Cesium.Scene} The scene that the overlay is part of.
  * @api
  */
-olcs.SynchronizedOverlay.prototype.getScene = function() {
+exports.prototype.getScene = function() {
   return this.scene_;
 };
 
@@ -129,10 +130,10 @@ olcs.SynchronizedOverlay.prototype.getScene = function() {
 /**
  * @override
  */
-olcs.SynchronizedOverlay.prototype.handleMapChanged = function() {
+exports.prototype.handleMapChanged = function() {
   if (this.scenePostRenderListenerRemover_) {
     this.scenePostRenderListenerRemover_();
-    ol.dom.removeNode(this.element);
+    olDom.removeNode(this.element);
   }
   this.scenePostRenderListenerRemover_ = null;
   const scene = this.getScene();
@@ -152,12 +153,12 @@ olcs.SynchronizedOverlay.prototype.handleMapChanged = function() {
 /**
  * @override
  */
-olcs.SynchronizedOverlay.prototype.handlePositionChanged = function() {
+exports.prototype.handlePositionChanged = function() {
   // transform position to WGS84
   const position = this.getPosition();
   if (position) {
     const sourceProjection = this.parent_.getMap().getView().getProjection();
-    this.positionWGS84_ = ol.proj.transform(position, sourceProjection, 'EPSG:4326');
+    this.positionWGS84_ = olProj.transform(position, sourceProjection, 'EPSG:4326');
   } else {
     this.positionWGS84_ = undefined;
   }
@@ -167,7 +168,7 @@ olcs.SynchronizedOverlay.prototype.handlePositionChanged = function() {
 /**
  * @override
  */
-olcs.SynchronizedOverlay.prototype.handleElementChanged = function() {
+exports.prototype.handleElementChanged = function() {
   function cloneNode(node, parent) {
     const clone = node.cloneNode();
     if (parent) {
@@ -188,7 +189,7 @@ olcs.SynchronizedOverlay.prototype.handleElementChanged = function() {
     }
     return clone;
   }
-  ol.dom.removeChildren(this.element);
+  olDom.removeChildren(this.element);
   const element = this.getElement();
   if (element) {
     if (element.parentNode && element.parentNode.childNodes) {
@@ -208,7 +209,7 @@ olcs.SynchronizedOverlay.prototype.handleElementChanged = function() {
 /**
  * @override
  */
-olcs.SynchronizedOverlay.prototype.updatePixelPosition = function() {
+exports.prototype.updatePixelPosition = function() {
   const position = this.positionWGS84_;
   if (!this.scene_ || !position) {
     this.setVisible(false);
@@ -246,14 +247,14 @@ olcs.SynchronizedOverlay.prototype.updatePixelPosition = function() {
  * Destroys the overlay, removing all its listeners and elements
  * @api
  */
-olcs.SynchronizedOverlay.prototype.destroy = function() {
+exports.prototype.destroy = function() {
   if (this.scenePostRenderListenerRemover_) {
     this.scenePostRenderListenerRemover_();
   }
   if (this.observer_) {
     this.observer_.disconnect();
   }
-  ol.Observable.unByKey(this.listenerKeys_);
+  olObservable.unByKey(this.listenerKeys_);
   this.listenerKeys_.splice(0);
   if (this.element.removeNode) {
     this.element.removeNode(true);
@@ -262,3 +263,6 @@ olcs.SynchronizedOverlay.prototype.destroy = function() {
   }
   this.element = null;
 };
+
+
+export default exports;

@@ -1,9 +1,9 @@
-goog.provide('olcs.OverlaySynchronizer');
-
-goog.require('olcs.SynchronizedOverlay');
-
-goog.require('ol');
-goog.require('ol.events');
+/**
+ * @module olcs.OverlaySynchronizer
+ */
+import olcsSynchronizedOverlay from './SynchronizedOverlay.js';
+import * as olBase from 'ol/index.js';
+import * as olEvents from 'ol/events.js';
 
 /**
  * @param {!ol.Map} map
@@ -13,7 +13,7 @@ goog.require('ol.events');
  * @struct
  * @api
  */
-olcs.OverlaySynchronizer = function(map, scene) {
+const exports = function(map, scene) {
   /**
    * @type {!ol.Map}
    * @protected
@@ -40,7 +40,7 @@ olcs.OverlaySynchronizer = function(map, scene) {
   this.overlayContainerStopEvent_.className = 'ol-overlaycontainer-stopevent';
   const overlayEvents = ['click', 'dblclick', 'mousedown', 'touchstart', 'MSPointerDown', 'pointerdown', 'mousewheel', 'wheel'];
   overlayEvents.forEach((event) => {
-    ol.events.listen(this.overlayContainerStopEvent_, event, evt => evt.stopPropagation());
+    olEvents.listen(this.overlayContainerStopEvent_, event, evt => evt.stopPropagation());
   });
   this.scene.canvas.parentElement.appendChild(this.overlayContainerStopEvent_);
 
@@ -69,7 +69,7 @@ olcs.OverlaySynchronizer = function(map, scene) {
  * don't trigger any {@link ol.MapBrowserEvent}.
  * @return {!Element} The map's overlay container that stops events.
  */
-olcs.OverlaySynchronizer.prototype.getOverlayContainerStopEvent = function() {
+exports.prototype.getOverlayContainerStopEvent = function() {
   return this.overlayContainerStopEvent_;
 };
 
@@ -77,7 +77,7 @@ olcs.OverlaySynchronizer.prototype.getOverlayContainerStopEvent = function() {
  * Get the element that serves as a container for overlays.
  * @return {!Element} The map's overlay container.
  */
-olcs.OverlaySynchronizer.prototype.getOverlayContainer = function() {
+exports.prototype.getOverlayContainer = function() {
   return this.overlayContainer_;
 };
 
@@ -85,7 +85,7 @@ olcs.OverlaySynchronizer.prototype.getOverlayContainer = function() {
  * Destroy all and perform complete synchronization of the overlays.
  * @api
  */
-olcs.OverlaySynchronizer.prototype.synchronize = function() {
+exports.prototype.synchronize = function() {
   this.destroyAll();
   this.addOverlays();
   this.overlays_.on('add', this.addOverlayFromEvent_.bind(this));
@@ -96,7 +96,7 @@ olcs.OverlaySynchronizer.prototype.synchronize = function() {
  * @param {ol.Collection.Event} event
  * @private
  */
-olcs.OverlaySynchronizer.prototype.addOverlayFromEvent_ = function(event) {
+exports.prototype.addOverlayFromEvent_ = function(event) {
   const overlay = /** @type {ol.Overlay} */ (event.element);
   this.addOverlay(overlay);
 };
@@ -104,7 +104,7 @@ olcs.OverlaySynchronizer.prototype.addOverlayFromEvent_ = function(event) {
 /**
  * @api
  */
-olcs.OverlaySynchronizer.prototype.addOverlays = function() {
+exports.prototype.addOverlays = function() {
   this.overlays_.forEach(this.addOverlay, this);
 };
 
@@ -112,17 +112,17 @@ olcs.OverlaySynchronizer.prototype.addOverlays = function() {
  * @param {ol.Overlay} overlay
  * @api
  */
-olcs.OverlaySynchronizer.prototype.addOverlay = function(overlay) {
+exports.prototype.addOverlay = function(overlay) {
   if (!overlay) {
     return;
   }
-  const cesiumOverlay = new olcs.SynchronizedOverlay({
+  const cesiumOverlay = new olcsSynchronizedOverlay({
     scene: this.scene,
     synchronizer: this,
     parent: overlay
   });
 
-  const overlayId = ol.getUid(overlay).toString();
+  const overlayId = olBase.getUid(overlay).toString();
   this.overlayMap_[overlayId] = cesiumOverlay;
 };
 
@@ -130,7 +130,7 @@ olcs.OverlaySynchronizer.prototype.addOverlay = function(overlay) {
  * @param {ol.Collection.Event} event
  * @private
  */
-olcs.OverlaySynchronizer.prototype.removeOverlayFromEvent_ = function(event) {
+exports.prototype.removeOverlayFromEvent_ = function(event) {
   const removedOverlay = /** @type {ol.Overlay} */ (event.element);
   this.removeOverlay(removedOverlay);
 };
@@ -140,8 +140,8 @@ olcs.OverlaySynchronizer.prototype.removeOverlayFromEvent_ = function(event) {
  * @param {ol.Overlay} overlay
  * @api
  */
-olcs.OverlaySynchronizer.prototype.removeOverlay = function(overlay) {
-  const overlayId = ol.getUid(overlay).toString();
+exports.prototype.removeOverlay = function(overlay) {
+  const overlayId = olBase.getUid(overlay).toString();
   const csOverlay = this.overlayMap_[overlayId];
   if (csOverlay) {
     csOverlay.destroy();
@@ -153,7 +153,7 @@ olcs.OverlaySynchronizer.prototype.removeOverlay = function(overlay) {
  * Destroys all the created Cesium objects.
  * @protected
  */
-olcs.OverlaySynchronizer.prototype.destroyAll = function() {
+exports.prototype.destroyAll = function() {
   Object.keys(this.overlayMap_).forEach((key) => {
     const overlay = this.overlayMap_[key];
     overlay.destroy();
@@ -162,3 +162,5 @@ olcs.OverlaySynchronizer.prototype.destroyAll = function() {
 };
 
 
+
+export default exports;
