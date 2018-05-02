@@ -171,7 +171,6 @@ OlcsControl.prototype.tiltOnGlobe = function(angle) {
 
 
 
-const control = new OlcsControl(ol3d); // eslint-disable-line no-unused-vars
-
+window['control'] = new OlcsControl(ol3d); // eslint-disable-line no-unused-vars
 
 export default exports;

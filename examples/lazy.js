@@ -31,8 +31,7 @@ const ol2d = new olMap({
 });
 
 
-// eslint-disable-line no-unused-vars
-window.manager = new olcsContribManager(window.CESIUM_URL, {map: ol2d});
+window['manager'] = new olcsContribManager(window.CESIUM_URL, {map: ol2d});
 
 
 export default exports;

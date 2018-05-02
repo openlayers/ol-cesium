@@ -45,5 +45,7 @@ const printInfo = function() {
 };
 setInterval(printInfo, 100);
 
+document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
+window['camera'] = camera;
 
 export default exports;
