@@ -1,6 +1,6 @@
 {
   "name": "ol-cesium",
-  "version": "1.36.0",
+  "version": "1.37.0",
   "description": "OpenLayers Cesium integration library",
   "scripts": {},
   "main": "./dist/olcesium.js",
@@ -17,7 +17,7 @@
     "htmlparser2": "3.9.2"
   },
   "devDependencies": {
-    "@camptocamp/cesium": "1.44.0",
+    "@camptocamp/cesium": "1.45.0",
     "@camptocamp/closure-util": "1.27.0",
     "@mapbox/geojsonhint": "2.0.1",
     "eslint": "4.19.1",
