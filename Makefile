@@ -27,8 +27,6 @@ help:
 	@echo "- dist-apidoc             Create a "distribution" for the api docs (dist/apidoc/)"
 	@echo "- clean                   Remove generated files"
 	@echo "- cleanall                Remove all the build artefacts"
-	@echo "- package                 Build the ES6 version of the library (.build/package)"
-	@echo "- es6-doc                 Create a "distribution" for the ES6 api docs (dist/es6doc/)"
 	@echo "- help                    Display this help message"
 	@echo
 
@@ -52,7 +50,6 @@ dist-apidoc:
 
 .PHONY: lint
 lint: .build/node_modules.timestamp .build/eslint.timestamp
-	@build/check-no-goog.sh
 
 .build/geojsonhint.timestamp: $(EXAMPLES_GEOJSON_FILES)
 	$(foreach file,$?, echo $(file); node_modules/.bin/geojsonhint $(file);)
@@ -104,31 +101,11 @@ cleanall: clean
 	done
 	touch $@
 
-dist/olcesium-debug.js: build/olcesium-debug.json $(SRC_JS_FILES) Cesium.externs.js build/build.js .build/node_modules.timestamp
+dist/olcesium-debug.js: build/olcesium-debug.json $(SRC_JS_FILES) build/build.js .build/node_modules.timestamp
 	mkdir -p $(dir $@)
 	node build/build.js $< $@
 
 
-# A sourcemap is prepared, the source is exected to be deployed in 'source' directory
-dist/olcesium.js: build/olcesium.json $(SRC_JS_FILES) Cesium.externs.js build/build.js .build/node_modules.timestamp
+dist/olcesium.js: build/olcesium.json $(SRC_JS_FILES) build/build.js .build/node_modules.timestamp
 	mkdir -p $(dir $@)
 	node build/build.js $< $@
-	$(SEDI) 's!$(shell pwd)/dist!source!g' dist/olcesium.js.map
-	$(SEDI) 's!$(shell pwd)!source!g' dist/olcesium.js.map
-#	echo '//# sourceMappingURL=olcesium.js.map' >> dist/olcesium.js
-#	-ln -s .. dist/source
-
-
-.PHONY: package
-package: .build/es6_package.timestamp
-
-
-.build/es6_package.timestamp: .build/node_modules.timestamp
-	build/package.sh
-
-
-.PHONY: es6-doc
-es6-doc: .build/es6_package.timestamp
-
-.build/es6_doc.timestamp: .build/es6_package.timestamp
-	node_modules/.bin/jsdoc .build/package --destination dist/es6doc
