@@ -2133,7 +2133,7 @@ Cesium.ImageryProvider.prototype.getTileCredits = function(x, y, level) {};
  * @param {number} x The tile X coordinate.
  * @param {number} y The tile Y coordinate.
  * @param {number} level The tile level.
- * @return {Object|undefined}
+ * @return {Promise<?>|undefined}
  */
 Cesium.ImageryProvider.prototype.requestImage = function(x, y, level) {};
 

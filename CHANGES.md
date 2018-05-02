@@ -1,6 +1,11 @@
 # Changelog
 
-# v 1.36
+# v 1.37
+
+* Changes
+  * Add client side raster reprojection, see the example to see how to enable it.
+
+# v 1.36 - 2018-04-18
 
 * Changes
   * Rework the autorenderloop using Cesium RenderMode.
