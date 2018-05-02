@@ -13,4 +13,3 @@ script:
   - make dist
   - make check
   - make dist-examples
-  - ./build/goog-count.sh
