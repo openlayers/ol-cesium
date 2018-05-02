@@ -4,31 +4,7 @@
     'openlayers',
     '.eslintrc-es6.yaml'
   ],
-  plugins: [
-    'googshift',
-  ],
   rules: {
-    'googshift/no-duplicate-requires': 'error',
-
-    'googshift/no-missing-requires': ['error', {
-      prefixes: ['olcs', 'ol']
-    }],
-
-    'googshift/no-unused-requires': 'error',
-
-    'googshift/one-provide-or-module': ['error', {
-      entryPoints: ['olcs'],
-      root: 'src'
-    }],
-
-    'googshift/requires-first': 'error',
-
-    'googshift/valid-provide-and-module': ['error', {
-      entryPoints: ['olcs'],
-      root: 'src'
-    }],
-
-    'googshift/valid-requires': 'error',
     no-console: 0,
     comma-dangle: 0,
     no-extra-boolean-cast: 0,
