@@ -1,19 +1,20 @@
+/**
+ * @module examples.synthvectors
+ */
+const exports = {};
 /* eslint googshift/valid-provide-and-module: 0 */
-
-goog.provide('examples.synthvectors');
-
-goog.require('ol.layer.Vector');
-goog.require('ol.source.Vector');
-goog.require('ol.style.Fill');
-goog.require('ol.style.Circle');
-goog.require('ol.style.Style');
-goog.require('olcs.OLCesium');
-goog.require('ol.View');
-goog.require('ol.Map');
-goog.require('ol.source.OSM');
-goog.require('ol.layer.Tile');
-goog.require('ol.Feature');
-goog.require('ol.geom.Point');
+import olLayerVector from 'ol/layer/Vector.js';
+import olSourceVector from 'ol/source/Vector.js';
+import olStyleFill from 'ol/style/Fill.js';
+import olStyleCircle from 'ol/style/Circle.js';
+import olStyleStyle from 'ol/style/Style.js';
+import olcsOLCesium from 'olcs/OLCesium.js';
+import olView from 'ol/View.js';
+import olMap from 'ol/Map.js';
+import olSourceOSM from 'ol/source/OSM.js';
+import olLayerTile from 'ol/layer/Tile.js';
+import olFeature from 'ol/Feature.js';
+import olGeomPoint from 'ol/geom/Point.js';
 
 
 let total = 0;
@@ -21,20 +22,20 @@ let created = 0;
 let added = 0;
 const vectorLayers = [];
 
-const tile = new ol.layer.Tile({
-  source: new ol.source.OSM()
+const tile = new olLayerTile({
+  source: new olSourceOSM()
 });
 
-const map = new ol.Map({
+const map = new olMap({
   layers: [tile],
   target: 'map2d',
-  view: new ol.View({
+  view: new olView({
     center: [0, 0],
     zoom: 2
   })
 });
 
-const ol3d = new olcs.OLCesium({map});
+const ol3d = new olcsOLCesium({map});
 const scene = ol3d.getCesiumScene();
 const terrainProvider = new Cesium.CesiumTerrainProvider({
   url: '//assets.agi.com/stk-terrain/world'
@@ -77,17 +78,17 @@ const addFeatures = function() { // eslint-disable-line no-unused-vars
   const features = [];
   const e = 18000000;
   for (let i = 0; i < count; ++i) {
-    const feature = new ol.Feature({
-      geometry: new ol.geom.Point([
+    const feature = new olFeature({
+      geometry: new olGeomPoint([
         2 * e * Math.random() - e,
         2 * e * Math.random() - e,
         e * Math.random()
       ])
     });
-    const style = [new ol.style.Style({
-      image: new ol.style.Circle({
+    const style = [new olStyleStyle({
+      image: new olStyleCircle({
         radius: 2,
-        fill: new ol.style.Fill({color: [
+        fill: new olStyleFill({color: [
           Math.random() * 255,
           Math.random() * 255,
           Math.random() * 255,
@@ -105,8 +106,8 @@ const addFeatures = function() { // eslint-disable-line no-unused-vars
   created = now - then;
   then = now;
 
-  const vectorSource = new ol.source.Vector({});
-  const vector = new ol.layer.Vector({
+  const vectorSource = new olSourceVector({});
+  const vector = new olLayerVector({
     source: vectorSource
   });
   vectorSource.addFeatures(features);
@@ -121,3 +122,5 @@ const addFeatures = function() { // eslint-disable-line no-unused-vars
   document.getElementById('added').innerHTML = `Features added in ${added}ms.`;
 };
 
+
+export default exports;

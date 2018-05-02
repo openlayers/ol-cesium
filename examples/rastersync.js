@@ -1,51 +1,52 @@
+/**
+ * @module examples.rastersync
+ */
+const exports = {};
 /* eslint googshift/valid-provide-and-module: 0 */
-
-goog.provide('examples.rastersync');
-
-goog.require('ol.source.TileWMS');
-goog.require('ol.source.Stamen');
-goog.require('olcs.OLCesium');
-goog.require('ol.layer.Group');
-goog.require('ol.Map');
-goog.require('ol.source.TileJSON');
-goog.require('ol.source.OSM');
-goog.require('ol.layer.Tile');
-goog.require('ol.proj');
-goog.require('ol.View');
+import olSourceTileWMS from 'ol/source/TileWMS.js';
+import olSourceStamen from 'ol/source/Stamen.js';
+import olcsOLCesium from 'olcs/OLCesium.js';
+import olLayerGroup from 'ol/layer/Group.js';
+import olMap from 'ol/Map.js';
+import olSourceTileJSON from 'ol/source/TileJSON.js';
+import olSourceOSM from 'ol/source/OSM.js';
+import olLayerTile from 'ol/layer/Tile.js';
+import * as olProj from 'ol/proj.js';
+import olView from 'ol/View.js';
 
 
-const view = new ol.View({
-  center: ol.proj.transform([-112.2, 36.06], 'EPSG:4326', 'EPSG:3857'),
+const view = new olView({
+  center: olProj.transform([-112.2, 36.06], 'EPSG:4326', 'EPSG:3857'),
   zoom: 11
 });
 
-const layer0 = new ol.layer.Tile({
-  source: new ol.source.OSM()
+const layer0 = new olLayerTile({
+  source: new olSourceOSM()
 });
-const layer1 = new ol.layer.Tile({
-  source: new ol.source.TileJSON({
+const layer1 = new olLayerTile({
+  source: new olSourceTileJSON({
     url: 'https://tileserver.maptiler.com/grandcanyon.json',
     crossOrigin: 'anonymous'
   })
 });
 
-const tileJsonSource = new ol.source.TileJSON({
+const tileJsonSource = new olSourceTileJSON({
   url: 'https://api.tiles.mapbox.com/v3/mapbox.world-borders-light.json',
   crossOrigin: 'anonymous'
 });
 
-const layer2 = new ol.layer.Tile({
+const layer2 = new olLayerTile({
   source: tileJsonSource
 });
-const ol2d = new ol.Map({
-  layers: [layer0, new ol.layer.Group({layers: [layer1, layer2]})],
+const ol2d = new olMap({
+  layers: [layer0, new olLayerGroup({layers: [layer1, layer2]})],
   target: 'map2d',
   view,
   renderer: 'webgl'
 });
 
 
-const ol3d = new olcs.OLCesium({map: ol2d, target: 'map3d'});
+const ol3d = new olcsOLCesium({map: ol2d, target: 'map3d'});
 const scene = ol3d.getCesiumScene();
 const terrainProvider = new Cesium.CesiumTerrainProvider({
   url: 'https://assets.agi.com/stk-terrain/world'
@@ -55,15 +56,15 @@ scene.terrainProvider = terrainProvider;
 ol3d.setEnabled(true);
 
 const addStamen = function() { // eslint-disable-line no-unused-vars
-  ol2d.addLayer(new ol.layer.Tile({
-    source: new ol.source.Stamen({
+  ol2d.addLayer(new olLayerTile({
+    source: new olSourceStamen({
       opacity: 0.7,
       layer: 'watercolor'
     })
   }));
 };
 
-const tileWMSSource = new ol.source.TileWMS({
+const tileWMSSource = new olSourceTileWMS({
   url: 'http://demo.boundlessgeo.com/geoserver/wms',
   params: {'LAYERS': 'topp:states', 'TILED': true},
   serverType: 'geoserver',
@@ -71,7 +72,7 @@ const tileWMSSource = new ol.source.TileWMS({
 });
 
 const addTileWMS = function() { // eslint-disable-line no-unused-vars
-  ol2d.addLayer(new ol.layer.Tile({
+  ol2d.addLayer(new olLayerTile({
     opacity: 0.5,
     extent: [-13884991, 2870341, -7455066, 6338219],
     source: tileWMSSource
@@ -86,7 +87,7 @@ const changeTileWMSParams = function() { // eslint-disable-line no-unused-vars
 };
 
 const addTileJSON = function() { // eslint-disable-line no-unused-vars
-  ol2d.addLayer(new ol.layer.Tile({
+  ol2d.addLayer(new olLayerTile({
     source: tileJsonSource
   }));
 };
@@ -97,3 +98,6 @@ const removeLastLayer = function() { // eslint-disable-line no-unused-vars
     ol2d.getLayers().removeAt(length - 1);
   }
 };
+
+
+export default exports;

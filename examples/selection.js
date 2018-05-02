@@ -1,51 +1,52 @@
+/**
+ * @module examples.selection
+ */
+const exports = {};
 /* eslint googshift/valid-provide-and-module: 0 */
-
-goog.provide('examples.selection');
-
-goog.require('ol.style.Stroke');
-goog.require('ol.style.Fill');
-goog.require('ol.style.Style');
-goog.require('olcs.OLCesium');
-goog.require('ol.View');
-goog.require('ol.format.GeoJSON');
-goog.require('ol.source.Vector');
-goog.require('ol.layer.Vector');
-goog.require('ol.source.OSM');
-goog.require('ol.layer.Tile');
-goog.require('ol.Map');
+import olStyleStroke from 'ol/style/Stroke.js';
+import olStyleFill from 'ol/style/Fill.js';
+import olStyleStyle from 'ol/style/Style.js';
+import olcsOLCesium from 'olcs/OLCesium.js';
+import olView from 'ol/View.js';
+import olFormatGeoJSON from 'ol/format/GeoJSON.js';
+import olSourceVector from 'ol/source/Vector.js';
+import olLayerVector from 'ol/layer/Vector.js';
+import olSourceOSM from 'ol/source/OSM.js';
+import olLayerTile from 'ol/layer/Tile.js';
+import olMap from 'ol/Map.js';
 
 
-const raster = new ol.layer.Tile({
-  source: new ol.source.OSM()
+const raster = new olLayerTile({
+  source: new olSourceOSM()
 });
 
-const vector = new ol.layer.Vector({
-  source: new ol.source.Vector({
-    format: new ol.format.GeoJSON(),
+const vector = new olLayerVector({
+  source: new olSourceVector({
+    format: new olFormatGeoJSON(),
     url: 'data/geojson/countries.geojson'
   })
 });
 
-const map = new ol.Map({
+const map = new olMap({
   layers: [raster, vector],
   target: 'map2d',
-  view: new ol.View({
+  view: new olView({
     center: [0, 0],
     zoom: 2
   })
 });
 
 
-const ol3d = new olcs.OLCesium({map, target: 'map3d'});
+const ol3d = new olcsOLCesium({map, target: 'map3d'});
 ol3d.setEnabled(true);
 
 
 
-const selectionStyle = new ol.style.Style({
-  fill: new ol.style.Fill({
+const selectionStyle = new olStyleStyle({
+  fill: new olStyleFill({
     color: [255, 255, 255, 0.6]
   }),
-  stroke: new ol.style.Stroke({
+  stroke: new olStyleStroke({
     color: [0, 153, 255, 1],
     width: 3
   })
@@ -64,3 +65,5 @@ map.on('click', (e) => {
   }
 });
 
+
+export default exports;

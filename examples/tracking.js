@@ -1,31 +1,32 @@
+/**
+ * @module examples.tracking
+ */
+const exports = {};
 /* eslint googshift/valid-provide-and-module: 0 */
-
-goog.provide('examples.tracking');
-
-goog.require('olcs.OLCesium');
-goog.require('ol.View');
-goog.require('ol.control');
-goog.require('ol.source.OSM');
-goog.require('ol.layer.Tile');
-goog.require('ol.source.Vector');
-goog.require('ol.style.Icon');
-goog.require('ol.style.Style');
-goog.require('ol.Feature');
-goog.require('ol.geom.Point');
-goog.require('ol.source.ImageVector');
-goog.require('ol.Map');
-goog.require('ol.layer.Image');
+import olcsOLCesium from 'olcs/OLCesium.js';
+import olView from 'ol/View.js';
+import olControl from 'ol/control.js';
+import olSourceOSM from 'ol/source/OSM.js';
+import olLayerTile from 'ol/layer/Tile.js';
+import olSourceVector from 'ol/source/Vector.js';
+import olStyleIcon from 'ol/style/Icon.js';
+import olStyleStyle from 'ol/style/Style.js';
+import olFeature from 'ol/Feature.js';
+import olGeomPoint from 'ol/geom/Point.js';
+import olSourceImageVector from 'ol/source/ImageVector.js';
+import olMap from 'ol/Map.js';
+import olLayerImage from 'ol/layer/Image.js';
 
 
-const point = new ol.geom.Point([700000, 200000, 100000]);
+const point = new olGeomPoint([700000, 200000, 100000]);
 
-const iconFeature = new ol.Feature({
+const iconFeature = new olFeature({
   geometry: point
 });
 
 
-const iconStyle = new ol.style.Style({
-  image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+const iconStyle = new olStyleStyle({
+  image: new olStyleIcon(/** @type {olx.style.IconOptions} */ ({
     anchor: [0.5, 46],
     anchorXUnits: 'fraction',
     anchorYUnits: 'pixels',
@@ -37,38 +38,38 @@ const iconStyle = new ol.style.Style({
 iconFeature.setStyle(iconStyle);
 
 
-const vectorSource2 = new ol.source.Vector({
+const vectorSource2 = new olSourceVector({
   features: [iconFeature]
 });
-const imageVectorSource = new ol.source.ImageVector({
+const imageVectorSource = new olSourceImageVector({
   source: vectorSource2
 });
-const vectorLayer2 = new ol.layer.Image({
+const vectorLayer2 = new olLayerImage({
   source: imageVectorSource
 });
 
 
-const map = new ol.Map({
+const map = new olMap({
   layers: [
-    new ol.layer.Tile({
-      source: new ol.source.OSM()
+    new olLayerTile({
+      source: new olSourceOSM()
     }),
     vectorLayer2
   ],
   target: 'map2d',
-  controls: ol.control.defaults({
+  controls: olControl.defaults({
     attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
       collapsible: false
     })
   }),
-  view: new ol.View({
+  view: new olView({
     center: [0, 0],
     zoom: 2
   })
 });
 
 
-const ol3d = new olcs.OLCesium({map/*, target: 'map3d'*/});
+const ol3d = new olcsOLCesium({map/*, target: 'map3d'*/});
 const scene = ol3d.getCesiumScene();
 const terrainProvider = new Cesium.CesiumTerrainProvider({
   url: '//assets.agi.com/stk-terrain/world',
@@ -92,3 +93,6 @@ setInterval(() => {
   ]);
   iconFeature.changed();
 }, 100);
+
+
+export default exports;
