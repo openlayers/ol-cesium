@@ -42,7 +42,6 @@ const vectorSource2 = new olSourceVector({
 });
 const vectorLayer2 = new olLayerVector({
   renderMode: 'image',
-  style: myStyle,
   source: vectorSource2
 });
 
