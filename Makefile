@@ -71,7 +71,7 @@ cleanall: clean
 	touch $@
 
 .build/eslint.timestamp: $(SRC_JS_FILES) $(EXAMPLES_JS_FILES) .build/node_modules.timestamp
-	./node_modules/.bin/eslint $^
+	./node_modules/.bin/eslint $(filter-out .build/node_modules.timestamp, $^)
 	touch $@
 
 CS_BUILD="node_modules/@camptocamp/cesium/Build"
