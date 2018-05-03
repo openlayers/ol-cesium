@@ -2,7 +2,6 @@
  * @module examples.tracking
  */
 const exports = {};
-/* eslint googshift/valid-provide-and-module: 0 */
 import OLCesium from 'olcs/OLCesium.js';
 import olView from 'ol/View.js';
 import {defaults as olControlDefaults} from 'ol/control.js';
@@ -76,10 +75,10 @@ scene.terrainProvider = terrainProvider;
 ol3d.setEnabled(true);
 
 let tracking = false;
-function toggleTracking() { // eslint-disable-line no-unused-vars
+window['toggleTracking'] = function() {
   tracking = !tracking;
   ol3d.trackedFeature = tracking ? iconFeature : undefined;
-}
+};
 
 setInterval(() => {
   const old = point.getCoordinates();
