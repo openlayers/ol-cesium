@@ -1,7 +1,7 @@
 /**
  * @module olcs.core.VectorLayerCounterpart
  */
-import olObservable from 'ol/Observable.js';
+import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
 
 /**
  * Result of the conversion of an OpenLayers layer to Cesium.
@@ -39,7 +39,7 @@ const exports = function(layerProjection, scene) {
  * Unlisten.
  */
 exports.prototype.destroy = function() {
-  this.olListenKeys.forEach(olObservable.unByKey);
+  this.olListenKeys.forEach(olObservableUnByKey);
   this.olListenKeys.length = 0;
 };
 

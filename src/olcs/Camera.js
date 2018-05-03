@@ -2,7 +2,7 @@
  * @module olcs.Camera
  */
 import googAsserts from 'goog/asserts.js';
-import olObservable from 'ol/Observable.js';
+import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
 import * as olEvents from 'ol/events.js';
 import * as olMath from 'ol/math.js';
 import * as olProj from 'ol/proj.js';
@@ -116,7 +116,7 @@ exports.identityProjection = function(input, opt_output, opt_dimension) {
  */
 exports.prototype.setView_ = function(view) {
   if (this.view_) {
-    olObservable.unByKey(this.viewListenKey_);
+    olObservableUnByKey(this.viewListenKey_);
     this.viewListenKey_ = null;
   }
 

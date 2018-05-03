@@ -3,7 +3,7 @@
  */
 import googAsserts from 'goog/asserts.js';
 import * as olBase from 'ol/index.js';
-import olObservable from 'ol/Observable.js';
+import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
 import * as olEvents from 'ol/events.js';
 import olLayerGroup from 'ol/layer/Group.js';
 
@@ -185,7 +185,7 @@ exports.prototype.removeAndDestroySingleLayer_ = function(layer) {
       this.removeSingleCesiumObject(counterpart, false);
       this.destroyCesiumObject(counterpart);
     });
-    this.olLayerListenKeys[uid].forEach(olObservable.unByKey);
+    this.olLayerListenKeys[uid].forEach(olObservableUnByKey);
     delete this.olLayerListenKeys[uid];
   }
   delete this.layerMap[uid];
@@ -205,7 +205,7 @@ exports.prototype.unlistenSingleGroup_ = function(group) {
   const uid = olBase.getUid(group).toString();
   const keys = this.olGroupListenKeys_[uid];
   keys.forEach((key) => {
-    olObservable.unByKey(key);
+    olObservableUnByKey(key);
   });
   delete this.olGroupListenKeys_[uid];
   delete this.layerMap[uid];
@@ -276,7 +276,7 @@ exports.prototype.listenForGroupChanges_ = function(group) {
       if (i >= 0) {
         listenKeyArray.splice(i, 1);
       }
-      olObservable.unByKey(el);
+      olObservableUnByKey(el);
     });
     listenAddRemove();
   }));
@@ -292,10 +292,10 @@ exports.prototype.destroyAll = function() {
   let objKey;
   for (objKey in this.olGroupListenKeys_) {
     const keys = this.olGroupListenKeys_[objKey];
-    keys.forEach(olObservable.unByKey);
+    keys.forEach(olObservableUnByKey);
   }
   for (objKey in this.olLayerListenKeys) {
-    this.olLayerListenKeys[objKey].forEach(olObservable.unByKey);
+    this.olLayerListenKeys[objKey].forEach(olObservableUnByKey);
   }
   this.olGroupListenKeys_ = {};
   this.olLayerListenKeys = {};

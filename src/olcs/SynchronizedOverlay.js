@@ -5,7 +5,7 @@ import * as olBase from 'ol/index.js';
 import olOverlay from 'ol/Overlay.js';
 import * as olProj from 'ol/proj.js';
 import * as olDom from 'ol/dom.js';
-import olObservable from 'ol/Observable.js';
+import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
 
 /**
  * @constructor
@@ -254,7 +254,7 @@ exports.prototype.destroy = function() {
   if (this.observer_) {
     this.observer_.disconnect();
   }
-  olObservable.unByKey(this.listenerKeys_);
+  olObservableUnByKey(this.listenerKeys_);
   this.listenerKeys_.splice(0);
   if (this.element.removeNode) {
     this.element.removeNode(true);
