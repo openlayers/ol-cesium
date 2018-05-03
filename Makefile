@@ -1,14 +1,8 @@
-ifeq ($(shell uname),Darwin)
-	SEDI := $(shell which sed) -i ''
-else
-	SEDI := $(shell which sed) -i
-endif
-UNAME := $(shell uname)
 SRC_JS_FILES := $(shell find src -type f -name '*.js')
 EXAMPLES_JS_FILES := $(shell find examples -type f -name '*.js')
-EXAMPLES_HTML_FILES := $(shell find examples -type f -name '*.html')
+EXAMPLES_FILES := $(shell find examples -type f)
 EXAMPLES_GEOJSON_FILES := $(shell find examples/data/ -name '*.geojson')
-CESIUM_COMPILE_TARGET = minify
+WEBPACK_CONFIG_FILES := $(shell ls buildtools/webpack.*.js) webpack.config.js
 
 .PHONY: all
 all: help
@@ -23,36 +17,37 @@ help:
 	@echo "- check                   Perform a number of checks on the code (lint, compile, etc.)"
 	@echo "- lint                    Check the code with the linter"
 	@echo "- serve                   Run a development web server for running the examples"
-	@echo "- dist-examples           Create a "distribution" for the examples (dist/examples/)"
-	@echo "- dist-apidoc             Create a "distribution" for the api docs (dist/apidoc/)"
 	@echo "- clean                   Remove generated files"
 	@echo "- cleanall                Remove all the build artefacts"
 	@echo "- help                    Display this help message"
 	@echo
 
-.PHONY: npm-install
-npm-install: .build/node_modules.timestamp
-
 .PHONY: serve
-serve: npm-install
-	node build/serve.js
+serve: .build/node_modules.timestamp
+	npm run serve
 
 .PHONY: dist
-dist: dist/olcesium.js dist/olcesium-debug.js CHANGES.md .build/es6_package.timestamp
-	cp CHANGES.md dist/
+dist: dist/olcesium.js css/olcs.css CHANGES.md .build/jsdoc.timestamp .build/dist-examples.timestamp
+	cp CHANGES.md css/olcs.css dist/
 
 .PHONY: dist-examples
 dist-examples: .build/dist-examples.timestamp
 
 .PHONY: dist-apidoc
-dist-apidoc:
-	node node_modules/.bin/jsdoc -c build/jsdoc/api/conf.json -d dist/apidoc
+dist-apidoc: .build/jsdoc.timestamp
+
+.build/jsdoc.timestamp: $(SRC_JS_FILES) .build/node_modules.timestamp
+	mkdir -p dist
+	node node_modules/.bin/jsdoc src/olcs -d dist/apidoc
+	mkdir -p $(dir $@)
+	touch $@
 
 .PHONY: lint
 lint: .build/node_modules.timestamp .build/eslint.timestamp
 
 .build/geojsonhint.timestamp: $(EXAMPLES_GEOJSON_FILES)
 	$(foreach file,$?, echo $(file); node_modules/.bin/geojsonhint $(file);)
+	mkdir -p $(dir $@)
 	touch $@
 
 .PHONY: check
@@ -75,37 +70,18 @@ cleanall: clean
 	mkdir -p $(dir $@)
 	touch $@
 
-.build/eslint.timestamp: $(SRC_JS_FILES) $(EXAMPLES_JS_FILES)
+.build/eslint.timestamp: $(SRC_JS_FILES) $(EXAMPLES_JS_FILES) .build/node_modules.timestamp
 	./node_modules/.bin/eslint $^
 	touch $@
 
-.build/dist-examples.timestamp: dist/olcesium.js $(EXAMPLES_JS_FILES) $(EXAMPLES_HTML_FILES)
-	node build/parse-examples.js
-	mkdir -p $(dir $@)
-	cp -R node_modules/@camptocamp/cesium/Build/Cesium dist/
-	cp -R node_modules/@camptocamp/cesium/Build/CesiumUnminified dist/
-	cp -R examples dist/
-	cp node_modules/openlayers/css/ol.css dist/
-	cp css/olcs.css dist/
-	$(SEDI) 'sYDIST = falseYDIST = trueY' dist/examples/inject_ol_cesium.js
-	$(SEDI) 'sY@loaderYolcesium.jsY' dist/examples/inject_ol_cesium.js
-	$(SEDI) 'sY../node_modules/@camptocamp/cesium/Build/Y../Y' dist/examples/inject_ol_cesium.js
-	for f in dist/examples/*.html; \
-	do \
-	  $(SEDI) 'sY../node_modules/openlayers/css/ol.cssY../ol.cssY' $$f; \
-	done
-	for f in dist/examples/*.js; \
-	do \
-	  $(SEDI) '/goog.provide.*/d' $$f; \
-	  $(SEDI) '/goog.require.*/d' $$f; \
-	done
+CS_BUILD="node_modules/@camptocamp/cesium/Build"
+.build/dist-examples.timestamp: $(EXAMPLES_FILES) $(WEBPACK_CONFIG_FILES) .build/node_modules.timestamp
+	mkdir -p dist/examples
+	npm run build-examples
+	cp -f examples/inject_ol_cesium.js dist/examples/
+	mkdir -p dist/$(CS_BUILD) ; rm -rf dist/$(CS_BUILD)/* ; cp -Rf $(CS_BUILD)/Cesium* dist/$(CS_BUILD)/
 	touch $@
 
-dist/olcesium-debug.js: build/olcesium-debug.json $(SRC_JS_FILES) build/build.js .build/node_modules.timestamp
+dist/olcesium.js: $(SRC_JS_FILES) $(WEBPACK_CONFIG_FILES) .build/node_modules.timestamp
 	mkdir -p $(dir $@)
-	node build/build.js $< $@
-
-
-dist/olcesium.js: build/olcesium.json $(SRC_JS_FILES) build/build.js .build/node_modules.timestamp
-	mkdir -p $(dir $@)
-	node build/build.js $< $@
+	npm run build-library
