@@ -2,7 +2,6 @@
  * @module examples.main
  */
 const exports = {};
-/* eslint googshift/valid-provide-and-module: 0 */
 import OLCesium from 'olcs/OLCesium.js';
 import * as olProj from 'ol/proj.js';
 import olView from 'ol/View.js';
@@ -53,7 +52,9 @@ ol3d.setEnabled(true);
 
 
 timeElt.style.display = 'none';
-const toggleTime = function() { // eslint-disable-line no-unused-vars
+
+document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
+window['toggleTime'] = function() {
   scene.globe.enableLighting = !scene.globe.enableLighting;
   if (timeElt.style.display == 'none') {
     timeElt.style.display = 'inline-block';
