@@ -2,7 +2,6 @@
  * @module examples.customProj
  */
 const exports = {};
-/* eslint googshift/valid-provide-and-module: 0 */
 import OLCesium from 'olcs/OLCesium.js';
 import olView from 'ol/View.js';
 import olSourceImageWMS from 'ol/source/ImageWMS.js';
@@ -11,6 +10,8 @@ import olLayerImage from 'ol/layer/Image.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olMap from 'ol/Map.js';
 import * as olProj from 'ol/proj.js';
+import {register as olProj4Register} from 'ol/proj/proj4.js';
+import proj4 from 'proj4';
 
 const epsg21781def = [
   '+proj=somerc',
@@ -27,6 +28,8 @@ const epsg21781def = [
 const epsg21781extent = [420000, 30000, 900000, 350000];
 
 proj4.defs('EPSG:21781', epsg21781def);
+
+olProj4Register(proj4);
 olProj.get('EPSG:21781').setExtent(epsg21781extent);
 
 const customProjSource = new olSourceImageWMS({
