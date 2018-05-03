@@ -2,7 +2,6 @@
  * @module examples.synthvectors
  */
 const exports = {};
-/* eslint googshift/valid-provide-and-module: 0 */
 import olLayerVector from 'ol/layer/Vector.js';
 import olSourceVector from 'ol/source/Vector.js';
 import olStyleFill from 'ol/style/Fill.js';
@@ -62,7 +61,7 @@ handler.setInputAction((movement) => {
 }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
 
-function clearFeatures() { // eslint-disable-line no-unused-vars
+window['clearFeatures'] = function() {
   vectorLayers.forEach((layer) => {
     map.getLayers().remove(layer);
   });
@@ -70,9 +69,9 @@ function clearFeatures() { // eslint-disable-line no-unused-vars
   total = document.getElementById('total').innerHTML = 0;
   document.getElementById('created').innerHTML = '';
   document.getElementById('added').innerHTML = '';
-}
+};
 
-const addFeatures = function() { // eslint-disable-line no-unused-vars
+window['addFeatures'] = function() {
   let then = Date.now();
   const count = 1000;
   const features = [];
