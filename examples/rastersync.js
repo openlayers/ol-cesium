@@ -2,7 +2,6 @@
  * @module examples.rastersync
  */
 const exports = {};
-/* eslint googshift/valid-provide-and-module: 0 */
 import olSourceTileWMS from 'ol/source/TileWMS.js';
 import olSourceStamen from 'ol/source/Stamen.js';
 import OLCesium from 'olcs/OLCesium.js';
@@ -99,5 +98,16 @@ const removeLastLayer = function() { // eslint-disable-line no-unused-vars
   }
 };
 
+window['global'] = {
+  ol2d,
+  removeLastLayer,
+  addStamen,
+  addTileWMS,
+  addTileJSON,
+  changeTileWMSParams,
+  layer0,
+  layer1,
+  layer2
+};
 
 export default exports;
