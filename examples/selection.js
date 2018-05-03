@@ -2,7 +2,6 @@
  * @module examples.selection
  */
 const exports = {};
-/* eslint googshift/valid-provide-and-module: 0 */
 import olStyleStroke from 'ol/style/Stroke.js';
 import olStyleFill from 'ol/style/Fill.js';
 import olStyleStyle from 'ol/style/Style.js';
