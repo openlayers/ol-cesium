@@ -1,5 +1,16 @@
 # Changelog
 
+# v 2.0
+
+* Breaking changes
+  * Migrate to ES6 modules and abandon the Google Closure Compiler build chain
+    and documentation tools inherited from OpenLayers. The examples are now
+    based on webpack.
+  * Migrate to OpenLayers 5.x (master).
+  * The dist/olcesium.js file no longer includes OpenLayers, you must provide
+    it yourself. This is now similar to Cesium, which has always been a
+    dependency provided by the application.
+
 # v 1.37 - 2018-05-02
 
 * Changes
