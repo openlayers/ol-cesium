@@ -2,7 +2,6 @@
  * @module examples.layer-group
  */
 const exports = {};
-/* eslint googshift/valid-provide-and-module: 0 */
 import olMap from 'ol/Map.js';
 import olView from 'ol/View.js';
 import olLayerGroup from 'ol/layer/Group.js';
@@ -49,14 +48,26 @@ const ol2d = new olMap({
 const ol3d = new OLCesium({map: ol2d, target: 'map3d'});
 ol3d.setEnabled(true);
 
-// eslint-disable-next-line no-unused-vars
-function toggleLayer(element, layer) {
-  layer.setVisible(element.checked);
-}
-// eslint-disable-next-line no-unused-vars
-function setLayerOpacity(element, layer) {
-  layer.setOpacity(parseFloat(element.value));
+function getLayer(layername) {
+  switch (layername) {
+    case 'layer0':
+      return layer0;
+    case 'layer1':
+      return layer1;
+    case 'layer10':
+      return layer10;
+    case 'layer11':
+      return layer11;
+    default:
+      throw new Error('Unknown layer');
+  }
 }
 
+window['toggleLayer'] = function(element, name) {
+  getLayer(name).setVisible(element.checked);
+};
+window['setLayerOpacity'] = function(element, name) {
+  getLayer(name).setOpacity(parseFloat(element.value));
+};
 
 export default exports;
