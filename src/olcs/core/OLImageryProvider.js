@@ -79,9 +79,9 @@ const exports = function(source, opt_fallbackProj) {
   this.emptyCanvas_.width = 1;
   this.emptyCanvas_.height = 1;
 
-  this.source_.on('change', function(e) {
+  this.source_.on('change', (e) => {
     this.handleSourceChanged_();
-  }, this);
+  });
   this.handleSourceChanged_();
 };
 

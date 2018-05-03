@@ -86,9 +86,9 @@ const exports = function(scene, map) {
    */
   this.viewUpdateInProgress_ = false;
 
-  this.map_.on('change:view', function(e) {
+  this.map_.on('change:view', (e) => {
     this.setView_(this.map_.getView());
-  }, this);
+  });
   this.setView_(this.map_.getView());
 };
 

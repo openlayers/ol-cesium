@@ -118,7 +118,7 @@ exports.prototype.createSingleLayerCounterparts = function(olLayerWithParents) {
 
     // there is no way to modify Cesium layer extent,
     // we have to recreate when OpenLayers layer extent changes:
-    listenKeyArray.push(olLayer.on('change:extent', function(e) {
+    listenKeyArray.push(olLayer.on('change:extent', (e) => {
       for (let i = 0; i < cesiumObjects.length; ++i) {
         this.cesiumLayers_.remove(cesiumObjects[i], true); // destroy
         this.ourLayers_.remove(cesiumObjects[i], false);
@@ -127,7 +127,7 @@ exports.prototype.createSingleLayerCounterparts = function(olLayerWithParents) {
       this.synchronize();
     }, this));
 
-    listenKeyArray.push(olLayer.on('change', function(e) {
+    listenKeyArray.push(olLayer.on('change', (e) => {
       // when the source changes, re-add the layer to force update
       for (let i = 0; i < cesiumObjects.length; ++i) {
         const position = this.cesiumLayers_.indexOf(cesiumObjects[i]);
@@ -136,7 +136,7 @@ exports.prototype.createSingleLayerCounterparts = function(olLayerWithParents) {
           this.cesiumLayers_.add(cesiumObjects[i], position);
         }
       }
-    }, this));
+    }));
 
     this.olLayerListenKeys[uid].push(...listenKeyArray);
   }
@@ -178,7 +178,7 @@ exports.prototype.orderLayers = function() {
     const olLayerId = olBase.getUid(olLayer).toString();
     const cesiumObjects = this.layerMap[olLayerId];
     if (cesiumObjects) {
-      cesiumObjects.forEach(this.raiseToTop, this);
+      cesiumObjects.forEach((cesiumObject) => { this.raiseToTop(cesiumObject); });
     }
   });
 };

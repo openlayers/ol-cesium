@@ -257,12 +257,12 @@ exports.prototype.listenForGroupChanges_ = function(group) {
     const collection = group.getLayers();
     if (collection) {
       contentKeys = [
-        collection.on('add', function(event) {
+        collection.on('add', (event) => {
           this.addLayers_(event.element);
-        }, this),
-        collection.on('remove', function(event) {
+        }),
+        collection.on('remove', (event) => {
           this.removeLayer_(event.element);
-        }, this)
+        })
       ];
       listenKeyArray.push(...contentKeys);
     }

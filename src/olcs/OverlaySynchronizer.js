@@ -105,7 +105,7 @@ exports.prototype.addOverlayFromEvent_ = function(event) {
  * @api
  */
 exports.prototype.addOverlays = function() {
-  this.overlays_.forEach(this.addOverlay, this);
+  this.overlays_.forEach((overlay) => { this.addOverlay(); });
 };
 
 /**

@@ -11,6 +11,7 @@ import olSourceImage from 'ol/source/Image.js';
 import olSourceImageWMS from 'ol/source/ImageWMS.js';
 import olSourceTileImage from 'ol/source/TileImage.js';
 import olSourceTileWMS from 'ol/source/TileWMS.js';
+import {defaultImageLoadFunction} from 'ol/source/Image.js';
 import olcsCoreOLImageryProvider from './core/OLImageryProvider.js';
 import olcsUtil from './util.js';
 
@@ -370,7 +371,7 @@ exports.tileLayerToImageryLayer = function(olLayer, viewProj) {
 
   // Convert ImageWMS to TileWMS
   if (source instanceof olSourceImageWMS && source.getUrl() &&
-    source.getImageLoadFunction() === olSourceImage.defaultImageLoadFunction) {
+    source.getImageLoadFunction() === defaultImageLoadFunction) {
     const sourceProps = {
       'olcs.proxy': source.get('olcs.proxy'),
       'olcs.extent': source.get('olcs.extent'),
@@ -381,7 +382,6 @@ exports.tileLayerToImageryLayer = function(olLayer, viewProj) {
       url: source.getUrl(),
       attributions: source.getAttributions(),
       projection: source.getProjection(),
-      logo: source.getLogo(),
       params: source.getParams()
     });
     source.setProperties(sourceProps);
