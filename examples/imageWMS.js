@@ -2,7 +2,7 @@
  * @module examples.main
  */
 const exports = {};
-/* eslint googshift/valid-provide-and-module: 0 */
+
 import OLCesium from 'olcs/OLCesium.js';
 import olView from 'ol/View.js';
 import {defaults as olControlDefaults} from 'ol/control.js';
