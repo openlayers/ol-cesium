@@ -2,7 +2,6 @@
  * @module examples.lazy
  */
 const exports = {};
-/* eslint googshift/valid-provide-and-module: 0 */
 import * as olProj from 'ol/proj.js';
 import olView from 'ol/View.js';
 import {defaults as olControlDefaults} from 'ol/control.js';
