@@ -2,7 +2,6 @@
  * @module examples.overlay
  */
 const exports = {};
-/* eslint googshift/valid-provide-and-module: 0 */
 import OLCesium from 'olcs/OLCesium.js';
 import olMap from 'ol/Map.js';
 import olSourceOSM from 'ol/source/OSM.js';
@@ -143,13 +142,13 @@ class OverlayHandler {
       });
       $(element).popover('show');
     } else {
-      element.childNodes.forEach(function(child) {
+      element.childNodes.forEach((child) => {
         if (child.id === 'popup-content') {
           child.innerHTML = `<p>The location you clicked was:</p><code>${hdms}</code>`;
         } else if (child.id === 'popup-closer') {
           child.onclick = this.onCloseClick.bind(this, overlay, this.options.add);
         }
-      }, this);
+      });
     }
   }
 
@@ -176,5 +175,6 @@ class OverlayHandler {
 
 new OverlayHandler(ol2d, ol3d, scene);
 
+document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
 
 export default exports;
