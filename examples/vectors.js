@@ -2,7 +2,6 @@
  * @module examples.vectors
  */
 const exports = {};
-/* eslint googshift/valid-provide-and-module: 0 */
 import OLCesium from 'olcs/OLCesium.js';
 import olView from 'ol/View.js';
 import {defaults as olControlDefaults} from 'ol/control.js';
@@ -352,23 +351,23 @@ scene.primitives.add(csLabels);
 vectorSource.addFeature(theCircle);
 
 let hasTheVectorLayer = true;
-function addOrRemoveOneVectorLayer() { // eslint-disable-line no-unused-vars
+window['addOrRemoveOneVectorLayer'] = function() {
   if (hasTheVectorLayer) {
     map.getLayers().remove(vectorLayer);
   } else {
     map.getLayers().insertAt(1, vectorLayer);
   }
   hasTheVectorLayer = !hasTheVectorLayer;
-}
+};
 
-function addOrRemoveOneFeature() { // eslint-disable-line no-unused-vars
+window['addOrRemoveOneFeature'] = function() {
   const found = vectorSource2.getFeatures().indexOf(iconFeature);
   if (found === -1) {
     vectorSource2.addFeature(iconFeature);
   } else {
     vectorSource2.removeFeature(iconFeature);
   }
-}
+};
 
 let oldStyle = new olStyleStyle({
   stroke: new olStyleStroke({
@@ -379,13 +378,14 @@ let oldStyle = new olStyleStyle({
     color: 'green'
   })
 });
-function toggleStyle() { // eslint-disable-line no-unused-vars
+
+window['toggleStyle'] = function() {
   const swap = theCircle.getStyle();
   theCircle.setStyle(oldStyle);
   oldStyle = swap;
-}
+};
 
-function toggleClampToGround() { // eslint-disable-line no-unused-vars
+window['toggleClampToGround'] = function() {
   let altitudeMode;
   if (!vectorLayer.get('altitudeMode')) {
     altitudeMode = 'clampToGround';
@@ -396,16 +396,20 @@ function toggleClampToGround() { // eslint-disable-line no-unused-vars
   map.removeLayer(vectorLayer2);
   map.addLayer(vectorLayer);
   map.addLayer(vectorLayer2);
-}
+};
 
-function setTargetFrameRate() { // eslint-disable-line no-unused-vars
+window['setTargetFrameRate'] = function() {
   let fps;
   const fpsEl = document.querySelector('#framerate');
   if (fpsEl) {
     fps = Number(fpsEl.value);
     ol3d.setTargetFrameRate(fps);
   }
-}
+};
+
+window['ol3d'] = ol3d;
+window['scene'] = scene;
+document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
 
 ol3d.enableAutoRenderLoop();
 

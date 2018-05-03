@@ -11,8 +11,7 @@
   <body>
     <div id="map2d" style="width:600px;height:400px;float:left;"></div>
     <div id="map3d" style="width:600px;height:400px;float:left;position:relative;"></div>
-    <div><input type="button" value="Enable/disable Cesium"
-      onclick="javascript:ol3d.setEnabled(!ol3d.getEnabled())" /></div>
+    <div><input id="enable" type="button" value="Enable/disable Cesium" /></div>
     <div><input type="button" value="Toggle depth test"
       onclick="javascript:scene.globe.depthTestAgainstTerrain = !scene.globe.depthTestAgainstTerrain; ol3d.getAutoRenderLoop().restartRenderLoop()" /></div>
     <div><input type="button" value="Toggle circle style"
