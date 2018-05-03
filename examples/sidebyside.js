@@ -2,7 +2,6 @@
  * @module examples.sidebyside
  */
 const exports = {};
-/* eslint googshift/valid-provide-and-module: 0 */
 import OLCesium from 'olcs/OLCesium.js';
 import olSourceOSM from 'ol/source/OSM.js';
 import olLayerTile from 'ol/layer/Tile.js';
@@ -35,5 +34,6 @@ const terrainProvider = new Cesium.CesiumTerrainProvider({
 scene.terrainProvider = terrainProvider;
 ol3d.setEnabled(true);
 
+document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
 
 export default exports;
