@@ -1,20 +1,20 @@
-#!/bin/bash
+#!/bin/bash -ex
 
 # Create distribution
 rm -Rf dist/*
-make dist-examples dist-apidoc
-rm dist/source
+make dist
 
+CLONE="gh-pages-clone"
 # Publish distribution contents to gh-pages
-cd build
-git clone -b gh-pages git@github.com:openlayers/ol-cesium.git
-cp -Rf ../dist/* ol-cesium/
-cd ol-cesium
-git add .
-git commit -m "Updating gh-pages"
-git push origin gh-pages 
+pushd .build
+git clone -b gh-pages --single-branch git@github.com:openlayers/ol-cesium.git $CLONE
+cp -Rf ../dist/* $CLONE/
+cd $CLONE
+git add -A .
+git commit --quiet --amend -m "Updating gh-pages"
+git push origin gh-pages -f
+popd
 
 # Cleanup
-cd ..
-rm -Rf ol-cesium
-cd ..
+rm -Rf $CLONE
+popd

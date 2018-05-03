@@ -11,5 +11,3 @@ cache:
 
 script:
   - make dist
-  - make check
-  - make dist-examples

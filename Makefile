@@ -14,7 +14,6 @@ help:
 	@echo "Main targets:"
 	@echo
 	@echo "- dist                    Create a "distribution" for the library (dist/olcesium.js)"
-	@echo "- check                   Perform a number of checks on the code (lint, compile, etc.)"
 	@echo "- lint                    Check the code with the linter"
 	@echo "- serve                   Run a development web server for running the examples"
 	@echo "- clean                   Remove generated files"
@@ -27,7 +26,7 @@ serve: .build/node_modules.timestamp
 	npm run serve
 
 .PHONY: dist
-dist: dist/olcesium.js css/olcs.css CHANGES.md .build/jsdoc.timestamp .build/dist-examples.timestamp
+dist: dist/olcesium.js css/olcs.css CHANGES.md .build/jsdoc.timestamp .build/dist-examples.timestamp lint
 	cp CHANGES.md css/olcs.css dist/
 
 .PHONY: dist-examples
@@ -49,9 +48,6 @@ lint: .build/node_modules.timestamp .build/eslint.timestamp
 	$(foreach file,$?, echo $(file); node_modules/.bin/geojsonhint $(file);)
 	mkdir -p $(dir $@)
 	touch $@
-
-.PHONY: check
-check: lint dist
 
 .PHONY: clean
 clean:
