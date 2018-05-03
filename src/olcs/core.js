@@ -7,7 +7,6 @@ import googAsserts from 'goog/asserts.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olLayerImage from 'ol/layer/Image.js';
 import * as olProj from 'ol/proj.js';
-import olSourceImage from 'ol/source/Image.js';
 import olSourceImageWMS from 'ol/source/ImageWMS.js';
 import olSourceTileImage from 'ol/source/TileImage.js';
 import olSourceTileWMS from 'ol/source/TileWMS.js';
