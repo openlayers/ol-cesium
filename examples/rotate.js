@@ -2,7 +2,6 @@
  * @module examples.rotate
  */
 const exports = {};
-/* eslint googshift/valid-provide-and-module: 0 */
 import olcsCore from 'olcs/core.js';
 import OLCesium from 'olcs/OLCesium.js';
 import olView from 'ol/View.js';
