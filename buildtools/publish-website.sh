@@ -9,7 +9,7 @@ CLONE="gh-pages-clone"
 pushd .build
 git clone -b gh-pages --single-branch git@github.com:openlayers/ol-cesium.git $CLONE
 cp -Rf ../dist/* $CLONE/
-cd $CLONE
+pushd $CLONE
 git add -A .
 git commit --quiet --amend -m "Updating gh-pages"
 git push origin gh-pages -f
