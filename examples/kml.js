@@ -1,35 +1,35 @@
-/* eslint googshift/valid-provide-and-module: 0 */
+/**
+ * @module examples.kml
+ */
+const exports = {};
+import OLCesium from 'olcs/OLCesium.js';
+import * as olProj from 'ol/proj.js';
+import olView from 'ol/View.js';
+import {defaults as olControlDefaults} from 'ol/control.js';
+import olSourceOSM from 'ol/source/OSM.js';
+import olLayerTile from 'ol/layer/Tile.js';
+import olMap from 'ol/Map.js';
 
-goog.provide('examples.kml');
 
-goog.require('olcs.OLCesium');
-goog.require('ol.proj');
-goog.require('ol.View');
-goog.require('ol.control');
-goog.require('ol.source.OSM');
-goog.require('ol.layer.Tile');
-goog.require('ol.Map');
-
-
-const ol2d = new ol.Map({
+const ol2d = new olMap({
   layers: [
-    new ol.layer.Tile({
-      source: new ol.source.OSM()
+    new olLayerTile({
+      source: new olSourceOSM()
     })
   ],
-  controls: ol.control.defaults({
+  controls: olControlDefaults({
     attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
       collapsible: false
     })
   }),
   target: 'map',
-  view: new ol.View({
-    center: ol.proj.transform([25, 20], 'EPSG:4326', 'EPSG:3857'),
+  view: new olView({
+    center: olProj.transform([25, 20], 'EPSG:4326', 'EPSG:3857'),
     zoom: 3
   })
 });
 
-const ol3d = new olcs.OLCesium({map: ol2d});
+const ol3d = new OLCesium({map: ol2d});
 const scene = ol3d.getCesiumScene();
 const terrainProvider = new Cesium.CesiumTerrainProvider({
   url: '//assets.agi.com/stk-terrain/world'
@@ -44,3 +44,6 @@ ol3d.getDataSources().add(Cesium.KmlDataSource.load(
     }
 ));
 
+document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
+
+export default exports;

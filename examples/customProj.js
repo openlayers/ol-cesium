@@ -1,15 +1,17 @@
-/* eslint googshift/valid-provide-and-module: 0 */
-
-goog.provide('examples.customProj');
-
-goog.require('olcs.OLCesium');
-goog.require('ol.View');
-goog.require('ol.source.ImageWMS');
-goog.require('ol.source.OSM');
-goog.require('ol.layer.Image');
-goog.require('ol.layer.Tile');
-goog.require('ol.Map');
-goog.require('ol.proj');
+/**
+ * @module examples.customProj
+ */
+const exports = {};
+import OLCesium from 'olcs/OLCesium.js';
+import olView from 'ol/View.js';
+import olSourceImageWMS from 'ol/source/ImageWMS.js';
+import olSourceOSM from 'ol/source/OSM.js';
+import olLayerImage from 'ol/layer/Image.js';
+import olLayerTile from 'ol/layer/Tile.js';
+import olMap from 'ol/Map.js';
+import * as olProj from 'ol/proj.js';
+import {register as olProj4Register} from 'ol/proj/proj4.js';
+import proj4 from 'proj4';
 
 const epsg21781def = [
   '+proj=somerc',
@@ -26,9 +28,11 @@ const epsg21781def = [
 const epsg21781extent = [420000, 30000, 900000, 350000];
 
 proj4.defs('EPSG:21781', epsg21781def);
-ol.proj.get('EPSG:21781').setExtent(epsg21781extent);
 
-const customProjSource = new ol.source.ImageWMS({
+olProj4Register(proj4);
+olProj.get('EPSG:21781').setExtent(epsg21781extent);
+
+const customProjSource = new olSourceImageWMS({
   attributions: '© <a href="http://www.geo.admin.ch/internet/geoportal/' +
   'en/home.html">National parks / geo.admin.ch</a>',
   crossOrigin: 'anonymous',
@@ -37,25 +41,25 @@ const customProjSource = new ol.source.ImageWMS({
   url: 'https://wms.geo.admin.ch/'
 });
 
-customProjSource.set('olcs.projection', ol.proj.get('EPSG:3857'));
+customProjSource.set('olcs.projection', olProj.get('EPSG:3857'));
 
-const ol2d = new ol.Map({
+const ol2d = new olMap({
   layers: [
-    new ol.layer.Tile({
-      source: new ol.source.OSM()
+    new olLayerTile({
+      source: new olSourceOSM()
     }),
-    new ol.layer.Image({
+    new olLayerImage({
       source: customProjSource
     })
   ],
   target: 'map',
-  view: new ol.View({
+  view: new olView({
     center: [860434.6266531206, 6029479.0044273855],
     zoom: 6
   })
 });
 
-const ol3d = new olcs.OLCesium({
+const ol3d = new OLCesium({
   map: ol2d,
   time() {
     return Cesium.JulianDate.now();
@@ -68,3 +72,7 @@ const terrainProvider = new Cesium.CesiumTerrainProvider({
 });
 scene.terrainProvider = terrainProvider;
 ol3d.setEnabled(true);
+
+document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
+
+export default exports;

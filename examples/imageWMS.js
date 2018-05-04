@@ -1,45 +1,46 @@
-/* eslint googshift/valid-provide-and-module: 0 */
+/**
+ * @module examples.main
+ */
+const exports = {};
 
-goog.provide('examples.main');
+import OLCesium from 'olcs/OLCesium.js';
+import olView from 'ol/View.js';
+import {defaults as olControlDefaults} from 'ol/control.js';
+import olSourceImageWMS from 'ol/source/ImageWMS.js';
+import olSourceOSM from 'ol/source/OSM.js';
+import olLayerImage from 'ol/layer/Image.js';
+import olLayerTile from 'ol/layer/Tile.js';
+import olMap from 'ol/Map.js';
 
-goog.require('olcs.OLCesium');
-goog.require('ol.View');
-goog.require('ol.control');
-goog.require('ol.source.ImageWMS');
-goog.require('ol.source.OSM');
-goog.require('ol.layer.Image');
-goog.require('ol.layer.Tile');
-goog.require('ol.Map');
-
-const imageWMSSource = new ol.source.ImageWMS({
+const imageWMSSource = new olSourceImageWMS({
   url: 'https://demo.boundlessgeo.com/geoserver/wms',
   params: {'LAYERS': 'topp:states'},
   ratio: 1
 });
 
-const ol2d = new ol.Map({
+const ol2d = new olMap({
   layers: [
-    new ol.layer.Tile({
-      source: new ol.source.OSM()
+    new olLayerTile({
+      source: new olSourceOSM()
     }),
-    new ol.layer.Image({
+    new olLayerImage({
       extent: [-13884991, 2870341, -7455066, 6338219],
       source: imageWMSSource
     })
   ],
-  controls: ol.control.defaults({
+  controls: olControlDefaults({
     attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
       collapsible: false
     })
   }),
   target: 'map',
-  view: new ol.View({
+  view: new olView({
     center: [-10967567.978507737, 4204193.972847062],
     zoom: 3
   })
 });
 
-const ol3d = new olcs.OLCesium({
+const ol3d = new OLCesium({
   map: ol2d,
   time() {
     return Cesium.JulianDate.now();
@@ -53,5 +54,6 @@ const terrainProvider = new Cesium.CesiumTerrainProvider({
 scene.terrainProvider = terrainProvider;
 ol3d.setEnabled(true);
 
+document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
 
-
+export default exports;

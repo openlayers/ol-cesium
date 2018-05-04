@@ -1,39 +1,39 @@
-/* eslint googshift/valid-provide-and-module: 0 */
-
-goog.provide('examples.overlay');
-
-goog.require('olcs.OLCesium');
-goog.require('ol.Map');
-goog.require('ol.source.OSM');
-goog.require('ol.layer.Tile');
-goog.require('ol.proj');
-goog.require('ol.View');
-goog.require('ol.control');
-goog.require('ol.Overlay');
-goog.require('ol.coordinate');
+/**
+ * @module examples.overlay
+ */
+const exports = {};
+import OLCesium from 'olcs/OLCesium.js';
+import olMap from 'ol/Map.js';
+import olSourceOSM from 'ol/source/OSM.js';
+import olLayerTile from 'ol/layer/Tile.js';
+import * as olProj from 'ol/proj.js';
+import olView from 'ol/View.js';
+import {defaults as olControlDefaults} from 'ol/control.js';
+import olOverlay from 'ol/Overlay.js';
+import * as olCoordinate from 'ol/coordinate.js';
 /* global $ */
 
-const source = new ol.source.OSM();
+const source = new olSourceOSM();
 
 
-const ol2d = new ol.Map({
+const ol2d = new olMap({
   layers: [
-    new ol.layer.Tile({
+    new olLayerTile({
       source
     })
   ],
-  controls: ol.control.defaults({
+  controls: olControlDefaults({
     attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
       collapsible: false
     })
   }),
   target: 'map',
-  view: new ol.View({
-    center: ol.proj.transform([-112.2, 36.06], 'EPSG:4326', 'EPSG:3857'),
+  view: new olView({
+    center: olProj.transform([-112.2, 36.06], 'EPSG:4326', 'EPSG:3857'),
     zoom: 11
   })
 });
-const ol3d = new olcs.OLCesium({
+const ol3d = new OLCesium({
   map: ol2d,
   target: 'map3d'
 });
@@ -49,11 +49,11 @@ class OverlayHandler {
     this.ol3d = ol3d;
     this.scene = scene;
 
-    this.staticOverlay = new ol.Overlay({
+    this.staticOverlay = new olOverlay({
       element: document.getElementById('popup')
     });
 
-    this.staticBootstrapPopup = new ol.Overlay({
+    this.staticBootstrapPopup = new olOverlay({
       element: document.getElementById('popup-bootstrap')
     });
     this.ol2d.addOverlay(this.staticOverlay);
@@ -83,8 +83,8 @@ class OverlayHandler {
 
   onClickHandlerOL(event) {
     const coordinates = event.coordinate;
-    const hdms = ol.coordinate.toStringHDMS(
-        ol.proj.transform(coordinates, 'EPSG:3857', 'EPSG:4326')
+    const hdms = olCoordinate.toStringHDMS(
+        olProj.transform(coordinates, 'EPSG:3857', 'EPSG:4326')
     );
     const overlay = this.getOverlay();
     overlay.setPosition(coordinates);
@@ -109,8 +109,8 @@ class OverlayHandler {
       coords = coords.concat([height]);
     }
 
-    const transformedCoords = ol.proj.transform(coords, ol.proj.get('EPSG:4326'), 'EPSG:3857');
-    const hdms = ol.coordinate.toStringHDMS(coords);
+    const transformedCoords = olProj.transform(coords, olProj.get('EPSG:4326'), 'EPSG:3857');
+    const hdms = olCoordinate.toStringHDMS(coords);
     const overlay = this.getOverlay();
     overlay.setPosition(transformedCoords);
     this.setOverlayContent(overlay, hdms);
@@ -142,13 +142,13 @@ class OverlayHandler {
       });
       $(element).popover('show');
     } else {
-      element.childNodes.forEach(function(child) {
+      element.childNodes.forEach((child) => {
         if (child.id === 'popup-content') {
           child.innerHTML = `<p>The location you clicked was:</p><code>${hdms}</code>`;
         } else if (child.id === 'popup-closer') {
           child.onclick = this.onCloseClick.bind(this, overlay, this.options.add);
         }
-      }, this);
+      });
     }
   }
 
@@ -167,7 +167,7 @@ class OverlayHandler {
     } else {
       element = document.getElementById('popup').cloneNode(true);
     }
-    const overlay = new ol.Overlay({element});
+    const overlay = new olOverlay({element});
     this.ol2d.addOverlay(overlay);
     return overlay;
   }
@@ -175,3 +175,6 @@ class OverlayHandler {
 
 new OverlayHandler(ol2d, ol3d, scene);
 
+document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
+
+export default exports;

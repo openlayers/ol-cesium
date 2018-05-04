@@ -1,4 +1,7 @@
-goog.provide('olcs.util');
+/**
+ * @module olcs.util
+ */
+const exports = {};
 
 
 /**
@@ -6,7 +9,7 @@ goog.provide('olcs.util');
  * @param {Object} param
  * @return {Object}
  */
-olcs.util.obj = function(param) {
+exports.obj = function(param) {
   return param;
 };
 
@@ -15,41 +18,41 @@ olcs.util.obj = function(param) {
  * @type {boolean|undefined}
  * @private
  */
-olcs.util.supportsImageRenderingPixelatedResult_ = undefined;
+exports.supportsImageRenderingPixelatedResult_ = undefined;
 
 
 /**
  * @type {string|undefined}
  * @private
  */
-olcs.util.imageRenderingValueResult_ = undefined;
+exports.imageRenderingValueResult_ = undefined;
 
 
 /**
  * @return {boolean}
  */
-olcs.util.supportsImageRenderingPixelated = function() {
-  if (olcs.util.supportsImageRenderingPixelatedResult_ === undefined) {
+exports.supportsImageRenderingPixelated = function() {
+  if (exports.supportsImageRenderingPixelatedResult_ === undefined) {
     const canvas = document.createElement('canvas');
     canvas.setAttribute('style', 'image-rendering: -moz-crisp-edges; image-rendering: pixelated;');
     // canvas.style.imageRendering will be undefined, null or an
     // empty string on unsupported browsers.
     const tmp = canvas.style['imageRendering']; // non standard
-    olcs.util.supportsImageRenderingPixelatedResult_ = !!tmp;
-    if (olcs.util.supportsImageRenderingPixelatedResult_) {
-      olcs.util.imageRenderingValueResult_ = tmp;
+    exports.supportsImageRenderingPixelatedResult_ = !!tmp;
+    if (exports.supportsImageRenderingPixelatedResult_) {
+      exports.imageRenderingValueResult_ = tmp;
     }
   }
-  return olcs.util.supportsImageRenderingPixelatedResult_;
+  return exports.supportsImageRenderingPixelatedResult_;
 };
 
 
 /**
  * @return {string}
  */
-olcs.util.imageRenderingValue = function() {
-  olcs.util.supportsImageRenderingPixelated();
-  return olcs.util.imageRenderingValueResult_ || '';
+exports.imageRenderingValue = function() {
+  exports.supportsImageRenderingPixelated();
+  return exports.imageRenderingValueResult_ || '';
 };
 
 /**
@@ -58,7 +61,10 @@ olcs.util.imageRenderingValue = function() {
  * @param {ol.source.Source} source Source.
  * @returns {ol.proj.Projection} The projection of the source.
  */
-olcs.util.getSourceProjection = function(source) {
+exports.getSourceProjection = function(source) {
   return /** @type {ol.proj.Projection} */ (source.get('olcs.projection'))
     || source.getProjection();
 };
+
+
+export default exports;

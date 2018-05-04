@@ -1,36 +1,36 @@
-/* eslint googshift/valid-provide-and-module: 0 */
+/**
+ * @module examples.main
+ */
+const exports = {};
+import OLCesium from 'olcs/OLCesium.js';
+import * as olProj from 'ol/proj.js';
+import olView from 'ol/View.js';
+import {defaults as olControlDefaults} from 'ol/control.js';
+import olSourceOSM from 'ol/source/OSM.js';
+import olLayerTile from 'ol/layer/Tile.js';
+import olMap from 'ol/Map.js';
 
-goog.provide('examples.main');
 
-goog.require('olcs.OLCesium');
-goog.require('ol.proj');
-goog.require('ol.View');
-goog.require('ol.control');
-goog.require('ol.source.OSM');
-goog.require('ol.layer.Tile');
-goog.require('ol.Map');
-
-
-const ol2d = new ol.Map({
+const ol2d = new olMap({
   layers: [
-    new ol.layer.Tile({
-      source: new ol.source.OSM()
+    new olLayerTile({
+      source: new olSourceOSM()
     })
   ],
-  controls: ol.control.defaults({
+  controls: olControlDefaults({
     attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
       collapsible: false
     })
   }),
   target: 'map',
-  view: new ol.View({
-    center: ol.proj.transform([25, 20], 'EPSG:4326', 'EPSG:3857'),
+  view: new olView({
+    center: olProj.transform([25, 20], 'EPSG:4326', 'EPSG:3857'),
     zoom: 3
   })
 });
 
 const timeElt = document.getElementById('time');
-const ol3d = new olcs.OLCesium({
+const ol3d = new OLCesium({
   map: ol2d,
   time() {
     const val = timeElt.value;
@@ -52,7 +52,9 @@ ol3d.setEnabled(true);
 
 
 timeElt.style.display = 'none';
-const toggleTime = function() { // eslint-disable-line no-unused-vars
+
+document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
+window['toggleTime'] = function() {
   scene.globe.enableLighting = !scene.globe.enableLighting;
   if (timeElt.style.display == 'none') {
     timeElt.style.display = 'inline-block';
@@ -61,3 +63,5 @@ const toggleTime = function() { // eslint-disable-line no-unused-vars
   }
 };
 
+
+export default exports;

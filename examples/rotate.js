@@ -1,36 +1,36 @@
-/* eslint googshift/valid-provide-and-module: 0 */
+/**
+ * @module examples.rotate
+ */
+const exports = {};
+import olcsCore from 'olcs/core.js';
+import OLCesium from 'olcs/OLCesium.js';
+import olView from 'ol/View.js';
+import {defaults as olControlDefaults} from 'ol/control.js';
+import olSourceOSM from 'ol/source/OSM.js';
+import olLayerTile from 'ol/layer/Tile.js';
+import olMap from 'ol/Map.js';
 
-goog.provide('examples.rotate');
-goog.require('olcs.core');
 
-goog.require('olcs.OLCesium');
-goog.require('ol.View');
-goog.require('ol.control');
-goog.require('ol.source.OSM');
-goog.require('ol.layer.Tile');
-goog.require('ol.Map');
-
-
-const map = new ol.Map({
+const map = new olMap({
   layers: [
-    new ol.layer.Tile({
-      source: new ol.source.OSM()
+    new olLayerTile({
+      source: new olSourceOSM()
     })
   ],
   target: 'map2d',
-  controls: ol.control.defaults({
+  controls: olControlDefaults({
     attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
       collapsible: false
     })
   }),
-  view: new ol.View({
+  view: new olView({
     center: [333333, 1500000],
     zoom: 6
   })
 });
 
 
-const ol3d = new olcs.OLCesium({map/*, target: 'map3d'*/});
+const ol3d = new OLCesium({map/*, target: 'map3d'*/});
 const scene = ol3d.getCesiumScene();
 const terrainProvider = new Cesium.CesiumTerrainProvider({
   url: '//assets.agi.com/stk-terrain/world',
@@ -99,7 +99,7 @@ OlcsControl.prototype.getHeading = function() {
  */
 OlcsControl.prototype.getTiltOnGlobe = function() {
   const scene = this.ol3d_.getCesiumScene();
-  const tiltOnGlobe = olcs.core.computeSignedTiltAngleOnGlobe(scene);
+  const tiltOnGlobe = olcsCore.computeSignedTiltAngleOnGlobe(scene);
   return -tiltOnGlobe;
 };
 
@@ -110,7 +110,7 @@ OlcsControl.prototype.getTiltOnGlobe = function() {
 OlcsControl.prototype.resetToNorthZenith = function(callback) {
   const scene = this.ol3d_.getCesiumScene();
   const camera = scene.camera;
-  const pivot = olcs.core.pickBottomPoint(scene);
+  const pivot = olcsCore.pickBottomPoint(scene);
 
   if (!pivot) {
     callback();
@@ -118,16 +118,16 @@ OlcsControl.prototype.resetToNorthZenith = function(callback) {
   }
 
   const currentHeading = this.getHeading();
-  const angle = olcs.core.computeAngleToZenith(scene, pivot);
+  const angle = olcsCore.computeAngleToZenith(scene, pivot);
 
   // Point to North
-  olcs.core.setHeadingUsingBottomCenter(scene, currentHeading, pivot);
+  olcsCore.setHeadingUsingBottomCenter(scene, currentHeading, pivot);
 
   // Go to zenith
   const transform = Cesium.Matrix4.fromTranslation(pivot);
   const axis = camera.right;
   const options = {callback};
-  olcs.core.rotateAroundAxis(camera, -angle, axis, transform, options);
+  olcsCore.rotateAroundAxis(camera, -angle, axis, transform, options);
 };
 
 
@@ -142,9 +142,9 @@ OlcsControl.prototype.rotate = function(angle) {
  */
 OlcsControl.prototype.setHeading = function(angle) {
   const scene = this.ol3d_.getCesiumScene();
-  const bottom = olcs.core.pickBottomPoint(scene);
+  const bottom = olcsCore.pickBottomPoint(scene);
   if (bottom) {
-    olcs.core.setHeadingUsingBottomCenter(scene, angle, bottom);
+    olcsCore.setHeadingUsingBottomCenter(scene, angle, bottom);
   }
 };
 
@@ -155,7 +155,7 @@ OlcsControl.prototype.setHeading = function(angle) {
 OlcsControl.prototype.tiltOnGlobe = function(angle) {
   const scene = this.ol3d_.getCesiumScene();
   const camera = scene.camera;
-  const pivot = olcs.core.pickBottomPoint(scene);
+  const pivot = olcsCore.pickBottomPoint(scene);
   if (!pivot) {
     // Could not find the bottom point
     return;
@@ -164,10 +164,12 @@ OlcsControl.prototype.tiltOnGlobe = function(angle) {
   const options = {};
   const transform = Cesium.Matrix4.fromTranslation(pivot);
   const axis = camera.right;
-  const rotateAroundAxis = olcs.core.rotateAroundAxis;
+  const rotateAroundAxis = olcsCore.rotateAroundAxis;
   rotateAroundAxis(camera, -angle, axis, transform, options);
 };
 
 
 
-const control = new OlcsControl(ol3d); // eslint-disable-line no-unused-vars
+window['control'] = new OlcsControl(ol3d); // eslint-disable-line no-unused-vars
+
+export default exports;

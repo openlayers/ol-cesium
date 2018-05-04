@@ -3,7 +3,7 @@ sudo: false
 language: node_js
 
 node_js:
-  - "6"
+  - "8"
 
 cache:
   directories:
@@ -11,6 +11,3 @@ cache:
 
 script:
   - make dist
-  - make check
-  - make dist-examples
-  - ./build/goog-count.sh
