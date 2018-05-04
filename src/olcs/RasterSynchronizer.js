@@ -125,7 +125,7 @@ exports.prototype.createSingleLayerCounterparts = function(olLayerWithParents) {
       }
       delete this.layerMap[olBase.getUid(olLayer)]; // invalidate the map entry
       this.synchronize();
-    }, this));
+    }));
 
     listenKeyArray.push(olLayer.on('change', (e) => {
       // when the source changes, re-add the layer to force update
