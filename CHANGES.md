@@ -1,6 +1,6 @@
 # Changelog
 
-# v 2.0
+# v 2.0 - 2018-05-04
 
 * Breaking changes
   * Migrate to ES6 modules and abandon the Google Closure Compiler build chain
