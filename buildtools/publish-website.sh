@@ -1,14 +1,18 @@
 #!/bin/bash -ex
 
 # Create distribution
-rm -Rf dist/*
+make cleanall
 make dist
 
-CLONE="gh-pages-clone"
+CLONE=".build/gh-pages-clone"
 # Publish distribution contents to gh-pages
-pushd .build
 git clone -b gh-pages --single-branch git@github.com:openlayers/ol-cesium.git $CLONE
-cp -Rf ../dist/* $CLONE/
+rm -rf $CLONE/*
+
+cp -R gh-pages-template/* $CLONE/
+cp -Rf dist/* $CLONE/
+cat gh-pages-template/index.md README.md > $CLONE/index.md
+
 pushd $CLONE
 git add -A .
 git commit --quiet --amend -m "Updating gh-pages"
@@ -17,4 +21,3 @@ popd
 
 # Cleanup
 rm -Rf $CLONE
-popd
