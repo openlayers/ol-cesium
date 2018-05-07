@@ -57,7 +57,8 @@ clean:
 	rm -rf dist/Cesium
 
 .PHONY: cleanall
-cleanall: clean
+cleanall:
+	rm -rf dist
 	rm -rf .build
 	rm -rf node_modules
 
