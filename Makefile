@@ -57,7 +57,8 @@ clean:
 	rm -rf dist/Cesium
 
 .PHONY: cleanall
-cleanall: clean
+cleanall:
+	rm -rf dist
 	rm -rf .build
 	rm -rf node_modules
 
@@ -71,12 +72,17 @@ cleanall: clean
 	touch $@
 
 CS_BUILD="node_modules/@camptocamp/cesium/Build"
-.build/dist-examples.timestamp: $(EXAMPLES_FILES) $(WEBPACK_CONFIG_FILES) .build/node_modules.timestamp
-	mkdir -p dist/examples
+OL_CSS_DIR="node_modules/openlayers/css"
+.build/dist-examples.timestamp: dist/examples/index.html $(EXAMPLES_FILES) $(WEBPACK_CONFIG_FILES) .build/node_modules.timestamp
 	npm run build-examples
 	cp -f examples/inject_ol_cesium.js dist/examples/
-	mkdir -p dist/$(CS_BUILD) ; rm -rf dist/$(CS_BUILD)/* ; cp -Rf $(CS_BUILD)/Cesium* dist/$(CS_BUILD)/
+	mkdir -p dist/$(OL_CSS_DIR); cp $(OL_CSS_DIR)/ol.css dist/$(OL_CSS_DIR)
+	mkdir -p dist/$(CS_BUILD); rm -rf dist/$(CS_BUILD)/* ; cp -Rf $(CS_BUILD)/Cesium* dist/$(CS_BUILD)/
 	touch $@
+
+dist/examples/index.html: $(EXAMPLES_FILES)
+	mkdir -p dist/examples
+	buildtools/generate-examples-index.sh > $@
 
 dist/olcesium.js: $(SRC_JS_FILES) $(WEBPACK_CONFIG_FILES) .build/node_modules.timestamp
 	mkdir -p $(dir $@)
