@@ -29,6 +29,7 @@
     }]
   },
   globals: {
+    webpack: false,
     ol: false,
     goog: false,
     Cesium: false,

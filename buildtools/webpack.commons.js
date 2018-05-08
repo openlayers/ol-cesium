@@ -1,14 +1,13 @@
 const path = require('path');
-const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 
-babelPresets = [['env', {
-  "targets": {
-    "browsers": ["last 2 versions", "Firefox ESR", "ie 11"],
+const babelPresets = [['env', {
+  'targets': {
+    'browsers': ['last 2 versions', 'Firefox ESR', 'ie 11'],
   },
-  "modules": false,
-  "loose": true,
+  'modules': false,
+  'loose': true,
 }]];
 
 const olRule = {
@@ -90,5 +89,5 @@ const config = {
 };
 
 module.exports = {
-  config: config,
+  config,
 };
