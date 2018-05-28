@@ -760,8 +760,9 @@ exports.prototype.olMultiGeometryToCesium = function(layer, feature, geometry, p
  */
 exports.prototype.olGeometry4326TextPartToCesium = function(layer, feature, geometry, style) {
   const text = style.getText();
-  googAsserts.assert(text !== undefined);
-
+  if (!text) {
+    return null;
+  }
 
   const labels = new Cesium.LabelCollection({scene: this.scene});
   // TODO: export and use the text draw position from OpenLayers .
