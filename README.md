@@ -36,15 +36,17 @@ See the examples for how it was done with webpack. It should work equally well
 with other bundlers, please create an issue if it is not the case.
 
 ### As an old-fashioned independant library (need testing, if you are interested, get in touch with us)
-
+```bash
+npm i --save ol-cesium
+```
 ```html
 <!-- integrate OpenLayers and Cesium as usual
 <link rel="stylesheet" href="ol.css" type="text/css">
 <script src="ol.js"></script>
 <script src="Cesium.js"></script>
 -->
-<link rel="stylesheet" href="olcs.css" type="text/css">
-<script src="olcesium.js"></script>
+<link rel="stylesheet" href="node_modules/ol-cesium/dist/olcs.css" type="text/css">
+<script src="node_modules/ol-cesium/dist/olcesium.js"></script>
 ```
 
 ### As an UMD library (need documentation, if you are interested, get in touch with us)
