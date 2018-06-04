@@ -33,7 +33,9 @@ There are several ways to use OL-Cesium in your application.
 ### As an ES6 library
 
 See the examples for how it was done with webpack. It should work equally well
-with other bundlers, please create an issue if it is not the case.
+with other bundlers, please create an issue if it is not the case. See also the
+[ol-cesium-webpack-example](https://github.com/gberaudo/ol-cesium-webpack-example)
+based on the official Cesium With Webpack example.
 
 ### As an old-fashioned independant library (need testing, if you are interested, get in touch with us)
 ```bash
