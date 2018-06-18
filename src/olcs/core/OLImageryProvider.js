@@ -8,13 +8,14 @@ class OLImageryProvider /* should not extend Cesium.ImageryProvider */ {
   /**
    * Special class derived from Cesium.ImageryProvider
    * that is connected to the given ol.source.TileImage.
+   * @param {!ol.Map} olMap
    * @param {!ol.source.TileImage} source
    * @param {ol.proj.Projection=} opt_fallbackProj Projection to assume if the
    *                                               projection of the source is not defined.
    * @constructor
    * @extends {Cesium.ImageryProvider}
    */
-  constructor(source, opt_fallbackProj) {
+  constructor(olMap, source, opt_fallbackProj) {
     // Do not extend or call super constructor from
     // Cesium.ImageryProvider since this particular function is a
     // 'non instanciable interface' which throws on instanciation.
@@ -44,12 +45,6 @@ class OLImageryProvider /* should not extend Cesium.ImageryProvider */ {
     this.ready_ = false;
 
     /**
-     * @type {?Cesium.Credit}
-     * @private
-     */
-    this.credit_ = null;
-
-    /**
      * @type {?Cesium.TilingScheme}
      * @private
      */
@@ -60,6 +55,12 @@ class OLImageryProvider /* should not extend Cesium.ImageryProvider */ {
      * @private
      */
     this.rectangle_ = null;
+
+    /**
+     * @type {!ol.Map}
+     * @private
+     */
+    this.map_ = olMap;
 
     const proxy = this.source_.get('olcs.proxy');
     if (proxy) {
@@ -88,7 +89,7 @@ class OLImageryProvider /* should not extend Cesium.ImageryProvider */ {
    * Checks if the underlying source is ready and cached required data.
    * @private
    */
-  handleSourceChanged_() {
+  handleSourceChanged_(frameState) {
     if (!this.ready_ && this.source_.getState() == 'ready') {
       this.projection_ = olcsUtil.getSourceProjection(this.source_) || this.fallbackProj_;
       if (this.projection_ == olProj.get('EPSG:4326')) {
@@ -100,39 +101,26 @@ class OLImageryProvider /* should not extend Cesium.ImageryProvider */ {
       }
       this.rectangle_ = this.tilingScheme_.rectangle;
 
-      this.credit_ = OLImageryProvider.createCreditForSource(this.source_);
       this.ready_ = true;
     }
   }
 
   /**
-   * Try to create proper Cesium.Credit for the given ol.source.Source as closely as possible.
-   * @param {!ol.source.Source} source
-   * @return {?Cesium.Credit}
-   */
-  static createCreditForSource(source) {
-    let text = '';
-    let attributions = source.getAttributions();
-    if (typeof attributions === 'function') {
-      attributions = attributions();
-    }
-    if (attributions) {
-      attributions.forEach((htmlOrAttr) => {
-        const html = typeof htmlOrAttr === 'string' ? htmlOrAttr : htmlOrAttr.getHTML();
-        text += html;
-      });
-    }
-
-    return text.length > 0 ? new Cesium.Credit(text, true) : null;
-  }
-
-  /**
-   * TODO: attributions for individual tile ranges
+   * Generates the proper attributions for a given position and zoom
+   * level.
    * @export
    * @override
    */
   getTileCredits(x, y, level) {
-    return undefined;
+    const olExtent = this.map_.getView().calculateExtent(this.map_.getSize());
+    const zoom = this.tilingScheme_ instanceof Cesium.GeographicTilingScheme ? level + 1 : level;
+
+    const frameState = {
+      viewState: {zoom},
+      extent: olExtent
+    };
+
+    return this.createCesiumCredit(frameState);
   }
 
   /**
@@ -160,8 +148,22 @@ class OLImageryProvider /* should not extend Cesium.ImageryProvider */ {
       return this.emptyCanvas_;
     }
   }
-}
 
+  /**
+   * Try to create proper Cesium.Credit for the given ol.source.Source as closely as possible.
+   * @return {?Cesium.Credit}
+   */
+  createCesiumCredit(frameState) {
+    const attributions = this.source_.getAttributions();
+
+    const text = attributions(frameState).reduce((text, htmlOrAttr) => {
+      const html = typeof htmlOrAttr === 'string' ? htmlOrAttr : htmlOrAttr.getHTML();
+      return text + html;
+    }, '');
+
+    return text.length > 0 ? new Cesium.Credit(text, true) : null;
+  }
+}
 
 // definitions of getters that are required to be present
 // in the Cesium.ImageryProvider instance:
@@ -225,11 +227,6 @@ Object.defineProperties(OLImageryProvider.prototype, {
   'errorEvent': {
     'get': /** @this {olcs.core.OLImageryProvider} */
         function() {return this.errorEvent_;}
-  },
-
-  'credit': {
-    'get': /** @this {olcs.core.OLImageryProvider} */
-        function() {return this.credit_;}
   },
 
   'proxy': {

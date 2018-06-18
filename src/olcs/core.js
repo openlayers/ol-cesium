@@ -354,12 +354,13 @@ exports.extentToRectangle = function(extent, projection) {
 /**
  * Creates Cesium.ImageryLayer best corresponding to the given ol.layer.Layer.
  * Only supports raster layers
+ * @param {!ol.Map} olMap
  * @param {!ol.layer.Base} olLayer
  * @param {!ol.proj.Projection} viewProj Projection of the view.
  * @return {?Cesium.ImageryLayer} null if not possible (or supported)
  * @api
  */
-exports.tileLayerToImageryLayer = function(olLayer, viewProj) {
+exports.tileLayerToImageryLayer = function(olMap, olLayer, viewProj) {
 
   if (!(olLayer instanceof olLayerTile) && !(olLayer instanceof olLayerImage)) {
     return null;
@@ -395,7 +396,7 @@ exports.tileLayerToImageryLayer = function(olLayer, viewProj) {
     }
 
     if (exports.isCesiumProjection(projection))  {
-      provider = new olcsCoreOLImageryProvider(source, viewProj);
+      provider = new olcsCoreOLImageryProvider(olMap, source, viewProj);
     }
     // Projection not supported by Cesium
     else {
