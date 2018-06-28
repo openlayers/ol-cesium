@@ -11,7 +11,7 @@ const babelPresets = [['env', {
 }]];
 
 const olRule = {
-  test: /openlayers\/src\/.*\.js$/,
+  test: /ol\/.*\.js$/,
   use: {
     loader: 'babel-loader',
     options: {
@@ -81,9 +81,7 @@ const config = {
     mainFields: ['jsnext:main', 'main'],
     alias: {
       'olcs': path.resolve(__dirname, '../src/olcs'),
-      'goog': path.resolve(__dirname, '../src/goog'),
-      'ol/ol.css': 'openlayers/css/ol.css',
-      'ol': 'openlayers/src/ol'
+      'goog': path.resolve(__dirname, '../src/goog')
     }
   }
 };

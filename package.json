@@ -36,7 +36,7 @@
     "jsdoc": "3.5.5",
     "ls": "0.2.1",
     "nomnom": "1.8.1",
-    "openlayers": "https://api.github.com/repos/openlayers/openlayers/tarball/f284b95cb897b3ce1b49b985b58ebe1ca76be1fe",
+    "ol": "5.0.0",
     "proj4": "2.4.4",
     "temp": "0.8.3",
     "webpack": "4.6.0",

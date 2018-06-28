@@ -1,5 +1,10 @@
 # Changelog
 
+# v 2.1
+
+* Changes
+  * Port to OpenLayers 5.0.0.
+
 # v 2.0 - 2018-05-04
 
 * Breaking changes

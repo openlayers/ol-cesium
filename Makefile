@@ -72,7 +72,7 @@ cleanall:
 	touch $@
 
 CS_BUILD="node_modules/@camptocamp/cesium/Build"
-OL_CSS_DIR="node_modules/openlayers/css"
+OL_CSS_DIR="node_modules/ol"
 .build/dist-examples.timestamp: dist/examples/index.html $(EXAMPLES_FILES) $(WEBPACK_CONFIG_FILES) .build/node_modules.timestamp
 	npm run build-examples
 	cp -f examples/inject_ol_cesium.js dist/examples/
