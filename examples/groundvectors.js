@@ -128,6 +128,7 @@ const map = new olMap({
   })
 });
 
+vectorLayer.set('altitudeMode', 'clampToGround');
 const ol3d = new OLCesium({map, target: 'map3d'});
 const scene = ol3d.getCesiumScene();
 const terrainProvider = Cesium.createWorldTerrain();
