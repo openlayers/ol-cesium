@@ -403,21 +403,21 @@ exports.prototype.olLineStringGeometryToCesium = function(layer, feature, olGeom
   };
 
   let geometry;
-  let primitiveOptions = {
+  const primitiveOptions = {
     // always update Cesium externs before adding a property
-    appearance: appearance
-  }
+    appearance
+  };
   if (heightReference == Cesium.HeightReference.CLAMP_TO_GROUND) {
-    geometry = new Cesium.GroundPolylineGeometry(geometryOptions)
+    geometry = new Cesium.GroundPolylineGeometry(geometryOptions);
     primitiveOptions.geometryInstances = new Cesium.GeometryInstance({
-      geometry: geometry
+      geometry
     }),
     outlinePrimitive = new Cesium.GroundPolylinePrimitive(primitiveOptions);
   } else {
     geometryOptions.vertexFormat = appearance.vertexFormat;
-    geometry = new Cesium.PolylineGeometry(geometryOptions)
+    geometry = new Cesium.PolylineGeometry(geometryOptions);
     primitiveOptions.geometryInstances = new Cesium.GeometryInstance({
-      geometry: geometry
+      geometry
     }),
     outlinePrimitive = new Cesium.Primitive(primitiveOptions);
   }
@@ -503,7 +503,7 @@ exports.prototype.olPolygonGeometryToCesium = function(layer, feature, olGeometr
       polygonHierarchy,
       perPositionHeight: true
     });
-    
+
     // Since Cesium doesn't yet support Polygon outlines on terrain yet (coming soon...?)
     // we don't create an outline geometry if clamped, but instead do the polyline method
     // for each ring. Most of this code should be removeable when Cesium adds
@@ -516,39 +516,39 @@ exports.prototype.olPolygonGeometryToCesium = function(layer, feature, olGeometr
           // always update Cesium externs before adding a property
           material: this.olStyleToCesium(feature, olStyle, true)
         });
-        let primitiveOptions = {
+        const primitiveOptions = {
           // always update Cesium externs before adding a property
-          appearance: appearance
-        }
-        let polylineGeometry = [new Cesium.GroundPolylineGeometry({positions: hierarchy.positions, width: width})];
+          appearance
+        };
+        let polylineGeometry = new Cesium.GroundPolylineGeometry({positions: hierarchy.positions, width});
         primitiveOptions.geometryInstances = new Cesium.GeometryInstance({
-          geometry: polylineGeometry[0]
+          geometry: polylineGeometry
         }),
-        outlinePrimitives.add(new Cesium.GroundPolylinePrimitive(primitiveOptions))
+        outlinePrimitives.add(new Cesium.GroundPolylinePrimitive(primitiveOptions));
         if (hierarchy.holes) {
           for (let i = 0; i < hierarchy.holes.length; ++i) {
-            polylineGeometry = [new Cesium.GroundPolylineGeometry({positions: hierarchy.holes[i].positions, width: width})];
+            polylineGeometry = new Cesium.GroundPolylineGeometry({positions: hierarchy.holes[i].positions, width});
             primitiveOptions.geometryInstances = new Cesium.GeometryInstance({
-              geometry: polylineGeometry[0]
-            }),
-            outlinePrimitives.add(new Cesium.GroundPolylinePrimitive(primitiveOptions))
+              geometry: polylineGeometry
+            });
+            outlinePrimitives.add(new Cesium.GroundPolylinePrimitive(primitiveOptions));
           }
         }
       }
-    // Actually do the normal polygon thing. This should end the removable 
-    // section of code described above.
     } else {
+      // Actually do the normal polygon thing. This should end the removable
+      // section of code described above.
       outlineGeometry = new Cesium.PolygonOutlineGeometry({
         // always update Cesium externs before adding a property
         polygonHierarchy: hierarchy,
         perPositionHeight: true
       });
-    } 
+    }
   }
 
   const primitives = this.wrapFillAndOutlineGeometries(
       layer, feature, olGeometry, fillGeometry, outlineGeometry, olStyle);
-  
+
   if (typeof outlinePrimitives !== 'undefined') {
     primitives.add(outlinePrimitives);
   }
