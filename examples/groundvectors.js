@@ -9,18 +9,13 @@ import olSourceOSM from 'ol/source/OSM.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olStyleText from 'ol/style/Text.js';
 import olStyleStyle from 'ol/style/Style.js';
-import olGeomPoint from 'ol/geom/Point.js';
-import olFeature from 'ol/Feature.js';
 import olStyleStroke from 'ol/style/Stroke.js';
 import olStyleFill from 'ol/style/Fill.js';
 import olMap from 'ol/Map.js';
 import olStyleCircle from 'ol/style/Circle.js';
 import olSourceVector from 'ol/source/Vector.js';
 import olFormatGeoJSON from 'ol/format/GeoJSON.js';
-import olGeomPolygon from 'ol/geom/Polygon.js';
-import olGeomMultiPolygon from 'ol/geom/MultiPolygon.js';
 import olLayerVector from 'ol/layer/Vector.js';
-import olcsCore from 'olcs/core.js';
 
 const image = new olStyleCircle({
   radius: 5,
