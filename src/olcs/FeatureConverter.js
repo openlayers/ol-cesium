@@ -213,7 +213,7 @@ exports.prototype.wrapFillAndOutlineGeometries = function(layer, feature, olGeom
     primitives.add(p1);
   }
 
-  if (olStyle.getStroke()) {
+  if (olStyle.getStroke() && outlineGeometry) {
     const width = this.extractLineWidthFromOlStyle(olStyle);
     const p2 = this.createColoredPrimitive(layer, feature, olGeometry,
         outlineGeometry, outlineColor, width);
@@ -392,27 +392,34 @@ exports.prototype.olLineStringGeometryToCesium = function(layer, feature, olGeom
   let outlinePrimitive;
   const heightReference = this.getHeightReference(layer, feature, olGeometry);
 
+  const appearance = new Cesium.PolylineMaterialAppearance({
+    // always update Cesium externs before adding a property
+    material: this.olStyleToCesium(feature, olStyle, true)
+  });
+  const geometryOptions = {
+    // always update Cesium externs before adding a property
+    positions,
+    width,
+  };
+
+  let geometry;
+  let primitiveOptions = {
+    // always update Cesium externs before adding a property
+    appearance: appearance
+  }
   if (heightReference == Cesium.HeightReference.CLAMP_TO_GROUND) {
-    const color = this.extractColorFromOlStyle(olStyle, true);
-    outlinePrimitive = this.createStackedGroundCorridors(layer, feature, width, color, positions);
+    geometry = new Cesium.GroundPolylineGeometry(geometryOptions)
+    primitiveOptions.geometryInstances = new Cesium.GeometryInstance({
+      geometry: geometry
+    }),
+    outlinePrimitive = new Cesium.GroundPolylinePrimitive(primitiveOptions);
   } else {
-    const appearance = new Cesium.PolylineMaterialAppearance({
-      // always update Cesium externs before adding a property
-      material: this.olStyleToCesium(feature, olStyle, true)
-    });
-    const geometryOptions = {
-      // always update Cesium externs before adding a property
-      positions,
-      width,
-      vertexFormat: appearance.vertexFormat
-    };
-    outlinePrimitive = new Cesium.Primitive({
-      // always update Cesium externs before adding a property
-      geometryInstances: new Cesium.GeometryInstance({
-        geometry: new Cesium.PolylineGeometry(geometryOptions)
-      }),
-      appearance
-    });
+    geometryOptions.vertexFormat = appearance.vertexFormat;
+    geometry = new Cesium.PolylineGeometry(geometryOptions)
+    primitiveOptions.geometryInstances = new Cesium.GeometryInstance({
+      geometry: geometry
+    }),
+    outlinePrimitive = new Cesium.Primitive(primitiveOptions);
   }
 
   this.setReferenceForPicking(layer, feature, outlinePrimitive);
@@ -436,7 +443,9 @@ exports.prototype.olPolygonGeometryToCesium = function(layer, feature, olGeometr
   olGeometry = olcsCore.olGeometryCloneTo4326(olGeometry, projection);
   googAsserts.assert(olGeometry.getType() == 'Polygon');
 
-  let fillGeometry, outlineGeometry;
+  const heightReference = this.getHeightReference(layer, feature, olGeometry);
+
+  let fillGeometry, outlineGeometry, outlinePrimitives;
   if ((olGeometry.getCoordinates()[0].length == 5) &&
       (feature.getGeometry().get('olcs.polygon_kind') === 'rectangle')) {
     // Create a rectangle according to the longitude and latitude curves
@@ -494,16 +503,55 @@ exports.prototype.olPolygonGeometryToCesium = function(layer, feature, olGeometr
       polygonHierarchy,
       perPositionHeight: true
     });
-
-    outlineGeometry = new Cesium.PolygonOutlineGeometry({
-      // always update Cesium externs before adding a property
-      polygonHierarchy: hierarchy,
-      perPositionHeight: true
-    });
+    
+    // Since Cesium doesn't yet support Polygon outlines on terrain yet (coming soon...?)
+    // we don't create an outline geometry if clamped, but instead do the polyline method
+    // for each ring. Most of this code should be removeable when Cesium adds
+    // support for Polygon outlines on terrain.
+    if (heightReference == Cesium.HeightReference.CLAMP_TO_GROUND) {
+      const width = this.extractLineWidthFromOlStyle(olStyle);
+      if (width > 0) {
+        outlinePrimitives = new Cesium.PrimitiveCollection();
+        const appearance = new Cesium.PolylineMaterialAppearance({
+          // always update Cesium externs before adding a property
+          material: this.olStyleToCesium(feature, olStyle, true)
+        });
+        let primitiveOptions = {
+          // always update Cesium externs before adding a property
+          appearance: appearance
+        }
+        let polylineGeometry = [new Cesium.GroundPolylineGeometry({positions: hierarchy.positions, width: width})];
+        primitiveOptions.geometryInstances = new Cesium.GeometryInstance({
+          geometry: polylineGeometry[0]
+        }),
+        outlinePrimitives.add(new Cesium.GroundPolylinePrimitive(primitiveOptions))
+        if (hierarchy.holes) {
+          for (let i = 0; i < hierarchy.holes.length; ++i) {
+            polylineGeometry = [new Cesium.GroundPolylineGeometry({positions: hierarchy.holes[i].positions, width: width})];
+            primitiveOptions.geometryInstances = new Cesium.GeometryInstance({
+              geometry: polylineGeometry[0]
+            }),
+            outlinePrimitives.add(new Cesium.GroundPolylinePrimitive(primitiveOptions))
+          }
+        }
+      }
+    // Actually do the normal polygon thing. This should end the removable 
+    // section of code described above.
+    } else {
+      outlineGeometry = new Cesium.PolygonOutlineGeometry({
+        // always update Cesium externs before adding a property
+        polygonHierarchy: hierarchy,
+        perPositionHeight: true
+      });
+    } 
   }
 
   const primitives = this.wrapFillAndOutlineGeometries(
       layer, feature, olGeometry, fillGeometry, outlineGeometry, olStyle);
+  
+  if (typeof outlinePrimitives !== 'undefined') {
+    primitives.add(outlinePrimitives);
+  }
 
   return this.addTextStyle(layer, feature, olGeometry, olStyle, primitives);
 };
