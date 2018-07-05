@@ -3,7 +3,8 @@
 # v 2.1
 
 * Changes
-  * Port to OpenLayers 5.0.0.
+  * Port to OpenLayers 5.0.2.
+  * Port to Cesium 1.47.
 
 # v 2.0 - 2018-05-04
 
