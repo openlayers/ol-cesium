@@ -145,15 +145,6 @@ window['toggleClampToGround'] = function() {
   map.addLayer(vectorLayer);
 };
 
-window['setTargetFrameRate'] = function() {
-  let fps;
-  const fpsEl = document.querySelector('#framerate');
-  if (fpsEl) {
-    fps = Number(fpsEl.value);
-    ol3d.setTargetFrameRate(fps);
-  }
-};
-
 window['ol3d'] = ol3d;
 window['scene'] = scene;
 document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
