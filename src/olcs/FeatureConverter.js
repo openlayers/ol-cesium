@@ -131,7 +131,7 @@ exports.prototype.createColoredPrimitive = function(layer, feature, olGeometry, 
 
   let primitive;
 
-  if (heightReference == Cesium.HeightReference.CLAMP_TO_GROUND) {
+  if (heightReference === Cesium.HeightReference.CLAMP_TO_GROUND) {
     const ctor = instances.geometry.constructor;
     if (ctor && !ctor['createShadowVolume']) {
       return null;
@@ -337,12 +337,12 @@ exports.prototype.olCircleGeometryToCesium = function(layer, feature, olGeometry
  * @param {!ol.Feature} feature OpenLayers feature..
  * @param {!number} width The width of the line.
  * @param {!Cesium.Color} color The color of the line.
- * @param {!Array<Cesium.Cartesian3>} positions The vertices of the line.
+ * @param {!Array<Cesium.Cartesian3>|Array<Array<Cesium.Cartesian3>>} positions The vertices of the line(s).
  * @return {!Cesium.GroundPrimitive} primitive
  */
-exports.prototype.createStackedGroundCorridors = function(width, color, positions) {
+exports.prototype.createStackedGroundCorridors = function(layer, feature, width, color, positions) {
   // Convert positions to an Array if it isn't
-  if (positions[0].constructor.name !== 'Array') {
+  if (!Array.isArray(positions[0])) {
     positions = [positions];
   }
   width = Math.max(3, width); // A <3px width is too small for ground primitives
@@ -398,9 +398,9 @@ exports.prototype.olLineStringGeometryToCesium = function(layer, feature, olGeom
   let outlinePrimitive;
   const heightReference = this.getHeightReference(layer, feature, olGeometry);
 
-  if (heightReference == Cesium.HeightReference.CLAMP_TO_GROUND && !Cesium.GroundPolylinePrimitive.isSupported(this.scene)) {
+  if (heightReference === Cesium.HeightReference.CLAMP_TO_GROUND && !Cesium.GroundPolylinePrimitive.isSupported(this.scene)) {
     const color = this.extractColorFromOlStyle(olStyle, true);
-    outlinePrimitive = this.createStackedGroundCorridors(width, color, positions);
+    outlinePrimitive = this.createStackedGroundCorridors(layer, feature, width, color, positions);
   } else {
     const appearance = new Cesium.PolylineMaterialAppearance({
       // always update Cesium externs before adding a property
@@ -411,13 +411,12 @@ exports.prototype.olLineStringGeometryToCesium = function(layer, feature, olGeom
       positions,
       width,
     };
-    let geometry;
     const primitiveOptions = {
       // always update Cesium externs before adding a property
       appearance
     };
-    if (heightReference == Cesium.HeightReference.CLAMP_TO_GROUND) {
-      geometry = new Cesium.GroundPolylineGeometry(geometryOptions);
+    if (heightReference === Cesium.HeightReference.CLAMP_TO_GROUND) {
+      const geometry = new Cesium.GroundPolylineGeometry(geometryOptions);
       primitiveOptions.geometryInstances = new Cesium.GeometryInstance({
         geometry
       }),
@@ -427,7 +426,7 @@ exports.prototype.olLineStringGeometryToCesium = function(layer, feature, olGeom
       });
     } else {
       geometryOptions.vertexFormat = appearance.vertexFormat;
-      geometry = new Cesium.PolylineGeometry(geometryOptions);
+      const geometry = new Cesium.PolylineGeometry(geometryOptions);
       primitiveOptions.geometryInstances = new Cesium.GeometryInstance({
         geometry
       }),
@@ -521,7 +520,7 @@ exports.prototype.olPolygonGeometryToCesium = function(layer, feature, olGeometr
     // we don't create an outline geometry if clamped, but instead do the polyline method
     // for each ring. Most of this code should be removeable when Cesium adds
     // support for Polygon outlines on terrain.
-    if (heightReference == Cesium.HeightReference.CLAMP_TO_GROUND) {
+    if (heightReference === Cesium.HeightReference.CLAMP_TO_GROUND) {
       const width = this.extractLineWidthFromOlStyle(olStyle);
       if (width > 0) {
         const positions = [hierarchy.positions];
@@ -532,24 +531,24 @@ exports.prototype.olPolygonGeometryToCesium = function(layer, feature, olGeometr
         }
         if (!Cesium.GroundPolylinePrimitive.isSupported(this.scene)) {
           const color = this.extractColorFromOlStyle(olStyle, true);
-          outlineGeometry = this.createStackedGroundCorridors(width, color, positions);
+          outlineGeometry = this.createStackedGroundCorridors(layer, feature, width, color, positions);
         } else {
           const appearance = new Cesium.PolylineMaterialAppearance({
             // always update Cesium externs before adding a property
             material: this.olStyleToCesium(feature, olStyle, true)
           });
-          const primitiveOptions = {
-            // always update Cesium externs before adding a property
-            appearance
-          };
-          const geometryinstances = [];
+          const geometryInstances = [];
           for (const linePositions of positions) {
             const polylineGeometry = new Cesium.GroundPolylineGeometry({positions: linePositions, width});
-            geometryinstances.push(new Cesium.GeometryInstance({
+            geometryInstances.push(new Cesium.GeometryInstance({
               geometry: polylineGeometry
             }));
           }
-          primitiveOptions.geometryInstances = geometryinstances;
+          const primitiveOptions = {
+            // always update Cesium externs before adding a property
+            appearance,
+            geometryInstances
+          };
           outlinePrimitive = new Cesium.GroundPolylinePrimitive(primitiveOptions);
           outlinePrimitive.readyPromise.then(() => {
             this.setReferenceForPicking(layer, feature, outlinePrimitive._primitive);
