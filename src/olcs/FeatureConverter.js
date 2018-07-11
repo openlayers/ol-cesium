@@ -524,14 +524,15 @@ exports.prototype.olPolygonGeometryToCesium = function(layer, feature, olGeometr
     if (heightReference == Cesium.HeightReference.CLAMP_TO_GROUND) {
       const width = this.extractLineWidthFromOlStyle(olStyle);
       if (width > 0) {
-        let positions = [hierarchy.positions];
+        const positions = [hierarchy.positions];
         if (hierarchy.holes) {
           for (let i = 0; i < hierarchy.holes.length; ++i) {
             positions.push(hierarchy.holes[i].positions);
           }
         }
         if (!Cesium.GroundPolylinePrimitive.isSupported(this.scene)) {
-          outlineGeometry = this.createStackedGroundCorridors(width, color, positions)
+          const color = this.extractColorFromOlStyle(olStyle, true);
+          outlineGeometry = this.createStackedGroundCorridors(width, color, positions);
         } else {
           const appearance = new Cesium.PolylineMaterialAppearance({
             // always update Cesium externs before adding a property
@@ -541,9 +542,9 @@ exports.prototype.olPolygonGeometryToCesium = function(layer, feature, olGeometr
             // always update Cesium externs before adding a property
             appearance
           };
-          let geometryinstances = []
-          for (let linePositions of positions) {
-            let polylineGeometry = new Cesium.GroundPolylineGeometry({positions: linePositions, width});
+          const geometryinstances = [];
+          for (const linePositions of positions) {
+            const polylineGeometry = new Cesium.GroundPolylineGeometry({positions: linePositions, width});
             geometryinstances.push(new Cesium.GeometryInstance({
               geometry: polylineGeometry
             }));
