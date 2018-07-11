@@ -531,7 +531,7 @@ exports.prototype.olPolygonGeometryToCesium = function(layer, feature, olGeometr
         }
         if (!Cesium.GroundPolylinePrimitive.isSupported(this.scene)) {
           const color = this.extractColorFromOlStyle(olStyle, true);
-          outlineGeometry = this.createStackedGroundCorridors(layer, feature, width, color, positions);
+          outlinePrimitive = this.createStackedGroundCorridors(layer, feature, width, color, positions);
         } else {
           const appearance = new Cesium.PolylineMaterialAppearance({
             // always update Cesium externs before adding a property
