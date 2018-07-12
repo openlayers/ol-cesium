@@ -5,7 +5,7 @@ import olGeomGeometry from 'ol/geom/Geometry.js';
 import olStyleIcon from 'ol/style/Icon.js';
 import olSourceVector from 'ol/source/Vector.js';
 import olSourceCluster from 'ol/source/Cluster.js';
-import {circular} from 'ol/geom/Polygon.js';
+import {circular as olCreateCircularPolygon} from 'ol/geom/Polygon.js';
 import googAsserts from 'goog/asserts.js';
 import * as olBase from 'ol/index.js';
 import * as olEvents from 'ol/events.js';
@@ -322,7 +322,7 @@ exports.prototype.olCircleGeometryToCesium = function(layer, feature, olGeometry
   if (this.getHeightReference(layer, feature, olGeometry) === Cesium.HeightReference.CLAMP_TO_GROUND) {
     const width = this.extractLineWidthFromOlStyle(olStyle);
     if (width) {
-      const circlePolygon = circular(olGeometry.getCenter(), radius);
+      const circlePolygon = olCreateCircularPolygon(olGeometry.getCenter(), radius);
       const positions = olcsCore.ol4326CoordinateArrayToCsCartesians(circlePolygon.getLinearRing(0).getCoordinates());
       if (!Cesium.GroundPolylinePrimitive.isSupported(this.scene)) {
         const color = this.extractColorFromOlStyle(olStyle, true);
