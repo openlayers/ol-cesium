@@ -16,6 +16,8 @@ import olStyleCircle from 'ol/style/Circle.js';
 import olSourceVector from 'ol/source/Vector.js';
 import olFormatGeoJSON from 'ol/format/GeoJSON.js';
 import olLayerVector from 'ol/layer/Vector.js';
+import olFeature from 'ol/Feature';
+import olCircle from 'ol/geom/Circle';
 
 const image = new olStyleCircle({
   radius: 5,
@@ -108,6 +110,10 @@ const vectorLayer = new olLayerVector({
   source: vectorSource,
   style: styleFunction
 });
+
+vectorLayer.getSource().addFeature(new olFeature({
+  geometry: new olCircle([16880133.570042003, -3565441.544459192], 200)
+}));
 
 const map = new olMap({
   layers: [

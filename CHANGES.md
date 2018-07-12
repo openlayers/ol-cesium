@@ -5,6 +5,7 @@
 * Changes
   * Port to OpenLayers 5.0.2.
   * Port to Cesium 1.47.
+  * Improved line & outline support for ground primitives.
 
 # v 2.0 - 2018-05-04
 

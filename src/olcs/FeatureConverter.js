@@ -5,6 +5,7 @@ import olGeomGeometry from 'ol/geom/Geometry.js';
 import olStyleIcon from 'ol/style/Icon.js';
 import olSourceVector from 'ol/source/Vector.js';
 import olSourceCluster from 'ol/source/Cluster.js';
+import {circular as olCreateCircularPolygon} from 'ol/geom/Polygon.js';
 import googAsserts from 'goog/asserts.js';
 import * as olBase from 'ol/index.js';
 import * as olEvents from 'ol/events.js';
@@ -317,17 +318,46 @@ exports.prototype.olCircleGeometryToCesium = function(layer, feature, olGeometry
     height
   });
 
-  const outlineGeometry = new Cesium.CircleOutlineGeometry({
-    // always update Cesium externs before adding a property
-    center,
-    radius,
-    extrudedHeight: height,
-    height
-  });
+  let outlinePrimitive, outlineGeometry;
+  if (this.getHeightReference(layer, feature, olGeometry) === Cesium.HeightReference.CLAMP_TO_GROUND) {
+    const width = this.extractLineWidthFromOlStyle(olStyle);
+    if (width) {
+      const circlePolygon = olCreateCircularPolygon(olGeometry.getCenter(), radius);
+      const positions = olcsCore.ol4326CoordinateArrayToCsCartesians(circlePolygon.getLinearRing(0).getCoordinates());
+      if (!Cesium.GroundPolylinePrimitive.isSupported(this.scene)) {
+        const color = this.extractColorFromOlStyle(olStyle, true);
+        outlinePrimitive = this.createStackedGroundCorridors(layer, feature, width, color, positions);
+      } else {
+        outlinePrimitive = new Cesium.GroundPolylinePrimitive({
+          geometryInstances: new Cesium.GeometryInstance({
+            geometry: new Cesium.GroundPolylineGeometry({positions, width}),
+          }),
+          appearance: new Cesium.PolylineMaterialAppearance({
+            material: this.olStyleToCesium(feature, olStyle, true),
+          }),
+          classificationType: Cesium.ClassificationType.TERRAIN,
+        });
+        outlinePrimitive.readyPromise.then(() => {
+          this.setReferenceForPicking(layer, feature, outlinePrimitive._primitive);
+        });
+      }
+    }
+  } else {
+    outlineGeometry = new Cesium.CircleOutlineGeometry({
+      // always update Cesium externs before adding a property
+      center,
+      radius,
+      extrudedHeight: height,
+      height
+    });
+  }
 
   const primitives = this.wrapFillAndOutlineGeometries(
       layer, feature, olGeometry, fillGeometry, outlineGeometry, olStyle);
 
+  if (outlinePrimitive) {
+    primitives.add(outlinePrimitive);
+  }
   return this.addTextStyle(layer, feature, olGeometry, olStyle, primitives);
 };
 
