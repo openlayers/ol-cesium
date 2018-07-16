@@ -1,7 +1,6 @@
 /**
  * @module olcs.SynchronizedOverlay
  */
-import * as olBase from 'ol/index.js';
 import olOverlay from 'ol/Overlay.js';
 import * as olProj from 'ol/proj.js';
 import * as olDom from 'ol/dom.js';
@@ -9,7 +8,6 @@ import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
 
 class SynchronizedOverlay extends olOverlay {
   /**
-   * @constructor
    * @param {olcsx.SynchronizedOverlayOptions} options SynchronizedOverlay Options.
    * @api
    */
@@ -65,15 +63,17 @@ class SynchronizedOverlay extends olOverlay {
      */
     this.listenerKeys_ = [];
     // synchronize our Overlay with the parent Overlay
-    this.listenerKeys_.push(this.parent_.on('change:position', this.setPropertyFromEvent_.bind(this)));
-    this.listenerKeys_.push(this.parent_.on('change:element', this.setPropertyFromEvent_.bind(this)));
-    this.listenerKeys_.push(this.parent_.on('change:offset', this.setPropertyFromEvent_.bind(this)));
-    this.listenerKeys_.push(this.parent_.on('change:position', this.setPropertyFromEvent_.bind(this)));
-    this.listenerKeys_.push(this.parent_.on('change:positioning', this.setPropertyFromEvent_.bind(this)));
+    const setPropertyFromEvent = event => this.setPropertyFromEvent_(event);
+    this.listenerKeys_.push(this.parent_.on('change:position', setPropertyFromEvent));
+    this.listenerKeys_.push(this.parent_.on('change:element', setPropertyFromEvent));
+    this.listenerKeys_.push(this.parent_.on('change:offset', setPropertyFromEvent));
+    this.listenerKeys_.push(this.parent_.on('change:position', setPropertyFromEvent));
+    this.listenerKeys_.push(this.parent_.on('change:positioning', setPropertyFromEvent));
 
     this.setProperties(this.parent_.getProperties());
 
     this.handleMapChanged();
+    this.handleElementChanged();
   }
 
   /**
@@ -81,6 +81,10 @@ class SynchronizedOverlay extends olOverlay {
    * @private
    */
   observeTarget_(target) {
+    if (!this.observer_) {
+      // not ready, skip the event (this occurs on construction)
+      return;
+    }
     this.observer_.disconnect();
     this.observer_.observe(target, {
       attributes: false,
@@ -262,8 +266,5 @@ class SynchronizedOverlay extends olOverlay {
     this.element = null;
   }
 }
-
-olBase.inherits(SynchronizedOverlay, olOverlay);
-
 
 export default SynchronizedOverlay;
