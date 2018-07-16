@@ -3,9 +3,9 @@
   "version": "2.1.0",
   "description": "OpenLayers Cesium integration library",
   "scripts": {
-    "build-examples": "TARGET=examples webpack --progress --bail",
-    "build-library": "TARGET=library webpack --progress --bail",
-    "serve": "DEV_SERVER=1 TARGET=examples webpack-dev-server --port 3000 --progress --watch --bail --debug"
+    "build-examples": "cross-env TARGET=examples webpack --progress --bail",
+    "build-library": "cross-env TARGET=library webpack --progress --bail",
+    "serve": "cross-env DEV_SERVER=1 TARGET=examples webpack-dev-server --port 3000 --progress --watch --bail --debug"
   },
   "main": "./dist/olcesium.js",
   "repository": {
@@ -26,6 +26,7 @@
     "babel-loader": "7.1.5",
     "babel-preset-env": "1.7.0",
     "copy-webpack-plugin": "4.5.2",
+    "cross-env": "5.2.0",
     "css-loader": "1.0.0",
     "eslint": "5.1.0",
     "eslint-config-openlayers": "9.2.0",
