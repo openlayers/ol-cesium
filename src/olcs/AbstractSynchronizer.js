@@ -7,13 +7,11 @@ import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
 import * as olEvents from 'ol/events.js';
 import olLayerGroup from 'ol/layer/Group.js';
 
-class exports {
+class AbstractSynchronizer {
   /**
    * @param {!ol.Map} map
    * @param {!Cesium.Scene} scene
-   * @constructor
    * @template T
-   * @struct
    * @abstract
    * @api
    */
@@ -337,4 +335,4 @@ class exports {
 }
 
 
-export default exports;
+export default AbstractSynchronizer;

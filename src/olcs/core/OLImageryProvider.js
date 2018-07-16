@@ -4,7 +4,7 @@
 import * as olProj from 'ol/proj.js';
 import olcsUtil from '../util.js';
 
-class exports /* should not extend Cesium.ImageryProvider */ {
+class OLImageryProvider /* should not extend Cesium.ImageryProvider */ {
   /**
    * Special class derived from Cesium.ImageryProvider
    * that is connected to the given ol.source.TileImage.
@@ -100,7 +100,7 @@ class exports /* should not extend Cesium.ImageryProvider */ {
       }
       this.rectangle_ = this.tilingScheme_.rectangle;
 
-      this.credit_ = exports.createCreditForSource(this.source_);
+      this.credit_ = OLImageryProvider.createCreditForSource(this.source_);
       this.ready_ = true;
     }
   }
@@ -165,7 +165,7 @@ class exports /* should not extend Cesium.ImageryProvider */ {
 
 // definitions of getters that are required to be present
 // in the Cesium.ImageryProvider instance:
-Object.defineProperties(exports.prototype, {
+Object.defineProperties(OLImageryProvider.prototype, {
   'ready': {
     'get': /** @this {olcs.core.OLImageryProvider} */
         function() {return this.ready_;}
@@ -247,4 +247,4 @@ Object.defineProperties(exports.prototype, {
 });
 
 
-export default exports;
+export default OLImageryProvider;

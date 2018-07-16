@@ -15,9 +15,7 @@ class Camera {
    * ensures proper synchronization with the underlying raw Cesium.Camera object.
    * @param {!Cesium.Scene} scene
    * @param {!ol.Map} map
-   * @constructor
    * @api
-   * @struct
    */
   constructor(scene, map) {
     /**

@@ -13,7 +13,7 @@ import olcsRasterSynchronizer from './RasterSynchronizer.js';
 import olcsVectorSynchronizer from './VectorSynchronizer.js';
 import olcsOverlaySynchronizer from './OverlaySynchronizer.js';
 
-class exports {
+class OLCesium {
   /**
    * @param {!olcsx.OLCesiumOptions} options Options.
    * @constructor
@@ -291,7 +291,7 @@ class exports {
     this.boundingSphereScratch_ = new Cesium.BoundingSphere();
 
     const eventHelper = new Cesium.EventHelper();
-    eventHelper.add(this.scene_.postRender, exports.prototype.updateTrackedEntity_, this);
+    eventHelper.add(this.scene_.postRender, OLCesium.prototype.updateTrackedEntity_, this);
 
     // Cesium has a mechanism to prevent the camera to go under the terrain.
     // Unfortunately, it is only active when all the terrain has been loaded, which:
@@ -658,7 +658,7 @@ class exports {
 }
 
 
-Object.defineProperties(exports.prototype, {
+Object.defineProperties(OLCesium.prototype, {
   'trackedFeature': {
     'get': /** @this {olcs.OLCesium} */ function() {
       return this.trackedFeature_;
@@ -715,4 +715,4 @@ Object.defineProperties(exports.prototype, {
 });
 
 
-export default exports;
+export default OLCesium;

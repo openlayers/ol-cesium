@@ -8,7 +8,7 @@ import * as olArray from 'ol/array.js';
 import olcsAbstractSynchronizer from './AbstractSynchronizer.js';
 import olcsCore from './core.js';
 
-class exports extends olcsAbstractSynchronizer {
+class RasterSynchronizer extends olcsAbstractSynchronizer {
   /**
    * This object takes care of one-directional synchronization of
    * Openlayers raster layers to the given Cesium globe.
@@ -183,4 +183,4 @@ class exports extends olcsAbstractSynchronizer {
 }
 
 
-export default exports;
+export default RasterSynchronizer;

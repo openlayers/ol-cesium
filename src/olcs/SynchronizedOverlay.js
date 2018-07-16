@@ -7,7 +7,7 @@ import * as olProj from 'ol/proj.js';
 import * as olDom from 'ol/dom.js';
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
 
-class exports extends olOverlay {
+class SynchronizedOverlay extends olOverlay {
   /**
    * @constructor
    * @param {olcsx.SynchronizedOverlayOptions} options SynchronizedOverlay Options.
@@ -263,7 +263,7 @@ class exports extends olOverlay {
   }
 }
 
-olBase.inherits(exports, olOverlay);
+olBase.inherits(SynchronizedOverlay, olOverlay);
 
 
-export default exports;
+export default SynchronizedOverlay;

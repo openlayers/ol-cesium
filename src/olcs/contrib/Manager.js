@@ -8,7 +8,7 @@ import * as olMath from 'ol/math.js';
 import olObservable from 'ol/Observable.js';
 import googAsserts from 'goog/asserts.js';
 
-const exports = class extends olObservable {
+const Manager = class extends olObservable {
   /**
    * @param {string} cesiumUrl
    * @param {olcsx.contrib.ManagerOptions} options
@@ -392,4 +392,4 @@ const exports = class extends olObservable {
 };
 
 
-export default exports;
+export default Manager;

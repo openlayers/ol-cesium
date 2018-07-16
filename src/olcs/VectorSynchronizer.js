@@ -12,16 +12,14 @@ import olLayerVector from 'ol/layer/Vector.js';
 import olcsAbstractSynchronizer from './AbstractSynchronizer.js';
 import olcsFeatureConverter from './FeatureConverter.js';
 
-class exports extends olcsAbstractSynchronizer {
+class VectorSynchronizer extends olcsAbstractSynchronizer {
   /**
    * Unidirectionally synchronize OpenLayers vector layers to Cesium.
    * @param {!ol.Map} map
    * @param {!Cesium.Scene} scene
    * @param {olcs.FeatureConverter=} opt_converter
-   * @constructor
    * @extends {olcs.AbstractSynchronizer.<olcs.core.VectorLayerCounterpart>}
    * @api
-   * @struct
    */
   constructor(map, scene, opt_converter) {
     super(map, scene);
@@ -183,4 +181,4 @@ class exports extends olcsAbstractSynchronizer {
   }
 }
 
-export default exports;
+export default VectorSynchronizer;

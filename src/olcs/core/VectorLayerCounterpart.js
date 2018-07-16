@@ -6,8 +6,6 @@ import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
 class VectorLayerCounterpart {
   /**
   * Result of the conversion of an OpenLayers layer to Cesium.
-  * @constructor
-  * @struct
   * @param {!(ol.proj.Projection|string)} layerProjection
   * @param {!Cesium.Scene} scene
   */
