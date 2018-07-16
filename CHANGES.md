@@ -6,6 +6,7 @@
   * Port to OpenLayers 5.0.2.
   * Port to Cesium 1.47.
   * Improve line and outline support for ground primitives.
+  * Switch from old style constructors to ES6 classes.
 
 # v 2.0 - 2018-05-04
 
