@@ -79,7 +79,7 @@ class RasterSynchronizer extends olcsAbstractSynchronizer {
    * @protected
    */
   convertLayerToCesiumImageries(olLayer, viewProj) {
-    const result = olcsCore.tileLayerToImageryLayer(olLayer, viewProj);
+    const result = olcsCore.tileLayerToImageryLayer(this.map, olLayer, viewProj);
     return result ? [result] : null;
   }
 
