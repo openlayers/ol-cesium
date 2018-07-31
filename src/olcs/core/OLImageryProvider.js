@@ -120,7 +120,12 @@ class OLImageryProvider /* should not extend Cesium.ImageryProvider */ {
       extent: olExtent
     };
 
-    return this.createCesiumCredit(frameState);
+    let attributions = this.source_.getAttributions()(frameState);
+    if (!Array.isArray(attributions)) {
+      attributions = [attributions];
+    }
+
+    return attributions.map(html => new Cesium.Credit(html, true));
   }
 
   /**
@@ -147,21 +152,6 @@ class OLImageryProvider /* should not extend Cesium.ImageryProvider */ {
       // return empty canvas to stop Cesium from retrying later
       return this.emptyCanvas_;
     }
-  }
-
-  /**
-   * Try to create proper Cesium.Credit for the given ol.source.Source as closely as possible.
-   * @return {?Cesium.Credit}
-   */
-  createCesiumCredit(frameState) {
-    const attributions = this.source_.getAttributions();
-
-    const text = attributions(frameState).reduce((text, htmlOrAttr) => {
-      const html = typeof htmlOrAttr === 'string' ? htmlOrAttr : htmlOrAttr.getHTML();
-      return text + html;
-    }, '');
-
-    return text.length > 0 ? new Cesium.Credit(text, true) : null;
   }
 }
 
