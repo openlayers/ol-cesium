@@ -1,5 +1,10 @@
 # Changelog
 
+# v 2.2
+
+* Changes
+  * Fix dynamic credits handling and add back a Bing example.
+
 # v 2.1 - 2018-07-13
 
 * Changes
