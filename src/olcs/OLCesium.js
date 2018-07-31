@@ -218,14 +218,6 @@ class OLCesium {
       synchronizers[i].synchronize();
     }
 
-    if (this.isOverMap_) {
-      // if in "stacked mode", hide everything except canvas (including credits)
-      const credits = this.canvas_.nextElementSibling;
-      if (credits) {
-        credits.style.display = 'none';
-      }
-    }
-
     /**
      * Time of the last rendered frame, as returned by `performance.now()`.
      * @type {number}
