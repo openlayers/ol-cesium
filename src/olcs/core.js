@@ -7,6 +7,7 @@ import googAsserts from 'goog/asserts.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olLayerImage from 'ol/layer/Image.js';
 import * as olProj from 'ol/proj.js';
+import olSourceImageStatic from 'ol/source/ImageStatic';
 import olSourceImageWMS from 'ol/source/ImageWMS.js';
 import olSourceTileImage from 'ol/source/TileImage.js';
 import olSourceTileWMS from 'ol/source/TileWMS.js';
@@ -353,7 +354,7 @@ exports.extentToRectangle = function(extent, projection) {
 
 /**
  * Creates Cesium.ImageryLayer best corresponding to the given ol.layer.Layer.
- * Only supports raster layers
+ * Only supports raster layers and static images
  * @param {!ol.Map} olMap
  * @param {!ol.layer.Base} olLayer
  * @param {!ol.proj.Projection} viewProj Projection of the view.
@@ -403,8 +404,30 @@ exports.tileLayerToImageryLayer = function(olMap, olLayer, viewProj) {
       return null;
     }
 
+  } else if (source instanceof olSourceImageStatic) {
+    let projection = olcsUtil.getSourceProjection(source);
+
+    if (!projection) {
+      projection = viewProj;
+    }
+
+    if (exports.isCesiumProjection(projection)) {
+      provider = new Cesium.SingleTileImageryProvider({
+        url: source.getUrl(),
+        rectangle: new Cesium.Rectangle.fromDegrees(
+            source.getImageExtent()[0],
+            source.getImageExtent()[1],
+            source.getImageExtent()[2],
+            source.getImageExtent()[3]
+        )
+      });
+    }
+    // Projection not supported by Cesium
+    else {
+      return null;
+    }
   } else {
-    // sources other than TileImage are currently not supported
+    // sources other than TileImage|ImageStatic are currently not supported
     return null;
   }
 
