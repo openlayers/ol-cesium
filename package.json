@@ -20,7 +20,7 @@
     "htmlparser2": "3.9.2"
   },
   "devDependencies": {
-    "@camptocamp/cesium": "1.47.0",
+    "@camptocamp/cesium": "1.48.0",
     "@mapbox/geojsonhint": "2.0.1",
     "babel-core": "6.26.3",
     "babel-loader": "7.1.5",
