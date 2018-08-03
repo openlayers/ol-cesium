@@ -4,6 +4,7 @@
 
 * Changes
   * Fix dynamic credits handling and add back a Bing example.
+  * Port to Cesium 1.48.
 
 # v 2.1 - 2018-07-13
 

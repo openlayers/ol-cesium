@@ -120,7 +120,11 @@ class OLImageryProvider /* should not extend Cesium.ImageryProvider */ {
       extent: olExtent
     };
 
-    let attributions = this.source_.getAttributions()(frameState);
+    const attributionsFunction = this.source_.getAttributions();
+    if (!attributionsFunction) {
+      return [];
+    }
+    let attributions = attributionsFunction(frameState);
     if (!Array.isArray(attributions)) {
       attributions = [attributions];
     }
