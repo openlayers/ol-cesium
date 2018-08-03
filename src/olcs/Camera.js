@@ -4,8 +4,7 @@
 
 import googAsserts from 'goog/asserts.js';
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
-import * as olEvents from 'ol/events.js';
-import * as olMath from 'ol/math.js';
+import {toRadians, toDegrees} from './math.js';
 import * as olProj from 'ol/proj.js';
 import olcsCore from './core.js';
 
@@ -127,8 +126,7 @@ class Camera {
       this.toLonLat_ = toLonLat;
       this.fromLonLat_ = fromLonLat;
 
-      this.viewListenKey_ = olEvents.listen(view, 'propertychange',
-          this.handleViewEvent_, this);
+      this.viewListenKey_ = view.on('propertychange', () => this.handleViewEvent_);
 
       this.readFromView();
     } else {
@@ -243,8 +241,8 @@ class Camera {
     googAsserts.assert(ll);
 
     const carto = new Cesium.Cartographic(
-        olMath.toRadians(ll[0]),
-        olMath.toRadians(ll[1]),
+        toRadians(ll[0]),
+        toRadians(ll[1]),
         this.getAltitude());
 
     this.cam_.setView({
@@ -265,8 +263,8 @@ class Camera {
     const carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(this.cam_.position);
 
     const pos = this.fromLonLat_([
-      olMath.toDegrees(carto.longitude),
-      olMath.toDegrees(carto.latitude)
+      toDegrees(carto.longitude),
+      toDegrees(carto.latitude)
     ]);
     googAsserts.assert(pos);
     return pos;
@@ -312,8 +310,8 @@ class Camera {
     const ll = this.toLonLat_(center);
     googAsserts.assert(ll);
 
-    const carto = new Cesium.Cartographic(olMath.toRadians(ll[0]),
-        olMath.toRadians(ll[1]));
+    const carto = new Cesium.Cartographic(toRadians(ll[0]),
+        toRadians(ll[1]));
     if (this.scene_.globe) {
       const height = this.scene_.globe.getHeight(carto);
       carto.height = height || 0;
@@ -354,7 +352,7 @@ class Camera {
 
     const resolution = this.view_.getResolution();
     this.distance_ = this.calcDistanceForResolution(
-        resolution || 0, olMath.toRadians(ll[1]));
+        resolution || 0, toRadians(ll[1]));
 
     this.updateCamera_();
   }
@@ -387,8 +385,8 @@ class Camera {
     this.distance_ = Cesium.Cartesian3.distance(bestTarget, this.cam_.position);
     const bestTargetCartographic = ellipsoid.cartesianToCartographic(bestTarget);
     this.view_.setCenter(this.fromLonLat_([
-      olMath.toDegrees(bestTargetCartographic.longitude),
-      olMath.toDegrees(bestTargetCartographic.latitude)]));
+      toDegrees(bestTargetCartographic.longitude),
+      toDegrees(bestTargetCartographic.latitude)]));
 
     // resolution
     this.view_.setResolution(
