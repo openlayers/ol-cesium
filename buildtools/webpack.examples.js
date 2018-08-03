@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require('fs');
 const ls = require('ls');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -10,9 +11,13 @@ const exampleFilenamePrefix = process.env.DEV_SERVER ? 'examples/' : '';
 
 for (const filename of ls('examples/*.html')) {
   const name = filename.name;
+  const jsName = `./examples/${name}.js`;
+  if (!fs.existsSync(jsName)) {
+    continue;
+  }
   entry[name] = [
     //'./examples/common_dependencies.js', // Should be first
-    `./examples/${name}.js`
+    jsName
   ];
 
   plugins.push(

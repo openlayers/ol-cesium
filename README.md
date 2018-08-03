@@ -37,7 +37,7 @@ with other bundlers, please create an issue if it is not the case. See also the
 [ol-cesium-webpack-example](https://github.com/gberaudo/ol-cesium-webpack-example)
 based on the official Cesium With Webpack example.
 
-### As an old-fashioned independant library (need testing, if you are interested, get in touch with us)
+### As an old-fashioned independant library (if you are interested, get in touch with us)
 ```bash
 npm i --save ol-cesium
 ```
@@ -50,6 +50,9 @@ npm i --save ol-cesium
 <link rel="stylesheet" href="node_modules/ol-cesium/dist/olcs.css" type="text/css">
 <script src="node_modules/ol-cesium/dist/olcesium.js"></script>
 ```
+
+As of now, you will need a custom build of OpenLayers.
+See [old fashioned example](https://openlayers.org/ol-cesium/examples/oldfashioned.html).
 
 ### As an UMD library (need documentation, if you are interested, get in touch with us)
 

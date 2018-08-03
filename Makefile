@@ -75,7 +75,7 @@ CS_BUILD="node_modules/@camptocamp/cesium/Build"
 OL_CSS_DIR="node_modules/ol"
 .build/dist-examples.timestamp: dist/examples/index.html $(EXAMPLES_FILES) $(WEBPACK_CONFIG_FILES) .build/node_modules.timestamp
 	npm run build-examples
-	cp -f examples/inject_ol_cesium.js dist/examples/
+	cp -f examples/inject_ol_cesium.js examples/oldfashioned.html dist/examples/
 	mkdir -p dist/$(OL_CSS_DIR); cp $(OL_CSS_DIR)/ol.css dist/$(OL_CSS_DIR)
 	mkdir -p dist/$(CS_BUILD); rm -rf dist/$(CS_BUILD)/* ; cp -Rf $(CS_BUILD)/Cesium* dist/$(CS_BUILD)/
 	touch $@
