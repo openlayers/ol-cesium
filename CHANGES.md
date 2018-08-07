@@ -6,6 +6,7 @@
   * Fix dynamic credits handling and add back a Bing example.
   * Port to Cesium 1.48.
   * Switch to Cesium Ion (old terrain service is deprecated and will be stopped in September).
+  * Add an old fashioned example (currently requires a custom build of OpenLayers).
 
 # v 2.1 - 2018-07-13
 

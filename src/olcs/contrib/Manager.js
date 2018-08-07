@@ -4,7 +4,7 @@
 import olcsContribLazyLoader from '../contrib/LazyLoader.js';
 import OLCesium from '../OLCesium.js';
 import olcsCore from '../core.js';
-import * as olMath from 'ol/math.js';
+import {toRadians} from '../math.js';
 import olObservable from 'ol/Observable.js';
 import googAsserts from 'goog/asserts.js';
 
@@ -65,7 +65,7 @@ const Manager = class extends olObservable {
      * @const {number} Tilt angle in radians
      * @private
      */
-    this.cesiumInitialTilt_ = olMath.toRadians(50);
+    this.cesiumInitialTilt_ = toRadians(50);
 
     /**
      * @protected
