@@ -111,6 +111,10 @@ class VectorSynchronizer extends olcsAbstractSynchronizer {
       source = source.getSource();
     }
 
+    if (!source) {
+      return null;
+    }
+
     googAsserts.assertInstanceof(source, olSourceVector);
     googAsserts.assert(this.view);
 
