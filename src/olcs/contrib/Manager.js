@@ -143,9 +143,7 @@ const Manager = class extends olObservable {
     googAsserts.assert(this.map);
     const ol3d = new OLCesium({map: this.map});
     const scene = ol3d.getCesiumScene();
-    const terrainProvider = new Cesium.CesiumTerrainProvider({
-      url: '//assets.agi.com/stk-terrain/world'
-    });
+    const terrainProvider = Cesium.createWorldTerrain();
     scene.terrainProvider = terrainProvider;
     return ol3d;
   }
