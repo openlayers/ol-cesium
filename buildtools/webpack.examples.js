@@ -16,7 +16,6 @@ for (const filename of ls('examples/*.html')) {
     continue;
   }
   entry[name] = [
-    //'./examples/common_dependencies.js', // Should be first
     jsName
   ];
 
