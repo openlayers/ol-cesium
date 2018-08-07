@@ -1,6 +1,6 @@
 {
   "name": "ol-cesium",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "OpenLayers Cesium integration library",
   "scripts": {
     "build-examples": "cross-env TARGET=examples webpack --progress --bail",
@@ -31,18 +31,18 @@
     "eslint": "5.1.0",
     "eslint-config-openlayers": "9.2.0",
     "extract-text-webpack-plugin": "4.0.0-alpha.0",
-    "fs-extra": "6.0.1",
+    "fs-extra": "7.0.0",
     "html-loader": "0.5.5",
     "html-webpack-plugin": "3.2.0",
     "jsdoc": "3.5.5",
     "ls": "0.2.1",
     "nomnom": "1.8.1",
-    "ol": "5.0.3",
+    "ol": "5.1.3",
     "proj4": "2.4.4",
     "temp": "0.8.3",
-    "webpack": "4.16.0",
-    "webpack-cli": "3.0.8",
-    "webpack-dev-server": "3.1.4",
-    "webpack-merge": "4.1.3"
+    "webpack": "4.16.5",
+    "webpack-cli": "3.1.0",
+    "webpack-dev-server": "3.1.5",
+    "webpack-merge": "4.1.4"
   }
 }
