@@ -10,7 +10,7 @@ import olSourceOSM from 'ol/source/OSM.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olMap from 'ol/Map.js';
 
-
+Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI0MzAyNzUyYi0zY2QxLTQxZDItODRkOS1hNTA3MDU3ZTBiMDUiLCJpZCI6MjU0MSwiaWF0IjoxNTMzNjI1MTYwfQ.oHn1SUWJa12esu7XUUtEoc1BbEbuZpRocLetw6M6_AA';
 const ol2d = new olMap({
   layers: [
     new olLayerTile({
@@ -43,11 +43,7 @@ const ol3d = new OLCesium({
   }
 });
 const scene = ol3d.getCesiumScene();
-const terrainProvider = new Cesium.CesiumTerrainProvider({
-  url: '//assets.agi.com/stk-terrain/world',
-  requestVertexNormals: true
-});
-scene.terrainProvider = terrainProvider;
+scene.terrainProvider = Cesium.createWorldTerrain();
 ol3d.setEnabled(true);
 
 

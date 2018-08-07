@@ -16,6 +16,7 @@ const view = new olView({
   rotation: Math.PI / 6
 });
 
+Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI0MzAyNzUyYi0zY2QxLTQxZDItODRkOS1hNTA3MDU3ZTBiMDUiLCJpZCI6MjU0MSwiaWF0IjoxNTMzNjI1MTYwfQ.oHn1SUWJa12esu7XUUtEoc1BbEbuZpRocLetw6M6_AA';
 const ol2d = new olMap({
   layers: [
     new olLayerTile({
@@ -28,10 +29,7 @@ const ol2d = new olMap({
 
 const ol3d = new OLCesium({map: ol2d, target: 'map3d'});
 const scene = ol3d.getCesiumScene();
-const terrainProvider = new Cesium.CesiumTerrainProvider({
-  url: '//assets.agi.com/stk-terrain/world'
-});
-scene.terrainProvider = terrainProvider;
+scene.terrainProvider = Cesium.createWorldTerrain();
 ol3d.setEnabled(true);
 
 document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));

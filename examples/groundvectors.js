@@ -134,11 +134,11 @@ const map = new olMap({
   })
 });
 
+Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI0MzAyNzUyYi0zY2QxLTQxZDItODRkOS1hNTA3MDU3ZTBiMDUiLCJpZCI6MjU0MSwiaWF0IjoxNTMzNjI1MTYwfQ.oHn1SUWJa12esu7XUUtEoc1BbEbuZpRocLetw6M6_AA';
 vectorLayer.set('altitudeMode', 'clampToGround');
 const ol3d = new OLCesium({map, target: 'map3d'});
 const scene = ol3d.getCesiumScene();
-const terrainProvider = Cesium.createWorldTerrain();
-scene.terrainProvider = terrainProvider;
+scene.terrainProvider = Cesium.createWorldTerrain();
 ol3d.setEnabled(true);
 
 window['toggleClampToGround'] = function() {
