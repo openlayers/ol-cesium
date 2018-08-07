@@ -8,6 +8,7 @@
   * Port to OpenLayers 5.1.3.
   * Switch to Cesium Ion (old terrain service is deprecated and will be stopped in September).
   * Add an old fashioned example (currently requires a custom build of OpenLayers).
+  * Fix synchronization issue when a layer has no initial source.
 
 # v 2.1 - 2018-07-13
 
