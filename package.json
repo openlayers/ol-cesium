@@ -8,6 +8,7 @@
     "serve": "cross-env DEV_SERVER=1 TARGET=examples webpack-dev-server --port 3000 --progress --watch --bail --debug"
   },
   "main": "./dist/olcesium.js",
+  "module": "./src/index.library.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/openlayers/ol-cesium.git"
