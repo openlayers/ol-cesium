@@ -1,5 +1,10 @@
 # Changelog
 
+# v 2.2.1 - 2018-08-09
+
+* Changes
+  * Export module in package.json.
+
 # v 2.2 - 2018-08-07
 
 * Changes
