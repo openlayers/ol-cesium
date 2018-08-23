@@ -1,5 +1,10 @@
 # Changelog
 
+# v 2.2.2 - 2018-08-24
+
+* Changes
+  * Stop using internal OpenLayers functions (see oldfashioned example).
+
 # v 2.2.1 - 2018-08-09
 
 * Changes
