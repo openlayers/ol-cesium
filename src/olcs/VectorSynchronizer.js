@@ -6,8 +6,7 @@ import olLayerLayer from 'ol/layer/Layer.js';
 import olSourceCluster from 'ol/source/Cluster.js';
 import olLayerImage from 'ol/layer/Image.js';
 import googAsserts from 'goog/asserts.js';
-import {getUid as olGetUid} from 'ol/util.js';
-import {olcsListen} from './util.js';
+import {olcsListen, getUid} from './util.js';
 import olLayerVector from 'ol/layer/Vector.js';
 import olcsAbstractSynchronizer from './AbstractSynchronizer.js';
 import olcsFeatureConverter from './FeatureConverter.js';
@@ -140,13 +139,13 @@ class VectorSynchronizer extends olcsAbstractSynchronizer {
       const context = counterpart.context;
       const prim = this.converter.convert(olLayer, view, feature, context);
       if (prim) {
-        featurePrimitiveMap[olGetUid(feature)] = prim;
+        featurePrimitiveMap[getUid(feature)] = prim;
         csPrimitives.add(prim);
       }
     }).bind(this);
 
     const onRemoveFeature = (function(feature) {
-      const id = olGetUid(feature);
+      const id = getUid(feature);
       const context = counterpart.context;
       const bbs = context.featureToCesiumMap[id];
       if (bbs) {

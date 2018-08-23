@@ -2,7 +2,7 @@
  * @module olcs.OverlaySynchronizer
  */
 import olcsSynchronizedOverlay from './SynchronizedOverlay.js';
-import {getUid as olGetUid} from 'ol/util.js';
+import {getUid} from './util.js';
 
 class OverlaySynchronizer {
   /**
@@ -119,7 +119,7 @@ class OverlaySynchronizer {
       parent: overlay
     });
 
-    const overlayId = olGetUid(overlay).toString();
+    const overlayId = getUid(overlay).toString();
     this.overlayMap_[overlayId] = cesiumOverlay;
   }
 
@@ -138,7 +138,7 @@ class OverlaySynchronizer {
   * @api
   */
   removeOverlay(overlay) {
-    const overlayId = olGetUid(overlay).toString();
+    const overlayId = getUid(overlay).toString();
     const csOverlay = this.overlayMap_[overlayId];
     if (csOverlay) {
       csOverlay.destroy();

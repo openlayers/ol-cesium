@@ -80,4 +80,40 @@ export function olcsListen(observable, type, listener) {
   return /** @type {!ol.events.EventsKey} */ (observable.on(type, listener));
 }
 
+/**
+ * Counter for getUid.
+ * @type {number}
+ */
+let uidCounter_ = 0;
+
+/**
+ * Gets a unique ID for an object. This mutates the object so that further calls
+ * with the same object as a parameter returns the same value. Unique IDs are generated
+ * as a strictly increasing sequence. Adapted from goog.getUid.
+ *
+ * @param {Object} obj The object to get the unique ID for.
+ * @return {number} The unique ID for the object.
+ */
+export function getUid(obj) {
+  return obj.olcs_uid || (obj.olcs_uid = ++uidCounter_);
+}
+
+/**
+ * Sort the passed array such that the relative order of equal elements is preverved.
+ * See https://en.wikipedia.org/wiki/Sorting_algorithm#Stability for details.
+ * @param {Array<*>} arr The array to sort (modifies original).
+ * @param {!function(*, *): number} compareFnc Comparison function.
+ */
+export function stableSort(arr, compareFnc) {
+  const length = arr.length;
+  const tmp = Array(arr.length);
+  for (let i = 0; i < length; i++) {
+    tmp[i] = {index: i, value: arr[i]};
+  }
+  tmp.sort((a, b) => compareFnc(a.value, b.value) || a.index - b.index);
+  for (let i = 0; i < arr.length; i++) {
+    arr[i] = tmp[i].value;
+  }
+}
+
 export default exports;

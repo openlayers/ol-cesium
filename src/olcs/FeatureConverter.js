@@ -7,13 +7,12 @@ import olSourceVector from 'ol/source/Vector.js';
 import olSourceCluster from 'ol/source/Cluster.js';
 import {circular as olCreateCircularPolygon} from 'ol/geom/Polygon.js';
 import googAsserts from 'goog/asserts.js';
-import {getUid as olGetUid} from 'ol/util.js';
 import * as olEvents from 'ol/events.js';
 import * as olExtent from 'ol/extent.js';
 import olGeomSimpleGeometry from 'ol/geom/SimpleGeometry.js';
 import olcsCore from './core.js';
 import olcsCoreVectorLayerCounterpart from './core/VectorLayerCounterpart.js';
-import olcsUtil from './util.js';
+import olcsUtil, {getUid} from './util.js';
 
 class FeatureConverter {
   /**
@@ -54,7 +53,7 @@ class FeatureConverter {
       const feature = evt.feature;
       if (feature) {
         // remove
-        const id = olGetUid(feature);
+        const id = getUid(feature);
         const canceller = cancellers[id];
         if (canceller) {
           canceller();
@@ -710,7 +709,7 @@ class FeatureConverter {
         cancellers = olcsUtil.obj(source)['olcs_cancellers'] = {};
       }
 
-      const fuid = olGetUid(feature);
+      const fuid = getUid(feature);
       if (cancellers[fuid]) {
         // When the feature change quickly, a canceller may still be present so
         // we cancel it here to prevent creation of a billboard.
@@ -1077,12 +1076,12 @@ class FeatureConverter {
 
     const proj = context.projection;
     const newBillboardAddedCallback = function(bb) {
-      const featureBb = context.featureToCesiumMap[olGetUid(feature)];
+      const featureBb = context.featureToCesiumMap[getUid(feature)];
       if (featureBb instanceof Array) {
         featureBb.push(bb);
       }
       else {
-        context.featureToCesiumMap[olGetUid(feature)] = [bb];
+        context.featureToCesiumMap[getUid(feature)] = [bb];
       }
     };
 
@@ -1209,7 +1208,7 @@ class FeatureConverter {
       if (!primitives) {
         continue;
       }
-      featurePrimitiveMap[olGetUid(feature)] = primitives;
+      featurePrimitiveMap[getUid(feature)] = primitives;
       counterpart.getRootPrimitive().add(primitives);
     }
 
