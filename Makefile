@@ -68,11 +68,11 @@ cleanall:
 	touch $@
 
 .build/eslint.timestamp: $(SRC_JS_FILES) $(EXAMPLES_JS_FILES) $(WEBPACK_CONFIG_FILES) .build/node_modules.timestamp
-	./node_modules/.bin/eslint $(filter-out .build/node_modules.timestamp, $^)
+	TARGET=examples ./node_modules/.bin/eslint $(filter-out .build/node_modules.timestamp, $^)
 	touch $@
 
-CS_BUILD="node_modules/@camptocamp/cesium/Build"
-OL_CSS_DIR="node_modules/ol"
+CS_BUILD=node_modules/@camptocamp/cesium/Build
+OL_CSS_DIR=node_modules/ol
 .build/dist-examples.timestamp: dist/examples/index.html $(EXAMPLES_FILES) $(WEBPACK_CONFIG_FILES) .build/node_modules.timestamp
 	npm run build-examples
 	cp -f examples/inject_ol_cesium.js examples/oldfashioned.html dist/examples/

@@ -76,7 +76,7 @@ const config = {
   ],
   resolve: {
     modules: [
-      '../node_modules'
+      '../node_modules', '../node_modules/ol/src'
     ],
     mainFields: ['jsnext:main', 'main'],
     alias: {

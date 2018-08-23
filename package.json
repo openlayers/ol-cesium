@@ -17,9 +17,6 @@
   "bugs": {
     "url": "https://github.com/openlayers/ol-cesium/issues"
   },
-  "dependencies": {
-    "htmlparser2": "3.9.2"
-  },
   "devDependencies": {
     "@camptocamp/cesium": "1.48.0",
     "@mapbox/geojsonhint": "2.0.1",
@@ -29,21 +26,23 @@
     "copy-webpack-plugin": "4.5.2",
     "cross-env": "5.2.0",
     "css-loader": "1.0.0",
-    "eslint": "5.1.0",
-    "eslint-config-openlayers": "9.2.0",
+    "eslint": "5.4.0",
+    "eslint-config-openlayers": "11.0.0",
+    "eslint-import-resolver-webpack": "^0.10.1",
     "extract-text-webpack-plugin": "4.0.0-alpha.0",
     "fs-extra": "7.0.0",
     "html-loader": "0.5.5",
     "html-webpack-plugin": "3.2.0",
+    "htmlparser2": "3.9.2",
     "jsdoc": "3.5.5",
     "ls": "0.2.1",
     "nomnom": "1.8.1",
     "ol": "5.1.3",
     "proj4": "2.4.4",
     "temp": "0.8.3",
-    "webpack": "4.16.5",
+    "webpack": "4.17.1",
     "webpack-cli": "3.1.0",
     "webpack-dev-server": "3.1.5",
-    "webpack-merge": "4.1.4"
+    "webpack-merge": "^4.1.4"
   }
 }

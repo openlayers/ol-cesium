@@ -90,7 +90,7 @@ const addTileJSON = function() { // eslint-disable-line no-unused-vars
 
 const removeLastLayer = function() { // eslint-disable-line no-unused-vars
   const length = ol2d.getLayers().getLength();
-  if (length >  0) {
+  if (length > 0) {
     ol2d.getLayers().removeAt(length - 1);
   }
 };
