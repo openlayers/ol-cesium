@@ -126,7 +126,7 @@ class Camera {
       this.toLonLat_ = toLonLat;
       this.fromLonLat_ = fromLonLat;
 
-      this.viewListenKey_ = view.on('propertychange', () => this.handleViewEvent_);
+      this.viewListenKey_ = view.on('propertychange', e => this.handleViewEvent_(e));
 
       this.readFromView();
     } else {

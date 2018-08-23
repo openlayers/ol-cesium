@@ -66,5 +66,18 @@ exports.getSourceProjection = function(source) {
     || source.getProjection();
 };
 
+/**
+ * @param {ol.Observable} observable
+ * @param {string} type
+ * @param {Function} listener
+ * @return {!ol.events.EventsKey}
+ */
+export function olcsListen(observable, type, listener) {
+  // See https://github.com/openlayers/openlayers/pull/8481
+  // ol.events.listen is internal so we use `on` instead.
+  // And since `on` as a convoluted API (can return an EventsKey or an array of them)
+  // we use a cast here.
+  return /** @type {!ol.events.EventsKey} */ (observable.on(type, listener));
+}
 
 export default exports;

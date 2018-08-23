@@ -4,7 +4,6 @@
 import olGeomPoint from 'ol/geom/Point.js';
 import googAsserts from 'goog/asserts.js';
 import * as olProj from 'ol/proj.js';
-import * as olEvents from 'ol/events.js';
 import olcsUtil from './util.js';
 import olcsCore from './core.js';
 import olcsAutoRenderLoop from './AutoRenderLoop.js';
@@ -106,7 +105,7 @@ class OLCesium {
     if (this.isOverMap_ && options.stopOpenLayersEventsPropagation) {
       const overlayEvents = ['click', 'dblclick', 'mousedown', 'touchstart', 'MSPointerDown', 'pointerdown', 'mousewheel', 'wheel'];
       for (let i = 0, ii = overlayEvents.length; i < ii; ++i) {
-        olEvents.listen(this.container_, overlayEvents[i], evt => evt.stopPropagation());
+        this.container_.addEventListener(overlayEvents[i], evt => evt.stopPropagation());
       }
     }
 

@@ -3,7 +3,6 @@
  */
 import olcsSynchronizedOverlay from './SynchronizedOverlay.js';
 import {getUid as olGetUid} from 'ol/util.js';
-import * as olEvents from 'ol/events.js';
 
 class OverlaySynchronizer {
   /**
@@ -40,7 +39,7 @@ class OverlaySynchronizer {
     this.overlayContainerStopEvent_.className = 'ol-overlaycontainer-stopevent';
     const overlayEvents = ['click', 'dblclick', 'mousedown', 'touchstart', 'MSPointerDown', 'pointerdown', 'mousewheel', 'wheel'];
     overlayEvents.forEach((event) => {
-      olEvents.listen(this.overlayContainerStopEvent_, event, evt => evt.stopPropagation());
+      this.overlayContainerStopEvent_.addEventListener(event, evt => evt.stopPropagation());
     });
     this.scene.canvas.parentElement.appendChild(this.overlayContainerStopEvent_);
 

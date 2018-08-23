@@ -4,8 +4,9 @@
 import googAsserts from 'goog/asserts.js';
 import {getUid as olGetUid} from 'ol/util.js';
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
-import * as olEvents from 'ol/events.js';
 import olLayerGroup from 'ol/layer/Group.js';
+import {olcsListen} from './util.js';
+
 
 class AbstractSynchronizer {
   /**
@@ -134,12 +135,12 @@ class AbstractSynchronizer {
             const cesiumObjs = this.createSingleLayerCounterparts(layerWithParents);
             if (cesiumObjs) {
               // unsubscribe event listener
-              layerWithParents.layer.un('change', onLayerChange, this);
+              layerWithParents.layer.un('change', onLayerChange);
               this.addCesiumObjects_(cesiumObjs, layerId, layerWithParents.layer);
               this.orderLayers();
             }
           };
-          this.olLayerListenKeys[olLayerId].push(olEvents.listen(layerWithParents.layer, 'change', onLayerChange, this));
+          this.olLayerListenKeys[olLayerId].push(olcsListen(layerWithParents.layer, 'change', onLayerChange));
         }
       }
       // add Cesium layers
@@ -160,7 +161,7 @@ class AbstractSynchronizer {
    */
   addCesiumObjects_(cesiumObjects, layerId, layer) {
     this.layerMap[layerId] = cesiumObjects;
-    this.olLayerListenKeys[layerId].push(olEvents.listen(layer, 'change:zIndex', this.orderLayers, this));
+    this.olLayerListenKeys[layerId].push(olcsListen(layer, 'change:zIndex', () => this.orderLayers()));
     cesiumObjects.forEach((cesiumObject) => {
       this.addCesiumObject(cesiumObject);
     });

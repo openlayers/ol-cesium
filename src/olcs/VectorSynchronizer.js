@@ -7,7 +7,7 @@ import olSourceCluster from 'ol/source/Cluster.js';
 import olLayerImage from 'ol/layer/Image.js';
 import googAsserts from 'goog/asserts.js';
 import {getUid as olGetUid} from 'ol/util.js';
-import * as olEvents from 'ol/events.js';
+import {olcsListen} from './util.js';
 import olLayerVector from 'ol/layer/Vector.js';
 import olcsAbstractSynchronizer from './AbstractSynchronizer.js';
 import olcsFeatureConverter from './FeatureConverter.js';
@@ -126,7 +126,7 @@ class VectorSynchronizer extends olcsAbstractSynchronizer {
     const olListenKeys = counterpart.olListenKeys;
 
     [olLayerWithParents.layer].concat(olLayerWithParents.parents).forEach((olLayerItem) => {
-      olListenKeys.push(olEvents.listen(olLayerItem, 'change:visible', () => {
+      olListenKeys.push(olcsListen(olLayerItem, 'change:visible', () => {
         this.updateLayerVisibility(olLayerWithParents, csPrimitives);
       }));
     });
@@ -164,17 +164,17 @@ class VectorSynchronizer extends olcsAbstractSynchronizer {
       }
     }).bind(this);
 
-    olListenKeys.push(olEvents.listen(source, 'addfeature', (e) => {
+    olListenKeys.push(olcsListen(source, 'addfeature', (e) => {
       googAsserts.assert(e.feature);
       onAddFeature(e.feature);
     }, this));
 
-    olListenKeys.push(olEvents.listen(source, 'removefeature', (e) => {
+    olListenKeys.push(olcsListen(source, 'removefeature', (e) => {
       googAsserts.assert(e.feature);
       onRemoveFeature(e.feature);
     }, this));
 
-    olListenKeys.push(olEvents.listen(source, 'changefeature', (e) => {
+    olListenKeys.push(olcsListen(source, 'changefeature', (e) => {
       const feature = e.feature;
       googAsserts.assert(feature);
       onRemoveFeature(feature);
