@@ -4,6 +4,11 @@
     'openlayers',
     '.eslintrc-es6.yaml'
   ],
+  settings: {
+    'import/resolver': {
+      'webpack': {}
+    }
+  },
   rules: {
     no-console: 0,
     comma-dangle: 0,

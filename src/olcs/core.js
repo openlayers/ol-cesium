@@ -395,7 +395,7 @@ exports.tileLayerToImageryLayer = function(olMap, olLayer, viewProj) {
       projection = viewProj;
     }
 
-    if (exports.isCesiumProjection(projection))  {
+    if (exports.isCesiumProjection(projection)) {
       provider = new olcsCoreOLImageryProvider(olMap, source, viewProj);
     }
     // Projection not supported by Cesium

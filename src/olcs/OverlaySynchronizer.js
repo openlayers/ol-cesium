@@ -2,8 +2,7 @@
  * @module olcs.OverlaySynchronizer
  */
 import olcsSynchronizedOverlay from './SynchronizedOverlay.js';
-import {getUid as olGetUid} from 'ol/util.js';
-import * as olEvents from 'ol/events.js';
+import {getUid} from './util.js';
 
 class OverlaySynchronizer {
   /**
@@ -40,7 +39,7 @@ class OverlaySynchronizer {
     this.overlayContainerStopEvent_.className = 'ol-overlaycontainer-stopevent';
     const overlayEvents = ['click', 'dblclick', 'mousedown', 'touchstart', 'MSPointerDown', 'pointerdown', 'mousewheel', 'wheel'];
     overlayEvents.forEach((event) => {
-      olEvents.listen(this.overlayContainerStopEvent_, event, evt => evt.stopPropagation());
+      this.overlayContainerStopEvent_.addEventListener(event, evt => evt.stopPropagation());
     });
     this.scene.canvas.parentElement.appendChild(this.overlayContainerStopEvent_);
 
@@ -120,7 +119,7 @@ class OverlaySynchronizer {
       parent: overlay
     });
 
-    const overlayId = olGetUid(overlay).toString();
+    const overlayId = getUid(overlay).toString();
     this.overlayMap_[overlayId] = cesiumOverlay;
   }
 
@@ -139,7 +138,7 @@ class OverlaySynchronizer {
   * @api
   */
   removeOverlay(overlay) {
-    const overlayId = olGetUid(overlay).toString();
+    const overlayId = getUid(overlay).toString();
     const csOverlay = this.overlayMap_[overlayId];
     if (csOverlay) {
       csOverlay.destroy();

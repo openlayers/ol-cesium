@@ -3,8 +3,7 @@
  */
 import olLayerGroup from 'ol/layer/Group.js';
 import googAsserts from 'goog/asserts.js';
-import {getUid as olGetUid} from 'ol/util.js';
-import * as olArray from 'ol/array.js';
+import {getUid, stableSort} from './util.js';
 import olcsAbstractSynchronizer from './AbstractSynchronizer.js';
 import olcsCore from './core.js';
 
@@ -88,7 +87,7 @@ class RasterSynchronizer extends olcsAbstractSynchronizer {
    */
   createSingleLayerCounterparts(olLayerWithParents) {
     const olLayer = olLayerWithParents.layer;
-    const uid = olGetUid(olLayer).toString();
+    const uid = getUid(olLayer).toString();
     const viewProj = this.view.getProjection();
     googAsserts.assert(viewProj);
     const cesiumObjects = this.convertLayerToCesiumImageries(olLayer, viewProj);
@@ -115,7 +114,7 @@ class RasterSynchronizer extends olcsAbstractSynchronizer {
           this.cesiumLayers_.remove(cesiumObjects[i], true); // destroy
           this.ourLayers_.remove(cesiumObjects[i], false);
         }
-        delete this.layerMap[olGetUid(olLayer)]; // invalidate the map entry
+        delete this.layerMap[getUid(olLayer)]; // invalidate the map entry
         this.synchronize();
       }));
 
@@ -150,7 +149,7 @@ class RasterSynchronizer extends olcsAbstractSynchronizer {
     while (queue.length > 0) {
       const olLayer = queue.splice(0, 1)[0];
       layers.push(olLayer);
-      zIndices[olGetUid(olLayer)] = olLayer.getZIndex();
+      zIndices[getUid(olLayer)] = olLayer.getZIndex();
 
       if (olLayer instanceof olLayerGroup) {
         const sublayers = olLayer.getLayers();
@@ -161,12 +160,12 @@ class RasterSynchronizer extends olcsAbstractSynchronizer {
       }
     }
 
-    olArray.stableSort(layers, (layer1, layer2) =>
-      zIndices[olGetUid(layer1)] - zIndices[olGetUid(layer2)]
+    stableSort(layers, (layer1, layer2) =>
+      zIndices[getUid(layer1)] - zIndices[getUid(layer2)]
     );
 
     layers.forEach((olLayer) => {
-      const olLayerId = olGetUid(olLayer).toString();
+      const olLayerId = getUid(olLayer).toString();
       const cesiumObjects = this.layerMap[olLayerId];
       if (cesiumObjects) {
         cesiumObjects.forEach((cesiumObject) => { this.raiseToTop(cesiumObject); });

@@ -41,17 +41,7 @@ based on the official Cesium With Webpack example.
 ```bash
 npm i --save ol-cesium
 ```
-```html
-<!-- integrate OpenLayers and Cesium as usual
-<link rel="stylesheet" href="ol.css" type="text/css">
-<script src="ol.js"></script>
-<script src="Cesium.js"></script>
--->
-<link rel="stylesheet" href="node_modules/ol-cesium/dist/olcs.css" type="text/css">
-<script src="node_modules/ol-cesium/dist/olcesium.js"></script>
-```
 
-As of now, you will need a custom build of OpenLayers.
 See [old fashioned example](https://openlayers.org/ol-cesium/examples/oldfashioned.html).
 
 ### As an UMD library (need documentation, if you are interested, get in touch with us)

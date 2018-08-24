@@ -2,10 +2,10 @@
  * @module olcs.AbstractSynchronizer
  */
 import googAsserts from 'goog/asserts.js';
-import {getUid as olGetUid} from 'ol/util.js';
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
-import * as olEvents from 'ol/events.js';
 import olLayerGroup from 'ol/layer/Group.js';
+import {olcsListen, getUid} from './util.js';
+
 
 class AbstractSynchronizer {
   /**
@@ -46,7 +46,7 @@ class AbstractSynchronizer {
     this.mapLayerGroup = map.getLayerGroup();
 
     /**
-     * Map of OpenLayers layer ids (from ol.getUid) to the Cesium ImageryLayers.
+     * Map of OpenLayers layer ids (from getUid) to the Cesium ImageryLayers.
      * Null value means, that we are unable to create equivalent layers.
      * @type {Object.<string, ?Array.<T>>}
      * @protected
@@ -54,14 +54,14 @@ class AbstractSynchronizer {
     this.layerMap = {};
 
     /**
-     * Map of listen keys for OpenLayers layer layers ids (from ol.getUid).
+     * Map of listen keys for OpenLayers layer layers ids (from getUid).
      * @type {!Object.<string, Array<ol.EventsKey>>}
      * @protected
      */
     this.olLayerListenKeys = {};
 
     /**
-     * Map of listen keys for OpenLayers layer groups ids (from ol.getUid).
+     * Map of listen keys for OpenLayers layer groups ids (from getUid).
      * @type {!Object.<string, !Array.<ol.EventsKey>>}
      * @private
      */
@@ -100,7 +100,7 @@ class AbstractSynchronizer {
     while (fifo.length > 0) {
       const olLayerWithParents = fifo.splice(0, 1)[0];
       const olLayer = olLayerWithParents.layer;
-      const olLayerId = olGetUid(olLayer).toString();
+      const olLayerId = getUid(olLayer).toString();
       this.olLayerListenKeys[olLayerId] = [];
       googAsserts.assert(!this.layerMap[olLayerId]);
 
@@ -134,12 +134,12 @@ class AbstractSynchronizer {
             const cesiumObjs = this.createSingleLayerCounterparts(layerWithParents);
             if (cesiumObjs) {
               // unsubscribe event listener
-              layerWithParents.layer.un('change', onLayerChange, this);
+              layerWithParents.layer.un('change', onLayerChange);
               this.addCesiumObjects_(cesiumObjs, layerId, layerWithParents.layer);
               this.orderLayers();
             }
           };
-          this.olLayerListenKeys[olLayerId].push(olEvents.listen(layerWithParents.layer, 'change', onLayerChange, this));
+          this.olLayerListenKeys[olLayerId].push(olcsListen(layerWithParents.layer, 'change', onLayerChange));
         }
       }
       // add Cesium layers
@@ -160,7 +160,7 @@ class AbstractSynchronizer {
    */
   addCesiumObjects_(cesiumObjects, layerId, layer) {
     this.layerMap[layerId] = cesiumObjects;
-    this.olLayerListenKeys[layerId].push(olEvents.listen(layer, 'change:zIndex', this.orderLayers, this));
+    this.olLayerListenKeys[layerId].push(olcsListen(layer, 'change:zIndex', () => this.orderLayers()));
     cesiumObjects.forEach((cesiumObject) => {
       this.addCesiumObject(cesiumObject);
     });
@@ -173,7 +173,7 @@ class AbstractSynchronizer {
    * @private
    */
   removeAndDestroySingleLayer_(layer) {
-    const uid = olGetUid(layer).toString();
+    const uid = getUid(layer).toString();
     const counterparts = this.layerMap[uid];
     if (!!counterparts) {
       counterparts.forEach((counterpart) => {
@@ -196,7 +196,7 @@ class AbstractSynchronizer {
     if (group === this.mapLayerGroup) {
       return;
     }
-    const uid = olGetUid(group).toString();
+    const uid = getUid(group).toString();
     const keys = this.olGroupListenKeys_[uid];
     keys.forEach((key) => {
       olObservableUnByKey(key);
@@ -236,7 +236,7 @@ class AbstractSynchronizer {
    * @private
    */
   listenForGroupChanges_(group) {
-    const uuid = olGetUid(group).toString();
+    const uuid = getUid(group).toString();
 
     googAsserts.assert(this.olGroupListenKeys_[uuid] === undefined);
 

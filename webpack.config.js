@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-unresolved
 const webpackMerge = require('webpack-merge');
 const commons = require('./buildtools/webpack.commons');
 
