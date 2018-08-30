@@ -6,7 +6,6 @@ import olStyleIcon from 'ol/style/Icon.js';
 import olSourceVector from 'ol/source/Vector.js';
 import olSourceCluster from 'ol/source/Cluster.js';
 import {circular as olCreateCircularPolygon} from 'ol/geom/Polygon.js';
-import googAsserts from 'goog/asserts.js';
 import * as olEvents from 'ol/events.js';
 import * as olExtent from 'ol/extent.js';
 import olGeomSimpleGeometry from 'ol/geom/SimpleGeometry.js';
@@ -46,7 +45,7 @@ class FeatureConverter {
    */
   onRemoveOrClearFeature_(evt) {
     const source = evt.target;
-    googAsserts.assertInstanceof(source, olSourceVector);
+    console.assert(source instanceof olSourceVector);
 
     const cancellers = olcsUtil.obj(source)['olcs_cancellers'];
     if (cancellers) {
@@ -203,7 +202,7 @@ class FeatureConverter {
     if (olStyle.getFill()) {
       const p1 = this.createColoredPrimitive(layer, feature, olGeometry,
           fillGeometry, fillColor);
-      googAsserts.assert(!!p1);
+      console.assert(!!p1);
       primitives.add(p1);
     }
 
@@ -286,7 +285,7 @@ class FeatureConverter {
   olCircleGeometryToCesium(layer, feature, olGeometry, projection, olStyle) {
 
     olGeometry = olcsCore.olGeometryCloneTo4326(olGeometry, projection);
-    googAsserts.assert(olGeometry.getType() == 'Circle');
+    console.assert(olGeometry.getType() == 'Circle');
 
     // ol.Coordinate
     let center = olGeometry.getCenter();
@@ -409,7 +408,7 @@ class FeatureConverter {
   olLineStringGeometryToCesium(layer, feature, olGeometry, projection, olStyle) {
 
     olGeometry = olcsCore.olGeometryCloneTo4326(olGeometry, projection);
-    googAsserts.assert(olGeometry.getType() == 'LineString');
+    console.assert(olGeometry.getType() == 'LineString');
 
     const positions = olcsCore.ol4326CoordinateArrayToCsCartesians(olGeometry.getCoordinates());
     const width = this.extractLineWidthFromOlStyle(olStyle);
@@ -471,7 +470,7 @@ class FeatureConverter {
   olPolygonGeometryToCesium(layer, feature, olGeometry, projection, olStyle) {
 
     olGeometry = olcsCore.olGeometryCloneTo4326(olGeometry, projection);
-    googAsserts.assert(olGeometry.getType() == 'Polygon');
+    console.assert(olGeometry.getType() == 'Polygon');
 
     const heightReference = this.getHeightReference(layer, feature, olGeometry);
 
@@ -510,12 +509,12 @@ class FeatureConverter {
       // always update Cesium externs before adding a property
       const hierarchy = {};
       const polygonHierarchy = hierarchy;
-      googAsserts.assert(rings.length > 0);
+      console.assert(rings.length > 0);
 
       for (let i = 0; i < rings.length; ++i) {
         const olPos = rings[i].getCoordinates();
         const positions = olcsCore.ol4326CoordinateArrayToCsCartesians(olPos);
-        googAsserts.assert(positions && positions.length > 0);
+        console.assert(positions && positions.length > 0);
         if (i == 0) {
           hierarchy.positions = positions;
         } else {
@@ -752,7 +751,7 @@ class FeatureConverter {
       billboards,
       opt_newBillboardCallback
   ) {
-    googAsserts.assert(olGeometry.getType() == 'Point');
+    console.assert(olGeometry.getType() == 'Point');
     olGeometry = olcsCore.olGeometryCloneTo4326(olGeometry, projection);
 
     let modelPrimitive = null;
@@ -824,7 +823,7 @@ class FeatureConverter {
         if (olStyle.getText()) {
           const primitives = new Cesium.PrimitiveCollection();
           subgeos.forEach((geometry) => {
-            googAsserts.assert(geometry);
+            console.assert(geometry);
             const result = this.olPointGeometryToCesium(layer, feature, geometry,
                 projection, olStyle, billboards, opt_newBillboardCallback);
             if (result) {
@@ -834,7 +833,7 @@ class FeatureConverter {
           return primitives;
         } else {
           subgeos.forEach((geometry) => {
-            googAsserts.assert(geometry);
+            console.assert(geometry);
             this.olPointGeometryToCesium(layer, feature, geometry, projection,
                 olStyle, billboards, opt_newBillboardCallback);
           });
@@ -849,7 +848,7 @@ class FeatureConverter {
         subgeos = geometry.getPolygons();
         return accumulate(subgeos, this.olPolygonGeometryToCesium.bind(this));
       default:
-        googAsserts.fail(`Unhandled multi geometry type${geometry.getType()}`);
+        console.assert(false, `Unhandled multi geometry type${geometry.getType()}`);
     }
   }
 
@@ -941,7 +940,7 @@ class FeatureConverter {
           verticalOrigin = Cesium.VerticalOrigin.BOTTOM;
           break;
         default:
-          googAsserts.fail(`unhandled baseline ${style.getTextBaseline()}`);
+          console.assert(false, `unhandled baseline ${style.getTextBaseline()}`);
       }
       options.verticalOrigin = verticalOrigin;
     }
@@ -1156,7 +1155,7 @@ class FeatureConverter {
     const resolution = olView.getResolution();
 
     if (resolution === undefined || !proj) {
-      googAsserts.fail('View not ready');
+      console.assert(false, 'View not ready');
       // an assertion is not enough for closure to assume resolution and proj
       // are defined
       throw new Error('View not ready');
@@ -1167,7 +1166,7 @@ class FeatureConverter {
       source = source.getSource();
     }
 
-    googAsserts.assertInstanceof(source, olSourceVector);
+    console.assert(source instanceof olSourceVector);
     const features = source.getFeatures();
     const counterpart = new olcsCoreVectorLayerCounterpart(proj, this.scene);
     const context = counterpart.context;

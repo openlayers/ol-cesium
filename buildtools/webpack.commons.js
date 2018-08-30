@@ -81,7 +81,6 @@ const config = {
     mainFields: ['jsnext:main', 'main'],
     alias: {
       'olcs': path.resolve(__dirname, '../src/olcs'),
-      'goog': path.resolve(__dirname, '../src/goog')
     }
   }
 };

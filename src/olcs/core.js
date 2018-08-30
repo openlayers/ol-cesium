@@ -3,7 +3,6 @@
  */
 const exports = {};
 import * as olEasing from 'ol/easing.js';
-import googAsserts from 'goog/asserts.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olLayerImage from 'ol/layer/Image.js';
 import * as olProj from 'ol/proj.js';
@@ -71,7 +70,7 @@ exports.computeBoundingBoxAtTarget = function(scene, target, amount) {
  */
 exports.applyHeightOffsetToGeometry = function(geometry, height) {
   geometry.applyTransform((input, output, stride) => {
-    googAsserts.assert(input === output);
+    console.assert(input === output);
     if (stride !== undefined && stride >= 3) {
       for (let i = 0; i < output.length; i += stride) {
         output[i + 2] = output[i + 2] + height;
@@ -125,7 +124,7 @@ exports.rotateAroundAxis = function(camera, angle, axis, transform,
     const timestamp = Date.now();
     const timeDifference = timestamp - start;
     const progress = easing(clamp(timeDifference / duration, 0, 1));
-    googAsserts.assert(progress >= lastProgress);
+    console.assert(progress >= lastProgress);
 
     camera.transform.clone(oldTransform);
     const stepAngle = (progress - lastProgress) * angle;
@@ -492,7 +491,7 @@ exports.ol4326CoordinateToCesiumCartesian = function(coordinate) {
  * @api
  */
 exports.ol4326CoordinateArrayToCsCartesians = function(coordinates) {
-  googAsserts.assert(coordinates !== null);
+  console.assert(coordinates !== null);
   const toCartesian = exports.ol4326CoordinateToCesiumCartesian;
   const cartesians = [];
   for (let i = 0; i < coordinates.length; ++i) {
@@ -513,7 +512,7 @@ exports.ol4326CoordinateArrayToCsCartesians = function(coordinates) {
  * @api
  */
 exports.olGeometryCloneTo4326 = function(geometry, projection) {
-  googAsserts.assert(projection);
+  console.assert(projection);
 
   const proj4326 = olProj.get('EPSG:4326');
   const proj = olProj.get(projection);
@@ -545,7 +544,7 @@ exports.convertColorToCesium = function(olColor) {
   } else if (typeof olColor == 'string') {
     return Cesium.Color.fromCssColorString(olColor);
   }
-  googAsserts.fail('impossible');
+  console.assert(false, 'impossible');
 };
 
 

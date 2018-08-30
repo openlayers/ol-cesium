@@ -2,7 +2,6 @@
  * @module olcs.OLCesium
  */
 import olGeomPoint from 'ol/geom/Point.js';
-import googAsserts from 'goog/asserts.js';
 import * as olProj from 'ol/proj.js';
 import olcsUtil from './util.js';
 import olcsCore from './core.js';
@@ -436,7 +435,7 @@ class OLCesium {
    */
   getOlView() {
     const view = this.map_.getView();
-    googAsserts.assert(view);
+    console.assert(view);
     return view;
   }
 
@@ -683,7 +682,7 @@ Object.defineProperties(OLCesium.prototype, {
         const to4326Transform = this.to4326Transform_;
         const toCesiumPosition = function() {
           const geometry = feature.getGeometry();
-          googAsserts.assertInstanceof(geometry, olGeomPoint);
+          console.assert(geometry instanceof olGeomPoint);
           const coo = geometry.getCoordinates();
           const coo4326 = to4326Transform(coo, undefined, coo.length);
           return olcsCore.ol4326CoordinateToCesiumCartesian(coo4326);

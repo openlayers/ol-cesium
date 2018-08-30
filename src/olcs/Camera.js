@@ -2,7 +2,6 @@
  * @module olcs.Camera
  */
 
-import googAsserts from 'goog/asserts.js';
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
 import {toRadians, toDegrees} from './math.js';
 import * as olProj from 'ol/proj.js';
@@ -121,7 +120,7 @@ class Camera {
     if (view) {
       const toLonLat = olProj.getTransform(view.getProjection(), 'EPSG:4326');
       const fromLonLat = olProj.getTransform('EPSG:4326', view.getProjection());
-      googAsserts.assert(toLonLat && fromLonLat);
+      console.assert(toLonLat && fromLonLat);
 
       this.toLonLat_ = toLonLat;
       this.fromLonLat_ = fromLonLat;
@@ -238,7 +237,7 @@ class Camera {
       return;
     }
     const ll = this.toLonLat_(position);
-    googAsserts.assert(ll);
+    console.assert(ll);
 
     const carto = new Cesium.Cartographic(
         toRadians(ll[0]),
@@ -266,7 +265,7 @@ class Camera {
       toDegrees(carto.longitude),
       toDegrees(carto.latitude)
     ]);
-    googAsserts.assert(pos);
+    console.assert(pos);
     return pos;
   }
 
@@ -308,7 +307,7 @@ class Camera {
       return;
     }
     const ll = this.toLonLat_(center);
-    googAsserts.assert(ll);
+    console.assert(ll);
 
     const carto = new Cesium.Cartographic(toRadians(ll[0]),
         toRadians(ll[1]));
@@ -348,7 +347,7 @@ class Camera {
       return;
     }
     const ll = this.toLonLat_(center);
-    googAsserts.assert(ll);
+    console.assert(ll);
 
     const resolution = this.view_.getResolution();
     this.distance_ = this.calcDistanceForResolution(
@@ -460,7 +459,7 @@ class Camera {
   calcDistanceForResolution(resolution, latitude) {
     const canvas = this.scene_.canvas;
     const fovy = this.cam_.frustum.fovy; // vertical field of view
-    googAsserts.assert(!isNaN(fovy));
+    console.assert(!isNaN(fovy));
     const metersPerUnit = this.view_.getProjection().getMetersPerUnit();
 
     // number of "map units" visible in 2D (vertically)
