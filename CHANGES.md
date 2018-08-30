@@ -1,5 +1,11 @@
 # Changelog
 
+# v 2.3
+
+* Changes
+  * Port to OpenLayers 5.2.0.
+  * Add image static support.
+
 # v 2.2.2 - 2018-08-24
 
 * Changes
