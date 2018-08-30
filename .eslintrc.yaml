@@ -35,10 +35,6 @@
   },
   globals: {
     webpack: false,
-    ol: false,
-    goog: false,
-    Cesium: false,
-    olcs: false,
-    proj4: false
+    Cesium: false
   }
 }
