@@ -6,7 +6,6 @@ import OLCesium from '../OLCesium.js';
 import olcsCore from '../core.js';
 import {toRadians} from '../math.js';
 import olObservable from 'ol/Observable.js';
-import googAsserts from '../asserts.js';
 
 const Manager = class extends olObservable {
   /**
@@ -140,7 +139,7 @@ const Manager = class extends olObservable {
    * @return {olcs.OLCesium}
    */
   instantiateOLCesium() {
-    googAsserts.assert(this.map);
+    console.assert(this.map);
     const ol3d = new OLCesium({map: this.map});
     const scene = ol3d.getCesiumScene();
     const terrainProvider = Cesium.createWorldTerrain();
@@ -227,7 +226,7 @@ const Manager = class extends olObservable {
       const scene = ol3d.getCesiumScene();
       if (is3DCurrentlyEnabled) {
         // Disable 3D
-        googAsserts.assert(this.map);
+        console.assert(this.map);
         return olcsCore.resetToNorthZenith(this.map, scene).then(() => {
           ol3d.setEnabled(false);
           this.dispatchEvent('toggle');
@@ -329,7 +328,7 @@ const Manager = class extends olObservable {
    */
   getOlView() {
     const view = this.map.getView();
-    googAsserts.assert(view);
+    console.assert(view);
     return view;
   }
 

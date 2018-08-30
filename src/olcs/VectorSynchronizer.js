@@ -5,7 +5,6 @@ import olSourceVector from 'ol/source/Vector.js';
 import olLayerLayer from 'ol/layer/Layer.js';
 import olSourceCluster from 'ol/source/Cluster.js';
 import olLayerImage from 'ol/layer/Image.js';
-import googAsserts from './asserts.js';
 import {olcsListen, getUid} from './util.js';
 import olLayerVector from 'ol/layer/Vector.js';
 import olcsAbstractSynchronizer from './AbstractSynchronizer.js';
@@ -40,7 +39,7 @@ class VectorSynchronizer extends olcsAbstractSynchronizer {
    * @inheritDoc
    */
   addCesiumObject(counterpart) {
-    googAsserts.assert(counterpart);
+    console.assert(counterpart);
     counterpart.getRootPrimitive()['counterpart'] = counterpart;
     this.csAllPrimitives_.add(counterpart.getRootPrimitive());
   }
@@ -103,7 +102,7 @@ class VectorSynchronizer extends olcsAbstractSynchronizer {
     if (!(olLayer instanceof olLayerVector)) {
       return null;
     }
-    googAsserts.assertInstanceof(olLayer, olLayerLayer);
+    console.assert(olLayer instanceof olLayerLayer);
 
     let source = olLayer.getSource();
     if (source instanceof olSourceCluster) {
@@ -114,8 +113,8 @@ class VectorSynchronizer extends olcsAbstractSynchronizer {
       return null;
     }
 
-    googAsserts.assertInstanceof(source, olSourceVector);
-    googAsserts.assert(this.view);
+    console.assert(source instanceof olSourceVector);
+    console.assert(this.view);
 
     const view = this.view;
     const featurePrimitiveMap = {};
@@ -132,7 +131,7 @@ class VectorSynchronizer extends olcsAbstractSynchronizer {
     this.updateLayerVisibility(olLayerWithParents, csPrimitives);
 
     const onAddFeature = (function(feature) {
-      googAsserts.assert(
+      console.assert(
           (olLayer instanceof olLayerVector) ||
           (olLayer instanceof olLayerImage)
       );
@@ -164,18 +163,18 @@ class VectorSynchronizer extends olcsAbstractSynchronizer {
     }).bind(this);
 
     olListenKeys.push(olcsListen(source, 'addfeature', (e) => {
-      googAsserts.assert(e.feature);
+      console.assert(e.feature);
       onAddFeature(e.feature);
     }, this));
 
     olListenKeys.push(olcsListen(source, 'removefeature', (e) => {
-      googAsserts.assert(e.feature);
+      console.assert(e.feature);
       onRemoveFeature(e.feature);
     }, this));
 
     olListenKeys.push(olcsListen(source, 'changefeature', (e) => {
       const feature = e.feature;
-      googAsserts.assert(feature);
+      console.assert(feature);
       onRemoveFeature(feature);
       onAddFeature(feature);
     }, this));

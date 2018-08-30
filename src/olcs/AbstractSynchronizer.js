@@ -1,7 +1,6 @@
 /**
  * @module olcs.AbstractSynchronizer
  */
-import googAsserts from './asserts.js';
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
 import olLayerGroup from 'ol/layer/Group.js';
 import {olcsListen, getUid} from './util.js';
@@ -102,7 +101,7 @@ class AbstractSynchronizer {
       const olLayer = olLayerWithParents.layer;
       const olLayerId = getUid(olLayer).toString();
       this.olLayerListenKeys[olLayerId] = [];
-      googAsserts.assert(!this.layerMap[olLayerId]);
+      console.assert(!this.layerMap[olLayerId]);
 
       let cesiumObjects = null;
       if (olLayer instanceof olLayerGroup) {
@@ -238,7 +237,7 @@ class AbstractSynchronizer {
   listenForGroupChanges_(group) {
     const uuid = getUid(group).toString();
 
-    googAsserts.assert(this.olGroupListenKeys_[uuid] === undefined);
+    console.assert(this.olGroupListenKeys_[uuid] === undefined);
 
     const listenKeyArray = [];
     this.olGroupListenKeys_[uuid] = listenKeyArray;

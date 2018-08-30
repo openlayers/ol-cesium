@@ -2,7 +2,6 @@
  * @module olcs.RasterSynchronizer
  */
 import olLayerGroup from 'ol/layer/Group.js';
-import googAsserts from './asserts.js';
 import {getUid, stableSort} from './util.js';
 import olcsAbstractSynchronizer from './AbstractSynchronizer.js';
 import olcsCore from './core.js';
@@ -89,14 +88,14 @@ class RasterSynchronizer extends olcsAbstractSynchronizer {
     const olLayer = olLayerWithParents.layer;
     const uid = getUid(olLayer).toString();
     const viewProj = this.view.getProjection();
-    googAsserts.assert(viewProj);
+    console.assert(viewProj);
     const cesiumObjects = this.convertLayerToCesiumImageries(olLayer, viewProj);
     if (cesiumObjects) {
       const listenKeyArray = [];
       [olLayerWithParents.layer].concat(olLayerWithParents.parents).forEach((olLayerItem) => {
         listenKeyArray.push(olLayerItem.on(['change:opacity', 'change:visible'], () => {
           // the compiler does not seem to be able to infer this
-          googAsserts.assert(cesiumObjects);
+          console.assert(cesiumObjects);
           for (let i = 0; i < cesiumObjects.length; ++i) {
             olcsCore.updateCesiumLayerProperties(olLayerWithParents, cesiumObjects[i]);
           }
