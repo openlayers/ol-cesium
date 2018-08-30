@@ -2,7 +2,7 @@
  * @module olcs.RasterSynchronizer
  */
 import olLayerGroup from 'ol/layer/Group.js';
-import googAsserts from 'goog/asserts.js';
+import googAsserts from './asserts.js';
 import {getUid, stableSort} from './util.js';
 import olcsAbstractSynchronizer from './AbstractSynchronizer.js';
 import olcsCore from './core.js';

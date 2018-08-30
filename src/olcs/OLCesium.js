@@ -2,7 +2,7 @@
  * @module olcs.OLCesium
  */
 import olGeomPoint from 'ol/geom/Point.js';
-import googAsserts from 'goog/asserts.js';
+import googAsserts from './asserts.js';
 import * as olProj from 'ol/proj.js';
 import olcsUtil from './util.js';
 import olcsCore from './core.js';

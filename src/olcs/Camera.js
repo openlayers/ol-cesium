@@ -2,7 +2,7 @@
  * @module olcs.Camera
  */
 
-import googAsserts from 'goog/asserts.js';
+import googAsserts from './asserts.js';
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
 import {toRadians, toDegrees} from './math.js';
 import * as olProj from 'ol/proj.js';

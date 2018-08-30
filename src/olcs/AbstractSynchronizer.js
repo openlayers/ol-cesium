@@ -1,7 +1,7 @@
 /**
  * @module olcs.AbstractSynchronizer
  */
-import googAsserts from 'goog/asserts.js';
+import googAsserts from './asserts.js';
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
 import olLayerGroup from 'ol/layer/Group.js';
 import {olcsListen, getUid} from './util.js';

@@ -1,4 +1,3 @@
-const path = require('path');
 const webpack = require('webpack');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
@@ -18,10 +17,5 @@ module.exports = {
         sourceMap: true,
       })
     ]
-  },
-  resolve: {
-    alias: {
-      'goog': path.resolve(__dirname, '../src/goog-prod'),
-    }
-  },
+  }
 };

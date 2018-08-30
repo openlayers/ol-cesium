@@ -6,7 +6,7 @@ import OLCesium from '../OLCesium.js';
 import olcsCore from '../core.js';
 import {toRadians} from '../math.js';
 import olObservable from 'ol/Observable.js';
-import googAsserts from 'goog/asserts.js';
+import googAsserts from '../asserts.js';
 
 const Manager = class extends olObservable {
   /**

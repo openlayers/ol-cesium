@@ -5,7 +5,7 @@ import olSourceVector from 'ol/source/Vector.js';
 import olLayerLayer from 'ol/layer/Layer.js';
 import olSourceCluster from 'ol/source/Cluster.js';
 import olLayerImage from 'ol/layer/Image.js';
-import googAsserts from 'goog/asserts.js';
+import googAsserts from './asserts.js';
 import {olcsListen, getUid} from './util.js';
 import olLayerVector from 'ol/layer/Vector.js';
 import olcsAbstractSynchronizer from './AbstractSynchronizer.js';

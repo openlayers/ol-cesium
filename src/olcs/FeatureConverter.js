@@ -6,7 +6,7 @@ import olStyleIcon from 'ol/style/Icon.js';
 import olSourceVector from 'ol/source/Vector.js';
 import olSourceCluster from 'ol/source/Cluster.js';
 import {circular as olCreateCircularPolygon} from 'ol/geom/Polygon.js';
-import googAsserts from 'goog/asserts.js';
+import googAsserts from './asserts.js';
 import * as olEvents from 'ol/events.js';
 import * as olExtent from 'ol/extent.js';
 import olGeomSimpleGeometry from 'ol/geom/SimpleGeometry.js';

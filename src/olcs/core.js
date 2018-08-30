@@ -3,7 +3,7 @@
  */
 const exports = {};
 import * as olEasing from 'ol/easing.js';
-import googAsserts from 'goog/asserts.js';
+import googAsserts from './asserts.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olLayerImage from 'ol/layer/Image.js';
 import * as olProj from 'ol/proj.js';
