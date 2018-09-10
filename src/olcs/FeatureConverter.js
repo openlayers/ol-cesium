@@ -1008,7 +1008,7 @@ class FeatureConverter {
     let style = null;
 
     if (featureStyleFunction) {
-      style = featureStyleFunction.call(feature, resolution);
+      style = featureStyleFunction(feature, resolution);
     }
 
     if (!style && fallbackStyleFunction) {
