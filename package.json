@@ -3,8 +3,8 @@
   "version": "2.2.2",
   "description": "OpenLayers Cesium integration library",
   "scripts": {
-    "build-examples": "cross-env TARGET=examples webpack --progress --bail",
-    "build-library": "cross-env TARGET=library webpack --progress --bail",
+    "build-examples": "cross-env NODE_ENV=production TARGET=examples webpack --progress --bail",
+    "build-library": "cross-env NODE_ENV=production TARGET=library webpack --progress --bail",
     "serve": "cross-env DEV_SERVER=1 TARGET=examples webpack-dev-server --port 3000 --progress --watch --bail --debug"
   },
   "main": "./dist/olcesium.js",
