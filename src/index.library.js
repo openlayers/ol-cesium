@@ -1,5 +1,7 @@
 import OLCesium from './olcs/OLCesium.js';
 export default OLCesium;
 
-const olcs = window['olcs'] = {};
+// Using var for phantomJS
+// eslint-disable-next-line no-var
+var olcs = window['olcs'] = {};
 olcs.OLCesium = OLCesium;
