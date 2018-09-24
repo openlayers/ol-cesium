@@ -12,6 +12,11 @@ module.exports = {
   optimization: {
     minimizer: [
       new UglifyJsPlugin({
+        uglifyOptions: {
+          compress: {
+            drop_console: true
+          }
+        },
         cache: true,
         parallel: true,
         sourceMap: true,
