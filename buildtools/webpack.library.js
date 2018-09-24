@@ -4,11 +4,13 @@ const olRegExp = /^ol\/.+$/;
 const slashReplacerRegExp = new RegExp('/', 'g');
 const extensionReplacerRegExp = new RegExp('\\.js$');
 
+const nodeEnv = process.env['NODE_ENV'] || 'development';
+const filename = nodeEnv === 'development' ? 'olcesium-debug.js' : 'olcesium.js';
 module.exports = {
   entry: './src/index.library.js',
   output: {
     library: 'olcs_unused_var',
-    filename: 'olcesium.js',
+    filename,
     path: path.resolve(__dirname, '../dist/'),
   },
   externals: [
