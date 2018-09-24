@@ -5,6 +5,7 @@
   "scripts": {
     "build-examples": "cross-env NODE_ENV=production TARGET=examples webpack --progress --bail",
     "build-library": "cross-env NODE_ENV=production TARGET=library webpack --progress --bail",
+    "build-library-debug": "cross-env NODE_ENV=development TARGET=library webpack --progress --bail",
     "serve": "cross-env DEV_SERVER=1 TARGET=examples webpack-dev-server --port 3000 --progress --watch --bail --debug"
   },
   "main": "./dist/olcesium.js",

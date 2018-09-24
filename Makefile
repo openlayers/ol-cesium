@@ -86,4 +86,5 @@ dist/examples/index.html: $(EXAMPLES_FILES)
 
 dist/olcesium.js: $(SRC_JS_FILES) $(WEBPACK_CONFIG_FILES) .build/node_modules.timestamp
 	mkdir -p $(dir $@)
+	npm run build-library-debug
 	npm run build-library
