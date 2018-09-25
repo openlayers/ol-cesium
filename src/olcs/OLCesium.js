@@ -2,7 +2,7 @@
  * @module olcs.OLCesium
  */
 import olGeomPoint from 'ol/geom/Point.js';
-import * as olProj from 'ol/proj.js';
+import {getTransform} from 'ol/proj.js';
 import olcsUtil from './util.js';
 import olcsCore from './core.js';
 import olcsAutoRenderLoop from './AutoRenderLoop.js';
@@ -43,7 +43,7 @@ class OLCesium {
      * No change of the view projection.
      * @private
      */
-    this.to4326Transform_ = olProj.getTransform(this.map_.getView().getProjection(), 'EPSG:4326');
+    this.to4326Transform_ = getTransform(this.map_.getView().getProjection(), 'EPSG:4326');
 
     /**
      * @type {number}

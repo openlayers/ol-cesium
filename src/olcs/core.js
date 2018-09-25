@@ -2,10 +2,10 @@
  * @module olcs.core
  */
 const exports = {};
-import * as olEasing from 'ol/easing.js';
+import {linear as linearEasing} from 'ol/easing.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olLayerImage from 'ol/layer/Image.js';
-import * as olProj from 'ol/proj.js';
+import {get as getProjection, transformExtent} from 'ol/proj.js';
 import olSourceImageStatic from 'ol/source/ImageStatic';
 import olSourceImageWMS from 'ol/source/ImageWMS.js';
 import olSourceTileImage from 'ol/source/TileImage.js';
@@ -113,7 +113,7 @@ exports.rotateAroundAxis = function(camera, angle, axis, transform,
 
   const options = opt_options || {};
   const duration = defaultValue(options.duration, 500); // ms
-  const easing = defaultValue(options.easing, olEasing.linear);
+  const easing = defaultValue(options.easing, linearEasing);
   const callback = options.callback;
 
   let lastProgress = 0;
@@ -343,7 +343,7 @@ exports.computeAngleToZenith = function(scene, pivot) {
  */
 exports.extentToRectangle = function(extent, projection) {
   if (extent && projection) {
-    const ext = olProj.transformExtent(extent, projection, 'EPSG:4326');
+    const ext = transformExtent(extent, projection, 'EPSG:4326');
     return Cesium.Rectangle.fromDegrees(ext[0], ext[1], ext[2], ext[3]);
   } else {
     return null;
@@ -514,8 +514,8 @@ exports.ol4326CoordinateArrayToCsCartesians = function(coordinates) {
 exports.olGeometryCloneTo4326 = function(geometry, projection) {
   console.assert(projection);
 
-  const proj4326 = olProj.get('EPSG:4326');
-  const proj = olProj.get(projection);
+  const proj4326 = getProjection('EPSG:4326');
+  const proj = getProjection(projection);
   if (proj !== proj4326) {
     const properties = geometry.getProperties();
     geometry = geometry.clone();
@@ -660,8 +660,8 @@ exports.normalizeView = function(view, angle = 0) {
  * @returns {boolean} Whether it's managed by Cesium.
  */
 exports.isCesiumProjection = function(projection) {
-  const is3857 = projection === olProj.get('EPSG:3857');
-  const is4326 = projection === olProj.get('EPSG:4326');
+  const is3857 = projection === getProjection('EPSG:3857');
+  const is4326 = projection === getProjection('EPSG:4326');
   return is3857 || is4326;
 };
 

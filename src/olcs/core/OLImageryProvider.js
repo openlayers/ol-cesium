@@ -1,7 +1,7 @@
 /**
  * @module olcs.core.OLImageryProvider
  */
-import * as olProj from 'ol/proj.js';
+import {get as getProjection} from 'ol/proj.js';
 import olcsUtil from '../util.js';
 
 class OLImageryProvider /* should not extend Cesium.ImageryProvider */ {
@@ -92,9 +92,9 @@ class OLImageryProvider /* should not extend Cesium.ImageryProvider */ {
   handleSourceChanged_(frameState) {
     if (!this.ready_ && this.source_.getState() == 'ready') {
       this.projection_ = olcsUtil.getSourceProjection(this.source_) || this.fallbackProj_;
-      if (this.projection_ == olProj.get('EPSG:4326')) {
+      if (this.projection_ == getProjection('EPSG:4326')) {
         this.tilingScheme_ = new Cesium.GeographicTilingScheme();
-      } else if (this.projection_ == olProj.get('EPSG:3857')) {
+      } else if (this.projection_ == getProjection('EPSG:3857')) {
         this.tilingScheme_ = new Cesium.WebMercatorTilingScheme();
       } else {
         return;
