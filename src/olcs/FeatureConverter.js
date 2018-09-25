@@ -6,8 +6,7 @@ import olStyleIcon from 'ol/style/Icon.js';
 import olSourceVector from 'ol/source/Vector.js';
 import olSourceCluster from 'ol/source/Cluster.js';
 import {circular as olCreateCircularPolygon} from 'ol/geom/Polygon.js';
-import * as olEvents from 'ol/events.js';
-import * as olExtent from 'ol/extent.js';
+import {boundingExtent, getCenter} from 'ol/extent.js';
 import olGeomSimpleGeometry from 'ol/geom/SimpleGeometry.js';
 import olcsCore from './core.js';
 import olcsCoreVectorLayerCounterpart from './core/VectorLayerCounterpart.js';
@@ -480,7 +479,7 @@ class FeatureConverter {
       // Create a rectangle according to the longitude and latitude curves
       const coordinates = olGeometry.getCoordinates()[0];
       // Extract the West, South, East, North coordinates
-      const extent = olExtent.boundingExtent(coordinates);
+      const extent = boundingExtent(coordinates);
       const rectangle = Cesium.Rectangle.fromDegrees(extent[0], extent[1],
           extent[2], extent[3]);
 
@@ -723,7 +722,7 @@ class FeatureConverter {
         }
       };
 
-      olEvents.listenOnce(image, 'load', listener);
+      image.once('load', listener);
     } else {
       reallyCreateBillboard();
     }
@@ -870,7 +869,7 @@ class FeatureConverter {
     const labels = new Cesium.LabelCollection({scene: this.scene});
     // TODO: export and use the text draw position from OpenLayers .
     // See src/ol/render/vector.js
-    const extentCenter = olExtent.getCenter(geometry.getExtent());
+    const extentCenter = getCenter(geometry.getExtent());
     if (geometry instanceof olGeomSimpleGeometry) {
       const first = geometry.getFirstCoordinate();
       extentCenter[2] = first.length == 3 ? first[2] : 0.0;
