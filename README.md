@@ -6,7 +6,8 @@ ES6 modules
 -----------
 
 Since version 2.0, the code is entirely based on ES6 modules and syntax.
-That package requires OpenLayers 5.x.
+It requires OpenLayers 5.x.
+A convenient ES6 package `olcs` is available on npm.
 
 Features
 --------
@@ -30,34 +31,46 @@ Integration in your application
 
 There are several ways to use OL-Cesium in your application.
 
-### As an ES6 library
-
-See the examples for how it was done with webpack. It should work equally well
-with other bundlers, please create an issue if it is not the case. See also the
-[ol-cesium-webpack-example](https://github.com/gberaudo/ol-cesium-webpack-example)
-based on the official Cesium With Webpack example.
-
-### As an old-fashioned independant library (if you are interested, get in touch with us)
+### As an ES6 library (recommended method)
 ```bash
-npm i --save ol-cesium
+npm i --save olcs
 ```
 
-See [old fashioned example](https://openlayers.org/ol-cesium/examples/oldfashioned.html).
-
-### As an UMD library (need documentation, if you are interested, get in touch with us)
-
-Use your webpack / require.js / ... as usual.
-
-
-Getting started
---------------
-
-An OpenLayers map can be switched to a 3d globe view by running the code below after the map has been created:
+Then import the parts you need. Example:
 ```js
 import OLCesium from 'olcs/OLCesium.js';
-const ol3d = new OLCesium({map: map}); // map is the ol.Map instance
+const ol3d = new OLCesium({map: ol2dMap}); // ol2dMap is the ol.Map instance
 ol3d.setEnabled(true);
 ```
+
+For Cesium integration see [ol-cesium-webpack-example](https://github.com/gberaudo/ol-cesium-webpack-example)
+based on the official `Cesium With Webpack` example.
+
+### As an old-fashioned independant library
+
+- build the library in dist/olcs.js:
+```bash
+npm i --save olcs
+npm run build-library
+```
+
+- get the CSS from css/olcs.css;
+
+- if needed build a [full OL5 build](https://github.com/geoblocks/legacylib/tree/master/ol5);
+
+- use as follow:
+```js
+const ol3d = new olcs.OLCesium({map: ol2dMap}); // ol2dMap is the ol.Map instance
+ol3d.setEnabled(true);
+```
+
+In addition, see the [old fashioned example](https://openlayers.org/ol-cesium/examples/oldfashioned.html).
+
+### As an UMD library (not supported at the moment, if you have propositions get in touch with us)
+
+
+Going further
+-------------
 
 See the [examples](https://openlayers.org/ol-cesium/examples/).
 
