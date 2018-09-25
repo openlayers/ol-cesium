@@ -27,5 +27,6 @@ olcs.core = core.default;
 olcs.core.OLImageryProvider = OLImageryProvider;
 olcs.core.VectorLayerCounterpart = VectorLayerCounterpart;
 
+olcs.contrib = {};
 olcs.contrib.LazyLoader = LazyLoader;
 olcs.contrib.Manager = Manager;

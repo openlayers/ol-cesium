@@ -4,7 +4,7 @@
 
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
 import {toRadians, toDegrees} from './math.js';
-import * as olProj from 'ol/proj.js';
+import {getTransform} from 'ol/proj.js';
 import olcsCore from './core.js';
 
 class Camera {
@@ -118,8 +118,8 @@ class Camera {
 
     this.view_ = view;
     if (view) {
-      const toLonLat = olProj.getTransform(view.getProjection(), 'EPSG:4326');
-      const fromLonLat = olProj.getTransform('EPSG:4326', view.getProjection());
+      const toLonLat = getTransform(view.getProjection(), 'EPSG:4326');
+      const fromLonLat = getTransform('EPSG:4326', view.getProjection());
       console.assert(toLonLat && fromLonLat);
 
       this.toLonLat_ = toLonLat;
