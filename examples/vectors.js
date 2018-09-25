@@ -13,7 +13,7 @@ import olStyleStyle from 'ol/style/Style.js';
 import olGeomPoint from 'ol/geom/Point.js';
 import olFeature from 'ol/Feature.js';
 import olStyleStroke from 'ol/style/Stroke.js';
-import * as olInteraction from 'ol/interaction.js';
+import {defaults as interactionDefaults} from 'ol/interaction.js';
 import olStyleFill from 'ol/style/Fill.js';
 import olMap from 'ol/Map.js';
 import olGeomCircle from 'ol/geom/Circle.js';
@@ -28,7 +28,7 @@ import olGeomPolygon from 'ol/geom/Polygon.js';
 import olInteractionDragAndDrop from 'ol/interaction/DragAndDrop.js';
 import olGeomMultiPolygon from 'ol/geom/MultiPolygon.js';
 import olLayerVector from 'ol/layer/Vector.js';
-import * as olProj from 'ol/proj.js';
+import {transform} from 'ol/proj.js';
 import olcsCore from 'olcs/core.js';
 
 
@@ -119,7 +119,7 @@ modelFeatures.forEach((feature) => {
   });
   const olcsModelFunction = () => {
     const coordinates = feature.getGeometry().getCoordinates();
-    const center = olProj.transform(coordinates, 'EPSG:3857', 'EPSG:4326');
+    const center = transform(coordinates, 'EPSG:3857', 'EPSG:4326');
     const rotation = /** @type {number} */ (feature.get('rotation'));
     return {
       cesiumOptions: {
@@ -297,7 +297,7 @@ const dragAndDropInteraction = new olInteractionDragAndDrop({
 });
 
 const map = new olMap({
-  interactions: olInteraction.defaults().extend([dragAndDropInteraction]),
+  interactions: interactionDefaults().extend([dragAndDropInteraction]),
   layers: [
     new olLayerTile({
       source: new olSourceOSM()

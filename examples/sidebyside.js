@@ -6,12 +6,12 @@ import OLCesium from 'olcs/OLCesium.js';
 import olSourceOSM from 'ol/source/OSM.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olMap from 'ol/Map.js';
-import * as olProj from 'ol/proj.js';
+import {transform} from 'ol/proj.js';
 import olView from 'ol/View.js';
 
 
 const view = new olView({
-  center: olProj.transform([25, 20], 'EPSG:4326', 'EPSG:3857'),
+  center: transform([25, 20], 'EPSG:4326', 'EPSG:3857'),
   zoom: 3,
   rotation: Math.PI / 6
 });

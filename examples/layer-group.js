@@ -6,7 +6,7 @@ import olMap from 'ol/Map.js';
 import olView from 'ol/View.js';
 import olLayerGroup from 'ol/layer/Group.js';
 import olLayerTile from 'ol/layer/Tile.js';
-import * as olProj from 'ol/proj.js';
+import {fromLonLat} from 'ol/proj.js';
 import olSourceOSM from 'ol/source/OSM.js';
 import olSourceTileJSON from 'ol/source/TileJSON.js';
 import OLCesium from 'olcs/OLCesium.js';
@@ -40,7 +40,7 @@ const ol2d = new olMap({
   layers: [layer0, layer1],
   target: 'map2d',
   view: new olView({
-    center: olProj.fromLonLat([37.40570, 8.81566]),
+    center: fromLonLat([37.40570, 8.81566]),
     zoom: 4
   })
 });

@@ -6,11 +6,11 @@ import OLCesium from 'olcs/OLCesium.js';
 import olMap from 'ol/Map.js';
 import olSourceOSM from 'ol/source/OSM.js';
 import olLayerTile from 'ol/layer/Tile.js';
-import * as olProj from 'ol/proj.js';
+import {transform, get as getProjection} from 'ol/proj.js';
 import olView from 'ol/View.js';
 import {defaults as olControlDefaults} from 'ol/control.js';
 import olOverlay from 'ol/Overlay.js';
-import * as olCoordinate from 'ol/coordinate.js';
+import {toStringHDMS} from 'ol/coordinate.js';
 /* global $ */
 
 const source = new olSourceOSM();
@@ -29,7 +29,7 @@ const ol2d = new olMap({
   }),
   target: 'map',
   view: new olView({
-    center: olProj.transform([-112.2, 36.06], 'EPSG:4326', 'EPSG:3857'),
+    center: transform([-112.2, 36.06], 'EPSG:4326', 'EPSG:3857'),
     zoom: 11
   })
 });
@@ -80,8 +80,8 @@ class OverlayHandler {
 
   onClickHandlerOL(event) {
     const coordinates = event.coordinate;
-    const hdms = olCoordinate.toStringHDMS(
-        olProj.transform(coordinates, 'EPSG:3857', 'EPSG:4326')
+    const hdms = toStringHDMS(
+        transform(coordinates, 'EPSG:3857', 'EPSG:4326')
     );
     const overlay = this.getOverlay();
     overlay.setPosition(coordinates);
@@ -106,8 +106,8 @@ class OverlayHandler {
       coords = coords.concat([height]);
     }
 
-    const transformedCoords = olProj.transform(coords, olProj.get('EPSG:4326'), 'EPSG:3857');
-    const hdms = olCoordinate.toStringHDMS(coords);
+    const transformedCoords = transform(coords, getProjection('EPSG:4326'), 'EPSG:3857');
+    const hdms = toStringHDMS(coords);
     const overlay = this.getOverlay();
     overlay.setPosition(transformedCoords);
     this.setOverlayContent(overlay, hdms);
