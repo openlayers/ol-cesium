@@ -2,8 +2,8 @@
  * @module olcs.SynchronizedOverlay
  */
 import olOverlay from 'ol/Overlay.js';
-import * as olProj from 'ol/proj.js';
-import * as olDom from 'ol/dom.js';
+import {transform} from 'ol/proj.js';
+import {removeNode, removeChildren} from './util.js';
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
 
 class SynchronizedOverlay extends olOverlay {
@@ -136,7 +136,7 @@ class SynchronizedOverlay extends olOverlay {
   handleMapChanged() {
     if (this.scenePostRenderListenerRemover_) {
       this.scenePostRenderListenerRemover_();
-      olDom.removeNode(this.element);
+      removeNode(this.element);
     }
     this.scenePostRenderListenerRemover_ = null;
     const scene = this.getScene();
@@ -161,7 +161,7 @@ class SynchronizedOverlay extends olOverlay {
     const position = this.getPosition();
     if (position) {
       const sourceProjection = this.parent_.getMap().getView().getProjection();
-      this.positionWGS84_ = olProj.transform(position, sourceProjection, 'EPSG:4326');
+      this.positionWGS84_ = transform(position, sourceProjection, 'EPSG:4326');
     } else {
       this.positionWGS84_ = undefined;
     }
@@ -192,7 +192,7 @@ class SynchronizedOverlay extends olOverlay {
       }
       return clone;
     }
-    olDom.removeChildren(this.element);
+    removeChildren(this.element);
     const element = this.getElement();
     if (element) {
       if (element.parentNode && element.parentNode.childNodes) {
