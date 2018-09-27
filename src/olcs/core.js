@@ -543,6 +543,16 @@ exports.convertColorToCesium = function(olColor) {
     );
   } else if (typeof olColor == 'string') {
     return Cesium.Color.fromCssColorString(olColor);
+  } else if (olColor instanceof CanvasPattern || olColor instanceof CanvasGradient) {
+    // Render the CanvasPattern/CanvasGradient into a canvas that will be sent to Cesium as material
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.height = 256;
+    ctx.fillStyle = olColor;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    return new Cesium.ImageMaterialProperty({
+      image: canvas
+    });
   }
   console.assert(false, 'impossible');
 };

@@ -94,13 +94,16 @@ class FeatureConverter {
    */
   createColoredPrimitive(layer, feature, olGeometry, geometry, color, opt_lineWidth) {
     const createInstance = function(geometry, color) {
-      return new Cesium.GeometryInstance({
+      const instance = new Cesium.GeometryInstance({
         // always update Cesium externs before adding a property
-        geometry,
-        attributes: {
+        geometry
+      });
+      if (color) {
+        instance.attributes = {
           color: Cesium.ColorGeometryInstanceAttribute.fromColor(color)
         }
-      });
+      }
+      return instance;
     };
 
     const options = {
@@ -126,7 +129,31 @@ class FeatureConverter {
 
     let primitive;
 
-    if (heightReference === Cesium.HeightReference.CLAMP_TO_GROUND) {
+    if (color instanceof Cesium.ImageMaterialProperty) {
+      const dataUri = color.image.getValue().toDataURL();
+
+      primitive = new Cesium.Primitive({
+        geometryInstances: createInstance(geometry),
+        appearance: new Cesium.MaterialAppearance({
+          flat: true,
+          renderState: {
+            depthTest: {
+              enabled: true
+            }
+          },
+          material: new Cesium.Material({
+            strict: true,
+            fabric: {
+              type: 'Image',
+              uniforms: {
+                image: dataUri,
+                repeat: {x: 1, y: 1}
+              }
+            }
+          })
+        })
+      });
+    } else if (heightReference === Cesium.HeightReference.CLAMP_TO_GROUND) {
       const ctor = instances.geometry.constructor;
       if (ctor && !ctor['createShadowVolume']) {
         return null;
