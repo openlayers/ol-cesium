@@ -1,5 +1,4 @@
 const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 
 const babelPresets = [['@babel/preset-env', {
@@ -32,14 +31,6 @@ const olcsRule = {
   }
 };
 
-const cssRule = {
-  test: /\.css$/,
-  use: [
-    MiniCssExtractPlugin.loader,
-    'css-loader'
-  ],
-};
-
 const htmlRule = {
   test: /\.html$/,
   use: [{
@@ -67,16 +58,11 @@ const config = {
     rules: [
       olRule,
       olcsRule,
-      cssRule,
       htmlRule,
       iconRule
     ]
   },
   plugins: [
-    new MiniCssExtractPlugin({
-      filename: '[name].css',
-      chunkFilename: '[id].css'
-    })
   ],
   resolve: {
     modules: [
