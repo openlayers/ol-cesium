@@ -1,8 +1,8 @@
 const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 
-const babelPresets = [['env', {
+const babelPresets = [['@babel/preset-env', {
   'targets': {
     'browsers': ['last 2 versions', 'Firefox ESR', 'ie 11'],
   },
@@ -34,9 +34,10 @@ const olcsRule = {
 
 const cssRule = {
   test: /\.css$/,
-  use: ExtractTextPlugin.extract({
-    use: 'css-loader'
-  })
+  use: [
+    MiniCssExtractPlugin.loader,
+    'css-loader'
+  ],
 };
 
 const htmlRule = {
@@ -72,7 +73,10 @@ const config = {
     ]
   },
   plugins: [
-    new ExtractTextPlugin('[name].css')
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+      chunkFilename: '[id].css'
+    })
   ],
   resolve: {
     modules: [
