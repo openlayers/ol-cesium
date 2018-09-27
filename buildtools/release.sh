@@ -5,7 +5,7 @@ BUILD=.build/olcs_build
 make dist
 
 VERSION=ol-cesium-v`buildtools/get-version.sh version | cut -d. -f1-2`
-cp -R dist/ $VERSION && zip -r $VERSION.zip $VERSION; rm -rf $VERSION`
+cp -R dist/ $VERSION && zip -r $VERSION.zip $VERSION; rm -rf $VERSION
 
 mkdir -p $BUILD
 cp -R src/olcs/* $BUILD 
@@ -20,10 +20,8 @@ head $BUILD/package.json
 
 echo
 echo "Check everything is correct and publish to npm"
-echo "cd $BUILD"
-echo npm publish
-echo "cd ..; rm -rf $BUILD"
-echo "npm publish"
-echo buildtools/publish-website.sh
+echo "cd $BUILD && npm publish"
+echo
+echo "cd ../..; rm -rf $BUILD && npm publish && buildtools/publish-website.sh"
 echo
 echo "In addition, create the release on github and announce it"
