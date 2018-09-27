@@ -716,13 +716,14 @@ class FeatureConverter {
       cancellers[fuid] = canceller;
 
       const listener = function() {
+        image.removeEventListener('load', listener);
         if (!billboards.isDestroyed() && !cancelled) {
           // Create billboard if the feature is still displayed on the map.
           reallyCreateBillboard();
         }
       };
 
-      image.once('load', listener);
+      image.addEventListener('load', listener);
     } else {
       reallyCreateBillboard();
     }
