@@ -1,10 +1,12 @@
 # Changelog
 
-# v 2.3
+# v 2.3 - 2018-09-27
 
 * Changes
   * Port to OpenLayers 5.2.0.
   * Add image static support.
+  * Improve old fashioned build.
+  * Port to Cesium 1.49.
 
 # v 2.2.2 - 2018-08-24
 

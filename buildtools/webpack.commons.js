@@ -1,8 +1,7 @@
 const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 
-const babelPresets = [['env', {
+const babelPresets = [['@babel/preset-env', {
   'targets': {
     'browsers': ['last 2 versions', 'Firefox ESR', 'ie 11'],
   },
@@ -32,13 +31,6 @@ const olcsRule = {
   }
 };
 
-const cssRule = {
-  test: /\.css$/,
-  use: ExtractTextPlugin.extract({
-    use: 'css-loader'
-  })
-};
-
 const htmlRule = {
   test: /\.html$/,
   use: [{
@@ -66,13 +58,11 @@ const config = {
     rules: [
       olRule,
       olcsRule,
-      cssRule,
       htmlRule,
       iconRule
     ]
   },
   plugins: [
-    new ExtractTextPlugin('[name].css')
   ],
   resolve: {
     modules: [

@@ -129,8 +129,12 @@ OlcsControl.prototype.resetToNorthZenith = function(callback) {
 
 
 OlcsControl.prototype.rotate = function(angle) {
-  const current = this.ol3d_.getOlView().getRotation();
-  this.ol3d_.getOlView().setRotation(current + angle);
+  const view = this.ol3d_.getOlView();
+  const current = view.getRotation();
+  view.animate({
+    rotation: current + angle,
+    duration: 250
+  });
 };
 
 
