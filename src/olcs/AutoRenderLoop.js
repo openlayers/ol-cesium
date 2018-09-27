@@ -28,6 +28,7 @@ class AutoRenderLoop {
    */
   enable() {
     this.scene_.requestRenderMode = true;
+    this.scene_.maximumRenderTimeChange = 1000;
     for (const repaintKey of this.repaintEventNames_) {
       this.canvas_.addEventListener(repaintKey, this._boundNotifyRepaintRequired, false);
     }
