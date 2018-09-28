@@ -1,0 +1,91 @@
+/**
+ * @module examples.vectors
+ */
+const exports = {};
+import OLCesium from 'olcs/OLCesium.js';
+import olView from 'ol/View.js';
+import {defaults as olControlDefaults} from 'ol/control.js';
+import olSourceOSM from 'ol/source/OSM.js';
+import olLayerTile from 'ol/layer/Tile.js';
+import olStyleStyle from 'ol/style/Style.js';
+import olFeature from 'ol/Feature.js';
+import olStyleStroke from 'ol/style/Stroke.js';
+import {defaults as interactionDefaults} from 'ol/interaction.js';
+import olStyleFill from 'ol/style/Fill.js';
+import olMap from 'ol/Map.js';
+import olSourceVector from 'ol/source/Vector.js';
+import olGeomPolygon from 'ol/geom/Polygon.js';
+import olLayerVector from 'ol/layer/Vector.js';
+
+
+
+const vectorSource = new olSourceVector({
+  features: []
+});
+
+const vectorLayer = new olLayerVector({
+  source: vectorSource
+});
+
+const image = new Image();
+image.onload = () => {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = 32;
+  canvas.height = 48;
+  ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+  const canvas2 = document.createElement('canvas');
+  const ctx2 = canvas2.getContext('2d');
+
+  const polygonFeature = new olFeature({
+    geometry: new olGeomPolygon([[[-3e6, 0], [-3e6, 2e6], [-1e6, 2e6], [-1e6, 0], [-3e6, 0]]])
+  });
+  polygonFeature.setStyle(new olStyleStyle({
+    stroke: new olStyleStroke({
+      color: 'green',
+      lineDash: [4],
+      width: 3
+    }),
+    fill: new olStyleFill({
+      color: ctx2.createPattern(canvas, 'repeat')
+    })
+  }));
+  vectorSource.addFeature(polygonFeature);
+};
+image.src = 'data/icon.png';
+
+
+const map = new olMap({
+  interactions: interactionDefaults(),
+  layers: [
+    new olLayerTile({
+      source: new olSourceOSM()
+    }),
+    vectorLayer
+  ],
+  target: 'map2d',
+  controls: olControlDefaults({
+    attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+      collapsible: false
+    })
+  }),
+  view: new olView({
+    center: [-2e6, 1e6],
+    zoom: 4
+  })
+});
+
+Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI0MzAyNzUyYi0zY2QxLTQxZDItODRkOS1hNTA3MDU3ZTBiMDUiLCJpZCI6MjU0MSwiaWF0IjoxNTMzNjI1MTYwfQ.oHn1SUWJa12esu7XUUtEoc1BbEbuZpRocLetw6M6_AA';
+const ol3d = new OLCesium({map, target: 'map3d'});
+const scene = ol3d.getCesiumScene();
+scene.terrainProvider = Cesium.createWorldTerrain();
+ol3d.setEnabled(true);
+
+window['ol3d'] = ol3d;
+window['scene'] = scene;
+document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
+
+ol3d.enableAutoRenderLoop();
+
+
+export default exports;
