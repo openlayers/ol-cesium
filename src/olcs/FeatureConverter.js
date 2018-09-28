@@ -101,7 +101,7 @@ class FeatureConverter {
       if (color) {
         instance.attributes = {
           color: Cesium.ColorGeometryInstanceAttribute.fromColor(color)
-        }
+        };
       }
       return instance;
     };
