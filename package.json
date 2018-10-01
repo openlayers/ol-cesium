@@ -21,7 +21,7 @@
   "devDependencies": {
     "@babel/core": "7.1.0",
     "@babel/preset-env": "7.1.0",
-    "@camptocamp/cesium": "1.49.0",
+    "@camptocamp/cesium": "1.50.0",
     "@mapbox/geojsonhint": "2.0.1",
     "babel-loader": "8.0.2",
     "copy-webpack-plugin": "4.5.2",
