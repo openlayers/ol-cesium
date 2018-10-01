@@ -13,6 +13,8 @@
     <div id="map2d" style="width:600px;height:400px;float:left;"></div>
     <div id="map3d" style="width:600px;height:400px;float:left;position:relative;"></div>
     <div><input id="enable" type="button" value="Enable/disable Cesium" /></div>
+    <div><input type="button" value="Toggle clampToGround mode"
+      onclick="javascript:toggleClampToGround(); ol3d.getAutoRenderLoop().restartRenderLoop()" /></div>
     <script src="inject_ol_cesium.js"></script>
   </body>
 </html>

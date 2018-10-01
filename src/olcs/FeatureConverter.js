@@ -98,7 +98,7 @@ class FeatureConverter {
         // always update Cesium externs before adding a property
         geometry
       });
-      if (color) {
+      if (color && !(color instanceof Cesium.ImageMaterialProperty)) {
         instance.attributes = {
           color: Cesium.ColorGeometryInstanceAttribute.fromColor(color)
         };
@@ -129,46 +129,41 @@ class FeatureConverter {
 
     let primitive;
 
-    if (color instanceof Cesium.ImageMaterialProperty) {
-      const dataUri = color.image.getValue().toDataURL();
-
-      primitive = new Cesium.Primitive({
-        geometryInstances: createInstance(geometry),
-        appearance: new Cesium.MaterialAppearance({
-          flat: true,
-          renderState: {
-            depthTest: {
-              enabled: true
-            }
-          },
-          material: new Cesium.Material({
-            strict: true,
-            fabric: {
-              type: 'Image',
-              uniforms: {
-                image: dataUri,
-                repeat: {x: 1, y: 1}
-              }
-            }
-          })
-        })
-      });
-    } else if (heightReference === Cesium.HeightReference.CLAMP_TO_GROUND) {
+    if (heightReference === Cesium.HeightReference.CLAMP_TO_GROUND) {
       const ctor = instances.geometry.constructor;
       if (ctor && !ctor['createShadowVolume']) {
         return null;
       }
       primitive = new Cesium.GroundPrimitive({
-        // always update Cesium externs before adding a property
         geometryInstances: instances
       });
     } else {
-      const appearance = new Cesium.PerInstanceColorAppearance(options);
       primitive = new Cesium.Primitive({
-        // always update Cesium externs before adding a property
-        geometryInstances: instances,
-        appearance
+        geometryInstances: instances
       });
+    }
+
+    if (color instanceof Cesium.ImageMaterialProperty) {
+      const dataUri = color.image.getValue().toDataURL();
+
+      primitive.appearance = new Cesium.MaterialAppearance({
+        flat: true,
+        renderState: {
+          depthTest: {
+            enabled: true
+          }
+        },
+        material: new Cesium.Material({
+          fabric: {
+            type: 'Image',
+            uniforms: {
+              image: dataUri
+            }
+          }
+        })
+      });
+    } else {
+      primitive.appearance = new Cesium.PerInstanceColorAppearance(options);
     }
 
     this.setReferenceForPicking(layer, feature, primitive);

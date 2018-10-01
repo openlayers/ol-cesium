@@ -87,5 +87,14 @@ document.getElementById('enable').addEventListener('click', () => ol3d.setEnable
 
 ol3d.enableAutoRenderLoop();
 
+window['toggleClampToGround'] = function() {
+  let altitudeMode;
+  if (!vectorLayer.get('altitudeMode')) {
+    altitudeMode = 'clampToGround';
+  }
+  vectorLayer.set('altitudeMode', altitudeMode);
+  map.removeLayer(vectorLayer);
+  map.addLayer(vectorLayer);
+};
 
 export default exports;
