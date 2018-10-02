@@ -34,8 +34,13 @@ class FeatureConverter {
      * @type {function(ol.source.Vector.Event)}
      * @private
      */
-    this.boundOnRemoveOrClearFeatureListener_ =
-        this.onRemoveOrClearFeature_.bind(this);
+    this.boundOnRemoveOrClearFeatureListener_ = this.onRemoveOrClearFeature_.bind(this);
+
+    /**
+     * @type {Cesium.Cartesian3}
+     * @private
+     */
+    this.defaultBillboardEyeOffset_ = new Cesium.Cartesian3(0, 0, 10);
   }
 
   /**
@@ -288,6 +293,9 @@ class FeatureConverter {
    * @api
    */
   csAddBillboard(billboards, bbOptions, layer, feature, geometry, style) {
+    if (!bbOptions.eyeOffset) {
+      bbOptions.eyeOffset = this.defaultBillboardEyeOffset_;
+    }
     const bb = billboards.add(bbOptions);
     this.setReferenceForPicking(layer, feature, bb);
     return bb;
