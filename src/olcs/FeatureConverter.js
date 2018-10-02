@@ -706,9 +706,16 @@ class FeatureConverter {
         color,
         scale: imageStyle.getScale(),
         heightReference,
-        verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
         position
       });
+
+      if (imageStyle instanceof olStyleIcon) {
+        bbOptions.pixelOffset = new Cesium.Cartesian2(
+            image.width / 2 - imageStyle.getAnchor()[0],
+            image.height / 2 - imageStyle.getAnchor()[1]
+        );
+      }
+
       const bb = this.csAddBillboard(billboards, bbOptions, layer, feature, olGeometry, style);
       if (opt_newBillboardCallback) {
         opt_newBillboardCallback(bb);
