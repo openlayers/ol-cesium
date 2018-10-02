@@ -1,5 +1,13 @@
 # Changelog
 
+# v 2.5
+
+* Breaking changes
+  * Icons are now anchored as specified in the OpenLayers style.
+
+* Changes
+  * CanvasPattern and CanvasGradient styles are now handled for polygons.
+
 # v 2.4 - 2018-10-01
 
 * Changes
