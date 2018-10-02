@@ -94,13 +94,16 @@ class FeatureConverter {
    */
   createColoredPrimitive(layer, feature, olGeometry, geometry, color, opt_lineWidth) {
     const createInstance = function(geometry, color) {
-      return new Cesium.GeometryInstance({
+      const instance = new Cesium.GeometryInstance({
         // always update Cesium externs before adding a property
-        geometry,
-        attributes: {
-          color: Cesium.ColorGeometryInstanceAttribute.fromColor(color)
-        }
+        geometry
       });
+      if (color && !(color instanceof Cesium.ImageMaterialProperty)) {
+        instance.attributes = {
+          color: Cesium.ColorGeometryInstanceAttribute.fromColor(color)
+        };
+      }
+      return instance;
     };
 
     const options = {
@@ -132,16 +135,35 @@ class FeatureConverter {
         return null;
       }
       primitive = new Cesium.GroundPrimitive({
-        // always update Cesium externs before adding a property
         geometryInstances: instances
       });
     } else {
-      const appearance = new Cesium.PerInstanceColorAppearance(options);
       primitive = new Cesium.Primitive({
-        // always update Cesium externs before adding a property
-        geometryInstances: instances,
-        appearance
+        geometryInstances: instances
       });
+    }
+
+    if (color instanceof Cesium.ImageMaterialProperty) {
+      const dataUri = color.image.getValue().toDataURL();
+
+      primitive.appearance = new Cesium.MaterialAppearance({
+        flat: true,
+        renderState: {
+          depthTest: {
+            enabled: true
+          }
+        },
+        material: new Cesium.Material({
+          fabric: {
+            type: 'Image',
+            uniforms: {
+              image: dataUri
+            }
+          }
+        })
+      });
+    } else {
+      primitive.appearance = new Cesium.PerInstanceColorAppearance(options);
     }
 
     this.setReferenceForPicking(layer, feature, primitive);
