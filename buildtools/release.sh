@@ -22,6 +22,7 @@ echo
 echo "Check everything is correct and publish to npm"
 echo "cd $BUILD && npm publish"
 echo
-echo "cd ../..; rm -rf $BUILD && npm publish && buildtools/publish-website.sh"
+echo "cd ../.. && rm -rf $BUILD && npm publish && buildtools/publish-website.sh"
+echo "git tag v$VERSION && git --tags push"
 echo
 echo "In addition, create the release on github and announce it"
