@@ -12,8 +12,6 @@ import olcsCore from './core.js';
 import olcsCoreVectorLayerCounterpart from './core/VectorLayerCounterpart.js';
 import olcsUtil, {getUid, isGroundPolylinePrimitiveSupported} from './util.js';
 
-const CLAMP_TO_GROUND = Cesium.HeightReference.CLAMP_TO_GROUND;
-
 class FeatureConverter {
   /**
    * Concrete base class for converting from OpenLayers3 vectors to Cesium
@@ -136,7 +134,7 @@ class FeatureConverter {
 
     let primitive;
 
-    if (heightReference === CLAMP_TO_GROUND) {
+    if (heightReference === Cesium.HeightReference.CLAMP_TO_GROUND) {
       const ctor = instances.geometry.constructor;
       if (ctor && !ctor['createShadowVolume']) {
         return null;
@@ -339,7 +337,7 @@ class FeatureConverter {
     });
 
     let outlinePrimitive, outlineGeometry;
-    if (this.getHeightReference(layer, feature, olGeometry) === CLAMP_TO_GROUND) {
+    if (this.getHeightReference(layer, feature, olGeometry) === Cesium.HeightReference.CLAMP_TO_GROUND) {
       const width = this.extractLineWidthFromOlStyle(olStyle);
       if (width) {
         const circlePolygon = olCreateCircularPolygon(olGeometry.getCenter(), radius);
@@ -447,7 +445,7 @@ class FeatureConverter {
     let outlinePrimitive;
     const heightReference = this.getHeightReference(layer, feature, olGeometry);
 
-    if (heightReference === CLAMP_TO_GROUND && !isGroundPolylinePrimitiveSupported(this.scene)) {
+    if (heightReference === Cesium.HeightReference.CLAMP_TO_GROUND && !isGroundPolylinePrimitiveSupported(this.scene)) {
       const color = this.extractColorFromOlStyle(olStyle, true);
       outlinePrimitive = this.createStackedGroundCorridors(layer, feature, width, color, positions);
     } else {
@@ -464,7 +462,7 @@ class FeatureConverter {
         // always update Cesium externs before adding a property
         appearance
       };
-      if (heightReference === CLAMP_TO_GROUND) {
+      if (heightReference === Cesium.HeightReference.CLAMP_TO_GROUND) {
         const geometry = new Cesium.GroundPolylineGeometry(geometryOptions);
         primitiveOptions.geometryInstances = new Cesium.GeometryInstance({
           geometry
@@ -568,7 +566,7 @@ class FeatureConverter {
       // we don't create an outline geometry if clamped, but instead do the polyline method
       // for each ring. Most of this code should be removeable when Cesium adds
       // support for Polygon outlines on terrain.
-      if (heightReference === CLAMP_TO_GROUND) {
+      if (heightReference === Cesium.HeightReference.CLAMP_TO_GROUND) {
         const width = this.extractLineWidthFromOlStyle(olStyle);
         if (width > 0) {
           const positions = [hierarchy.positions];
@@ -648,7 +646,7 @@ class FeatureConverter {
 
     let heightReference = Cesium.HeightReference.NONE;
     if (altitudeMode === 'clampToGround') {
-      heightReference = CLAMP_TO_GROUND;
+      heightReference = Cesium.HeightReference.CLAMP_TO_GROUND;
     } else if (altitudeMode === 'relativeToGround') {
       heightReference = Cesium.HeightReference.RELATIVE_TO_GROUND;
     }
