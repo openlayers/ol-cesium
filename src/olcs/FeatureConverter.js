@@ -10,7 +10,9 @@ import {boundingExtent, getCenter} from 'ol/extent.js';
 import olGeomSimpleGeometry from 'ol/geom/SimpleGeometry.js';
 import olcsCore from './core.js';
 import olcsCoreVectorLayerCounterpart from './core/VectorLayerCounterpart.js';
-import olcsUtil, {getUid} from './util.js';
+import olcsUtil, {getUid, isGroundPolylinePrimitiveSupported} from './util.js';
+
+const CLAMP_TO_GROUND = Cesium.HeightReference.CLAMP_TO_GROUND;
 
 class FeatureConverter {
   /**
@@ -134,7 +136,7 @@ class FeatureConverter {
 
     let primitive;
 
-    if (heightReference === Cesium.HeightReference.CLAMP_TO_GROUND) {
+    if (heightReference === CLAMP_TO_GROUND) {
       const ctor = instances.geometry.constructor;
       if (ctor && !ctor['createShadowVolume']) {
         return null;
@@ -337,12 +339,12 @@ class FeatureConverter {
     });
 
     let outlinePrimitive, outlineGeometry;
-    if (this.getHeightReference(layer, feature, olGeometry) === Cesium.HeightReference.CLAMP_TO_GROUND) {
+    if (this.getHeightReference(layer, feature, olGeometry) === CLAMP_TO_GROUND) {
       const width = this.extractLineWidthFromOlStyle(olStyle);
       if (width) {
         const circlePolygon = olCreateCircularPolygon(olGeometry.getCenter(), radius);
         const positions = olcsCore.ol4326CoordinateArrayToCsCartesians(circlePolygon.getLinearRing(0).getCoordinates());
-        if (!Cesium.GroundPolylinePrimitive.isSupported(this.scene)) {
+        if (!isGroundPolylinePrimitiveSupported(this.scene)) {
           const color = this.extractColorFromOlStyle(olStyle, true);
           outlinePrimitive = this.createStackedGroundCorridors(layer, feature, width, color, positions);
         } else {
@@ -445,7 +447,7 @@ class FeatureConverter {
     let outlinePrimitive;
     const heightReference = this.getHeightReference(layer, feature, olGeometry);
 
-    if (heightReference === Cesium.HeightReference.CLAMP_TO_GROUND && !Cesium.GroundPolylinePrimitive.isSupported(this.scene)) {
+    if (heightReference === CLAMP_TO_GROUND && !isGroundPolylinePrimitiveSupported(this.scene)) {
       const color = this.extractColorFromOlStyle(olStyle, true);
       outlinePrimitive = this.createStackedGroundCorridors(layer, feature, width, color, positions);
     } else {
@@ -462,7 +464,7 @@ class FeatureConverter {
         // always update Cesium externs before adding a property
         appearance
       };
-      if (heightReference === Cesium.HeightReference.CLAMP_TO_GROUND) {
+      if (heightReference === CLAMP_TO_GROUND) {
         const geometry = new Cesium.GroundPolylineGeometry(geometryOptions);
         primitiveOptions.geometryInstances = new Cesium.GeometryInstance({
           geometry
@@ -566,7 +568,7 @@ class FeatureConverter {
       // we don't create an outline geometry if clamped, but instead do the polyline method
       // for each ring. Most of this code should be removeable when Cesium adds
       // support for Polygon outlines on terrain.
-      if (heightReference === Cesium.HeightReference.CLAMP_TO_GROUND) {
+      if (heightReference === CLAMP_TO_GROUND) {
         const width = this.extractLineWidthFromOlStyle(olStyle);
         if (width > 0) {
           const positions = [hierarchy.positions];
@@ -575,7 +577,7 @@ class FeatureConverter {
               positions.push(hierarchy.holes[i].positions);
             }
           }
-          if (!Cesium.GroundPolylinePrimitive.isSupported(this.scene)) {
+          if (!isGroundPolylinePrimitiveSupported(this.scene)) {
             const color = this.extractColorFromOlStyle(olStyle, true);
             outlinePrimitive = this.createStackedGroundCorridors(layer, feature, width, color, positions);
           } else {
@@ -646,7 +648,7 @@ class FeatureConverter {
 
     let heightReference = Cesium.HeightReference.NONE;
     if (altitudeMode === 'clampToGround') {
-      heightReference = Cesium.HeightReference.CLAMP_TO_GROUND;
+      heightReference = CLAMP_TO_GROUND;
     } else if (altitudeMode === 'relativeToGround') {
       heightReference = Cesium.HeightReference.RELATIVE_TO_GROUND;
     }
