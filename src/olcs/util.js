@@ -133,4 +133,12 @@ export function removeChildren(node) {
   }
 }
 
+/**
+ * @param {Cesium.Scene} scene The scene.
+ */
+export function isGroundPolylinePrimitiveSupported(scene) {
+  const obj = Cesium.GroundPolylinePrimitive;
+  return obj && obj.isSupported(scene);
+}
+
 export default exports;
