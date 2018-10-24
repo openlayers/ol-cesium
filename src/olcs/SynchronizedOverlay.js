@@ -217,7 +217,7 @@ class SynchronizedOverlay extends olOverlay {
       this.setVisible(false);
       return;
     }
-    let cartesian, height = 0;
+    let height = 0;
     if (position.length === 2) {
       const globeHeight = this.scene_.globe.getHeight(Cesium.Cartographic.fromDegrees(position[0], position[1]));
       if (globeHeight && this.scene_.globe.tilesLoaded) {
@@ -229,7 +229,7 @@ class SynchronizedOverlay extends olOverlay {
     } else {
       height = position[2];
     }
-    cartesian = Cesium.Cartesian3.fromDegrees(position[0], position[1], height);
+    const cartesian = Cesium.Cartesian3.fromDegrees(position[0], position[1], height);
     const camera = this.scene_.camera;
     const ellipsoidBoundingSphere = new Cesium.BoundingSphere(new Cesium.Cartesian3(), 6356752);
     const occluder = new Cesium.Occluder(ellipsoidBoundingSphere, camera.position);
