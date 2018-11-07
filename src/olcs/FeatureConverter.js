@@ -718,10 +718,10 @@ class FeatureConverter {
       });
 
       if (imageStyle instanceof olStyleIcon) {
-        bbOptions.pixelOffset = new Cesium.Cartesian2(
-            image.width / 2 - imageStyle.getAnchor()[0],
-            image.height / 2 - imageStyle.getAnchor()[1]
-        );
+        const anchor = imageStyle.getAnchor();
+        if (anchor) {
+          bbOptions.pixelOffset = new Cesium.Cartesian2(image.width / 2 - anchor[0], image.height / 2 - anchor[1]);
+        }
       }
 
       const bb = this.csAddBillboard(billboards, bbOptions, layer, feature, olGeometry, style);
