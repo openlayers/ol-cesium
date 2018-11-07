@@ -8,6 +8,7 @@
 * Changes
   * CanvasPattern and CanvasGradient styles are now handled for polygons.
   * Port to Cesium 1.51.
+  * Port to OpenLayers 5.3.0.
 
 # v 2.4 - 2018-10-01
 
