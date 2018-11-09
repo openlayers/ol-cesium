@@ -1,6 +1,6 @@
 # Changelog
 
-# v 2.5
+# v 2.5 - 2018-11-09
 
 * Breaking changes
   * Icons are now anchored as specified in the OpenLayers style.

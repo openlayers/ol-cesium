@@ -24,7 +24,8 @@ const vectorSource = new olSourceVector({
 });
 
 const vectorLayer = new olLayerVector({
-  source: vectorSource
+  source: vectorSource,
+  altitudeMode: 'clampToGround'
 });
 
 const image = new Image();
