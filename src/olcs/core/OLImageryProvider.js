@@ -112,12 +112,13 @@ class OLImageryProvider /* should not extend Cesium.ImageryProvider */ {
    * @override
    */
   getTileCredits(x, y, level) {
-    const olExtent = this.map_.getView().calculateExtent(this.map_.getSize());
+    const extent = this.map_.getView().calculateExtent(this.map_.getSize());
+    const center = this.map_.getView().getCenter();
     const zoom = this.tilingScheme_ instanceof Cesium.GeographicTilingScheme ? level + 1 : level;
 
     const frameState = {
-      viewState: {zoom},
-      extent: olExtent
+      viewState: {zoom, center},
+      extent,
     };
 
     const attributionsFunction = this.source_.getAttributions();
