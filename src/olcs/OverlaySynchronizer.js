@@ -102,7 +102,7 @@ class OverlaySynchronizer {
   * @api
   */
   addOverlays() {
-    this.overlays_.forEach((overlay) => { this.addOverlay(); });
+    this.overlays_.forEach((overlay) => { this.addOverlay(overlay); });
   }
 
   /**
