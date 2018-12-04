@@ -39,7 +39,7 @@
     "ol": "5.3.0",
     "proj4": "2.4.4",
     "temp": "0.8.3",
-    "webpack": "^4.20.2",
+    "webpack": "^4.26.0",
     "webpack-cli": "3.1.1",
     "webpack-dev-server": "3.1.9",
     "webpack-merge": "4.1.4"
