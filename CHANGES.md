@@ -4,6 +4,7 @@
 
 * Changes
   * Add new build as UMD
+  * Synchronize map interactions when 3D is enabled
 
 # v 2.5 - 2018-11-09
 
