@@ -496,6 +496,10 @@ class OLCesium {
         });
         interactions.clear();
 
+        this.map_.addInteraction = interaction => this.pausedInteractions_.push(interaction);
+        this.map_.removeInteraction = interaction =>
+          this.pausedInteractions_ = this.pausedInteractions_.filter(i => i !== interaction);
+
         const rootGroup = this.map_.getLayerGroup();
         if (rootGroup.getVisible()) {
           this.hiddenRootGroup_ = rootGroup;
@@ -515,6 +519,10 @@ class OLCesium {
           interactions.push(interaction);
         });
         this.pausedInteractions_.length = 0;
+
+        this.map_.addInteraction = interaction => this.map_.getInteractions().push(interaction);
+        this.map_.removeInteraction = interaction => this.map_.getInteractions().remove(interaction);
+
         this.map_.getOverlayContainer().classList.remove('olcs-hideoverlay');
         this.map_.getOverlayContainerStopEvent().classList.remove('olcs-hideoverlay');
         if (this.hiddenRootGroup_) {
