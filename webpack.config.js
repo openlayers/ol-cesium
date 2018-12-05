@@ -24,6 +24,9 @@ switch (process.env.TARGET) {
   case 'library':
     config = webpackMerge(config, require('./buildtools/webpack.library.js'));
     break;
+  case 'umd':
+    config = webpackMerge(config, require('./buildtools/webpack.umd.js'));
+    break;
   default:
     console.log(`The 'TARGET' environement variable is set to an invalid value: ${process.env.TARGET}.`);
     process.exit(2);

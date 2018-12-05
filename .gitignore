@@ -1,4 +1,5 @@
 /.build
+/.idea
 /dist
 /node_modules
 /examples/example-list.js

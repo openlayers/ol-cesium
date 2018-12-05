@@ -13,7 +13,7 @@ help:
 	@echo
 	@echo "Main targets:"
 	@echo
-	@echo "- dist                    Create a "distribution" for the library (dist/olcesium.js)"
+	@echo "- dist                    Create a "distribution" for the library (dist/olcesium.js and dist/olcesium.umd.js)"
 	@echo "- lint                    Check the code with the linter"
 	@echo "- serve                   Run a development web server for running the examples"
 	@echo "- clean                   Remove generated files"
@@ -88,3 +88,4 @@ dist/olcesium.js: $(SRC_JS_FILES) $(WEBPACK_CONFIG_FILES) .build/node_modules.ti
 	mkdir -p $(dir $@)
 	npm run build-library-debug
 	npm run build-library
+	npm run build-umd
