@@ -66,8 +66,19 @@ ol3d.setEnabled(true);
 
 In addition, see the [old fashioned example](https://openlayers.org/ol-cesium/examples/oldfashioned.html).
 
-### As an UMD library (not supported at the moment, if you have propositions get in touch with us)
+### As an UMD library (Angular, ...)
+```bash
+npm i --save ol-cesium
+```
+The UMD-specific build is located here: `node_modules/ol-cesium/dist/olcesium.umd.js`  
 
+
+Then import the parts you need. Example:
+```js
+import OLCesium from 'olcs/OLCesium.js';
+const ol3d = new OLCesium({map: ol2dMap}); // ol2dMap is the ol.Map instance
+ol3d.setEnabled(true);
+```
 
 Going further
 -------------

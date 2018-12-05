@@ -1,5 +1,10 @@
 # Changelog
 
+# v 2.6
+
+* Changes
+  * Add new build as UMD
+
 # v 2.5 - 2018-11-09
 
 * Breaking changes
