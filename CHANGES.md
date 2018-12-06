@@ -1,10 +1,11 @@
 # Changelog
 
-# v 2.6
+# v 2.6 - 2018-12-06
 
 * Changes
-  * Add new build as UMD
-  * Synchronize map interactions when 3D is enabled
+  * Add new build as UMD.
+  * Synchronize map interactions when 3D is enabled.
+  * Port to Cesium 1.52.
 
 # v 2.5 - 2018-11-09
 
