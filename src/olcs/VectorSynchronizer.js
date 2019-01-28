@@ -7,6 +7,7 @@ import olSourceCluster from 'ol/source/Cluster.js';
 import olLayerImage from 'ol/layer/Image.js';
 import {olcsListen, getUid} from './util.js';
 import olLayerVector from 'ol/layer/Vector.js';
+import olLayerVectorTile from 'ol/layer/VectorTile.js';
 import olcsAbstractSynchronizer from './AbstractSynchronizer.js';
 import olcsFeatureConverter from './FeatureConverter.js';
 
@@ -99,7 +100,7 @@ class VectorSynchronizer extends olcsAbstractSynchronizer {
    */
   createSingleLayerCounterparts(olLayerWithParents) {
     const olLayer = olLayerWithParents.layer;
-    if (!(olLayer instanceof olLayerVector)) {
+    if (!(olLayer instanceof olLayerVector) || olLayer instanceof olLayerVectorTile) {
       return null;
     }
     console.assert(olLayer instanceof olLayerLayer);
