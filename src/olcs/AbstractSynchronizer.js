@@ -91,7 +91,7 @@ class AbstractSynchronizer {
    * @private
    */
   addLayers_(root) {
-    /** @type {Array<olcsx.LayerWithParents>} */
+    /** @type {Array<import('olsc/core.js').LayerWithParents>} */
     const fifo = [{
       layer: root,
       parents: []
@@ -325,7 +325,7 @@ class AbstractSynchronizer {
   removeAllCesiumObjects(destroy) {}
 
   /**
-   * @param {olcsx.LayerWithParents} olLayerWithParents
+   * @param {import('olsc/core.js').LayerWithParents} olLayerWithParents
    * @return {?Array.<T>}
    * @abstract
    * @protected

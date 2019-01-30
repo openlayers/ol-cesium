@@ -1,7 +1,6 @@
 /**
  * @module olcs.core
  */
-const exports = {};
 import {linear as linearEasing} from 'ol/easing.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olLayerImage from 'ol/layer/Image.js';
@@ -13,6 +12,33 @@ import olSourceTileWMS from 'ol/source/TileWMS.js';
 import {defaultImageLoadFunction} from 'ol/source/Image.js';
 import olcsCoreOLImageryProvider from './core/OLImageryProvider.js';
 import olcsUtil from './util.js';
+
+
+const exports = {};
+
+
+/**
+ * @typedef {Object} CesiumUrlDefinition
+ * @property {string} url
+ * @property {string} subdomains
+ */
+
+
+/**
+ * Options for rotate around axis core function.
+ * @typedef {Object} RotateAroundAxisOption
+ * @property {number} [duration]
+ * @property {function(number): number} [easing]
+ * @property {function(): void} [callback]
+ */
+
+
+
+/**
+ * @typedef {Object} LayerWithParents
+ * @property {import('ol/layer/Base.js').default} layer
+ * @property {Array<import('ol/layer/Group.js').default>} parents
+ */
 
 
 /**
@@ -103,7 +129,7 @@ exports.createMatrixAtCoordinates = function(coordinates, rotation = 0, translat
  * @param {number} angle
  * @param {!Cesium.Cartesian3} axis
  * @param {!Cesium.Matrix4} transform
- * @param {olcsx.core.RotateAroundAxisOption=} opt_options
+ * @param {RotateAroundAxisOption=} opt_options
  * @api
  */
 exports.rotateAroundAxis = function(camera, angle, axis, transform,
@@ -149,7 +175,7 @@ exports.rotateAroundAxis = function(camera, angle, axis, transform,
  * @param {!Cesium.Scene} scene
  * @param {number} heading
  * @param {!Cesium.Cartesian3} bottomCenter
- * @param {olcsx.core.RotateAroundAxisOption=} opt_options
+ * @param {RotateAroundAxisOption=} opt_options
  * @api
  */
 exports.setHeadingUsingBottomCenter = function(scene, heading,
@@ -561,7 +587,7 @@ exports.convertColorToCesium = function(olColor) {
 /**
  * Convert an OpenLayers url to Cesium.
  * @param {string} url
- * @return {!olcsx.core.CesiumUrlDefinition}
+ * @return {!CesiumUrlDefinition}
  * @api
  */
 exports.convertUrlToCesium = function(url) {
