@@ -11,9 +11,26 @@ import olcsRasterSynchronizer from './RasterSynchronizer.js';
 import olcsVectorSynchronizer from './VectorSynchronizer.js';
 import olcsOverlaySynchronizer from './OverlaySynchronizer.js';
 
+
+/**
+ * @typedef {Object} OLCesiumOptions
+ * @property {import('ol/Map.js').default} map The OpenLayers map we want to show on a Cesium scene.
+ * @property {Element|string} [target] Target element for the Cesium scene.
+ * @property {function(!import('ol/Map.js').default, !Cesium.Scene, !Cesium.DataSourceCollection): Array<import('olcs/AbstractSynchronizer.js').default>}
+ *      [createSynchronizers] Callback function which will be called by the {@link olcs.OLCesium}
+ *      constructor to create custom synchronizers. Receives an `ol.Map` and a `Cesium.Scene` as arguments,
+ *      and needs to return an array of {@link import('olcs/AbstractSynchronizer.js').default}.
+ * @property {function(): Cesium.JulianDate} [time] Control the current time used by Cesium.
+ * @property {boolean} [stopOpenLayersEventsPropagation] Prevent propagation of mouse/touch events to
+ *      OpenLayers when Cesium is active.
+ * @property {Cesium.SceneOptions} [sceneOptions] Allows the passing of property value to the
+ *      `Cesium.Scene`.
+ */
+
+
 class OLCesium {
   /**
-   * @param {!olcsx.OLCesiumOptions} options Options.
+   * @param {!OLCesiumOptions} options Options.
    * @constructor
    * @api
    */

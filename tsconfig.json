@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+      /* Basic Options */
+      "target": "ES6",
+      "module": "system",
+      "lib": ["es2017", "dom"],
+      "allowJs": true,
+      // "checkJs": true,
+      "noEmit": true,
+      // "strict": true,
+      "baseUrl": "./",
+      "paths": {
+        // "ol/*": ["node_modules/ol/*"],
+        // Temporary, run that to use it:
+        // npm install --prefix openlayers_src https://api.github.com/repos/openlayers/openlayers/tarball/v5.3.0
+        "ol/*": ["openlayers_src/node_modules/ol/src/ol/*"],
+      }
+    },
+    "include": [
+      "src/**/*.js",
+    ]
+}

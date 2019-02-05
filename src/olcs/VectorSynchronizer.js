@@ -79,7 +79,7 @@ class VectorSynchronizer extends olcsAbstractSynchronizer {
   /**
    * Synchronizes the layer visibility properties
    * to the given Cesium Primitive.
-   * @param {olcsx.LayerWithParents} olLayerWithParents
+   * @param {import('olsc/core.js').LayerWithParents} olLayerWithParents
    * @param {!Cesium.Primitive} csPrimitive
    */
   updateLayerVisibility(olLayerWithParents, csPrimitive) {

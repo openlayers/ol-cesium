@@ -3,6 +3,17 @@
  */
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
 
+
+/**
+ * Context for feature conversion.
+ * @typedef {Object} OlFeatureToCesiumContext
+ * @property {!(import('ol/Projection.js').default|string)} projection
+ * @property {!Cesium.PrimitiveCollection} primitives
+ * @property {Object<number, Array<!Cesium.Primitive|!Cesium.Billboard>>} featureToCesiumMap
+ * @property {!Cesium.BillboardCollection} billboards
+ */
+
+
 class VectorLayerCounterpart {
   /**
   * Result of the conversion of an OpenLayers layer to Cesium.
@@ -20,7 +31,7 @@ class VectorLayerCounterpart {
 
     this.rootCollection_ = new Cesium.PrimitiveCollection();
     /**
-    * @type {!olcsx.core.OlFeatureToCesiumContext}
+    * @type {!OlFeatureToCesiumContext}
     */
     this.context = {
       projection: layerProjection,

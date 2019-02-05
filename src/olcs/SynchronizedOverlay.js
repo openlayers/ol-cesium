@@ -6,6 +6,16 @@ import {transform} from 'ol/proj.js';
 import {removeNode, removeChildren} from './util.js';
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
 
+
+/**
+ * Options for SynchronizedOverlay
+ * @typedef {Object} SynchronizedOverlayOptions
+ * @property {!Cesium.Scene} scene
+ * @property {olOverlay} parent
+ * @property {!import('olsc/OverlaySynchronizer.js').default} synchronizer
+ */
+
+
 class SynchronizedOverlay extends olOverlay {
   /**
    * @param {olcsx.SynchronizedOverlayOptions} options SynchronizedOverlay Options.

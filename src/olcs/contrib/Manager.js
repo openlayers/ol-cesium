@@ -7,6 +7,14 @@ import olcsCore from '../core.js';
 import {toRadians} from '../math.js';
 import olObservable from 'ol/Observable.js';
 
+
+/**
+ * @typedef {Object} ManagerOptions
+ * @property {import('ol/Map.js').default} map
+ * @property {import('ol/extent.js').Extent} cameraExtentInRadians
+ */
+
+
 const Manager = class extends olObservable {
   /**
    * @param {string} cesiumUrl

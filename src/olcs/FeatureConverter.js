@@ -12,6 +12,14 @@ import olcsCore from './core.js';
 import olcsCoreVectorLayerCounterpart from './core/VectorLayerCounterpart.js';
 import olcsUtil, {getUid, isGroundPolylinePrimitiveSupported} from './util.js';
 
+
+/**
+ * @typedef {Object} ModelStyle
+ * @property {Cesium.Matrix4} [debugModelMatrix]
+ * @property {Cesium.ModelFromGltfOptions} cesiumOptions
+ */
+
+
 class FeatureConverter {
   /**
    * Concrete base class for converting from OpenLayers3 vectors to Cesium
@@ -1096,7 +1104,7 @@ class FeatureConverter {
    * @param {ol.layer.Vector|ol.layer.Image} layer
    * @param {!ol.Feature} feature OpenLayers feature.
    * @param {!ol.style.Style} style
-   * @param {!olcsx.core.OlFeatureToCesiumContext} context
+   * @param {!import('olcs/core/VectorLayerConterpart.js').OlFeatureToCesiumContext} context
    * @param {!ol.geom.Geometry=} opt_geom Geometry to be converted.
    * @return {Cesium.Primitive} primitives
    * @api
@@ -1256,7 +1264,7 @@ class FeatureConverter {
    * @param {!(ol.layer.Vector|ol.layer.Image)} layer
    * @param {!ol.View} view
    * @param {!ol.Feature} feature
-   * @param {!olcsx.core.OlFeatureToCesiumContext} context
+   * @param {!import('olcs/core/VectorLayerConterpart.js').OlFeatureToCesiumContext} context
    * @return {Cesium.Primitive}
    * @api
    */
