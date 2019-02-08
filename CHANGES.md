@@ -1,5 +1,10 @@
 # Changelog
 
+# v 2.7 - 2019-02-08
+* Changes
+  * Port to Cesium 1.54.
+  * Document code using typescript.
+
 # v 2.6 - 2018-12-06
 
 * Changes
