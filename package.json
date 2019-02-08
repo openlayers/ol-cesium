@@ -13,6 +13,10 @@
   },
   "main": "./dist/olcesium.js",
   "module": "./dist/olcesium.umd.js",
+  "files": [
+    "/src",
+    "/dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/openlayers/ol-cesium.git"
