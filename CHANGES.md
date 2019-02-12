@@ -1,5 +1,10 @@
 # Changelog
 
+# v 2.7.1 - 2019-02-12
+
+* Changes
+  * Fix a type
+
 # v 2.7 - 2019-02-08
 * Changes
   * Port to Cesium 1.54.
