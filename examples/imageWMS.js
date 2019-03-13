@@ -13,7 +13,7 @@ import olLayerTile from 'ol/layer/Tile.js';
 import olMap from 'ol/Map.js';
 
 const imageWMSSource = new olSourceImageWMS({
-  url: 'https://demo.boundlessgeo.com/geoserver/wms',
+  url: 'https://ahocevar.com/geoserver/wms',
   params: {'LAYERS': 'topp:states'},
   ratio: 1
 });
