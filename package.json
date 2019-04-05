@@ -1,6 +1,6 @@
 {
   "name": "ol-cesium",
-  "version": "2.8.0",
+  "version": "2.9.0",
   "description": "OpenLayers Cesium integration library",
   "scripts": {
     "build-examples": "cross-env NODE_ENV=production TARGET=examples webpack --progress --bail",
@@ -22,15 +22,15 @@
     "url": "https://github.com/openlayers/ol-cesium/issues"
   },
   "devDependencies": {
-    "@babel/core": "^7.3.4",
-    "@babel/preset-env": "^7.3.4",
-    "@camptocamp/cesium": "1.55.0",
+    "@babel/core": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "@camptocamp/cesium": "^1.56.1",
     "@mapbox/geojsonhint": "2.0.1",
-    "@types/cesium": "^1.54.1",
+    "@types/cesium": "^1.54.2",
     "babel-loader": "^8.0.5",
     "copy-webpack-plugin": "^5.0.1",
     "cross-env": "5.2.0",
-    "eslint": "^5.15.1",
+    "eslint": "^5.16.0",
     "eslint-config-openlayers": "11.0.0",
     "eslint-import-resolver-webpack": "^0.11.0",
     "fs-extra": "7.0.1",
@@ -44,9 +44,9 @@
     "proj4": "2.5.0",
     "temp": "^0.9.0",
     "typedoc": "^0.14.2",
-    "typescript": "^3.3.3333",
+    "typescript": "^3.4.1",
     "webpack": "^4.29.6",
-    "webpack-cli": "^3.2.3",
+    "webpack-cli": "^3.3.0",
     "webpack-dev-server": "^3.2.1",
     "webpack-merge": "^4.2.1"
   }

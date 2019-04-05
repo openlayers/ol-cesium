@@ -1,5 +1,10 @@
 # Changelog
 
+# v 2.9 - 2019-04-05
+
+* Changes
+  * Port to Cesium 1.56.1.
+
 # v 2.8 - 2019-03-13
 
 * Changes
