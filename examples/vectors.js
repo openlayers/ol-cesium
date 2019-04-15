@@ -307,9 +307,9 @@ const map = new olMap({
   ],
   target: 'map2d',
   controls: olControlDefaults({
-    attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+    attributionOptions: {
       collapsible: false
-    })
+    }
   }),
   view: new olView({
     center: [0, 0],

@@ -23,9 +23,9 @@ const ol2d = new olMap({
   ],
   controls: olControlDefaults({
     attribution: true,
-    attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+    attributionOptions: {
       collapsible: false
-    })
+    }
   }),
   target: 'map',
   view: new olView({
