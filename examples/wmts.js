@@ -16,18 +16,18 @@ import WMTS from 'ol/source/WMTS';
 import WMTSTileGrid from 'ol/tilegrid/WMTS';
 
 
-var projection = getProjection('EPSG:3857');
-var projectionExtent = projection.getExtent();
-var size = getWidth(projectionExtent) / 256;
-var resolutions = new Array(14);
-var matrixIds = new Array(14);
-for (var z = 0; z < 14; ++z) {
+const projection = getProjection('EPSG:3857');
+const projectionExtent = projection.getExtent();
+const size = getWidth(projectionExtent) / 256;
+const resolutions = new Array(14);
+const matrixIds = new Array(14);
+for (let z = 0; z < 14; ++z) {
   // generate resolutions and matrixIds arrays for this WMTS
   resolutions[z] = size / Math.pow(2, z);
   matrixIds[z] = z;
 }
 
-var map = new Map({
+const map = new Map({
   layers: [
     new TileLayer({
       source: new OSM(),
@@ -43,11 +43,11 @@ var map = new Map({
         layer: '0',
         matrixSet: 'EPSG:3857',
         format: 'image/png',
-        projection: projection,
+        projection,
         tileGrid: new WMTSTileGrid({
           origin: getTopLeft(projectionExtent),
-          resolutions: resolutions,
-          matrixIds: matrixIds
+          resolutions,
+          matrixIds
         }),
         style: 'default',
         wrapX: true
