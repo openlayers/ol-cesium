@@ -1,5 +1,10 @@
 # Changelog
 
+# v 2.10
+
+* Changes
+  * Add a WMTS example.
+
 # v 2.9 - 2019-04-05
 
 * Changes
