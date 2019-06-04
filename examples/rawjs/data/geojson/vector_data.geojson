@@ -1,0 +1,152 @@
+{
+  "type": "FeatureCollection",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "EPSG:3857"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": null,
+      "properties": {
+        "type": "without geometry as allowed in spec"
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [0, 0, 1e5]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [1e5, 1e5, 1],
+          [2e5, 2e5, 100000],
+          [3e5, 3e5, 1000],
+          [4e5, 4e5, 100000],
+          [5e5, 5e5, 100],
+          [6e5, 6e5, 100000],
+          [7e5, 7e5, 1]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [4e6, -2e6, 100000],
+          [8e6, 2e6, 200000]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [[4e6, 2e6], [8e6, -2e6]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [[-5e6, -1e6, 1e6], [-4e6, 1e6, 1e6], [-3e6, -1e6, 1e6], [-5e6, -1e6, 1e6]]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "MultiLineString",
+        "coordinates": [
+          [[-1e6, -7.5e5], [-1e6, 7.5e5]],
+          [[1e6, -7.5e5], [1e6, 7.5e5]],
+          [[-7.5e5, -1e6], [7.5e5, -1e6]],
+          [[-7.5e5, 1e6], [7.5e5, 1e6]]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [[
+            [-5e6, 6e6, 8e5],
+            [-5e6, 8e6, 8e5],
+            [-3e6, 8e6, 8e5],
+            [-3e6, 6e6, 8e5],
+            [-5e6, 6e6, 8e5]
+          ]],
+          [[
+            [-2e6, 6e6, 4e5],
+            [-2e6, 8e6, 1e5],
+            [0, 8e6, 0],
+            [0, 6e6, 0],
+            [-2e6, 6e6, 4e5]]
+          ],
+          [[
+            [1e6, 6e6, 1e5],
+            [1e6, 8e6, 0],
+            [3e6, 8e6, 0],
+            [3e6, 6e6, 0],
+            [1e6, 6e6, 1e5]
+          ]]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "MultiPoint",
+        "coordinates": [
+          [-5e6, 6e6, 8e5],
+          [-2e6, 6e6, 4e5],
+          [1e6, 6e6, 1e5]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "GeometryCollection",
+        "geometries": [
+          {
+            "type": "LineString",
+            "coordinates": [[-5e6, -5e6], [0, -5e6]]
+          },
+          {
+            "type": "Point",
+            "coordinates": [4e6, -5e6]
+          },
+          {
+            "type": "Polygon",
+            "coordinates": [[
+              [1e6, -6e6],
+              [2e6, -4e6],
+              [3e6, -6e6],
+              [1e6, -6e6]
+            ]]
+          }
+        ]
+      }
+    }
+  ]
+}

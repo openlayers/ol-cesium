@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="index, all" />
+    <title>Ol-Cesium | Print example</title>
+    <link rel="stylesheet" href="../node_modules/ol/ol.css" type="text/css">
+  </head>
+  <body>
+    <div style="text-align: right;">
+      <button id="sandbox-button"><i class="fab fa-codepen fa-lg"></i> Edit in sandbox</button>
+      <form method="POST" id="sandbox-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
+        <input id="sandbox-params" type="hidden" name="parameters">
+      </form>
+    </div>
+
+    <div id="example-html-source">
+      <div class="clear-map-sandbox" id="mapCesium" style="width:600px;height:400px;"></div>
+      <input id="enable" type="button" value="Enable/disable" />
+
+      <button id="takeScreenshot" onclick="javascript:takeScreenshot()">Take screenshot</button>
+      <select id="printValue">
+        <option value="portrait">portrait</option>
+        <option value="landscape">landscape</option>
+      </select>
+      <select id="printScale">
+        <option value="1">1</option>
+        <option value="1.5">1.5</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+      </select>
+      <div id="screenshots"></div>
+    </div>
+
+    <script src="./inject_ol_cesium.js"></script>
+    <script type="module" src="./print.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lz-string@1.4.4/libs/lz-string.min.js"></script>
+  </body>
+</html>

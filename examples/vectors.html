@@ -1,35 +1,30 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="robots" content="index, all" />
-    <title>olcesium vectors example</title>
-    <link rel="stylesheet" href="../node_modules/ol/ol.css" type="text/css"></link>
-    <style>.cesium-credit-textContainer { display: inline-block; font-size: 50%; line-height: 100%;}</style>
-  </head>
-  <body>
-    <div id="map2d" style="width:600px;height:400px;float:left;"></div>
-    <div id="map3d" style="width:600px;height:400px;float:left;position:relative;"></div>
-    <div><input id="enable" type="button" value="Enable/disable Cesium" /></div>
-    <div><input type="button" value="Toggle depth test"
-      onclick="javascript:scene.globe.depthTestAgainstTerrain = !scene.globe.depthTestAgainstTerrain; ol3d.getAutoRenderLoop().restartRenderLoop()" /></div>
-    <div><input type="button" value="Toggle circle style"
-      onclick="javascript:toggleStyle()" /></div>
-    <div><input type="button" value="Add/remove one vector layer"
-      onclick="javascript:addOrRemoveOneVectorLayer()" /></div>
-    <div><input type="button" value="Add/remove one feature"
-      onclick="javascript:addOrRemoveOneFeature()" /></div>
-    <div><input type="button" value="Toggle clampToGround mode"
-      onclick="javascript:toggleClampToGround(); ol3d.getAutoRenderLoop().restartRenderLoop()" /></div>
-    <div>
-      <input id="framerate" type="number" min="0" step="10" value="10"/>
-      <input type="button" value="Set the target rendering frame rate"
-        onclick="javascript:setTargetFrameRate()" />
+<!DOCTYPE html><html lang=en><script type=module src=buildings.88bb1910.js></script><script type=module src=buildings.81d58ce4.js></script><meta http-equiv=Content-Type content="text/html; charset=utf-8"><meta name=robots content="index, all"><title>Ol-Cesium | Vectors example</title><link rel=stylesheet href=buildings.ad48fcbb.css><style>.cesium-credit-textContainer{font-size:50%;line-height:100%;display:inline-block}</style><body>
+    <div style=text-align:right>
+      <button id=sandbox-button><i class="fa-codepen fa-lg fab"></i> Edit in sandbox</button>
+      <form method=post id=sandbox-form target=_blank action=https://codesandbox.io/api/v1/sandboxes/define>
+        <input id=sandbox-params type=hidden name=parameters>
+      </form>
     </div>
-    <div>Vectors are synchronized from the OpenLayers map to the Cesium scene.
-      <br/>3D positioning and some styling is supported.<br />The render loop is automatically stopped when idle.</div>
-    <script src="inject_ol_cesium.js"></script>
-  <script type="text/javascript" src="commons.1ba132e07f9f7066a8c6.js"></script><script type="text/javascript" src="vectors.e670269ed720763ff79a.js"></script></body>
-</html>
+
+    <div id=example-html-source>
+      <div class=clear-map-sandbox id=map2d style=float:left;width:600px;height:400px></div>
+      <div class=clear-map-sandbox id=mapCesium style=float:left;width:600px;height:400px;position:relative></div>
+      <div><input id=enable type=button value="Enable/disable Cesium"></div>
+      <div><input type=button value="Toggle depth test" onclick="javascript:scene.globe.depthTestAgainstTerrain = !scene.globe.depthTestAgainstTerrain; ol3d.getAutoRenderLoop().restartRenderLoop()"></div>
+      <div><input type=button value="Toggle circle style" onclick=javascript:toggleStyle()></div>
+      <div><input type=button value="Add/remove one vector layer" onclick=javascript:addOrRemoveOneVectorLayer()></div>
+      <div><input type=button value="Add/remove one feature" onclick=javascript:addOrRemoveOneFeature()></div>
+      <div><input type=button value="Toggle clampToGround mode" onclick="javascript:toggleClampToGround(); ol3d.getAutoRenderLoop().restartRenderLoop()"></div>
+      <div>
+        <input id=framerate type=number min=0 step=10 value=10>
+        <input type=button value="Set the target rendering frame rate" onclick=javascript:setTargetFrameRate()>
+      </div>
+      <div>Vectors are synchronized from the OpenLayers map to the Cesium scene.
+        <br>3D positioning and some styling is supported.<br>The render loop is automatically stopped when idle.</div>
+    </div>
+
+    <script src=buildings.09cdd14a.js></script>
+    <script type=module src=vectors.28179c39.js></script>
+    <script src=https://cdn.jsdelivr.net/npm/lz-string@1.4.4/libs/lz-string.min.js></script>
+  
 

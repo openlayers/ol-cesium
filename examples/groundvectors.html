@@ -1,22 +1,22 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="robots" content="index, all" />
-    <title>olcesium ground vectors example</title>
-    <link rel="stylesheet" href="../node_modules/ol/ol.css" type="text/css"></link>
-    <style>.cesium-credit-textContainer { display: inline-block; font-size: 50%; line-height: 100%;}</style>
-  </head>
-  <body>
-    <div id="map2d" style="width:600px;height:400px;float:left;"></div>
-    <div id="map3d" style="width:600px;height:400px;float:left;position:relative;"></div>
-    <div><input id="enable" type="button" value="Enable/disable Cesium" /></div>
-    <div><input type="button" value="Toggle clampToGround mode"
-      onclick="javascript:toggleClampToGround(); ol3d.getAutoRenderLoop().restartRenderLoop()" /></div>
-    <div>Vectors are synchronized from the OpenLayers map to the Cesium scene.
-      <br/>3D positioning and some styling is supported, with optional clamping to the ground.</div>
-    <script src="inject_ol_cesium.js"></script>
-  <script type="text/javascript" src="commons.1ba132e07f9f7066a8c6.js"></script><script type="text/javascript" src="groundvectors.4a8941318d1607ccdd61.js"></script></body>
-</html>
+<!DOCTYPE html><html lang=en><script type=module src=buildings.88bb1910.js></script><script type=module src=buildings.81d58ce4.js></script><meta http-equiv=Content-Type content="text/html; charset=utf-8"><meta name=robots content="index, all"><title>Ol-Cesium | Ground vectors example</title><link rel=stylesheet href=buildings.ad48fcbb.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css crossorigin=anonymous><style>.cesium-credit-textContainer{font-size:50%;line-height:100%;display:inline-block}</style><body>
+    <div style=text-align:right>
+      <button id=sandbox-button><i class="fa-codepen fa-lg fab"></i> Edit in sandbox</button>
+      <form method=post id=sandbox-form target=_blank action=https://codesandbox.io/api/v1/sandboxes/define>
+        <input id=sandbox-params type=hidden name=parameters>
+      </form>
+    </div>
+
+    <div id=example-html-source>
+      <div class=clear-map-sandbox id=map2d style=float:left;width:600px;height:400px></div>
+      <div class=clear-map-sandbox id=map3d style=float:left;width:600px;height:400px;position:relative></div>
+      <div><input id=enable type=button value="Enable/disable Cesium"></div>
+      <div><input type=button value="Toggle clampToGround mode" onclick="javascript:toggleClampToGround(); ol3d.getAutoRenderLoop().restartRenderLoop()"></div>
+      <div>Vectors are synchronized from the OpenLayers map to the Cesium scene.
+        <br>3D positioning and some styling is supported, with optional clamping to the ground.</div>
+    </div>
+
+    <script src=buildings.09cdd14a.js></script>
+    <script type=module src=groundvectors.ef6b417c.js></script>
+    <script src=https://cdn.jsdelivr.net/npm/lz-string@1.4.4/libs/lz-string.min.js></script>
+  
 

@@ -1,19 +1,21 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="robots" content="index, all" />
-    <title>olcesium selection example</title>
-    <link rel="stylesheet" href="../node_modules/ol/ol.css" type="text/css"></link>
-  </head>
-  <body>
-    <div id="map2d" style="width:600px;height:400px;float:left;"></div>
-    <div id="map3d" style="width:600px;height:400px;float:left;position:relative;"></div>
-    <div>A country may be highlighted by clicking it on the OpenLayers map.
-      <br/>It gets automatically selected in Cesium.
-      <br/>If you see flickering in Cesium, please check your graphic card drivers.</div>
-    <script src="inject_ol_cesium.js"></script>
-  <script type="text/javascript" src="commons.1ba132e07f9f7066a8c6.js"></script><script type="text/javascript" src="selection.56e29de19f1d687e0bbb.js"></script></body>
-</html>
+<!DOCTYPE html><html lang=en><script type=module src=buildings.88bb1910.js></script><script type=module src=buildings.81d58ce4.js></script><meta http-equiv=Content-Type content="text/html; charset=utf-8"><meta name=robots content="index, all"><title>Ol-Cesium | Selection example</title><link rel=stylesheet href=buildings.ad48fcbb.css><body>
+    <div style=text-align:right>
+      <button id=sandbox-button><i class="fa-codepen fa-lg fab"></i> Edit in sandbox</button>
+      <form method=post id=sandbox-form target=_blank action=https://codesandbox.io/api/v1/sandboxes/define>
+        <input id=sandbox-params type=hidden name=parameters>
+      </form>
+    </div>
+
+    <div id=example-html-source>
+      <div class=clear-map-sandbox id=map2d style=width:600px;height:400px></div>
+      <div class=clear-map-sandbox id=mapCesium style=float:left;width:600px;height:400px;position:relative></div>
+      <div>A country may be highlighted by clicking it on the OpenLayers map.
+        <br>It gets automatically selected in Cesium.
+        <br>If you see flickering in Cesium, please check your graphic card drivers.</div>
+    </div>
+    
+    <script src=buildings.09cdd14a.js></script>
+    <script type=module src=selection.cbb9e4be.js></script>
+    <script src=https://cdn.jsdelivr.net/npm/lz-string@1.4.4/libs/lz-string.min.js></script>
+  
 

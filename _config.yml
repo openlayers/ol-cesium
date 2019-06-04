@@ -4,6 +4,5 @@ google_analytics:
 show_downloads: true
 theme: jekyll-theme-architect
 exclude: []
-include: [apidoc,apidoc/modules/,apidoc/modules/_olcs_olcesium_.html]
 gems:
   - jekyll-mentions

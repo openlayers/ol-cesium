@@ -1,23 +1,33 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="robots" content="index, all" />
-    <title>olcesium synthetic vector layer example using several layers</title>
-    <link rel="stylesheet" href="../node_modules/ol/ol.css" type="text/css">
-  </head>
-  <body>
-    <div id="map2d" style="width:600px;height:400px;float:left;"></div>
-    <div>
-      <input type="button" value="Add 1k Features" onclick="javascript:addFeatures()" />
-      <span id="total"></span>
+<!DOCTYPE html><html lang=en><script type=module src=buildings.88bb1910.js></script><meta http-equiv=Content-Type content="text/html; charset=utf-8"><meta name=robots content="index, all"><title>Ol-Cesium | Synthetic vector layer example using several layers</title><link rel=stylesheet href=buildings.ad48fcbb.css><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css crossorigin=anonymous><body>
+    <div style=text-align:right>
+      <button id=sandbox-button><i class="fa-codepen fa-lg fab"></i> Edit in sandbox</button>
+      <form method=post id=sandbox-form target=_blank action=https://codesandbox.io/api/v1/sandboxes/define>
+        <input id=sandbox-params type=hidden name=parameters>
+      </form>
     </div>
-    <div id="created"></div>
-    <div id="added"></div>
-    <input type="button" value="Clear" onclick="javascript:clearFeatures()" />
-    <div>Click to add a new layer of 1000 randomly colored circles.
-      <br />Other shapes or icons may be used in spite of the circles.
-    <script src="inject_ol_cesium.js"></script>
-  <script type="text/javascript" src="commons.1ba132e07f9f7066a8c6.js"></script><script type="text/javascript" src="synthvectors.99201c43a45945c92de8.js"></script></body>
-</html>
+
+    <div id=example-html-source>
+      <div style=flex-wrap:wrap;gap:20px;display:flex>
+        <div>
+          <div class=clear-map-sandbox id=mapCesium style=float:left;width:600px;height:400px></div>
+        </div>
+        <div style=flex-direction:column;gap:5px;display:flex>
+          <div>
+            <input type=button value="Add 1k Features" onclick=javascript:addFeatures()>
+            <span id=total></span>
+          </div>
+          <div id=created></div>
+          <div id=added></div>
+          <div><input type=button value=Clear onclick=javascript:clearFeatures()></div>
+          <div>Click to add a new layer of 1000 randomly colored circles.
+            <br>Other shapes or icons may be used in spite of the circles.
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src=buildings.09cdd14a.js></script>
+    <script type=module src=synthvectors.5d17bcab.js></script>
+    <script src=https://cdn.jsdelivr.net/npm/lz-string@1.4.4/libs/lz-string.min.js></script>
+  
+
+

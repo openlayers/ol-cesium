@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="robots" content="index, all" />
+    <title>Ol-Cesium | Overlay example</title>
+    <link rel="stylesheet" href="../node_modules/ol/ol.css" type="text/css">
+    <link rel="stylesheet" href="../css/olcs.css" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <style>
+      .ol-popup {
+        position: absolute;
+        background-color: white;
+        -webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+        filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px solid #cccccc;
+        bottom: 12px;
+        left: -50px;
+        min-width: 280px;
+      }
+      .ol-popup:after, .ol-popup:before {
+        top: 100%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+      }
+      .ol-popup:after {
+        border-top-color: white;
+        border-width: 10px;
+        left: 48px;
+        margin-left: -10px;
+      }
+      .ol-popup:before {
+        border-top-color: #cccccc;
+        border-width: 11px;
+        left: 48px;
+        margin-left: -11px;
+      }
+      .ol-popup-closer {
+        text-decoration: none;
+        position: absolute;
+        top: 2px;
+        right: 8px;
+      }
+      .ol-popup-closer:after {
+        content: "✖";
+      }
+      .popover-content {
+        min-width: 180px;
+      }
+
+      /* for Codesandbox */
+      code {
+        padding: 2px 4px;
+        font-size: 90%;
+        color: #c7254e;
+        background-color: #f9f2f4;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="text-align: right;">
+      <button id="sandbox-button"><i class="fab fa-codepen fa-lg"></i> Edit in sandbox</button>
+      <form method="POST" id="sandbox-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
+        <input id="sandbox-params" type="hidden" name="parameters">
+      </form>
+    </div>
+
+    <div id="example-html-source">
+      <div id="popup" class="ol-popup">
+        <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+        <div id="popup-content"></div>
+      </div>
+      <div id="popup-bootstrap" title="Welcome to OpenLayers"></div>
+      <div id="map" class="clear-map-sandbox" style="width:600px;height:400px;"></div>
+      <div id="mapCesium" style="width:600px;height:400px;position:relative;"></div>
+      <input id="enable" type="button" value="Enable/disable" />
+      <form id="click-action-form">
+        <fieldset>
+          <legend>On Click...</legend>
+          <input type="radio" name="click-action" value="add" checked="true"> ... add a new Overlay <br>
+          <input type="radio" name="click-action" value="new"> ... re-position the Overlay <br>
+        </fieldset>
+      </form>
+  
+      <form id="overlay-type-form">
+        <fieldset>
+          <legend>What type of overlay to use?</legend>
+          <input type="radio" name="overlay-type" value="default" checked="true"> Default HTML Elements <br>
+          <input type="radio" name="overlay-type" value="popover"> Bootstrap <i>popover</i> <br>
+        </fieldset>
+      </form>
+    </div>
+
+    <script src="./inject_ol_cesium.js"></script>
+    <script type="module" src="./overlay.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lz-string@1.4.4/libs/lz-string.min.js"></script>
+  </body>
+</html>
