@@ -1283,7 +1283,7 @@ class FeatureConverter {
 
     const styles = this.computePlainStyle(layer, feature, layerStyle, resolution);
 
-    if (!styles.length) {
+    if (!styles || !styles.length) {
       // only 'render' features with a style
       return null;
     }
