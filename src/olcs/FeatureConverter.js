@@ -714,13 +714,14 @@ class FeatureConverter {
         color = new Cesium.Color(1.0, 1.0, 1.0, opacity);
       }
 
+      const scale = imageStyle.getScale();
       const heightReference = this.getHeightReference(layer, feature, olGeometry);
 
       const bbOptions = /** @type {Cesium.optionsBillboardCollectionAdd} */ ({
         // always update Cesium externs before adding a property
         image,
         color,
-        scale: imageStyle.getScale(),
+        scale,
         heightReference,
         position
       });
@@ -728,7 +729,7 @@ class FeatureConverter {
       if (imageStyle instanceof olStyleIcon) {
         const anchor = imageStyle.getAnchor();
         if (anchor) {
-          bbOptions.pixelOffset = new Cesium.Cartesian2(image.width / 2 - anchor[0], image.height / 2 - anchor[1]);
+          bbOptions.pixelOffset = new Cesium.Cartesian2((image.width / 2 - anchor[0]) * scale, (image.height / 2 - anchor[1]) * scale);
         }
       }
 
