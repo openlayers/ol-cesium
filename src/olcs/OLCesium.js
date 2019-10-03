@@ -104,10 +104,8 @@ class OLCesium {
       }
       targetElement.appendChild(this.container_);
     } else {
-      const oc = this.map_.getViewport().querySelector('.ol-overlaycontainer');
-      if (oc && oc.parentNode) {
-        oc.parentNode.insertBefore(this.container_, oc);
-      }
+      const seOverlayContainer = this.map_.getViewport().querySelector('.ol-overlaycontainer-stopevent');
+      seOverlayContainer.insertBefore(this.container_, seOverlayContainer.firstChild);
     }
 
     /**

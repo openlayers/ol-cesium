@@ -141,14 +141,10 @@ class OLImageryProvider /* should not extend Cesium.ImageryProvider */ {
     const tileUrlFunction = this.source_.getTileUrlFunction();
     if (tileUrlFunction && this.projection_) {
 
-      // Perform mapping of Cesium tile coordinates to OpenLayers tile coordinates:
-      // 1) Cesium zoom level 0 is OpenLayers zoom level 1 for EPSG:4326
+      // Cesium zoom level 0 is OpenLayers zoom level 1 for EPSG:4326
       const z_ = this.tilingScheme_ instanceof Cesium.GeographicTilingScheme ? level + 1 : level;
-      // 2) OpenLayers tile coordinates increase from bottom to top
-      const y_ = -y - 1;
 
-      let url = tileUrlFunction.call(this.source_,
-          [z_, x, y_], 1, this.projection_);
+      let url = tileUrlFunction.call(this.source_, [z_, x, y], 1, this.projection_);
       if (this.proxy_) {
         url = this.proxy_.getURL(url);
       }
