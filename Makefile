@@ -35,10 +35,7 @@ dist-examples: .build/dist-examples.timestamp
 .PHONY: dist-apidoc
 dist-apidoc: .build/jsdoc.timestamp
 
-openlayers_src:
-	npm install --prefix openlayers_src https://api.github.com/repos/openlayers/openlayers/tarball/v5.3.0
-
-.build/jsdoc.timestamp: openlayers_src $(SRC_JS_FILES) .build/node_modules.timestamp
+.build/jsdoc.timestamp: $(SRC_JS_FILES) .build/node_modules.timestamp
 	npm run doc
 	mkdir -p $(dir $@)
 	touch $@
