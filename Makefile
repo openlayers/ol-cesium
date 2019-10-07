@@ -23,7 +23,7 @@ help:
 
 .PHONY: serve
 serve: .build/node_modules.timestamp
-	npm run serve
+	npm start
 
 .PHONY: dist
 dist: dist/olcesium.js css/olcs.css CHANGES.md .build/jsdoc.timestamp .build/dist-examples.timestamp lint
