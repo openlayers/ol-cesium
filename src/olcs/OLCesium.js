@@ -522,7 +522,6 @@ class OLCesium {
         }
 
         this.map_.getOverlayContainer().classList.add('olcs-hideoverlay');
-        this.map_.getOverlayContainerStopEvent().classList.add('olcs-hideoverlay');
       }
 
       this.camera_.readFromView();
@@ -539,7 +538,6 @@ class OLCesium {
         this.map_.removeInteraction = interaction => this.map_.getInteractions().remove(interaction);
 
         this.map_.getOverlayContainer().classList.remove('olcs-hideoverlay');
-        this.map_.getOverlayContainerStopEvent().classList.remove('olcs-hideoverlay');
         if (this.hiddenRootGroup_) {
           this.hiddenRootGroup_.setVisible(true);
           this.hiddenRootGroup_ = null;
