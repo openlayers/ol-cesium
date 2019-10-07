@@ -274,9 +274,9 @@ const cartographicRectangle2 = new olFeature({
 cartographicRectangle2.setStyle(cartographicRectangleStyle);
 
 const vectorLayer = new olLayerVector({
-  style: styleFunction
+  style: styleFunction,
+  source: vectorSource
 });
-setTimeout(() => vectorLayer.setSource(vectorSource), 2000);
 
 const vectorSource2 = new olSourceVector({
   features: [iconFeature, textFeature, cervinFeature, ...modelFeatures, cartographicRectangle,
