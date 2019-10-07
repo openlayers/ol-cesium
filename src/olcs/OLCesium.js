@@ -666,64 +666,65 @@ class OLCesium {
       throw new Error(`The OpenLayers map is not properly initialized: ${center} / ${view.getResolution()}`);
     }
   }
-}
 
+  /**
+   * @type {ol.Feature}
+   */
+  get trackedFeature() {
+    return this.trackedFeature_;
+  }
 
-Object.defineProperties(OLCesium.prototype, {
-  'trackedFeature': {
-    'get': /** @this {olcs.OLCesium} */ function() {
-      return this.trackedFeature_;
-    },
-    'set': /** @this {olcs.OLCesium} */ function(feature) {
-      if (this.trackedFeature_ !== feature) {
+  /**
+   * @param {ol.Feature} feature
+   */
+  set trackedFeature(feature) {
+    if (this.trackedFeature_ !== feature) {
 
-        const scene = this.scene_;
+      const scene = this.scene_;
 
-        //Stop tracking
-        if (!feature || !feature.getGeometry()) {
-          this.needTrackedEntityUpdate_ = false;
-          scene.screenSpaceCameraController.enableTilt = true;
+      //Stop tracking
+      if (!feature || !feature.getGeometry()) {
+        this.needTrackedEntityUpdate_ = false;
+        scene.screenSpaceCameraController.enableTilt = true;
 
-          if (this.trackedEntity_) {
-            this.dataSourceDisplay_.defaultDataSource.entities.remove(this.trackedEntity_);
-          }
-          this.trackedEntity_ = null;
-          this.trackedFeature_ = null;
-          this.entityView_ = null;
-          scene.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
-          return;
+        if (this.trackedEntity_) {
+          this.dataSourceDisplay_.defaultDataSource.entities.remove(this.trackedEntity_);
         }
-
-        this.trackedFeature_ = feature;
-
-        //We can't start tracking immediately, so we set a flag and start tracking
-        //when the bounding sphere is ready (most likely next frame).
-        this.needTrackedEntityUpdate_ = true;
-
-        const to4326Transform = this.to4326Transform_;
-        const toCesiumPosition = function() {
-          const geometry = feature.getGeometry();
-          console.assert(geometry instanceof olGeomPoint);
-          const coo = geometry.getCoordinates();
-          const coo4326 = to4326Transform(coo, undefined, coo.length);
-          return olcsCore.ol4326CoordinateToCesiumCartesian(coo4326);
-        };
-
-        // Create an invisible point entity for tracking.
-        // It is independant from the primitive/geometry created by the vector synchronizer.
-        const options = {
-          'position': new Cesium.CallbackProperty((time, result) => toCesiumPosition(), false),
-          'point': {
-            'pixelSize': 1,
-            'color': Cesium.Color.TRANSPARENT
-          }
-        };
-
-        this.trackedEntity_ = this.dataSourceDisplay_.defaultDataSource.entities.add(options);
+        this.trackedEntity_ = null;
+        this.trackedFeature_ = null;
+        this.entityView_ = null;
+        scene.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+        return;
       }
+
+      this.trackedFeature_ = feature;
+
+      //We can't start tracking immediately, so we set a flag and start tracking
+      //when the bounding sphere is ready (most likely next frame).
+      this.needTrackedEntityUpdate_ = true;
+
+      const to4326Transform = this.to4326Transform_;
+      const toCesiumPosition = function() {
+        const geometry = feature.getGeometry();
+        console.assert(geometry instanceof olGeomPoint);
+        const coo = geometry.getCoordinates();
+        const coo4326 = to4326Transform(coo, undefined, coo.length);
+        return olcsCore.ol4326CoordinateToCesiumCartesian(coo4326);
+      };
+
+      // Create an invisible point entity for tracking.
+      // It is independant from the primitive/geometry created by the vector synchronizer.
+      const options = {
+        'position': new Cesium.CallbackProperty((time, result) => toCesiumPosition(), false),
+        'point': {
+          'pixelSize': 1,
+          'color': Cesium.Color.TRANSPARENT
+        }
+      };
+
+      this.trackedEntity_ = this.dataSourceDisplay_.defaultDataSource.entities.add(options);
     }
   }
-});
-
+}
 
 export default OLCesium;
