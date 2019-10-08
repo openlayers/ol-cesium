@@ -5,7 +5,7 @@ import {linear as linearEasing} from 'ol/easing.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olLayerImage from 'ol/layer/Image.js';
 import {get as getProjection, transformExtent} from 'ol/proj.js';
-import olSourceImageStatic from 'ol/source/ImageStatic';
+import olSourceImageStatic from 'ol/source/ImageStatic.js';
 import olSourceImageWMS from 'ol/source/ImageWMS.js';
 import olSourceTileImage from 'ol/source/TileImage.js';
 import olSourceTileWMS from 'ol/source/TileWMS.js';

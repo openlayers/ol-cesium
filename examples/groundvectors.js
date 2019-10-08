@@ -16,8 +16,8 @@ import olStyleCircle from 'ol/style/Circle.js';
 import olSourceVector from 'ol/source/Vector.js';
 import olFormatGeoJSON from 'ol/format/GeoJSON.js';
 import olLayerVector from 'ol/layer/Vector.js';
-import olFeature from 'ol/Feature';
-import olCircle from 'ol/geom/Circle';
+import olFeature from 'ol/Feature.js';
+import olCircle from 'ol/geom/Circle.js';
 
 const image = new olStyleCircle({
   radius: 5,

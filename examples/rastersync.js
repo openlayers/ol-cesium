@@ -61,7 +61,7 @@ const addStamen = function() { // eslint-disable-line no-unused-vars
 };
 
 const tileWMSSource = new olSourceTileWMS({
-  url: 'http://demo.boundlessgeo.com/geoserver/wms',
+  url: 'https://ahocevar.com/geoserver/wms',
   params: {'LAYERS': 'topp:states', 'TILED': true},
   serverType: 'geoserver',
   crossOrigin: 'anonymous'
