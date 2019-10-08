@@ -3,6 +3,20 @@
  */
 import {get as getProjection} from 'ol/proj.js';
 import olcsUtil from '../util.js';
+import {Tile as TileSource} from 'ol/source.js';
+
+
+const olUseNewCoordinates = (function() {
+  const tileSource = new TileSource({
+    projection: 'EPSG:3857',
+    wrapX: true
+  });
+  const tileCoord = tileSource.getTileCoordForTileUrlFunction([6, -31, 22]);
+  return tileCoord && tileCoord[1] === 33 && tileCoord[1] === 22;
+  // See b/test/spec/ol/source/tile.test.js
+  // of e9a30c5cb7e3721d9370025fbe5472c322847b35 in OpenLayers repository
+})();
+
 
 class OLImageryProvider /* should not extend Cesium.ImageryProvider */ {
   /**
@@ -144,7 +158,12 @@ class OLImageryProvider /* should not extend Cesium.ImageryProvider */ {
       // Cesium zoom level 0 is OpenLayers zoom level 1 for EPSG:4326
       const z_ = this.tilingScheme_ instanceof Cesium.GeographicTilingScheme ? level + 1 : level;
 
-      let url = tileUrlFunction.call(this.source_, [z_, x, y], 1, this.projection_);
+      let y_ = y;
+      if (!olUseNewCoordinates) {
+        // OpenLayers version 3 to 5 tile coordinates increase from bottom to top
+        y_ = -y - 1;
+      }
+      let url = tileUrlFunction.call(this.source_, [z_, x, y_], 1, this.projection_);
       if (this.proxy_) {
         url = this.proxy_.getURL(url);
       }
