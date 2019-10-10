@@ -70,7 +70,7 @@ cleanall:
 	TARGET=examples ./node_modules/.bin/eslint $(filter-out .build/node_modules.timestamp, $^)
 	touch $@
 
-CS_BUILD=node_modules/@camptocamp/cesium/Build
+CS_BUILD=node_modules/cesium/Build
 OL_CSS_DIR=node_modules/ol
 .build/dist-examples.timestamp: dist/examples/index.html $(EXAMPLES_FILES) $(WEBPACK_CONFIG_FILES) .build/node_modules.timestamp
 	npm run build-examples
