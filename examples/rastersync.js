@@ -29,8 +29,9 @@ const layer1 = new olLayerTile({
   })
 });
 
+const key = 'pk.eyJ1IjoiZ2JvMiIsImEiOiJjazFraHV4N3gwZHliM2JucHYxdTNnNXh1In0.tzs3TxoVCaMNQf455mh-3w';
 const tileJsonSource = new olSourceTileJSON({
-  url: 'https://api.tiles.mapbox.com/v3/mapbox.world-borders-light.json',
+  url: 'https://api.tiles.mapbox.com/v4/mapbox.world-borders-light.json?access_token=' + key,
   crossOrigin: 'anonymous'
 });
 

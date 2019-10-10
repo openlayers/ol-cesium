@@ -15,16 +15,18 @@ const layer0 = new olLayerTile({
   source: new olSourceOSM()
 });
 
+const key = 'pk.eyJ1IjoiZ2JvMiIsImEiOiJjazFraHV4N3gwZHliM2JucHYxdTNnNXh1In0.tzs3TxoVCaMNQf455mh-3w';
+
 const layer10 = new olLayerTile({
   source: new olSourceTileJSON({
-    url: 'https://api.tiles.mapbox.com/v3/mapbox.20110804-hoa-foodinsecurity-3month.json?secure',
+    url: 'https://api.tiles.mapbox.com/v4/mapbox.20110804-hoa-foodinsecurity-3month.json?secure&access_token=' + key,
     crossOrigin: 'anonymous'
   })
 });
 
 const layer11 = new olLayerTile({
   source: new olSourceTileJSON({
-    url: 'https://api.tiles.mapbox.com/v3/mapbox.world-borders-light.json?secure',
+    url: 'https://api.tiles.mapbox.com/v4/mapbox.world-borders-light.json?secure&access_token=' + key,
     crossOrigin: 'anonymous'
   })
 });
