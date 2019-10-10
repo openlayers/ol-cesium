@@ -1,7 +1,6 @@
 /**
  * @module examples.rotate
  */
-const exports = {};
 import olcsCore from 'olcs/core.js';
 import OLCesium from 'olcs/OLCesium.js';
 import olView from 'ol/View.js';
@@ -172,5 +171,3 @@ OlcsControl.prototype.tiltOnGlobe = function(angle) {
 
 
 window['control'] = new OlcsControl(ol3d); // eslint-disable-line no-unused-vars
-
-export default exports;

@@ -1,10 +1,9 @@
 /**
  * @module olcs.contrib.LazyLoader
  */
-const exports = class {
+export default class LazyLoader {
   /**
    * @param {string} url
-   * @struct
    * @api
    */
   constructor(url) {
@@ -38,7 +37,4 @@ const exports = class {
     }
     return this.promise;
   }
-};
-
-
-export default exports;
+}

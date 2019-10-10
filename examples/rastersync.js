@@ -1,7 +1,6 @@
 /**
  * @module examples.rastersync
  */
-const exports = {};
 import olSourceTileWMS from 'ol/source/TileWMS.js';
 import olSourceStamen from 'ol/source/Stamen.js';
 import OLCesium from 'olcs/OLCesium.js';
@@ -107,5 +106,3 @@ window['global'] = {
   layer1,
   layer2
 };
-
-export default exports;

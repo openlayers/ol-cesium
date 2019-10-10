@@ -1,7 +1,6 @@
 /**
  * @module examples.synthvectors
  */
-const exports = {};
 import olLayerVector from 'ol/layer/Vector.js';
 import olSourceVector from 'ol/source/Vector.js';
 import olStyleFill from 'ol/style/Fill.js';
@@ -118,6 +117,3 @@ window['addFeatures'] = function() {
   document.getElementById('created').innerHTML = `Features created in ${created}ms.`;
   document.getElementById('added').innerHTML = `Features added in ${added}ms.`;
 };
-
-
-export default exports;

@@ -1,7 +1,6 @@
 /**
  * @module examples.lazy
  */
-const exports = {};
 import {transform} from 'ol/proj.js';
 import olView from 'ol/View.js';
 import {defaults as olControlDefaults} from 'ol/control.js';
@@ -31,6 +30,3 @@ const ol2d = new olMap({
 
 
 window['manager'] = new olcsContribManager(window.CESIUM_URL, {map: ol2d});
-
-
-export default exports;

@@ -1,7 +1,6 @@
 /**
  * @module examples.overlay
  */
-const exports = {};
 import OLCesium from 'olcs/OLCesium.js';
 import olMap from 'ol/Map.js';
 import olSourceOSM from 'ol/source/OSM.js';
@@ -173,5 +172,3 @@ class OverlayHandler {
 new OverlayHandler(ol2d, ol3d, scene);
 
 document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
-
-export default exports;

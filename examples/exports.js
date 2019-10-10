@@ -1,7 +1,6 @@
 /**
  * @module examples.exports
  */
-const exports = {};
 import OLCesium from 'olcs/OLCesium.js';
 import {transform} from 'ol/proj.js';
 import olView from 'ol/View.js';
@@ -44,5 +43,3 @@ setInterval(printInfo, 100);
 document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
 window['camera'] = camera;
 window['olProjTransform'] = transform;
-
-export default exports;
