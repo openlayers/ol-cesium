@@ -12,7 +12,7 @@ const olUseNewCoordinates = (function() {
     wrapX: true
   });
   const tileCoord = tileSource.getTileCoordForTileUrlFunction([6, -31, 22]);
-  return tileCoord && tileCoord[1] === 33 && tileCoord[1] === 22;
+  return tileCoord && tileCoord[1] === 33 && tileCoord[2] === 22;
   // See b/test/spec/ol/source/tile.test.js
   // of e9a30c5cb7e3721d9370025fbe5472c322847b35 in OpenLayers repository
 })();
