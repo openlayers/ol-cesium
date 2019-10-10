@@ -148,7 +148,7 @@ class RasterSynchronizer extends olcsAbstractSynchronizer {
     while (queue.length > 0) {
       const olLayer = queue.splice(0, 1)[0];
       layers.push(olLayer);
-      zIndices[getUid(olLayer)] = olLayer.getZIndex();
+      zIndices[getUid(olLayer)] = olLayer.getZIndex() || 0;
 
       if (olLayer instanceof olLayerGroup) {
         const sublayers = olLayer.getLayers();

@@ -1,9 +1,11 @@
 # Changelog
 
-# v 2.10
+# v 2.10 - 2019-10-10
 
 * Changes
   * Add a WMTS example.
+  * Port to Cesium 1.62.
+  * Port to OpenLayers 6 while staying compatible with OpenLayers 5.
 
 # v 2.9 - 2019-04-05
 

@@ -1,6 +1,6 @@
 {
   "name": "ol-cesium",
-  "version": "2.9.0",
+  "version": "2.10.0",
   "description": "OpenLayers Cesium integration library",
   "scripts": {
     "build-examples": "cross-env NODE_ENV=production TARGET=examples webpack --progress --bail",
@@ -22,12 +22,12 @@
     "url": "https://github.com/openlayers/ol-cesium/issues"
   },
   "devDependencies": {
-    "@babel/core": "^7.6.2",
-    "@babel/preset-env": "^7.6.2",
-    "@camptocamp/cesium": "^1.56.1",
+    "@babel/core": "^7.6.3",
+    "@babel/preset-env": "^7.6.3",
     "@mapbox/geojsonhint": "2.0.1",
     "@types/cesium": "^1.59.1",
     "babel-loader": "^8.0.6",
+    "cesium": "^1.62.0",
     "copy-webpack-plugin": "^5.0.4",
     "cross-env": "^6.0.3",
     "eslint": "^6.5.1",
@@ -44,7 +44,7 @@
     "proj4": "2.5.0",
     "temp": "^0.9.0",
     "typedoc": "^0.15.0",
-    "typescript": "^3.6.3",
+    "typescript": "^3.6.4",
     "webpack": "^4.41.0",
     "webpack-cli": "^3.3.9",
     "webpack-dev-server": "^3.8.2",
