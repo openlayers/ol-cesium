@@ -1,7 +1,6 @@
 /**
  * @module examples.tracking
  */
-const exports = {};
 import OLCesium from 'olcs/OLCesium.js';
 import olView from 'ol/View.js';
 import {defaults as olControlDefaults} from 'ol/control.js';
@@ -86,6 +85,3 @@ setInterval(() => {
   ]);
   iconFeature.changed();
 }, 100);
-
-
-export default exports;

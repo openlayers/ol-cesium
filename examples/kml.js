@@ -1,7 +1,6 @@
 /**
  * @module examples.kml
  */
-const exports = {};
 import OLCesium from 'olcs/OLCesium.js';
 import {transform} from 'ol/proj.js';
 import olView from 'ol/View.js';
@@ -42,5 +41,3 @@ ol3d.getDataSources().add(Cesium.KmlDataSource.load(
 ));
 
 document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
-
-export default exports;

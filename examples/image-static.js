@@ -1,7 +1,6 @@
 /**
  * @module examples.image-static
  */
-const exports = {};
 import OLCesium from 'olcs/OLCesium.js';
 import {transform} from 'ol/proj.js';
 import olView from 'ol/View.js';
@@ -53,6 +52,3 @@ ol3d.setEnabled(true);
 
 
 document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
-
-
-export default exports;

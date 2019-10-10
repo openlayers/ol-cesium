@@ -1,7 +1,6 @@
 /**
  * @module examples.main
  */
-const exports = {};
 import OLCesium from 'olcs/OLCesium.js';
 import {transform} from 'ol/proj.js';
 import olView from 'ol/View.js';
@@ -58,6 +57,3 @@ window['toggleTime'] = function() {
     timeElt.style.display = 'none';
   }
 };
-
-
-export default exports;

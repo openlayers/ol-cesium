@@ -1,7 +1,6 @@
 /**
  * @module examples.vectors
  */
-const exports = {};
 import OLCesium from 'olcs/OLCesium.js';
 import olView from 'ol/View.js';
 import {defaults as olControlDefaults} from 'ol/control.js';
@@ -410,6 +409,3 @@ window['scene'] = scene;
 document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
 
 ol3d.enableAutoRenderLoop();
-
-
-export default exports;

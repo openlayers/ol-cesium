@@ -1,7 +1,6 @@
 /**
  * @module examples.selection
  */
-const exports = {};
 import olStyleStroke from 'ol/style/Stroke.js';
 import olStyleFill from 'ol/style/Fill.js';
 import olStyleStyle from 'ol/style/Style.js';
@@ -63,6 +62,3 @@ map.on('click', (e) => {
     selectedFeature.setStyle(selectionStyle);
   }
 });
-
-
-export default exports;

@@ -1,7 +1,6 @@
 /**
  * @module examples.sidebyside
  */
-const exports = {};
 import OLCesium from 'olcs/OLCesium.js';
 import olSourceOSM from 'ol/source/OSM.js';
 import olLayerTile from 'ol/layer/Tile.js';
@@ -33,5 +32,3 @@ scene.terrainProvider = Cesium.createWorldTerrain();
 ol3d.setEnabled(true);
 
 document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
-
-export default exports;

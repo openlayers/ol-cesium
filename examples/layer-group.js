@@ -1,7 +1,6 @@
 /**
  * @module examples.layer-group
  */
-const exports = {};
 import olMap from 'ol/Map.js';
 import olView from 'ol/View.js';
 import olLayerGroup from 'ol/layer/Group.js';
@@ -71,5 +70,3 @@ window['toggleLayer'] = function(element, name) {
 window['setLayerOpacity'] = function(element, name) {
   getLayer(name).setOpacity(parseFloat(element.value));
 };
-
-export default exports;
