@@ -46,7 +46,7 @@ ol3d.setEnabled(true);
 For Cesium integration see [ol-cesium-webpack-example](https://github.com/gberaudo/ol-cesium-webpack-example)
 based on the official `Cesium With Webpack` example.
 
-### As an old-fashioned independant library
+### As an old-fashioned independent library
 
 - build the library in dist/olcs.js:
 ```bash
