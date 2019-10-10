@@ -29,27 +29,27 @@
         <input class="visible" type="checkbox" onchange="global.layer0.setVisible(this.checked)" checked/>OpenAerial layer
       </label>
       <label>opacity</label>
-      <input class="opacity" type="range" min="0" max="1" step="0.01" value="1" oninput="global.layer0.setOpacity(this.value)"/>
+      <input class="opacity" type="range" min="0" max="1" step="0.01" value="1" oninput="global.layer0.setOpacity(parseFloat(this.value))"/>
       <label>Z-index</label>
-      <input type="range" min="-10" max="10" step="1" oninput="global.layer0.setZIndex(this.value)" />
+      <input type="range" min="-10" max="10" step="1" oninput="global.layer0.setZIndex(parseFloat(this.value))" />
     </fieldset>
     <fieldset id="layer1">
       <label class="checkbox">
         <input class="visible" type="checkbox" onchange="global.layer1.setVisible(this.checked)" checked/>Grand Canyon overlay
       </label>
       <label>opacity</label>
-      <input class="opacity" type="range" min="0" max="1" step="0.01" value="1" oninput="global.layer1.setOpacity(this.value)"/>
+      <input class="opacity" type="range" min="0" max="1" step="0.01" value="1" oninput="global.layer1.setOpacity(parseFloat(this.value))"/>
       <label>Z-index</label>
-      <input type="range" min="-10" max="10" step="1" oninput="global.layer1.setZIndex(this.value)" />
+      <input type="range" min="-10" max="10" step="1" oninput="global.layer1.setZIndex(parseFloat(this.value))" />
     </fieldset>
     <fieldset id="layer2">
       <label class="checkbox">
         <input class="visible" type="checkbox" onchange="global.layer2.setVisible(this.checked)" checked/>World borders
       </label>
       <label>opacity</label>
-      <input class="opacity" type="range" min="0" max="1" step="0.01" value="1" oninput="global.layer2.setOpacity(this.value)"/>
+      <input class="opacity" type="range" min="0" max="1" step="0.01" value="1" oninput="global.layer2.setOpacity(parseFloat(this.value))"/>
       <label>Z-index</label>
-      <input type="range" min="-10" max="10" step="1" oninput="global.layer2.setZIndex(this.value)" />
+      <input type="range" min="-10" max="10" step="1" oninput="global.layer2.setZIndex(parseFloat(this.value))" />
     </fieldset>
     <script src="inject_ol_cesium.js"></script>
   </body>
