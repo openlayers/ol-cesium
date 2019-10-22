@@ -110,7 +110,7 @@ Limitations
 -----------
 
 - OpenLayers unmanaged layers are not discoverable and as a consequence not
-supported. Plain layers should be used instead or the synchronization managed
+supported. Plain layers should be used instead of the synchronization managed
 manually. See https://github.com/openlayers/ol-cesium/issues/350.
 
 - OpenLayers interactions are not supported in 3d. See https://github.com/openlayers/ol-cesium/issues/655.
