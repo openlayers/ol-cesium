@@ -4,14 +4,14 @@
 const exports = {};
 
 import proj4 from 'proj4';
-import {register} from 'ol/proj/proj4';
-import {get as getProjection} from 'ol/proj';
-import olTileWMS from 'ol/source/TileWMS';
-import olMap from 'ol/Map';
-import olLayerTile from 'ol/layer/Tile';
-import olView from 'ol/View';
-import OLCesium from 'olcs/OLCesium';
-import olSourceOSM from 'ol/source/OSM';
+import {register} from 'ol/proj/proj4.js';
+import {get as getProjection} from 'ol/proj.js';
+import olTileWMS from 'ol/source/TileWMS.js';
+import olMap from 'ol/Map.js';
+import olLayerTile from 'ol/layer/Tile.js';
+import olView from 'ol/View.js';
+import OLCesium from 'olcs/OLCesium.js';
+import olSourceOSM from 'ol/source/OSM.js';
 
 proj4.defs('EPSG:21781', '+proj=somerc +lat_0=46.95240555555556 ' +
     '+lon_0=7.439583333333333 +k_0=1 +x_0=600000 +y_0=200000 +ellps=bessel ' +

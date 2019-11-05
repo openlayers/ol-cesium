@@ -12,7 +12,7 @@ import olSourceTileWMS from 'ol/source/TileWMS.js';
 import {defaultImageLoadFunction} from 'ol/source/Image.js';
 import olcsCoreOLImageryProvider from './core/OLImageryProvider.js';
 import olcsUtil from './util.js';
-import {ENABLE_RASTER_REPROJECTION} from 'ol/reproj/common';
+import {ENABLE_RASTER_REPROJECTION} from 'ol/reproj/common.js';
 
 
 const exports = {};
