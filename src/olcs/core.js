@@ -12,6 +12,7 @@ import olSourceTileWMS from 'ol/source/TileWMS.js';
 import {defaultImageLoadFunction} from 'ol/source/Image.js';
 import olcsCoreOLImageryProvider from './core/OLImageryProvider.js';
 import olcsUtil from './util.js';
+import {ENABLE_RASTER_REPROJECTION} from 'ol/reproj/common';
 
 
 const exports = {};
@@ -421,7 +422,7 @@ exports.tileLayerToImageryLayer = function(olMap, olLayer, viewProj) {
       projection = viewProj;
     }
 
-    if (exports.isCesiumProjection(projection)) {
+    if (exports.isCesiumProjection(projection) || ENABLE_RASTER_REPROJECTION) {
       provider = new olcsCoreOLImageryProvider(olMap, source, viewProj);
     }
     // Projection not supported by Cesium

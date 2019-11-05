@@ -3,6 +3,9 @@
  */
 import {get as getProjection} from 'ol/proj.js';
 import olcsUtil from '../util.js';
+import {ENABLE_RASTER_REPROJECTION} from 'ol/reproj/common';
+import olTileState from 'ol/TileState';
+import {listen, unlistenByKey} from 'ol/events';
 import {Tile as TileSource} from 'ol/source.js';
 
 
@@ -110,6 +113,9 @@ class OLImageryProvider /* should not extend Cesium.ImageryProvider */ {
         this.tilingScheme_ = new Cesium.GeographicTilingScheme();
       } else if (this.projection_ == getProjection('EPSG:3857')) {
         this.tilingScheme_ = new Cesium.WebMercatorTilingScheme();
+      } else if (ENABLE_RASTER_REPROJECTION) {
+        this.tilingScheme_ = new Cesium.GeographicTilingScheme();
+        this.projection_ = getProjection('EPSG:4326');
       } else {
         return;
       }
@@ -152,25 +158,51 @@ class OLImageryProvider /* should not extend Cesium.ImageryProvider */ {
    * @override
    */
   requestImage(x, y, level) {
-    const tileUrlFunction = this.source_.getTileUrlFunction();
-    if (tileUrlFunction && this.projection_) {
-
-      // Cesium zoom level 0 is OpenLayers zoom level 1 for EPSG:4326
-      const z_ = this.tilingScheme_ instanceof Cesium.GeographicTilingScheme ? level + 1 : level;
-
+    // Perform mapping of Cesium tile coordinates to ol3 tile coordinates:
+    // 1) Cesium zoom level 0 is OpenLayers zoom level 1 for EPSG:4326
+    const z_ = this.tilingScheme_ instanceof Cesium.GeographicTilingScheme ? level + 1 : level;
+    // 2) OpenLayers tile coordinates increase from bottom to top
       let y_ = y;
       if (!olUseNewCoordinates) {
         // OpenLayers version 3 to 5 tile coordinates increase from bottom to top
         y_ = -y - 1;
       }
-      let url = tileUrlFunction.call(this.source_, [z_, x, y_], 1, this.projection_);
-      if (this.proxy_) {
-        url = this.proxy_.getURL(url);
-      }
-      return url ? Cesium.ImageryProvider.loadImage(this, url) : this.emptyCanvas_;
+
+    const tilegrid = this.source_.getTileGridForProjection(this.projection_);
+    if (z_ < tilegrid.getMinZoom() || z_ > tilegrid.getMaxZoom()) {
+      return Promise.resolve(this.emptyCanvas_); // no data
+    }
+
+    const tile = this.source_.getTile(z_, x, y_, 1, this.projection_);
+
+    tile.load();
+
+    // not yet loaded!
+    // const image = tile.getImage();
+    // if (!image || !image.src) {
+    //   return this.emptyCanvas_; // no data
+    // }
+
+
+    const state = tile.getState();
+    if (state === olTileState.LOADED || state === olTileState.EMPTY) {
+      return Promise.resolve(tile.getImage()) || undefined;
+    } else if (state === olTileState.ERROR) {
+      return undefined; // let Cesium continue retrieving later
     } else {
-      // return empty canvas to stop Cesium from retrying later
-      return this.emptyCanvas_;
+      const promise = new Promise((resolve, reject) => {
+        const unlisten = listen(tile, 'change', (evt) => {
+          const state = tile.getState();
+          if (state === olTileState.LOADED || state === olTileState.EMPTY) {
+            resolve(tile.getImage() || undefined);
+            unlistenByKey(unlisten);
+          } else if (state === olTileState.ERROR) {
+            resolve(undefined); // let Cesium continue retrieving later
+            unlistenByKey(unlisten);
+          }
+        });
+      });
+      return promise;
     }
   }
 }
