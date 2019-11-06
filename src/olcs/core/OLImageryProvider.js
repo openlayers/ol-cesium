@@ -3,9 +3,9 @@
  */
 import {get as getProjection} from 'ol/proj.js';
 import olcsUtil from '../util.js';
-import {ENABLE_RASTER_REPROJECTION} from 'ol/reproj/common';
-import olTileState from 'ol/TileState';
-import {listen, unlistenByKey} from 'ol/events';
+import {ENABLE_RASTER_REPROJECTION} from 'ol/reproj/common.js';
+import olTileState from 'ol/TileState.js';
+import {listen, unlistenByKey} from 'ol/events.js';
 import {Tile as TileSource} from 'ol/source.js';
 
 
@@ -162,11 +162,12 @@ class OLImageryProvider /* should not extend Cesium.ImageryProvider */ {
     // 1) Cesium zoom level 0 is OpenLayers zoom level 1 for EPSG:4326
     const z_ = this.tilingScheme_ instanceof Cesium.GeographicTilingScheme ? level + 1 : level;
     // 2) OpenLayers tile coordinates increase from bottom to top
-      let y_ = y;
-      if (!olUseNewCoordinates) {
-        // OpenLayers version 3 to 5 tile coordinates increase from bottom to top
-        y_ = -y - 1;
-      }
+
+    let y_ = y;
+    if (!olUseNewCoordinates) {
+      // OpenLayers version 3 to 5 tile coordinates increase from bottom to top
+      y_ = -y - 1;
+    }
 
     const tilegrid = this.source_.getTileGridForProjection(this.projection_);
     if (z_ < tilegrid.getMinZoom() || z_ > tilegrid.getMaxZoom()) {
@@ -212,54 +213,54 @@ class OLImageryProvider /* should not extend Cesium.ImageryProvider */ {
 Object.defineProperties(OLImageryProvider.prototype, {
   'ready': {
     'get': /** @this {olcs.core.OLImageryProvider} */
-        function() {return this.ready_;}
+    function() {return this.ready_;}
   },
 
   'rectangle': {
     'get': /** @this {olcs.core.OLImageryProvider} */
-        function() {return this.rectangle_;}
+    function() {return this.rectangle_;}
   },
 
   'tileWidth': {
     'get': /** @this {olcs.core.OLImageryProvider} */
-        function() {
-          const tg = this.source_.getTileGrid();
-          return tg ? (Array.isArray(tg.getTileSize(0)) ? tg.getTileSize(0)[0] : tg.getTileSize(0)) : 256;
-        }
+    function() {
+      const tg = this.source_.getTileGrid();
+      return tg ? (Array.isArray(tg.getTileSize(0)) ? tg.getTileSize(0)[0] : tg.getTileSize(0)) : 256;
+    }
   },
 
   'tileHeight': {
     'get': /** @this {olcs.core.OLImageryProvider} */
-        function() {
-          const tg = this.source_.getTileGrid();
-          return tg ? (Array.isArray(tg.getTileSize(0)) ? tg.getTileSize(0)[1] : tg.getTileSize(0)) : 256;
-        }
+    function() {
+      const tg = this.source_.getTileGrid();
+      return tg ? (Array.isArray(tg.getTileSize(0)) ? tg.getTileSize(0)[1] : tg.getTileSize(0)) : 256;
+    }
   },
 
   'maximumLevel': {
     'get': /** @this {olcs.core.OLImageryProvider} */
-        function() {
-          const tg = this.source_.getTileGrid();
-          return tg ? tg.getMaxZoom() : 18;
-        }
+    function() {
+      const tg = this.source_.getTileGrid();
+      return tg ? tg.getMaxZoom() : 18;
+    }
   },
 
   'minimumLevel': {
     'get': /** @this {olcs.core.OLImageryProvider} */
-        function() {
-          // WARNING: Do not use the minimum level (at least until the extent is
-          // properly set). Cesium assumes the minimumLevel to contain only
-          // a few tiles and tries to load them all at once -- this can
-          // freeze and/or crash the browser !
-          return 0;
-          //var tg = this.source_.getTileGrid();
-          //return tg ? tg.getMinZoom() : 0;
-        }
+    function() {
+      // WARNING: Do not use the minimum level (at least until the extent is
+      // properly set). Cesium assumes the minimumLevel to contain only
+      // a few tiles and tries to load them all at once -- this can
+      // freeze and/or crash the browser !
+      return 0;
+      //var tg = this.source_.getTileGrid();
+      //return tg ? tg.getMinZoom() : 0;
+    }
   },
 
   'tilingScheme': {
     'get': /** @this {olcs.core.OLImageryProvider} */
-        function() {return this.tilingScheme_;}
+    function() {return this.tilingScheme_;}
   },
 
   'tileDiscardPolicy': {
@@ -268,12 +269,12 @@ Object.defineProperties(OLImageryProvider.prototype, {
 
   'errorEvent': {
     'get': /** @this {olcs.core.OLImageryProvider} */
-        function() {return this.errorEvent_;}
+    function() {return this.errorEvent_;}
   },
 
   'proxy': {
     'get': /** @this {olcs.core.OLImageryProvider} */
-        function() {return this.proxy_;}
+    function() {return this.proxy_;}
   },
 
   'hasAlphaChannel': {
