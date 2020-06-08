@@ -28,7 +28,7 @@
     "@types/cesium": "^1.59.1",
     "babel-loader": "^8.0.6",
     "cesium": "^1.62.0",
-    "copy-webpack-plugin": "^5.0.4",
+    "copy-webpack-plugin": "^6.0.2",
     "cross-env": "^7.0.0",
     "eslint": "^7.0.0",
     "eslint-config-openlayers": "^12.0.0",
