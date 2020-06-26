@@ -29,7 +29,6 @@
     "@babel/core": "^7.10.3",
     "@babel/preset-env": "^7.10.3",
     "@mapbox/geojsonhint": "3.0.0",
-    "@types/cesium": "^1.59.1",
     "babel-loader": "^8.0.6",
     "cesium": "^1.70.1",
     "copy-webpack-plugin": "^6.0.2",
