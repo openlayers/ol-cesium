@@ -5,7 +5,6 @@ import {get as getProjection} from 'ol/proj.js';
 import olcsUtil from '../util.js';
 import {Tile as TileSource} from 'ol/source.js';
 
-
 const olUseNewCoordinates = (function() {
   const tileSource = new TileSource({
     projection: 'EPSG:3857',
@@ -76,6 +75,13 @@ class OLImageryProvider /* should not extend Cesium.ImageryProvider */ {
      */
     this.map_ = olMap;
 
+
+    /**
+     * @type {boolean}
+     * @private
+     */
+    this.shouldRequestNextLevel = false;
+
     const proxy = this.source_.get('olcs.proxy');
     if (proxy) {
       if (typeof proxy === 'function') {
@@ -106,10 +112,23 @@ class OLImageryProvider /* should not extend Cesium.ImageryProvider */ {
   handleSourceChanged_(frameState) {
     if (!this.ready_ && this.source_.getState() == 'ready') {
       this.projection_ = olcsUtil.getSourceProjection(this.source_) || this.fallbackProj_;
+      const options = {numberOfLevelZeroTilesX: 1, numberOfLevelZeroTilesY: 1};
+
+      if (this.source_.tileGrid !== null) {
+        // Get the number of tiles at level 0 if it is defined
+        this.source_.tileGrid.forEachTileCoord(this.projection_.getExtent(), 0, ([zoom, xIndex, yIndex]) => {
+          options.numberOfLevelZeroTilesX = xIndex + 1;
+          options.numberOfLevelZeroTilesY = yIndex + 1;
+        });
+      }
+
       if (this.projection_ == getProjection('EPSG:4326')) {
-        this.tilingScheme_ = new Cesium.GeographicTilingScheme();
+        // Cesium zoom level 0 is OpenLayers zoom level 1 for layer in EPSG:4326 with a single tile on level 0
+        this.shouldRequestNextLevel = options.numberOfLevelZeroTilesX === 1 && options.numberOfLevelZeroTilesY === 1;
+        this.tilingScheme_ = new Cesium.GeographicTilingScheme(options);
       } else if (this.projection_ == getProjection('EPSG:3857')) {
-        this.tilingScheme_ = new Cesium.WebMercatorTilingScheme();
+        this.shouldRequestNextLevel = false;
+        this.tilingScheme_ = new Cesium.WebMercatorTilingScheme(options);
       } else {
         return;
       }
@@ -128,7 +147,8 @@ class OLImageryProvider /* should not extend Cesium.ImageryProvider */ {
   getTileCredits(x, y, level) {
     const extent = this.map_.getView().calculateExtent(this.map_.getSize());
     const center = this.map_.getView().getCenter();
-    const zoom = this.tilingScheme_ instanceof Cesium.GeographicTilingScheme ? level + 1 : level;
+
+    const zoom = this.shouldRequestNextLevel ? level + 1 : level;
 
     const frameState = {
       viewState: {zoom, center},
@@ -155,8 +175,7 @@ class OLImageryProvider /* should not extend Cesium.ImageryProvider */ {
     const tileUrlFunction = this.source_.getTileUrlFunction();
     if (tileUrlFunction && this.projection_) {
 
-      // Cesium zoom level 0 is OpenLayers zoom level 1 for EPSG:4326
-      const z_ = this.tilingScheme_ instanceof Cesium.GeographicTilingScheme ? level + 1 : level;
+      const z_ = this.shouldRequestNextLevel ? level + 1 : level;
 
       let y_ = y;
       if (!olUseNewCoordinates) {
