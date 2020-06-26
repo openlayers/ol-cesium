@@ -1,5 +1,10 @@
 # Changelog
 
+# v ??
+
+* Changes
+  * Handle some custom matrix size for WMTS
+
 # v 2.10 - 2019-10-10
 
 * Changes
