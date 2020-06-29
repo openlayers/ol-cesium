@@ -4,6 +4,7 @@
 
 * Changes
   * Handle some custom matrix size for WMTS
+  * Update to Cesium 1.70 and add peer dependencies
 
 # v 2.10 - 2019-10-10
 

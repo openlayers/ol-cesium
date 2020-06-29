@@ -1,19 +1,20 @@
 {
     "compilerOptions": {
-      /* Basic Options */
-      "target": "ES6",
-      "module": "system",
-      "lib": ["es2017", "dom"],
+      "target": "es6",
       "allowJs": true,
-      // "checkJs": true,
+      //"checkJs": true,
       "noEmit": true,
-      // "strict": true,
       "baseUrl": "./",
+      "moduleResolution": "node",
       "paths": {
-        "ol/*": ["node_modules/ol/*"],
+        "ol/*": ["node_modules/ol/*"]
       }
     },
     "include": [
       "src/**/*.js",
-    ]
+      "node_modules/cesium/Source/Cesium.d.ts"
+    ],
+    "typeAcquisition": {
+      "exclude": ["cesium"]
+    }
 }

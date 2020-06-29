@@ -36,7 +36,8 @@ const htmlRule = {
   use: [{
     loader: 'html-loader',
     options: {
-      minimize: false
+      minimize: false,
+      attributes: false
     }
   }]
 };
