@@ -1,5 +1,10 @@
 # Changelog
 
+# v 2.11.1 - 2020-08-04
+
+* Changes
+  * Remove wrong pixelSize param from getPixelDimensions function
+
 # v 2.11 - 2020-08-04
 
 * Changes
