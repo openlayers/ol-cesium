@@ -57,7 +57,7 @@ exports.computePixelSizeAtCoordinate = function(scene, target) {
       camera.position, target, new Cesium.Cartesian3()));
   const pixelSize = new Cesium.Cartesian2();
   return frustum.getPixelDimensions(canvas.clientWidth, canvas.clientHeight,
-      distance, pixelSize);
+      distance, pixelSize, new Cesium.Cartesian2());
 };
 
 

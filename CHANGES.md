@@ -5,6 +5,7 @@
 * Changes
   * Handle some custom matrix size for WMTS
   * Update to Cesium 1.70 and add peer dependencies
+  * Add missing 'result' param to getPixelDimensions function
 
 # v 2.10 - 2019-10-10
 
