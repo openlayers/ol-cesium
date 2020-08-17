@@ -3,7 +3,7 @@ const path = require('path');
 
 const babelPresets = [['@babel/preset-env', {
   'targets': {
-    'browsers': ['last 2 versions', 'Firefox ESR', 'ie 11'],
+    'browsers': ['ie 11'],
   },
   'modules': false,
   'loose': true,
