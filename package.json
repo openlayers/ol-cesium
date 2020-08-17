@@ -22,7 +22,7 @@
     "url": "https://github.com/openlayers/ol-cesium/issues"
   },
   "peerDependencies": {
-    "ol": ">= 6.0.1",
+    "ol": ">= 6.0.1 < 6.4.0",
     "cesium": ">= 1.62.0"
   },
   "devDependencies": {
