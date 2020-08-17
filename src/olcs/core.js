@@ -685,7 +685,11 @@ exports.rotateAroundBottomCenter = function(scene, angle) {
 exports.normalizeView = function(view, angle = 0) {
   const resolution = view.getResolution();
   view.setRotation(angle);
-  view.setResolution(view.constrainResolution(resolution));
+  if (view.constrainResolution) {
+    view.setResolution(view.constrainResolution(resolution));
+  } else {
+    view.setResolution(view.getConstrainedResolution(resolution));
+  }
 };
 
 /**
