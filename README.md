@@ -75,7 +75,7 @@ The UMD-specific build is located here: `node_modules/ol-cesium/dist/olcesium.um
 
 Then import the parts you need. Example:
 ```js
-import OLCesium from 'olcs/OLCesium.js';
+import OLCesium from 'ol-cesium';
 const ol3d = new OLCesium({map: ol2dMap}); // ol2dMap is the ol.Map instance
 ol3d.setEnabled(true);
 ```
