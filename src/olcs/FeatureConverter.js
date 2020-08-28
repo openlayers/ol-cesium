@@ -726,6 +726,9 @@ class FeatureConverter {
         position
       });
 
+      // merge in cesium options from openlayers feature
+      Object.assign(bbOptions, feature.get('cesiumOptions'));
+
       if (imageStyle instanceof olStyleIcon) {
         const anchor = imageStyle.getAnchor();
         if (anchor) {
