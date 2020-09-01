@@ -1,5 +1,10 @@
 # Changelog
 
+# v 2.11.3 - 2020-09-01
+
+* Changes
+  * Port to OpenLayers 6.4, fix grabbing issue.
+
 # v 2.11.1 - 2020-08-04
 
 * Changes
