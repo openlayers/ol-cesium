@@ -1,5 +1,10 @@
 # Changelog
 
+# v 2.12
+
+* Changes
+  * Delete the obsolete plugins directory.
+
 # v 2.11.3 - 2020-09-01
 
 * Changes
