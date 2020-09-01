@@ -97,16 +97,11 @@ class OLCesium {
     containerAttribute.value = `${fillArea}visibility:hidden;`;
     this.container_.setAttributeNode(containerAttribute);
 
-    let targetElement = options.target || null;
-    if (targetElement) {
-      if (typeof targetElement === 'string') {
-        targetElement = document.getElementById(targetElement);
-      }
-      targetElement.appendChild(this.container_);
-    } else {
-      const seOverlayContainer = this.map_.getViewport().querySelector('.ol-overlaycontainer-stopevent');
-      seOverlayContainer.insertBefore(this.container_, seOverlayContainer.firstChild);
+    let targetElement = options.target || this.map_.getViewport();
+    if (typeof targetElement === 'string') {
+      targetElement = document.getElementById(targetElement);
     }
+    targetElement.appendChild(this.container_);
 
     /**
      * Whether the Cesium container is placed over the ol map.
