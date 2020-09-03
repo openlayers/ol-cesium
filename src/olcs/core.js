@@ -9,10 +9,12 @@ import olSourceImageStatic from 'ol/source/ImageStatic.js';
 import olSourceImageWMS from 'ol/source/ImageWMS.js';
 import olSourceTileImage from 'ol/source/TileImage.js';
 import olSourceTileWMS from 'ol/source/TileWMS.js';
+import olSourceVectorTile from 'ol/source/VectorTile.js';
 import {defaultImageLoadFunction} from 'ol/source/Image.js';
 import olcsCoreOLImageryProvider from './core/OLImageryProvider.js';
 import olcsUtil from './util.js';
-
+import MVTImageryProvider from './MVTImageryProvider.js';
+import VectorTileLayer from 'ol/layer/VectorTile.js';
 
 const exports = {};
 
@@ -49,14 +51,14 @@ const exports = {};
  * @return {!Cesium.Cartesian2} the pixel size
  * @api
  */
-exports.computePixelSizeAtCoordinate = function(scene, target) {
+exports.computePixelSizeAtCoordinate = function (scene, target) {
   const camera = scene.camera;
   const canvas = scene.canvas;
   const frustum = camera.frustum;
   const distance = Cesium.Cartesian3.magnitude(Cesium.Cartesian3.subtract(
-      camera.position, target, new Cesium.Cartesian3()));
+    camera.position, target, new Cesium.Cartesian3()));
   return frustum.getPixelDimensions(canvas.clientWidth, canvas.clientHeight,
-      distance, scene.pixelRatio, new Cesium.Cartesian2());
+    distance, scene.pixelRatio, new Cesium.Cartesian2());
 };
 
 
@@ -68,22 +70,22 @@ exports.computePixelSizeAtCoordinate = function(scene, target) {
  * @return {Array<Cesium.Cartographic>} bottom left and top right
  * coordinates of the box
  */
-exports.computeBoundingBoxAtTarget = function(scene, target, amount) {
+exports.computeBoundingBoxAtTarget = function (scene, target, amount) {
   const pixelSize = exports.computePixelSizeAtCoordinate(scene, target);
   const transform = Cesium.Transforms.eastNorthUpToFixedFrame(target);
 
   const bottomLeft = Cesium.Matrix4.multiplyByPoint(
-      transform,
-      new Cesium.Cartesian3(-pixelSize.x * amount, -pixelSize.y * amount, 0),
-      new Cesium.Cartesian3());
+    transform,
+    new Cesium.Cartesian3(-pixelSize.x * amount, -pixelSize.y * amount, 0),
+    new Cesium.Cartesian3());
 
   const topRight = Cesium.Matrix4.multiplyByPoint(
-      transform,
-      new Cesium.Cartesian3(pixelSize.x * amount, pixelSize.y * amount, 0),
-      new Cesium.Cartesian3());
+    transform,
+    new Cesium.Cartesian3(pixelSize.x * amount, pixelSize.y * amount, 0),
+    new Cesium.Cartesian3());
 
   return Cesium.Ellipsoid.WGS84.cartesianArrayToCartographicArray(
-      [bottomLeft, topRight]);
+    [bottomLeft, topRight]);
 };
 
 
@@ -93,7 +95,7 @@ exports.computeBoundingBoxAtTarget = function(scene, target, amount) {
  * @param {number} height
  * @api
  */
-exports.applyHeightOffsetToGeometry = function(geometry, height) {
+exports.applyHeightOffsetToGeometry = function (geometry, height) {
   geometry.applyTransform((input, output, stride) => {
     console.assert(input === output);
     if (stride !== undefined && stride >= 3) {
@@ -114,7 +116,7 @@ exports.applyHeightOffsetToGeometry = function(geometry, height) {
  * @return {!Cesium.Matrix4}
  * @api
  */
-exports.createMatrixAtCoordinates = function(coordinates, rotation = 0, translation = Cesium.Cartesian3.ZERO, scale = new Cesium.Cartesian3(1, 1, 1)) {
+exports.createMatrixAtCoordinates = function (coordinates, rotation = 0, translation = Cesium.Cartesian3.ZERO, scale = new Cesium.Cartesian3(1, 1, 1)) {
   const position = exports.ol4326CoordinateToCesiumCartesian(coordinates);
   const rawMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(position);
   const quaternion = Cesium.Quaternion.fromAxisAngle(Cesium.Cartesian3.UNIT_Z, -rotation);
@@ -131,8 +133,8 @@ exports.createMatrixAtCoordinates = function(coordinates, rotation = 0, translat
  * @param {RotateAroundAxisOption=} opt_options
  * @api
  */
-exports.rotateAroundAxis = function(camera, angle, axis, transform,
-    opt_options) {
+exports.rotateAroundAxis = function (camera, angle, axis, transform,
+  opt_options) {
   const clamp = Cesium.Math.clamp;
   const defaultValue = Cesium.defaultValue;
 
@@ -145,7 +147,7 @@ exports.rotateAroundAxis = function(camera, angle, axis, transform,
   const oldTransform = new Cesium.Matrix4();
 
   const start = Date.now();
-  const step = function() {
+  const step = function () {
     const timestamp = Date.now();
     const timeDifference = timestamp - start;
     const progress = easing(clamp(timeDifference / duration, 0, 1));
@@ -177,8 +179,8 @@ exports.rotateAroundAxis = function(camera, angle, axis, transform,
  * @param {RotateAroundAxisOption=} opt_options
  * @api
  */
-exports.setHeadingUsingBottomCenter = function(scene, heading,
-    bottomCenter, opt_options) {
+exports.setHeadingUsingBottomCenter = function (scene, heading,
+  bottomCenter, opt_options) {
   const camera = scene.camera;
   // Compute the camera position to zenith quaternion
   const angleToZenith = exports.computeAngleToZenith(scene, bottomCenter);
@@ -207,7 +209,7 @@ exports.setHeadingUsingBottomCenter = function(scene, heading,
  * @return {!Cesium.Cartesian3|undefined}
  * @api
  */
-exports.pickOnTerrainOrEllipsoid = function(scene, pixel) {
+exports.pickOnTerrainOrEllipsoid = function (scene, pixel) {
   const ray = scene.camera.getPickRay(pixel);
   const target = scene.globe.pick(ray, scene);
   return target || scene.camera.pickEllipsoid(pixel);
@@ -220,10 +222,10 @@ exports.pickOnTerrainOrEllipsoid = function(scene, pixel) {
  * @return {!Cesium.Cartesian3|undefined}
  * @api
  */
-exports.pickBottomPoint = function(scene) {
+exports.pickBottomPoint = function (scene) {
   const canvas = scene.canvas;
   const bottom = new Cesium.Cartesian2(
-      canvas.clientWidth / 2, canvas.clientHeight);
+    canvas.clientWidth / 2, canvas.clientHeight);
   return exports.pickOnTerrainOrEllipsoid(scene, bottom);
 };
 
@@ -234,11 +236,11 @@ exports.pickBottomPoint = function(scene) {
  * @return {!Cesium.Cartesian3|undefined}
  * @api
  */
-exports.pickCenterPoint = function(scene) {
+exports.pickCenterPoint = function (scene) {
   const canvas = scene.canvas;
   const center = new Cesium.Cartesian2(
-      canvas.clientWidth / 2,
-      canvas.clientHeight / 2);
+    canvas.clientWidth / 2,
+    canvas.clientHeight / 2);
   return exports.pickOnTerrainOrEllipsoid(scene, center);
 };
 
@@ -251,7 +253,7 @@ exports.pickCenterPoint = function(scene) {
  * @return {number|undefined}
  * @api
  */
-exports.computeSignedTiltAngleOnGlobe = function(scene) {
+exports.computeSignedTiltAngleOnGlobe = function (scene) {
   const camera = scene.camera;
   const ray = new Cesium.Ray(camera.position, camera.direction);
   let target = scene.globe.pick(ray, scene);
@@ -283,7 +285,7 @@ exports.computeSignedTiltAngleOnGlobe = function(scene) {
  * @param {!Cesium.Scene} scene
  * @return {!Cesium.Ray}
  */
-exports.bottomFovRay = function(scene) {
+exports.bottomFovRay = function (scene) {
   const camera = scene.camera;
   const fovy2 = camera.frustum.fovy / 2;
   const direction = camera.direction;
@@ -302,7 +304,7 @@ exports.bottomFovRay = function(scene) {
  * @param {!Cesium.Cartesian3} normal Normal to test orientation against.
  * @return {number}
  */
-exports.signedAngleBetween = function(first, second, normal) {
+exports.signedAngleBetween = function (first, second, normal) {
   // We are using the dot for the angle.
   // Then the cross and the dot for the sign.
   const a = new Cesium.Cartesian3();
@@ -334,7 +336,7 @@ exports.signedAngleBetween = function(first, second, normal) {
  * @return {number}
  * @api
  */
-exports.computeAngleToZenith = function(scene, pivot) {
+exports.computeAngleToZenith = function (scene, pivot) {
   // This angle is the sum of the angles 'fy' and 'a', which are defined
   // using the pivot point and its surface normal.
   //        Zenith |    camera
@@ -366,7 +368,7 @@ exports.computeAngleToZenith = function(scene, pivot) {
  * @return {Cesium.Rectangle} The corresponding Cesium rectangle.
  * @api
  */
-exports.extentToRectangle = function(extent, projection) {
+exports.extentToRectangle = function (extent, projection) {
   if (extent && projection) {
     const ext = transformExtent(extent, projection, 'EPSG:4326');
     return Cesium.Rectangle.fromDegrees(ext[0], ext[1], ext[2], ext[3]);
@@ -377,23 +379,17 @@ exports.extentToRectangle = function(extent, projection) {
 
 
 /**
- * Creates Cesium.ImageryLayer best corresponding to the given ol.layer.Layer.
- * Only supports raster layers and static images
  * @param {!ol.Map} olMap
- * @param {!ol.layer.Base} olLayer
- * @param {!ol.proj.Projection} viewProj Projection of the view.
- * @return {?Cesium.ImageryLayer} null if not possible (or supported)
- * @api
+ * @param {!ol.source.Source} source 
+ * @param {!ol.View} viewProj
+ * @return {!Cesium.ImageryProvider}
  */
-exports.tileLayerToImageryLayer = function(olMap, olLayer, viewProj) {
-
-  if (!(olLayer instanceof olLayerTile) && !(olLayer instanceof olLayerImage)) {
+exports.sourceToImageryProvider = function (olMap, source, viewProj) {
+  const skip = source.get('olcs_skip');
+  if (skip) {
     return null;
   }
-
   let provider = null;
-  let source = olLayer.getSource();
-
   // Convert ImageWMS to TileWMS
   if (source instanceof olSourceImageWMS && source.getUrl() &&
     source.getImageLoadFunction() === defaultImageLoadFunction) {
@@ -427,22 +423,19 @@ exports.tileLayerToImageryLayer = function(olMap, olLayer, viewProj) {
     else {
       return null;
     }
-
   } else if (source instanceof olSourceImageStatic) {
     let projection = olcsUtil.getSourceProjection(source);
-
     if (!projection) {
       projection = viewProj;
     }
-
     if (exports.isCesiumProjection(projection)) {
       provider = new Cesium.SingleTileImageryProvider({
         url: source.getUrl(),
         rectangle: new Cesium.Rectangle.fromDegrees(
-            source.getImageExtent()[0],
-            source.getImageExtent()[1],
-            source.getImageExtent()[2],
-            source.getImageExtent()[3]
+          source.getImageExtent()[0],
+          source.getImageExtent()[1],
+          source.getImageExtent()[2],
+          source.getImageExtent()[3]
         )
       });
     }
@@ -450,12 +443,43 @@ exports.tileLayerToImageryLayer = function(olMap, olLayer, viewProj) {
     else {
       return null;
     }
+  } else if (source instanceof olSourceVectorTile) {
+    let projection = olcsUtil.getSourceProjection(source);
+
+    if (!projection) {
+      projection = viewProj;
+    }
+    // console.error('should configure the MVT imagery provider properly');
+    // provider = new MVTImageryProvider(options);
+    return null;
   } else {
     // sources other than TileImage|ImageStatic are currently not supported
     return null;
   }
+  return provider;
+}
 
-  // the provider is always non-null if we got this far
+/**
+ * Creates Cesium.ImageryLayer best corresponding to the given ol.layer.Layer.
+ * Only supports raster layers and static images
+ * @param {!ol.Map} olMap
+ * @param {!ol.layer.Base} olLayer
+ * @param {!ol.proj.Projection} viewProj Projection of the view.
+ * @return {?Cesium.ImageryLayer} null if not possible (or supported)
+ * @api
+ */
+exports.tileLayerToImageryLayer = function (olMap, olLayer, viewProj) {
+
+  if (!(olLayer instanceof olLayerTile) && !(olLayer instanceof olLayerImage) &&
+    !(olLayer instanceof VectorTileLayer)) {
+    return null;
+  }
+
+  let source = olLayer.getSource();
+  let provider = source.get('olcs.provider') || this.sourceToImageryProvider(olMap, source, viewProj);
+  if (!provider) {
+    return null;
+  }
 
   const layerOptions = {};
 
@@ -477,7 +501,7 @@ exports.tileLayerToImageryLayer = function(olMap, olLayer, viewProj) {
  * @param {!Cesium.ImageryLayer} csLayer
  * @api
  */
-exports.updateCesiumLayerProperties = function(olLayerWithParents, csLayer) {
+exports.updateCesiumLayerProperties = function (olLayerWithParents, csLayer) {
   let opacity = 1;
   let visible = true;
   [olLayerWithParents.layer].concat(olLayerWithParents.parents).forEach((olLayer) => {
@@ -501,7 +525,7 @@ exports.updateCesiumLayerProperties = function(olLayerWithParents, csLayer) {
  * @return {!Cesium.Cartesian3} Cesium cartesian coordinate
  * @api
  */
-exports.ol4326CoordinateToCesiumCartesian = function(coordinate) {
+exports.ol4326CoordinateToCesiumCartesian = function (coordinate) {
   const coo = coordinate;
   return coo.length > 2 ?
     Cesium.Cartesian3.fromDegrees(coo[0], coo[1], coo[2]) :
@@ -515,7 +539,7 @@ exports.ol4326CoordinateToCesiumCartesian = function(coordinate) {
  * @return {!Array.<Cesium.Cartesian3>} Cesium cartesian coordinates
  * @api
  */
-exports.ol4326CoordinateArrayToCsCartesians = function(coordinates) {
+exports.ol4326CoordinateArrayToCsCartesians = function (coordinates) {
   console.assert(coordinates !== null);
   const toCartesian = exports.ol4326CoordinateToCesiumCartesian;
   const cartesians = [];
@@ -536,7 +560,7 @@ exports.ol4326CoordinateArrayToCsCartesians = function(coordinates) {
  * @template T
  * @api
  */
-exports.olGeometryCloneTo4326 = function(geometry, projection) {
+exports.olGeometryCloneTo4326 = function (geometry, projection) {
   console.assert(projection);
 
   const proj4326 = getProjection('EPSG:4326');
@@ -557,14 +581,14 @@ exports.olGeometryCloneTo4326 = function(geometry, projection) {
  * @return {!Cesium.Color}
  * @api
  */
-exports.convertColorToCesium = function(olColor) {
+exports.convertColorToCesium = function (olColor) {
   olColor = olColor || 'black';
   if (Array.isArray(olColor)) {
     return new Cesium.Color(
-        Cesium.Color.byteToFloat(olColor[0]),
-        Cesium.Color.byteToFloat(olColor[1]),
-        Cesium.Color.byteToFloat(olColor[2]),
-        olColor[3]
+      Cesium.Color.byteToFloat(olColor[0]),
+      Cesium.Color.byteToFloat(olColor[1]),
+      Cesium.Color.byteToFloat(olColor[2]),
+      olColor[3]
     );
   } else if (typeof olColor == 'string') {
     return Cesium.Color.fromCssColorString(olColor);
@@ -589,7 +613,7 @@ exports.convertColorToCesium = function(olColor) {
  * @return {!CesiumUrlDefinition}
  * @api
  */
-exports.convertUrlToCesium = function(url) {
+exports.convertUrlToCesium = function (url) {
   let subdomains = '';
   const re = /\{(\d|[a-z])-(\d|[a-z])\}/;
   const match = re.exec(url);
@@ -617,7 +641,7 @@ exports.convertUrlToCesium = function(url) {
  * @return {Promise<undefined>}
  * @api
  */
-exports.resetToNorthZenith = function(map, scene) {
+exports.resetToNorthZenith = function (map, scene) {
   return new Promise((resolve, reject) => {
     const camera = scene.camera;
     const pivot = exports.pickBottomPoint(scene);
@@ -657,7 +681,7 @@ exports.resetToNorthZenith = function(map, scene) {
  * @return {Promise<undefined>}
  * @api
  */
-exports.rotateAroundBottomCenter = function(scene, angle) {
+exports.rotateAroundBottomCenter = function (scene, angle) {
   return new Promise((resolve, reject) => {
     const camera = scene.camera;
     const pivot = exports.pickBottomPoint(scene);
@@ -682,7 +706,7 @@ exports.rotateAroundBottomCenter = function(scene, angle) {
  * @param {number=} angle
  * @api
  */
-exports.normalizeView = function(view, angle = 0) {
+exports.normalizeView = function (view, angle = 0) {
   const resolution = view.getResolution();
   view.setRotation(angle);
   if (view.constrainResolution) {
@@ -698,7 +722,7 @@ exports.normalizeView = function(view, angle = 0) {
  * @param {ol.proj.Projection} projection Projection to check.
  * @returns {boolean} Whether it's managed by Cesium.
  */
-exports.isCesiumProjection = function(projection) {
+exports.isCesiumProjection = function (projection) {
   const is3857 = projection === getProjection('EPSG:3857');
   const is4326 = projection === getProjection('EPSG:4326');
   return is3857 || is4326;
