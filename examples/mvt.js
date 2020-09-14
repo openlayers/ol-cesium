@@ -1,5 +1,5 @@
 /**
- * @module examples.main
+ * @module examples.mvt
  */
 import OLCesium from 'olcs/OLCesium.js';
 import MVTImageryProvider from 'olcs/MVTImageryProvider.js';

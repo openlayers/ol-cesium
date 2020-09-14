@@ -3,7 +3,7 @@ import Style from 'ol/style/Style.js';
 import Stroke from 'ol/style/Stroke.js';
 import {toContext} from 'ol/render.js';
 import {get as getProjection} from 'ol/proj.js';
-import {VERSION} from 'ol/util.js';
+import {VERSION as OL_VERSION} from 'ol/util.js';
 
 
 const format = new MVT();
@@ -63,7 +63,7 @@ export default class MVTImageryProvider {
     const vectorContext = toContext(canvas.getContext('2d'), {size: [this.tileWidth, this.tileHeight]});
     try {
       let options;
-      if (VERSION <= '6.4.4') {
+      if (OL_VERSION <= '6.4.4') {
         // See https://github.com/openlayers/openlayers/pull/11540
         options = {
           extent: [0, 0, 4096, 4096],
@@ -80,9 +80,9 @@ export default class MVTImageryProvider {
           flatCoordinates[i] *= scaleFactor;
           if (flip) {
             // FIXME: why do we need this now?
-            flatCoordinates[i] = 256 - flatCoordinates[i];
+            flatCoordinates[i] = this.tileWidth - flatCoordinates[i];
           }
-          if (VERSION <= '6.4.4') {
+          if (OL_VERSION <= '6.4.4') {
             flip = !flip;
           }
         }
