@@ -1,5 +1,14 @@
 # Changelog
 
+# v 2.12
+
+* Changes
+  * Delete the obsolete plugins directory.
+  * Add MVTImageryProvider, an experimental Cesium imagery provider for
+    MapBox Vector Tiles. It uses OpenLayers to render the tiles and handles
+    native OpenLayers style functions.
+  * Update to CesiumJS 1.73
+
 # v 2.11.3 - 2020-09-01
 
 * Changes

@@ -9,10 +9,12 @@ import olSourceImageStatic from 'ol/source/ImageStatic.js';
 import olSourceImageWMS from 'ol/source/ImageWMS.js';
 import olSourceTileImage from 'ol/source/TileImage.js';
 import olSourceTileWMS from 'ol/source/TileWMS.js';
+import olSourceVectorTile from 'ol/source/VectorTile.js';
 import {defaultImageLoadFunction} from 'ol/source/Image.js';
 import olcsCoreOLImageryProvider from './core/OLImageryProvider.js';
 import olcsUtil from './util.js';
-
+// import MVTImageryProvider from './MVTImageryProvider.js';
+import VectorTileLayer from 'ol/layer/VectorTile.js';
 
 const exports = {};
 
@@ -377,23 +379,17 @@ exports.extentToRectangle = function(extent, projection) {
 
 
 /**
- * Creates Cesium.ImageryLayer best corresponding to the given ol.layer.Layer.
- * Only supports raster layers and static images
  * @param {!ol.Map} olMap
- * @param {!ol.layer.Base} olLayer
- * @param {!ol.proj.Projection} viewProj Projection of the view.
- * @return {?Cesium.ImageryLayer} null if not possible (or supported)
- * @api
+ * @param {!ol.source.Source} source
+ * @param {!ol.View} viewProj
+ * @return {!Cesium.ImageryProvider}
  */
-exports.tileLayerToImageryLayer = function(olMap, olLayer, viewProj) {
-
-  if (!(olLayer instanceof olLayerTile) && !(olLayer instanceof olLayerImage)) {
+exports.sourceToImageryProvider = function(olMap, source, viewProj) {
+  const skip = source.get('olcs_skip');
+  if (skip) {
     return null;
   }
-
   let provider = null;
-  let source = olLayer.getSource();
-
   // Convert ImageWMS to TileWMS
   if (source instanceof olSourceImageWMS && source.getUrl() &&
     source.getImageLoadFunction() === defaultImageLoadFunction) {
@@ -427,14 +423,11 @@ exports.tileLayerToImageryLayer = function(olMap, olLayer, viewProj) {
     else {
       return null;
     }
-
   } else if (source instanceof olSourceImageStatic) {
     let projection = olcsUtil.getSourceProjection(source);
-
     if (!projection) {
       projection = viewProj;
     }
-
     if (exports.isCesiumProjection(projection)) {
       provider = new Cesium.SingleTileImageryProvider({
         url: source.getUrl(),
@@ -450,12 +443,43 @@ exports.tileLayerToImageryLayer = function(olMap, olLayer, viewProj) {
     else {
       return null;
     }
+  } else if (source instanceof olSourceVectorTile) {
+    let projection = olcsUtil.getSourceProjection(source);
+
+    if (!projection) {
+      projection = viewProj;
+    }
+    // console.error('should configure the MVT imagery provider properly');
+    // provider = new MVTImageryProvider(options);
+    return null;
   } else {
     // sources other than TileImage|ImageStatic are currently not supported
     return null;
   }
+  return provider;
+};
 
-  // the provider is always non-null if we got this far
+/**
+ * Creates Cesium.ImageryLayer best corresponding to the given ol.layer.Layer.
+ * Only supports raster layers and static images
+ * @param {!ol.Map} olMap
+ * @param {!ol.layer.Base} olLayer
+ * @param {!ol.proj.Projection} viewProj Projection of the view.
+ * @return {?Cesium.ImageryLayer} null if not possible (or supported)
+ * @api
+ */
+exports.tileLayerToImageryLayer = function(olMap, olLayer, viewProj) {
+
+  if (!(olLayer instanceof olLayerTile) && !(olLayer instanceof olLayerImage) &&
+    !(olLayer instanceof VectorTileLayer)) {
+    return null;
+  }
+
+  const source = olLayer.getSource();
+  const provider = source.get('olcs.provider') || this.sourceToImageryProvider(olMap, source, viewProj);
+  if (!provider) {
+    return null;
+  }
 
   const layerOptions = {};
 
