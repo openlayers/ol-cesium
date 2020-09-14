@@ -38,17 +38,19 @@ function createMVTLayer(url, maxZoom) {
     url,
     format: new MVT(),
   });
+  const styles = createMVTStyle();
   const swissExtentDegrees = [5.2, 45.45, 11, 48];
   source.set('olcs.provider', new MVTImageryProvider({
     credit: new Cesium.Credit('Schweizmobil', false),
     urls: [url],
+    styleFunction: () => styles,
     rectangle: new Cesium.Rectangle(...swissExtentDegrees.map(Cesium.Math.toRadians)),
     minimumLevel: 6,
   }));
   return new VectorTileLayer({
     source,
     opacity: 0.6,
-    style: createMVTStyle()
+    style: styles
   });
 }
 
@@ -56,9 +58,15 @@ export const mvtLayer = createMVTLayer(
     'https://map.dev.schweizmobil-hosting.ch/api/4/mvt_routes/3857/{z}/{x}/{y}.pbf?olcs',
     20);
 
+function createOSMLayer() {
+  const source = new OSMSource();
+  //source.set('olcs.provider', new Cesium.OpenStreetMapImageryProvider());
+  return new TileLayer({source});
+}
+
 const ol2d = new olMap({
   layers: [
-    new TileLayer({source: new OSMSource()}),
+    createOSMLayer(),
     mvtLayer
   ],
   target: 'map',

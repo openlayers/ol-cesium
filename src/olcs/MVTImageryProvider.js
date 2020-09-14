@@ -9,7 +9,7 @@ import {VERSION} from 'ol/util.js';
 const format = new MVT();
 const styles = [new Style({
   stroke: new Stroke({
-    color: 'green',
+    color: 'blue',
     width: 2
   })
 })];
@@ -60,7 +60,7 @@ export default class MVTImageryProvider {
 
   rasterizePbfToTile(buffer, styleFunction) {
     const canvas = document.createElement('canvas');
-    const vectorContext = toContext(canvas.getContext('2d'), {size: [256, 256]});
+    const vectorContext = toContext(canvas.getContext('2d'), {size: [this.tileWidth, this.tileHeight]});
     try {
       let options;
       if (VERSION <= '6.4.4') {
@@ -72,7 +72,7 @@ export default class MVTImageryProvider {
         };
       }
       const features = format.readFeatures(buffer, options);
-      const scaleFactor = 256 / 4096;
+      const scaleFactor = this.tileWidth / 4096;
       features.forEach((f) => {
         const flatCoordinates = f.getFlatCoordinates();
         let flip = false;
