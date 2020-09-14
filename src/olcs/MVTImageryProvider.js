@@ -26,7 +26,7 @@ export default class MVTImageryProvider {
     this.minimumLevel = options.minimumLevel || 0;
     this.tilingScheme = new Cesium.WebMercatorTilingScheme;
     this.rectangle = options.rectangle || this.tilingScheme.rectangle;
-    this.errorEvent = {};//new Cesium.Event();
+    this.errorEvent = new Cesium.Event();
     this.credit = options.credit;
     this.hasAlphaChannel = true;
     this.cache_ = {};
