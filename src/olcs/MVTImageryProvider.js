@@ -12,7 +12,7 @@ const styles = [new Style({
     color: 'green',
     width: 2
   })
-})]
+})];
 
 
 export default class MVTImageryProvider {
@@ -40,7 +40,7 @@ export default class MVTImageryProvider {
 
   pickFeatures() {
   }
-  
+
   requestImage(x, y, z, request) {
     if (z < this.minimumLevel) {
       return null;
@@ -51,9 +51,9 @@ export default class MVTImageryProvider {
     let promise = this.cache_[url];
     if (!promise) {
       promise = this.cache_[url] = fetch(url)
-        .then(r => r.ok ? r : Promise.reject(r))
-        .then(r => r.arrayBuffer())
-        .then(buffer => this.rasterizePbfToTile(buffer, this.styleFunction_, format, this.projection_));
+          .then(r => (r.ok ? r : Promise.reject(r)))
+          .then(r => r.arrayBuffer())
+          .then(buffer => this.rasterizePbfToTile(buffer, this.styleFunction_, format, this.projection_));
     }
     return promise;
   }
@@ -63,7 +63,7 @@ export default class MVTImageryProvider {
     const vectorContext = toContext(canvas.getContext('2d'), {size: [256, 256]});
     try {
       let options;
-      if (VERSION <= "6.4.4") {
+      if (VERSION <= '6.4.4') {
         // See https://github.com/openlayers/openlayers/pull/11540
         options = {
           extent: [0, 0, 4096, 4096],
@@ -73,7 +73,7 @@ export default class MVTImageryProvider {
       }
       const features = format.readFeatures(buffer, options);
       const scaleFactor = 256 / 4096;
-      features.forEach(f => {
+      features.forEach((f) => {
         const flatCoordinates = f.getFlatCoordinates();
         let flip = false;
         for (let i = 0; i < flatCoordinates.length; ++i) {
@@ -82,21 +82,21 @@ export default class MVTImageryProvider {
             // FIXME: why do we need this now?
             flatCoordinates[i] = 256 - flatCoordinates[i];
           }
-          if (VERSION <= "6.4.4") {
+          if (VERSION <= '6.4.4') {
             flip = !flip;
           }
         }
       });
-      features.forEach(f => {
+      features.forEach((f) => {
         const styles = styleFunction(f);
         if (styles) {
-          styles.forEach(style => {
+          styles.forEach((style) => {
             vectorContext.setStyle(style);
             vectorContext.drawGeometry(f);
-          })
+          });
         }
       });
-    } catch(e) {
+    } catch (e) {
       console.trace(e);
       this.raiseEvent('could not render pbf tile', e);
     }

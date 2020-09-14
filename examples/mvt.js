@@ -44,7 +44,7 @@ function createMVTLayer(url, maxZoom) {
     urls: [url],
     rectangle: new Cesium.Rectangle(...swissExtentDegrees.map(Cesium.Math.toRadians)),
     minimumLevel: 6,
-  }))
+  }));
   return new VectorTileLayer({
     source,
     opacity: 0.6,
@@ -53,8 +53,8 @@ function createMVTLayer(url, maxZoom) {
 }
 
 export const mvtLayer = createMVTLayer(
-  'https://map.dev.schweizmobil-hosting.ch/api/4/mvt_routes/3857/{z}/{x}/{y}.pbf?olcs',
-  20);
+    'https://map.dev.schweizmobil-hosting.ch/api/4/mvt_routes/3857/{z}/{x}/{y}.pbf?olcs',
+    20);
 
 const ol2d = new olMap({
   layers: [
@@ -68,7 +68,7 @@ const ol2d = new olMap({
 const ol3d = new OLCesium({
   map: ol2d,
 });
-const scene = ol3d.getCesiumScene();
+ol3d.getCesiumScene();
 ol3d.setEnabled(false);
 
 const EXTENT = [572215, 5684416, 1277662, 6145307];
