@@ -4,6 +4,8 @@
 import {get as getProjection} from 'ol/proj.js';
 import olcsUtil from '../util.js';
 import {Tile as TileSource} from 'ol/source.js';
+import {attributionsFunctionToCredits} from '../core.js';
+
 
 const olUseNewCoordinates = (function() {
   const tileSource = new TileSource({
@@ -145,26 +147,14 @@ class OLImageryProvider /* should not extend Cesium.ImageryProvider */ {
    * @override
    */
   getTileCredits(x, y, level) {
-    const extent = this.map_.getView().calculateExtent(this.map_.getSize());
-    const center = this.map_.getView().getCenter();
-
-    const zoom = this.shouldRequestNextLevel ? level + 1 : level;
-
-    const frameState = {
-      viewState: {zoom, center},
-      extent,
-    };
-
     const attributionsFunction = this.source_.getAttributions();
     if (!attributionsFunction) {
       return [];
     }
-    let attributions = attributionsFunction(frameState);
-    if (!Array.isArray(attributions)) {
-      attributions = [attributions];
-    }
-
-    return attributions.map(html => new Cesium.Credit(html, true));
+    const extent = this.map_.getView().calculateExtent(this.map_.getSize());
+    const center = this.map_.getView().getCenter();
+    const zoom = this.shouldRequestNextLevel ? level + 1 : level;
+    return attributionsFunctionToCredits(attributionsFunction, zoom, center, extent);
   }
 
   /**
