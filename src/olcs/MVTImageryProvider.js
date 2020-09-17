@@ -32,6 +32,9 @@ export default class MVTImageryProvider {
     this.cache_ = {};
     this.styleFunction_ = options.styleFunction || (() => styles);
     this.projection_ = getProjection('EPSG:3857');
+    this.emptyCanvas_ = document.createElement('canvas');
+    this.emptyCanvas_.width = 1;
+    this.emptyCanvas_.height = 1;
   }
 
   getTileCredits() {
@@ -43,7 +46,7 @@ export default class MVTImageryProvider {
 
   requestImage(x, y, z, request) {
     if (z < this.minimumLevel) {
-      return null;
+      return this.emptyCanvas_;
     }
     const url = this.urls[0].replace('{x}', x).replace('{y}', y).replace('{z}', z);
     // stupid put everything in cache strategy

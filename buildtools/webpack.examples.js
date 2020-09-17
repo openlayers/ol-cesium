@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs');
-const ls = require('ls');
+const glob = require('fast-glob');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
@@ -9,8 +9,10 @@ const entry = {};
 
 const exampleFilenamePrefix = process.env.DEV_SERVER ? 'examples/' : '';
 
-for (const filename of ls('examples/*.html')) {
-  const name = filename.name;
+const splitter = /.*\/(.*)\.html/;
+for (const filename of glob.sync('examples/*.html', {onlyFiles: true})) {
+  const matches = filename.match(splitter);
+  const name = matches[1];
   const jsName = `./examples/${name}.js`;
   if (!fs.existsSync(jsName)) {
     continue;

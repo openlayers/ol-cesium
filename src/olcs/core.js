@@ -13,8 +13,9 @@ import olSourceVectorTile from 'ol/source/VectorTile.js';
 import {defaultImageLoadFunction} from 'ol/source/Image.js';
 import olcsCoreOLImageryProvider from './core/OLImageryProvider.js';
 import olcsUtil from './util.js';
-// import MVTImageryProvider from './MVTImageryProvider.js';
+import MVTImageryProvider from './MVTImageryProvider.js';
 import VectorTileLayer from 'ol/layer/VectorTile.js';
+import {getCenter as getExtentCenter} from 'ol/extent';
 
 const exports = {};
 
@@ -382,9 +383,10 @@ exports.extentToRectangle = function(extent, projection) {
  * @param {!ol.Map} olMap
  * @param {!ol.source.Source} source
  * @param {!ol.View} viewProj
+ * @param {!ol.layer.Base} olLayer
  * @return {!Cesium.ImageryProvider}
  */
-exports.sourceToImageryProvider = function(olMap, source, viewProj) {
+exports.sourceToImageryProvider = function(olMap, source, viewProj, olLayer) {
   const skip = source.get('olcs_skip');
   if (skip) {
     return null;
@@ -449,9 +451,31 @@ exports.sourceToImageryProvider = function(olMap, source, viewProj) {
     if (!projection) {
       projection = viewProj;
     }
-    // console.error('should configure the MVT imagery provider properly');
-    // provider = new MVTImageryProvider(options);
-    return null;
+    if (skip === false) {
+      // MVT is experimental, it should be whitelisted to be synchronized
+      const fromCode = projection.getCode().split(':')[1];
+      const urls = source.urls.map(u => u.replace(fromCode, '3857'));
+      const extent = olLayer.getExtent();
+      const rectangle = exports.extentToRectangle(extent, projection);
+      const minimumLevel = source.get('olcs_minimumLevel');
+      const attributionsFunction = source.getAttributions();
+      const styleFunction = olLayer.getStyleFunction();
+      let credit;
+      if (extent && attributionsFunction) {
+        const center = getExtentCenter(extent);
+        credit = attributionsFunctionToCredits(attributionsFunction, 0, center, extent)[0];
+      }
+
+      provider = new MVTImageryProvider({
+        credit,
+        rectangle,
+        minimumLevel,
+        styleFunction,
+        urls
+      });
+      return provider;
+    }
+    return null; // FIXME: it is disabled by default right now
   } else {
     // sources other than TileImage|ImageStatic are currently not supported
     return null;
@@ -476,7 +500,10 @@ exports.tileLayerToImageryLayer = function(olMap, olLayer, viewProj) {
   }
 
   const source = olLayer.getSource();
-  const provider = source.get('olcs.provider') || this.sourceToImageryProvider(olMap, source, viewProj);
+  let provider = source.get('olcs_provider');
+  if (!provider) {
+    provider = this.sourceToImageryProvider(olMap, source, viewProj, olLayer);
+  }
   if (!provider) {
     return null;
   }
@@ -728,5 +755,22 @@ exports.isCesiumProjection = function(projection) {
   return is3857 || is4326;
 };
 
+
+export function attributionsFunctionToCredits(attributionsFunction, zoom, center, extent) {
+  const frameState = {
+    viewState: {zoom, center},
+    extent,
+  };
+
+  if (!attributionsFunction) {
+    return [];
+  }
+  let attributions = attributionsFunction(frameState);
+  if (!Array.isArray(attributions)) {
+    attributions = [attributions];
+  }
+
+  return attributions.map(html => new Cesium.Credit(html, true));
+}
 
 export default exports;

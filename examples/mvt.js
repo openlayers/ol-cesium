@@ -2,7 +2,7 @@
  * @module examples.mvt
  */
 import OLCesium from 'olcs/OLCesium.js';
-import MVTImageryProvider from 'olcs/MVTImageryProvider.js';
+// import MVTImageryProvider from 'olcs/MVTImageryProvider.js';
 
 import olMap from 'ol/Map.js';
 import './_proj21781.js';
@@ -36,19 +36,23 @@ function createMVTStyle() {
 function createMVTLayer(url, maxZoom) {
   const source = new VectorTileSource({
     url,
+    attributions: 'Schweizmobil',
     format: new MVT(),
   });
   const styles = createMVTStyle();
-  const swissExtentDegrees = [5.2, 45.45, 11, 48];
-  source.set('olcs.provider', new MVTImageryProvider({
-    credit: new Cesium.Credit('Schweizmobil', false),
-    urls: [url],
-    styleFunction: () => styles,
-    rectangle: new Cesium.Rectangle(...swissExtentDegrees.map(Cesium.Math.toRadians)),
-    minimumLevel: 6,
-  }));
+  // const swissExtentDegrees = [5.2, 45.45, 11, 48];
+  // source.set('olcs_provider', new MVTImageryProvider({
+  //   credit: new Cesium.Credit('Schweizmobil', false),
+  //   urls: [url],
+  //   styleFunction: () => styles,
+  //   rectangle: new Cesium.Rectangle(...swissExtentDegrees.map(Cesium.Math.toRadians)),
+  //   minimumLevel: 6,
+  // }));
+  source.set('olcs_skip', false);
+  source.set('olcs_minimumLevel', 6);
   return new VectorTileLayer({
     source,
+    extent: [572215, 5684416, 1277662, 6145307], // swiss extent
     opacity: 0.6,
     style: styles
   });
@@ -60,7 +64,7 @@ export const mvtLayer = createMVTLayer(
 
 function createOSMLayer() {
   const source = new OSMSource();
-  //source.set('olcs.provider', new Cesium.OpenStreetMapImageryProvider());
+  //source.set('olcs_provider', new Cesium.OpenStreetMapImageryProvider());
   return new TileLayer({source});
 }
 
