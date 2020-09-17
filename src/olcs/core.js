@@ -453,7 +453,8 @@ exports.sourceToImageryProvider = function(olMap, source, viewProj, olLayer) {
     }
     if (skip === false) {
       // MVT is experimental, it should be whitelisted to be synchronized
-      const urls = source.urls.map(u => u.replace(projection.getCode(), '3857'));
+      const fromCode = projection.getCode().split(':')[1];
+      const urls = source.urls.map(u => u.replace(fromCode, '3857'));
       const extent = olLayer.getExtent();
       const rectangle = exports.extentToRectangle(extent, projection);
       const minimumLevel = source.get('olcs_minimumLevel');
