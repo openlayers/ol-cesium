@@ -102,6 +102,28 @@ class RasterSynchronizer extends olcsAbstractSynchronizer {
         }));
       });
 
+      if (olLayer.getStyleFunction) {
+        let previousStyleFunction = olLayer.getStyleFunction();
+        // there is no convenient way to detect a style function change in OL
+        listenKeyArray.push(olLayer.on('change', () => {
+          const currentStyleFunction = olLayer.getStyleFunction();
+          if (previousStyleFunction === currentStyleFunction) {
+            return;
+          }
+          previousStyleFunction = currentStyleFunction;
+          for (let i = 0; i < cesiumObjects.length; ++i) {
+            const csObj = cesiumObjects[i];
+            // clear cache and set new style
+            if (csObj._imageryCache && csObj.imageryProvider.cache_) {
+              csObj._imageryCache = {};
+              csObj.imageryProvider.cache_ = {};
+              csObj.imageryProvider.styleFunction_ = currentStyleFunction;
+            }
+          }
+          this.scene.requestRender();
+        }));
+      }
+
       for (let i = 0; i < cesiumObjects.length; ++i) {
         olcsCore.updateCesiumLayerProperties(olLayerWithParents, cesiumObjects[i]);
       }
