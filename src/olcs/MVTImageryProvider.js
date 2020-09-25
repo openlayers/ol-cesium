@@ -14,7 +14,6 @@ const styles = [new Style({
   })
 })];
 
-const tileRectangle = new Cesium.Rectangle();
 
 export default class MVTImageryProvider {
   constructor(options) {
@@ -37,6 +36,7 @@ export default class MVTImageryProvider {
     this.emptyCanvas_.width = 1;
     this.emptyCanvas_.height = 1;
     this.featuresCache = options.featuresCache || {};
+    this.tileRectangle_ = new Cesium.Rectangle();
   }
 
   getTileCredits() {
@@ -101,8 +101,8 @@ export default class MVTImageryProvider {
         promise = this.cache_[url] = this.getTileFeatures(url)
             .then((features) => {
             // FIXME: here we suppose the 2D projection is in meters
-              this.tilingScheme.tileXYToNativeRectangle(x, y, z, tileRectangle);
-              const resolution = (tileRectangle.east - tileRectangle.west) / this.tileWidth;
+              this.tilingScheme.tileXYToNativeRectangle(x, y, z, this.tileRectangle_);
+              const resolution = (this.tileRectangle_.east - this.tileRectangle_.west) / this.tileWidth;
               return this.rasterizeFeatures(features, this.styleFunction_, resolution);
             });
       }
