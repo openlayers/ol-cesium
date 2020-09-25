@@ -14,6 +14,7 @@ const styles = [new Style({
   })
 })];
 
+const tileRectangle = new Cesium.Rectangle();
 
 export default class MVTImageryProvider {
   constructor(options) {
@@ -48,6 +49,10 @@ export default class MVTImageryProvider {
     if (z < this.minimumLevel) {
       return this.emptyCanvas_;
     }
+
+    this.tilingScheme.tileXYToNativeRectangle(x, y, z, tileRectangle);
+    // FIXME: here we suppose the 2D projection is in meters
+    const resolution = (tileRectangle.east - tileRectangle.west) / this.tileWidth;
     const url = this.urls[0].replace('{x}', x).replace('{y}', y).replace('{z}', z);
     // stupid put everything in cache strategy
     // no throttling, no subdomains
@@ -56,12 +61,12 @@ export default class MVTImageryProvider {
       promise = this.cache_[url] = fetch(url)
           .then(r => (r.ok ? r : Promise.reject(r)))
           .then(r => r.arrayBuffer())
-          .then(buffer => this.rasterizePbfToTile(buffer, this.styleFunction_, format, this.projection_));
+          .then(buffer => this.rasterizePbfToTile(buffer, this.styleFunction_, resolution));
     }
     return promise;
   }
 
-  rasterizePbfToTile(buffer, styleFunction) {
+  rasterizePbfToTile(buffer, styleFunction, resolution) {
     const canvas = document.createElement('canvas');
     const vectorContext = toContext(canvas.getContext('2d'), {size: [this.tileWidth, this.tileHeight]});
     try {
@@ -91,7 +96,7 @@ export default class MVTImageryProvider {
         }
       });
       features.forEach((f) => {
-        const styles = styleFunction(f);
+        const styles = styleFunction(f, resolution);
         if (styles) {
           styles.forEach((style) => {
             vectorContext.setStyle(style);
