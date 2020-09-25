@@ -35,6 +35,8 @@ export default class MVTImageryProvider {
     this.emptyCanvas_ = document.createElement('canvas');
     this.emptyCanvas_.width = 1;
     this.emptyCanvas_.height = 1;
+    this.featuresCache = options.featuresCache || {};
+    this.tileRectangle_ = new Cesium.Rectangle();
   }
 
   getTileCredits() {
@@ -44,65 +46,85 @@ export default class MVTImageryProvider {
   pickFeatures() {
   }
 
-  requestImage(x, y, z, request) {
-    if (z < this.minimumLevel) {
-      return this.emptyCanvas_;
-    }
-    const url = this.urls[0].replace('{x}', x).replace('{y}', y).replace('{z}', z);
-    // stupid put everything in cache strategy
-    // no throttling, no subdomains
-    let promise = this.cache_[url];
+  getTileFeatures(url) {
+    let promise = this.featuresCache[url];
     if (!promise) {
-      promise = this.cache_[url] = fetch(url)
+      promise = this.featuresCache[url] = fetch(url)
           .then(r => (r.ok ? r : Promise.reject(r)))
           .then(r => r.arrayBuffer())
-          .then(buffer => this.rasterizePbfToTile(buffer, this.styleFunction_, format, this.projection_));
+          .then(buffer => this.readFeaturesFromBuffer(buffer));
     }
     return promise;
   }
 
-  rasterizePbfToTile(buffer, styleFunction) {
-    const canvas = document.createElement('canvas');
-    const vectorContext = toContext(canvas.getContext('2d'), {size: [this.tileWidth, this.tileHeight]});
-    try {
-      let options;
-      if (OL_VERSION <= '6.4.4') {
-        // See https://github.com/openlayers/openlayers/pull/11540
-        options = {
-          extent: [0, 0, 4096, 4096],
-          dataProjection: format.dataProjection,
-          featureProjection: format.dataProjection
-        };
+  readFeaturesFromBuffer(buffer) {
+    let options;
+    if (OL_VERSION <= '6.4.4') {
+      // See https://github.com/openlayers/openlayers/pull/11540
+      options = {
+        extent: [0, 0, 4096, 4096],
+        dataProjection: format.dataProjection,
+        featureProjection: format.dataProjection
+      };
+    }
+    const features = format.readFeatures(buffer, options);
+    const scaleFactor = this.tileWidth / 4096;
+    features.forEach((f) => {
+      const flatCoordinates = f.getFlatCoordinates();
+      let flip = false;
+      for (let i = 0; i < flatCoordinates.length; ++i) {
+        flatCoordinates[i] *= scaleFactor;
+        if (flip) {
+          // FIXME: why do we need this now?
+          flatCoordinates[i] = this.tileWidth - flatCoordinates[i];
+        }
+        if (OL_VERSION <= '6.4.4') {
+          flip = !flip;
+        }
       }
-      const features = format.readFeatures(buffer, options);
-      const scaleFactor = this.tileWidth / 4096;
-      features.forEach((f) => {
-        const flatCoordinates = f.getFlatCoordinates();
-        let flip = false;
-        for (let i = 0; i < flatCoordinates.length; ++i) {
-          flatCoordinates[i] *= scaleFactor;
-          if (flip) {
-            // FIXME: why do we need this now?
-            flatCoordinates[i] = this.tileWidth - flatCoordinates[i];
-          }
-          if (OL_VERSION <= '6.4.4') {
-            flip = !flip;
-          }
-        }
-      });
-      features.forEach((f) => {
-        const styles = styleFunction(f);
-        if (styles) {
-          styles.forEach((style) => {
-            vectorContext.setStyle(style);
-            vectorContext.drawGeometry(f);
-          });
-        }
-      });
+    });
+
+    return features;
+  }
+
+  requestImage(x, y, z, request) {
+    if (z < this.minimumLevel) {
+      return this.emptyCanvas_;
+    }
+
+    try {
+      const url = this.urls[0].replace('{x}', x).replace('{y}', y).replace('{z}', z);
+      // stupid put everything in cache strategy
+      // no throttling, no subdomains
+      let promise = this.cache_[url];
+      if (!promise) {
+        promise = this.cache_[url] = this.getTileFeatures(url)
+            .then((features) => {
+            // FIXME: here we suppose the 2D projection is in meters
+              this.tilingScheme.tileXYToNativeRectangle(x, y, z, this.tileRectangle_);
+              const resolution = (this.tileRectangle_.east - this.tileRectangle_.west) / this.tileWidth;
+              return this.rasterizeFeatures(features, this.styleFunction_, resolution);
+            });
+      }
+      return promise;
     } catch (e) {
       console.trace(e);
-      this.raiseEvent('could not render pbf tile', e);
+      this.raiseEvent('could not render pbf to stile', e);
     }
+  }
+
+  rasterizeFeatures(features, styleFunction, resolution) {
+    const canvas = document.createElement('canvas');
+    const vectorContext = toContext(canvas.getContext('2d'), {size: [this.tileWidth, this.tileHeight]});
+    features.forEach((f) => {
+      const styles = styleFunction(f, resolution);
+      if (styles) {
+        styles.forEach((style) => {
+          vectorContext.setStyle(style);
+          vectorContext.drawGeometry(f);
+        });
+      }
+    });
     return canvas;
   }
 }
