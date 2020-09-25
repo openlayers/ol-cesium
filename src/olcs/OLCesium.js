@@ -105,10 +105,12 @@ class OLCesium {
 
     /**
      * Whether the Cesium container is placed over the ol map.
+     * a target => side by side mode
+     * no target => over map mode
      * @type {boolean}
      * @private
      */
-    this.isOverMap_ = !targetElement;
+    this.isOverMap_ = !options.target;
 
 
     if (this.isOverMap_ && options.stopOpenLayersEventsPropagation) {
