@@ -4,6 +4,7 @@ import Stroke from 'ol/style/Stroke.js';
 import {toContext} from 'ol/render.js';
 import {get as getProjection} from 'ol/proj.js';
 import {VERSION as OL_VERSION} from 'ol/util.js';
+import LRUCache from 'ol/structs/LRUCache.js';
 
 
 const format = new MVT();
@@ -29,14 +30,16 @@ export default class MVTImageryProvider {
     this.errorEvent = new Cesium.Event();
     this.credit = options.credit;
     this.hasAlphaChannel = true;
-    this.cache_ = {};
     this.styleFunction_ = options.styleFunction || (() => styles);
     this.projection_ = getProjection('EPSG:3857');
     this.emptyCanvas_ = document.createElement('canvas');
     this.emptyCanvas_.width = 1;
     this.emptyCanvas_.height = 1;
-    this.featuresCache = options.featuresCache || {};
     this.tileRectangle_ = new Cesium.Rectangle();
+    const cacheSize = options.cacheSize ? options.cacheSize : 50;
+    this.tileCache = new LRUCache(cacheSize);
+    this.featureCache = options.featureCache || new LRUCache(cacheSize);
+    // to avoid too frequent cache grooming we allow x2 capacity
   }
 
   getTileCredits() {
@@ -46,13 +49,25 @@ export default class MVTImageryProvider {
   pickFeatures() {
   }
 
-  getTileFeatures(url) {
-    let promise = this.featuresCache[url];
+
+  getTileFeatures(z, x, y) {
+    const cacheKey = this.getCacheKey_(z, x, y);
+    let promise;
+    if (this.featureCache.containsKey(cacheKey)) {
+      promise = this.featureCache.get(cacheKey);
+    }
     if (!promise) {
-      promise = this.featuresCache[url] = fetch(url)
+      const url = this.getUrl_(z, x, y);
+      promise = fetch(url)
           .then(r => (r.ok ? r : Promise.reject(r)))
           .then(r => r.arrayBuffer())
           .then(buffer => this.readFeaturesFromBuffer(buffer));
+      this.featureCache.set(cacheKey, promise);
+      if (this.featureCache.getCount() > 2 * this.featureCache.highWaterMark) {
+        while (this.featureCache.canExpireCache()) {
+          this.featureCache.pop();
+        }
+      }
     }
     return promise;
   }
@@ -87,29 +102,45 @@ export default class MVTImageryProvider {
     return features;
   }
 
+  getUrl_(z, x, y) {
+    const url = this.urls[0].replace('{x}', x).replace('{y}', y).replace('{z}', z);
+    return url;
+  }
+
+  getCacheKey_(z, x, y) {
+    return `${z}_${x}_${y}`;
+  }
+
   requestImage(x, y, z, request) {
     if (z < this.minimumLevel) {
       return this.emptyCanvas_;
     }
 
     try {
-      const url = this.urls[0].replace('{x}', x).replace('{y}', y).replace('{z}', z);
-      // stupid put everything in cache strategy
-      // no throttling, no subdomains
-      let promise = this.cache_[url];
+      const cacheKey = this.getCacheKey_(z, x, y);
+      let promise;
+      if (this.tileCache.containsKey(cacheKey)) {
+        promise = this.tileCache.get(cacheKey);
+      }
       if (!promise) {
-        promise = this.cache_[url] = this.getTileFeatures(url)
+        promise = this.getTileFeatures(z, x, y)
             .then((features) => {
             // FIXME: here we suppose the 2D projection is in meters
               this.tilingScheme.tileXYToNativeRectangle(x, y, z, this.tileRectangle_);
               const resolution = (this.tileRectangle_.east - this.tileRectangle_.west) / this.tileWidth;
               return this.rasterizeFeatures(features, this.styleFunction_, resolution);
             });
+        this.tileCache.set(cacheKey, promise);
+        if (this.tileCache.getCount() > 2 * this.tileCache.highWaterMark) {
+          while (this.tileCache.canExpireCache()) {
+            this.tileCache.pop();
+          }
+        }
       }
       return promise;
     } catch (e) {
       console.trace(e);
-      this.raiseEvent('could not render pbf to stile', e);
+      this.raiseEvent('could not render pbf to tile', e);
     }
   }
 
