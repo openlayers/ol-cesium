@@ -36,7 +36,7 @@ export default class MVTImageryProvider {
     this.emptyCanvas_.width = 1;
     this.emptyCanvas_.height = 1;
     this.tileRectangle_ = new Cesium.Rectangle();
-    const cacheSize = options.cacheSize ? options.cacheSize : 50;
+    const cacheSize = options.cacheSize !== undefined ? options.cacheSize : 50;
     this.tileCache = new LRUCache(cacheSize);
     this.featureCache = options.featureCache || new LRUCache(cacheSize);
     // to avoid too frequent cache grooming we allow x2 capacity
