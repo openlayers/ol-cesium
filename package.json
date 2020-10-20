@@ -31,7 +31,7 @@
     "@mapbox/geojsonhint": "3.0.0",
     "babel-loader": "8.1.0",
     "cesium": "1.73.0",
-    "copy-webpack-plugin": "6.1.1",
+    "copy-webpack-plugin": "6.2.1",
     "cross-env": "7.0.2",
     "eslint": "7.10.0",
     "eslint-config-openlayers": "12.0.0",
