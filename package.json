@@ -33,7 +33,7 @@
     "cesium": "1.74.0",
     "copy-webpack-plugin": "6.2.1",
     "cross-env": "7.0.2",
-    "eslint": "7.11.0",
+    "eslint": "7.12.1",
     "eslint-config-openlayers": "12.0.0",
     "eslint-import-resolver-webpack": "0.13.0",
     "fast-glob": "^3.2.4",
