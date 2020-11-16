@@ -29,7 +29,7 @@
     "@babel/core": "7.12.3",
     "@babel/preset-env": "7.12.1",
     "@mapbox/geojsonhint": "3.0.0",
-    "babel-loader": "8.1.0",
+    "babel-loader": "8.2.1",
     "cesium": "1.74.0",
     "copy-webpack-plugin": "6.2.1",
     "cross-env": "7.0.2",
