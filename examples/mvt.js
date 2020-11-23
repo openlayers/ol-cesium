@@ -15,8 +15,9 @@ import VectorTileSource from 'ol/source/VectorTile.js';
 import Stroke from 'ol/style/Stroke';
 import Style from 'ol/style/Style';
 import OSMSource from 'ol/source/OSM.js';
+import {OLCS_ION_TOKEN} from './_common.js';
 
-Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI0MzAyNzUyYi0zY2QxLTQxZDItODRkOS1hNTA3MDU3ZTBiMDUiLCJpZCI6MjU0MSwiaWF0IjoxNTMzNjI1MTYwfQ.oHn1SUWJa12esu7XUUtEoc1BbEbuZpRocLetw6M6_AA';
+Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 
 const projection = getProjection('EPSG:3857');
 console.assert(projection);

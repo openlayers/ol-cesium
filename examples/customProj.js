@@ -10,6 +10,7 @@ import olLayerTile from 'ol/layer/Tile.js';
 import olMap from 'ol/Map.js';
 import {get as getProjection} from 'ol/proj.js';
 import './_proj21781.js';
+import {OLCS_ION_TOKEN} from './_common.js';
 
 const customProjSource = new olSourceImageWMS({
   attributions: '© <a href="http://www.geo.admin.ch/internet/geoportal/' +
@@ -22,7 +23,7 @@ const customProjSource = new olSourceImageWMS({
 
 customProjSource.set('olcs.projection', getProjection('EPSG:3857'));
 
-Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI0MzAyNzUyYi0zY2QxLTQxZDItODRkOS1hNTA3MDU3ZTBiMDUiLCJpZCI6MjU0MSwiaWF0IjoxNTMzNjI1MTYwfQ.oHn1SUWJa12esu7XUUtEoc1BbEbuZpRocLetw6M6_AA';
+Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 const ol2d = new olMap({
   layers: [
     new olLayerTile({

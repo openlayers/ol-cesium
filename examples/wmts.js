@@ -3,8 +3,6 @@
  */
 import OLCesium from 'olcs/OLCesium.js';
 
-Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI0MzAyNzUyYi0zY2QxLTQxZDItODRkOS1hNTA3MDU3ZTBiMDUiLCJpZCI6MjU0MSwiaWF0IjoxNTMzNjI1MTYwfQ.oHn1SUWJa12esu7XUUtEoc1BbEbuZpRocLetw6M6_AA';
-
 import Map from 'ol/Map.js';
 import View from 'ol/View.js';
 import {getWidth, getTopLeft} from 'ol/extent.js';
@@ -13,8 +11,9 @@ import {get as getProjection} from 'ol/proj.js';
 import OSM from 'ol/source/OSM.js';
 import WMTS from 'ol/source/WMTS.js';
 import WMTSTileGrid from 'ol/tilegrid/WMTS.js';
+import {OLCS_ION_TOKEN} from './_common.js';
 
-
+Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 const projection = getProjection('EPSG:3857');
 const projectionExtent = projection.getExtent();
 const size = getWidth(projectionExtent) / 256;

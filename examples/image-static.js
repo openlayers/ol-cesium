@@ -12,10 +12,11 @@ import olMap from 'ol/Map.js';
 import {Image as ImageLayer} from 'ol/layer.js';
 import {getCenter} from 'ol/extent.js';
 import Static from 'ol/source/ImageStatic.js';
+import {OLCS_ION_TOKEN} from './_common.js';
 
 const imageExtent = [-40, 50, -10, 65];
 
-Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI0MzAyNzUyYi0zY2QxLTQxZDItODRkOS1hNTA3MDU3ZTBiMDUiLCJpZCI6MjU0MSwiaWF0IjoxNTMzNjI1MTYwfQ.oHn1SUWJa12esu7XUUtEoc1BbEbuZpRocLetw6M6_AA';
+Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 const ol2d = new olMap({
   layers: [
     new olLayerTile({

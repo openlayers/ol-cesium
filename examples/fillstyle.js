@@ -15,7 +15,7 @@ import olMap from 'ol/Map.js';
 import olSourceVector from 'ol/source/Vector.js';
 import olGeomPolygon from 'ol/geom/Polygon.js';
 import olLayerVector from 'ol/layer/Vector.js';
-
+import {OLCS_ION_TOKEN} from './_common.js';
 
 
 const vectorSource = new olSourceVector({
@@ -75,7 +75,7 @@ const map = new olMap({
   })
 });
 
-Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI0MzAyNzUyYi0zY2QxLTQxZDItODRkOS1hNTA3MDU3ZTBiMDUiLCJpZCI6MjU0MSwiaWF0IjoxNTMzNjI1MTYwfQ.oHn1SUWJa12esu7XUUtEoc1BbEbuZpRocLetw6M6_AA';
+Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 const ol3d = new OLCesium({map, target: 'map3d'});
 const scene = ol3d.getCesiumScene();
 scene.terrainProvider = Cesium.createWorldTerrain();
