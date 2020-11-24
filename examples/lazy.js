@@ -8,7 +8,7 @@ import olSourceOSM from 'ol/source/OSM.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olMap from 'ol/Map.js';
 import olcsContribManager from 'olcs/contrib/Manager.js';
-
+import {OLCS_ION_TOKEN} from './_common.js';
 
 const ol2d = new olMap({
   layers: [
@@ -28,5 +28,7 @@ const ol2d = new olMap({
   })
 });
 
-
-window['manager'] = new olcsContribManager(window.CESIUM_URL, {map: ol2d});
+window['manager'] = new olcsContribManager(window.CESIUM_URL, {
+  map: ol2d,
+  cesiumIonDefaultAccessToken: OLCS_ION_TOKEN
+});

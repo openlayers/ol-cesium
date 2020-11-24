@@ -8,6 +8,7 @@ import {defaults as olControlDefaults} from 'ol/control.js';
 import olSourceOSM from 'ol/source/OSM.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olMap from 'ol/Map.js';
+import {OLCS_ION_TOKEN} from './_common.js';
 
 
 const map = new olMap({
@@ -29,7 +30,7 @@ const map = new olMap({
 });
 
 
-Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI0MzAyNzUyYi0zY2QxLTQxZDItODRkOS1hNTA3MDU3ZTBiMDUiLCJpZCI6MjU0MSwiaWF0IjoxNTMzNjI1MTYwfQ.oHn1SUWJa12esu7XUUtEoc1BbEbuZpRocLetw6M6_AA';
+Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 const ol3d = new OLCesium({map/*, target: 'map3d'*/});
 const scene = ol3d.getCesiumScene();
 scene.terrainProvider = Cesium.createWorldTerrain();

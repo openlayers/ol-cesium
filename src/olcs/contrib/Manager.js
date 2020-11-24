@@ -12,6 +12,7 @@ import olObservable from 'ol/Observable.js';
  * @typedef {Object} ManagerOptions
  * @property {import('ol/Map.js').default} map
  * @property {import('ol/extent.js').Extent} [cameraExtentInRadians]
+ * @property {string} [cesiumIonDefaultAccessToken]
  */
 
 
@@ -21,7 +22,7 @@ const Manager = class extends olObservable {
    * @param {olcsx.contrib.ManagerOptions} options
    * @api
    */
-  constructor(cesiumUrl, {map, cameraExtentInRadians} = {}) {
+  constructor(cesiumUrl, {map, cameraExtentInRadians, cesiumIonDefaultAccessToken} = {}) {
 
     super();
 
@@ -62,11 +63,16 @@ const Manager = class extends olObservable {
     this.promise_;
 
     /**
+     * @type {string}
+     * @private
+     */
+    this.cesiumIonDefaultAccessToken_ = cesiumIonDefaultAccessToken;
+
+    /**
      * @type {olcs.OLCesium}
      * @protected
      */
     this.ol3d;
-
 
     /**
      * @const {number} Tilt angle in radians
@@ -131,6 +137,10 @@ const Manager = class extends olObservable {
       // Set the fly home rectangle
       Cesium.Camera.DEFAULT_VIEW_RECTANGLE = rect;
       this.boundingSphere_ = Cesium.BoundingSphere.fromRectangle3D(rect, Cesium.Ellipsoid.WGS84, 300); // lux mean height is 300m
+    }
+
+    if (this.cesiumIonDefaultAccessToken_) {
+      Cesium.Ion.defaultAccessToken = this.cesiumIonDefaultAccessToken_;
     }
 
     this.ol3d = this.instantiateOLCesium();

@@ -9,6 +9,7 @@ import {fromLonLat} from 'ol/proj.js';
 import olSourceOSM from 'ol/source/OSM.js';
 import olSourceTileJSON from 'ol/source/TileJSON.js';
 import OLCesium from 'olcs/OLCesium.js';
+import {OLCS_ION_TOKEN} from './_common.js';
 
 const layer0 = new olLayerTile({
   source: new olSourceOSM()
@@ -46,6 +47,7 @@ const ol2d = new olMap({
   })
 });
 
+Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 const ol3d = new OLCesium({map: ol2d, target: 'map3d'});
 ol3d.setEnabled(true);
 
