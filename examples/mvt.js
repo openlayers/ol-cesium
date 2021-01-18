@@ -66,7 +66,7 @@ function createMVTLayer(url, maxZoom) {
 }
 
 export const mvtLayer = createMVTLayer(
-    'https://map.dev.schweizmobil-hosting.ch/api/4/mvt_routes/3857/{z}/{x}/{y}.pbf?olcs',
+    'https://map.schweizmobil.ch/api/4/mvt_routes/wander/3857/{z}/{x}/{y}.pbf?olcs',
     20);
 
 function createOSMLayer() {

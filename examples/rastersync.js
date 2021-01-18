@@ -22,12 +22,6 @@ const view = new olView({
 const layer0 = new olLayerTile({
   source: new olSourceOSM()
 });
-const layer1 = new olLayerTile({
-  source: new olSourceTileJSON({
-    url: 'https://tileserver.maptiler.com/grandcanyon.json',
-    crossOrigin: 'anonymous'
-  })
-});
 
 const key = 'pk.eyJ1IjoiZ2JvMiIsImEiOiJjazFraHV4N3gwZHliM2JucHYxdTNnNXh1In0.tzs3TxoVCaMNQf455mh-3w';
 const tileJsonSource = new olSourceTileJSON({
@@ -39,10 +33,9 @@ const layer2 = new olLayerTile({
   source: tileJsonSource
 });
 const ol2d = new olMap({
-  layers: [layer0, new olLayerGroup({layers: [layer1, layer2]})],
+  layers: [layer0, new olLayerGroup({layers: [layer2]})],
   target: 'map2d',
   view,
-  renderer: 'webgl'
 });
 
 Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
@@ -104,6 +97,5 @@ window['global'] = {
   addTileJSON,
   changeTileWMSParams,
   layer0,
-  layer1,
   layer2
 };
