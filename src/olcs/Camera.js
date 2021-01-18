@@ -5,7 +5,7 @@
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
 import {toRadians, toDegrees} from './math.js';
 import {getTransform} from 'ol/proj.js';
-import olcsCore from './core.js';
+import olcsCore, {calcDistanceForResolution, calcResolutionForDistance} from './core.js';
 
 class Camera {
   /**
@@ -457,36 +457,7 @@ class Camera {
    * @api
    */
   calcDistanceForResolution(resolution, latitude) {
-    const canvas = this.scene_.canvas;
-    const fovy = this.cam_.frustum.fovy; // vertical field of view
-    console.assert(!isNaN(fovy));
-    const metersPerUnit = this.view_.getProjection().getMetersPerUnit();
-
-    // number of "map units" visible in 2D (vertically)
-    const visibleMapUnits = resolution * canvas.clientHeight;
-
-    // The metersPerUnit does not take latitude into account, but it should
-    // be lower with increasing latitude -- we have to compensate.
-    // In 3D it is not possible to maintain the resolution at more than one point,
-    // so it only makes sense to use the latitude of the "target" point.
-    const relativeCircumference = Math.cos(Math.abs(latitude));
-
-    // how many meters should be visible in 3D
-    const visibleMeters = visibleMapUnits * metersPerUnit * relativeCircumference;
-
-    // distance required to view the calculated length in meters
-    //
-    //  fovy/2
-    //    |\
-    //  x | \
-    //    |--\
-    // visibleMeters/2
-    const requiredDistance = (visibleMeters / 2) / Math.tan(fovy / 2);
-
-    // NOTE: This calculation is not absolutely precise, because metersPerUnit
-    // is a great simplification. It does not take ellipsoid/terrain into account.
-
-    return requiredDistance;
+    return calcDistanceForResolution(resolution, latitude, this.scene_, this.view_.getProjection());
   }
 
   /**
@@ -497,17 +468,7 @@ class Camera {
    * @api
    */
   calcResolutionForDistance(distance, latitude) {
-    // See the reverse calculation (calcDistanceForResolution) for details
-    const canvas = this.scene_.canvas;
-    const fovy = this.cam_.frustum.fovy;
-    const metersPerUnit = this.view_.getProjection().getMetersPerUnit();
-
-    const visibleMeters = 2 * distance * Math.tan(fovy / 2);
-    const relativeCircumference = Math.cos(Math.abs(latitude));
-    const visibleMapUnits = visibleMeters / metersPerUnit / relativeCircumference;
-    const resolution = visibleMapUnits / canvas.clientHeight;
-
-    return resolution;
+    return calcResolutionForDistance(distance, latitude, this.scene_, this.view_.getProjection());
   }
 }
 

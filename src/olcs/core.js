@@ -774,3 +774,72 @@ export function attributionsFunctionToCredits(attributionsFunction, zoom, center
 }
 
 export default exports;
+
+
+/**
+ * calculate the distance between camera and centerpoint based on the resolution and latitude value
+ * @param {number} resolution Number of map units per pixel.
+ * @param {number} latitude Latitude in radians.
+ * @param {import('cesium').Scene} scene.
+ * @param {import('ol/proj/Projection').default} projection View projection.
+ * @return {number} The calculated distance.
+ * @api
+ */
+export function calcDistanceForResolution(resolution, latitude, scene, projection) {
+  const canvas = scene.canvas;
+  const camera = scene.camera;
+  const fovy = camera.frustum.fovy; // vertical field of view
+  console.assert(!isNaN(fovy));
+  const metersPerUnit = projection.getMetersPerUnit();
+
+  // number of "map units" visible in 2D (vertically)
+  const visibleMapUnits = resolution * canvas.clientHeight;
+
+  // The metersPerUnit does not take latitude into account, but it should
+  // be lower with increasing latitude -- we have to compensate.
+  // In 3D it is not possible to maintain the resolution at more than one point,
+  // so it only makes sense to use the latitude of the "target" point.
+  const relativeCircumference = Math.cos(Math.abs(latitude));
+
+  // how many meters should be visible in 3D
+  const visibleMeters = visibleMapUnits * metersPerUnit * relativeCircumference;
+
+  // distance required to view the calculated length in meters
+  //
+  //  fovy/2
+  //    |\
+  //  x | \
+  //    |--\
+  // visibleMeters/2
+  const requiredDistance = (visibleMeters / 2) / Math.tan(fovy / 2);
+
+  // NOTE: This calculation is not absolutely precise, because metersPerUnit
+  // is a great simplification. It does not take ellipsoid/terrain into account.
+
+  return requiredDistance;
+}
+
+/**
+ * calculate the resolution based on a distance(camera to position) and latitude value
+ * @param {number} distance
+ * @param {number} latitude
+ * @param {import('cesium').Scene} scene.
+ * @param {import('ol/proj/Projection').default} projection View projection.
+ * @return {number} The calculated resolution.
+ * @api
+ */
+export function calcResolutionForDistance(distance, latitude, scene, projection) {
+  // See the reverse calculation (calcDistanceForResolution) for details
+  const canvas = scene.canvas;
+  const camera = scene.camera;
+  const fovy = camera.frustum.fovy; // vertical field of view
+  console.assert(!isNaN(fovy));
+  const metersPerUnit = projection.getMetersPerUnit();
+
+  const visibleMeters = 2 * distance * Math.tan(fovy / 2);
+  const relativeCircumference = Math.cos(Math.abs(latitude));
+  const visibleMapUnits = visibleMeters / metersPerUnit / relativeCircumference;
+  const resolution = visibleMapUnits / canvas.clientHeight;
+
+  return resolution;
+}
