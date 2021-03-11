@@ -5,6 +5,8 @@ import {toContext} from 'ol/render.js';
 import {get as getProjection} from 'ol/proj.js';
 import {VERSION as OL_VERSION} from 'ol/util.js';
 import LRUCache from 'ol/structs/LRUCache.js';
+import {getForProjection as getTilegridForProjection} from 'ol/tilegrid.js';
+import {createFromTemplates as createTileUrlFunctions} from 'ol/tileurlfunction.js';
 
 
 const format = new MVT();
@@ -40,6 +42,9 @@ export default class MVTImageryProvider {
     this.tileCache = new LRUCache(cacheSize);
     this.featureCache = options.featureCache || new LRUCache(cacheSize);
     // to avoid too frequent cache grooming we allow x2 capacity
+
+    const tileGrid = getTilegridForProjection(this.projection_);
+    this.tileFunction_ = createTileUrlFunctions(this.urls, tileGrid);
   }
 
   getTileCredits() {
@@ -103,7 +108,7 @@ export default class MVTImageryProvider {
   }
 
   getUrl_(z, x, y) {
-    const url = this.urls[0].replace('{x}', x).replace('{y}', y).replace('{z}', z);
+    const url = this.tileFunction_([z, x, y]);
     return url;
   }
 
