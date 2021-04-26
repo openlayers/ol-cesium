@@ -500,6 +500,9 @@ exports.tileLayerToImageryLayer = function(olMap, olLayer, viewProj) {
   }
 
   const source = olLayer.getSource();
+  if (!source) {
+    return null;
+  }
   let provider = source.get('olcs_provider');
   if (!provider) {
     provider = this.sourceToImageryProvider(olMap, source, viewProj, olLayer);
