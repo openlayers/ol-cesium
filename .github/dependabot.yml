@@ -1,0 +1,61 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: weekly
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: eslint
+    versions:
+    - 7.19.0
+    - 7.20.0
+    - 7.21.0
+    - 7.22.0
+    - 7.23.0
+    - 7.24.0
+  - dependency-name: "@babel/core"
+    versions:
+    - 7.12.13
+    - 7.12.16
+    - 7.12.17
+    - 7.13.10
+    - 7.13.13
+    - 7.13.14
+    - 7.13.15
+    - 7.13.8
+  - dependency-name: typedoc
+    versions:
+    - 0.20.18
+    - 0.20.20
+    - 0.20.23
+    - 0.20.25
+    - 0.20.27
+    - 0.20.28
+    - 0.20.30
+    - 0.20.32
+    - 0.20.33
+    - 0.20.34
+    - 0.20.35
+  - dependency-name: "@babel/preset-env"
+    versions:
+    - 7.12.13
+    - 7.12.16
+    - 7.12.17
+    - 7.13.10
+    - 7.13.12
+    - 7.13.8
+    - 7.13.9
+  - dependency-name: typescript
+    versions:
+    - 4.1.5
+    - 4.2.2
+    - 4.2.3
+  - dependency-name: cesium
+    versions:
+    - 1.78.0
+    - 1.79.1
+  - dependency-name: webpack-cli
+    versions:
+    - 4.4.0
+    - 4.5.0
