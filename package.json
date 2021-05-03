@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@babel/core": "7.12.10",
-    "@babel/preset-env": "7.12.11",
+    "@babel/preset-env": "7.14.0",
     "@mapbox/geojsonhint": "3.0.0",
     "babel-loader": "8.2.2",
     "cesium": "1.77.0",
