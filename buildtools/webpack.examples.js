@@ -24,7 +24,6 @@ for (const filename of glob.sync('examples/*.html', {onlyFiles: true})) {
   plugins.push(
       new HtmlWebpackPlugin({
         template: `examples/${name}.html`,
-        chunksSortMode: 'manual',
         filename: `${exampleFilenamePrefix + name}.html`,
         chunks: ['commons', name],
       })

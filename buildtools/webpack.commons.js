@@ -1,6 +1,5 @@
 const path = require('path');
 
-
 const babelPresets = [['@babel/preset-env', {
   'targets': {
     'browsers': ['ie 11'],
@@ -31,16 +30,6 @@ const olcsRule = {
   }
 };
 
-const htmlRule = {
-  test: /\.html$/,
-  use: [{
-    loader: 'html-loader',
-    options: {
-      minimize: false,
-      attributes: false
-    }
-  }]
-};
 
 const iconRule = {
   test: /\.(png|svg)$/,
@@ -59,7 +48,6 @@ const config = {
     rules: [
       olRule,
       olcsRule,
-      htmlRule,
       iconRule
     ]
   },
