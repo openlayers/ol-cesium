@@ -1,5 +1,12 @@
 # Changelog
 
+# v 2.13 - 2021-05-20
+
+* Changes
+  * Port to CesiumJS 1.81
+  * Port dev environment to webpack5
+  * Copy canvas image when cloning overlay
+
 # v 2.12 - 2021-01-18
 
 * Changes
