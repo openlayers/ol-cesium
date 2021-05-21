@@ -184,6 +184,10 @@ class SynchronizedOverlay extends olOverlay {
   handleElementChanged() {
     function cloneNode(node, parent) {
       const clone = node.cloneNode();
+      if (node.nodeName === 'CANVAS') {
+        const ctx = clone.getContext('2d');
+        ctx.drawImage(node, 0, 0);
+      }
       if (parent) {
         parent.appendChild(clone);
       }
