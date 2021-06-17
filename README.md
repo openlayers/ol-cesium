@@ -24,7 +24,7 @@ The library is configurable and extensible and allows:
 - Lazy or eager loading of Cesium
 - Limiting Cesium resource consumption (idle detection)
 
-For synchronization of maps in projections other than EPSG:4326 and EPSG:3857, see [#562](https://github.com/openlayers/ol-cesium/pull/562) branch.
+For synchronization of maps in projections other than EPSG:4326 and EPSG:3857 you need 2 datasets, see the customProj example.
 
 Integration in your application
 -------------------------------
@@ -46,7 +46,7 @@ ol3d.setEnabled(true);
 For Cesium integration see [ol-cesium-webpack-example](https://github.com/gberaudo/ol-cesium-webpack-example)
 based on the official `Cesium With Webpack` example.
 
-### As an old-fashioned independent library
+### As an old-fashioned independent library (need update)
 
 - build the library in dist/olcs.js:
 ```bash
@@ -54,9 +54,7 @@ npm i --save olcs
 npm run build-library
 ```
 
-- get the CSS from css/olcs.css;
-
-- if needed build a [full OL5 build](https://github.com/geoblocks/legacylib/tree/master/ol5);
+- get the CSS and JS from the full build at https://openlayers.org/download/
 
 - use as follow:
 ```js
@@ -70,7 +68,7 @@ In addition, see the [old fashioned example](https://openlayers.org/ol-cesium/ex
 ```bash
 npm i --save ol-cesium
 ```
-The UMD-specific build is located here: `node_modules/ol-cesium/dist/olcesium.umd.js`  
+The UMD-specific build is located here: `node_modules/ol-cesium/dist/olcesium.umd.js`
 
 
 Then import the parts you need. Example:
