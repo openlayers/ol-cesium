@@ -48,7 +48,7 @@
     "proj4": "^2.7.2",
     "temp": "0.9.4",
     "typedoc": "^0.20.36",
-    "typescript": "~4.2.4",
+    "typescript": "~4.3.5",
     "webpack": "^5.37.1",
     "webpack-cli": "^4.7.0",
     "webpack-dev-server": "3.11.2",
