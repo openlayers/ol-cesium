@@ -37,7 +37,7 @@
     "eslint": "^7.26.0",
     "eslint-config-openlayers": "12.0.0",
     "eslint-import-resolver-webpack": "^0.13.1",
-    "fast-glob": "3.2.5",
+    "fast-glob": "3.2.7",
     "fs-extra": "^10.0.0",
     "html-loader": "^2.1.2",
     "html-webpack-plugin": "^5.3.1",
