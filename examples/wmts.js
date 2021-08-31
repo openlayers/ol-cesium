@@ -34,12 +34,12 @@ const map = new Map({
     new TileLayer({
       opacity: 0.7,
       source: new WMTS({
-        attributions: 'Tiles © <a href="https://services.arcgisonline.com/arcgis/rest/' +
-            'services/Demographics/USA_Population_Density/MapServer/">ArcGIS</a>',
-        url: 'https://services.arcgisonline.com/arcgis/rest/' +
-            'services/Demographics/USA_Population_Density/MapServer/WMTS/',
-        layer: '0',
-        matrixSet: 'EPSG:3857',
+        attributions: 'Tiles © <a href="https://sampleserver6.arcgisonline.com/arcgis/rest/' +
+            'services/WorldTimeZones/MapServer/WMTS/">ArcGIS</a>',
+        url: 'https://sampleserver6.arcgisonline.com/arcgis/rest/' +
+            'services/WorldTimeZones/MapServer/WMTS/',
+        layer: 'WorldTimeZones',
+        matrixSet: 'GoogleMapsCompatible',
         format: 'image/png',
         projection,
         tileGrid: new WMTSTileGrid({
