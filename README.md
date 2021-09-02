@@ -43,8 +43,13 @@ const ol3d = new OLCesium({map: ol2dMap}); // ol2dMap is the ol.Map instance
 ol3d.setEnabled(true);
 ```
 
-For Cesium integration see [ol-cesium-webpack-example](https://github.com/gberaudo/ol-cesium-webpack-example)
-based on the official `Cesium With Webpack` example.
+In addition, you need to expose the Cesium library as `window.Cesium`.
+For this, simply add the Cesium script to your html:
+```html
+<script type="text/javascript" src="..your_path../Cesium.js"></script>
+```
+
+For Cesium integration with Webpack, see [ol-cesium-webpack-example](https://github.com/gberaudo/ol-cesium-webpack-example).
 
 ### As an old-fashioned independent library (need update)
 
@@ -62,7 +67,8 @@ const ol3d = new olcs.OLCesium({map: ol2dMap}); // ol2dMap is the ol.Map instanc
 ol3d.setEnabled(true);
 ```
 
-In addition, see the [old fashioned example](https://openlayers.org/ol-cesium/examples/oldfashioned.html).
+For the remaining steps, see the [old fashioned example](https://openlayers.org/ol-cesium/examples/oldfashioned.html).
+Notably, you need the Cesium library.
 
 ### As an UMD library (Angular, ...)
 ```bash
@@ -76,6 +82,12 @@ Then import the parts you need. Example:
 import OLCesium from 'ol-cesium';
 const ol3d = new OLCesium({map: ol2dMap}); // ol2dMap is the ol.Map instance
 ol3d.setEnabled(true);
+```
+
+In addition, you need to expose the Cesium library as `window.Cesium`.
+For this, simply add the Cesium script to your html:
+```html
+<script type="text/javascript" src="..your_path../Cesium.js"></script>
 ```
 
 Going further
