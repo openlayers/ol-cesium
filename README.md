@@ -6,7 +6,7 @@ ES6 modules
 -----------
 
 Since version 2.0, the code is entirely based on ES6 modules and syntax.
-It requires OpenLayers 5.x.
+It requires OpenLayers 6.x.
 A convenient ES6 package `olcs` is available on npm.
 
 Features
@@ -29,7 +29,8 @@ For synchronization of maps in projections other than EPSG:4326 and EPSG:3857 yo
 Integration in your application
 -------------------------------
 
-There are several ways to use OL-Cesium in your application.
+There are several ways to integrate OL-Cesium in your application.
+In all cases OpenLayers and Cesium are peer-dependencies of OL-Cesium, your application need to depend on a compatible version of OpenLayers and of Cesium. Note that Cesium is accessed through the global `window.Cesium` object. OpenLayers is accessed through ES6 imports.
 
 ### As an ES6 library (recommended method)
 ```bash
