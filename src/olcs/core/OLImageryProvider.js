@@ -1,7 +1,6 @@
 /**
  * @module olcs.core.OLImageryProvider
  */
-import {get as getProjection} from 'ol/proj.js';
 import olcsUtil from '../util.js';
 import {Tile as TileSource} from 'ol/source.js';
 import {attributionsFunctionToCredits} from '../core.js';
@@ -124,11 +123,11 @@ class OLImageryProvider /* should not extend Cesium.ImageryProvider */ {
         });
       }
 
-      if (this.projection_ == getProjection('EPSG:4326')) {
+      if (this.projection_.getCode() === 'EPSG:4326') {
         // Cesium zoom level 0 is OpenLayers zoom level 1 for layer in EPSG:4326 with a single tile on level 0
         this.shouldRequestNextLevel = options.numberOfLevelZeroTilesX === 1 && options.numberOfLevelZeroTilesY === 1;
         this.tilingScheme_ = new Cesium.GeographicTilingScheme(options);
-      } else if (this.projection_ == getProjection('EPSG:3857')) {
+      } else if (this.projection_.getCode() === 'EPSG:3857') {
         this.shouldRequestNextLevel = false;
         this.tilingScheme_ = new Cesium.WebMercatorTilingScheme(options);
       } else {

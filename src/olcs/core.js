@@ -595,7 +595,7 @@ exports.olGeometryCloneTo4326 = function(geometry, projection) {
 
   const proj4326 = getProjection('EPSG:4326');
   const proj = getProjection(projection);
-  if (proj !== proj4326) {
+  if (proj.getCode() !== proj4326.getCode()) {
     const properties = geometry.getProperties();
     geometry = geometry.clone();
     geometry.transform(proj, proj4326);
@@ -753,8 +753,8 @@ exports.normalizeView = function(view, angle = 0) {
  * @returns {boolean} Whether it's managed by Cesium.
  */
 exports.isCesiumProjection = function(projection) {
-  const is3857 = projection === getProjection('EPSG:3857');
-  const is4326 = projection === getProjection('EPSG:4326');
+  const is3857 = projection.getCode() === 'EPSG:3857';
+  const is4326 = projection.getCode() === 'EPSG:4326';
   return is3857 || is4326;
 };
 
