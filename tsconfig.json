@@ -5,6 +5,7 @@
       //"checkJs": true,
       "noEmit": true,
       "baseUrl": "./",
+      "skipLibCheck": true,
       "moduleResolution": "node",
       "paths": {
         "ol/*": ["node_modules/ol/*"]
