@@ -7,7 +7,7 @@
     "build-library": "cross-env NODE_ENV=production TARGET=library webpack --progress --bail",
     "build-library-debug": "cross-env NODE_ENV=development TARGET=library webpack --progress --bail",
     "build-umd": "cross-env NODE_ENV=production TARGET=umd webpack --progress --bail",
-    "start": "cross-env DEV_SERVER=1 NODE_ENV=development TARGET=examples webpack serve --port 3000 --progress --bail",
+    "start": "cross-env DEV_SERVER=1 NODE_ENV=development TARGET=examples webpack serve --port 3000 --progress --bail --static-directory .",
     "typecheck": "tsc --pretty",
     "doc": "typedoc --name ol-cesium --excludeExternals --out dist/apidoc --entryPoints src/index.library.js --tsconfig ./tsconfig.json"
   },
@@ -32,16 +32,16 @@
     "@types/webpack": "^5.28.0",
     "babel-loader": "^8.2.5",
     "cesium": "^1.98.1",
-    "copy-webpack-plugin": "^9.0.0",
+    "copy-webpack-plugin": "^11.0.0",
     "cross-env": "7.0.3",
     "eslint": "^7.26.0",
     "eslint-config-openlayers": "12.0.0",
     "eslint-import-resolver-webpack": "^0.13.1",
     "fast-glob": "^3.2.12",
     "fs-extra": "^10.0.0",
-    "html-loader": "^2.1.2",
+    "html-loader": "^4.2.0",
     "html-webpack-plugin": "^5.3.1",
-    "htmlparser2": "^6.1.0",
+    "htmlparser2": "^8.0.1",
     "jsdoc": "^3.6.7",
     "nomnom": "1.8.1",
     "ol": "^7.1.0",
@@ -51,7 +51,7 @@
     "typescript": "^4.8.4",
     "webpack": "^5.37.1",
     "webpack-cli": "^4.7.0",
-    "webpack-dev-server": "3.11.2",
+    "webpack-dev-server": "^4.11.1",
     "webpack-merge": "^5.8.0"
   }
 }
