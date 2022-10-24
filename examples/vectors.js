@@ -27,6 +27,7 @@ import olGeomPolygon from 'ol/geom/Polygon.js';
 import olInteractionDragAndDrop from 'ol/interaction/DragAndDrop.js';
 import olGeomMultiPolygon from 'ol/geom/MultiPolygon.js';
 import olLayerVector from 'ol/layer/Vector.js';
+import olLayerVectorImage from 'ol/layer/VectorImage.js';
 import {transform} from 'ol/proj.js';
 import olcsCore from 'olcs/core.js';
 import {OLCS_ION_TOKEN} from './_common.js';
@@ -278,6 +279,11 @@ const vectorLayer = new olLayerVector({
   source: vectorSource
 });
 
+const vectorImageLayer = new olLayerVectorImage({
+  style: styleFunction,
+  source: vectorSource
+});
+
 const vectorSource2 = new olSourceVector({
   features: [iconFeature, textFeature, cervinFeature, ...modelFeatures, cartographicRectangle,
     cartographicRectangle2]
@@ -356,6 +362,17 @@ window['addOrRemoveOneVectorLayer'] = function() {
     map.getLayers().insertAt(1, vectorLayer);
   }
   hasTheVectorLayer = !hasTheVectorLayer;
+};
+
+let hasTheVectorImageLayer = false;
+window['addOrRemoveOneVectorImageLayer'] = function() {
+
+  if (hasTheVectorImageLayer) {
+    map.getLayers().remove(vectorImageLayer);
+  } else {
+    map.getLayers().insertAt(2, vectorImageLayer);
+  }
+  hasTheVectorImageLayer = !hasTheVectorImageLayer;
 };
 
 window['addOrRemoveOneFeature'] = function() {
