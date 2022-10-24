@@ -10,6 +10,7 @@ import olLayerVector from 'ol/layer/Vector.js';
 import olLayerVectorTile from 'ol/layer/VectorTile.js';
 import olcsAbstractSynchronizer from './AbstractSynchronizer.js';
 import olcsFeatureConverter from './FeatureConverter.js';
+import olLayerVectorImage from 'ol/layer/VectorImage.js';
 
 class VectorSynchronizer extends olcsAbstractSynchronizer {
   /**
@@ -99,8 +100,16 @@ class VectorSynchronizer extends olcsAbstractSynchronizer {
    * @inheritDoc
    */
   createSingleLayerCounterparts(olLayerWithParents) {
-    const olLayer = olLayerWithParents.layer;
-    if (!(olLayer instanceof olLayerVector) || olLayer instanceof olLayerVectorTile) {
+    let olLayer = olLayerWithParents.layer;
+
+    if(olLayerWithParents.layer instanceof olLayerVectorImage){
+      let convertedVectorLayer = new olLayerVector({source: null});
+      convertedVectorLayer.setStyle(olLayerWithParents.layer.getStyle())
+      convertedVectorLayer.setSource(olLayerWithParents.layer.getSource())
+      olLayer = convertedVectorLayer;
+    }
+    
+    if (!(olLayer instanceof olLayerVector) || olLayer instanceof olLayerVectorTile  || olLayer instanceof olLayerVectorImage) {
       return null;
     }
     console.assert(olLayer instanceof olLayerLayer);
