@@ -1,5 +1,11 @@
 # Changelog
 
+
+# v 2.13.2 - 2022-11-
+
+* Changes
+  * port to CesiumJS 1.99 and OL 7.1
+
 # v 2.13 - 2021-05-20
 
 * Changes
