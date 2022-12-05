@@ -8,9 +8,9 @@ import olSourceCluster from 'ol/source/Cluster.js';
 import {circular as olCreateCircularPolygon} from 'ol/geom/Polygon.js';
 import {boundingExtent, getCenter} from 'ol/extent.js';
 import olGeomSimpleGeometry from 'ol/geom/SimpleGeometry.js';
-import olcsCore from './core.js';
+import {olcsCore} from './core.js';
 import olcsCoreVectorLayerCounterpart from './core/VectorLayerCounterpart.js';
-import olcsUtil, {getUid, isGroundPolylinePrimitiveSupported} from './util.js';
+import {olcsUtil, getUid, isGroundPolylinePrimitiveSupported} from './util.js';
 
 
 /**

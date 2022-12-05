@@ -3,7 +3,7 @@
  */
 import olcsContribLazyLoader from '../contrib/LazyLoader.js';
 import OLCesium from '../OLCesium.js';
-import olcsCore from '../core.js';
+import {olcsCore} from '../core.js';
 import {toRadians} from '../math.js';
 import olObservable from 'ol/Observable.js';
 

@@ -5,7 +5,7 @@
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
 import {toRadians, toDegrees} from './math.js';
 import {getTransform} from 'ol/proj.js';
-import olcsCore, {calcDistanceForResolution, calcResolutionForDistance} from './core.js';
+import {olcsCore, calcDistanceForResolution, calcResolutionForDistance} from './core.js';
 
 class Camera {
   /**

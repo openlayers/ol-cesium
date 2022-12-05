@@ -4,7 +4,7 @@
 import olLayerGroup from 'ol/layer/Group.js';
 import {getUid, stableSort} from './util.js';
 import olcsAbstractSynchronizer from './AbstractSynchronizer.js';
-import olcsCore from './core.js';
+import {olcsCore} from './core.js';
 
 class RasterSynchronizer extends olcsAbstractSynchronizer {
   /**

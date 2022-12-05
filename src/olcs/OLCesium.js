@@ -3,8 +3,8 @@
  */
 import olGeomPoint from 'ol/geom/Point.js';
 import {getTransform} from 'ol/proj.js';
-import olcsUtil from './util.js';
-import olcsCore from './core.js';
+import {olcsUtil} from './util.js';
+import {olcsCore} from './core.js';
 import olcsAutoRenderLoop from './AutoRenderLoop.js';
 import olcsCamera from './Camera.js';
 import olcsRasterSynchronizer from './RasterSynchronizer.js';
