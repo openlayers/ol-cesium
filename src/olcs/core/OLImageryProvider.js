@@ -1,7 +1,7 @@
 /**
  * @module olcs.core.OLImageryProvider
  */
-import olcsUtil from '../util.js';
+import {olcsUtil} from '../util.js';
 import {Tile as TileSource} from 'ol/source.js';
 import {attributionsFunctionToCredits} from '../core.js';
 
