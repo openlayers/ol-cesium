@@ -12,7 +12,7 @@ import olSourceTileWMS from 'ol/source/TileWMS.js';
 import olSourceVectorTile from 'ol/source/VectorTile.js';
 import {defaultImageLoadFunction} from 'ol/source/Image.js';
 import olcsCoreOLImageryProvider from './core/OLImageryProvider.js';
-import {olcsUtil} from './util.js';
+import {getSourceProjection} from './util.js';
 import MVTImageryProvider from './MVTImageryProvider.js';
 import VectorTileLayer from 'ol/layer/VectorTile.js';
 import {getCenter as getExtentCenter} from 'ol/extent';
@@ -408,7 +408,7 @@ export function sourceToImageryProvider(olMap, source, viewProj, olLayer) {
   }
 
   if (source instanceof olSourceTileImage) {
-	let projection = olcsUtil.getSourceProjection(source);
+	let projection = getSourceProjection(source);
 
 	if (!projection) {
 	  // if not explicit, assume the same projection as view
@@ -423,7 +423,7 @@ export function sourceToImageryProvider(olMap, source, viewProj, olLayer) {
 	  return null;
 	}
   } else if (source instanceof olSourceImageStatic) {
-	let projection = olcsUtil.getSourceProjection(source);
+	let projection = getSourceProjection(source);
 	if (!projection) {
 	  projection = viewProj;
 	}
@@ -443,7 +443,7 @@ export function sourceToImageryProvider(olMap, source, viewProj, olLayer) {
 	  return null;
 	}
   } else if (source instanceof olSourceVectorTile) {
-	let projection = olcsUtil.getSourceProjection(source);
+	let projection = getSourceProjection(source);
 
 	if (!projection) {
 	  projection = viewProj;
