@@ -2,74 +2,67 @@
  * @module olcs.util
  */
 
-class OLCesiumUtils {
- 
-	/**
-	 * Cast to object.
-	 * @param {Object} param
-	 * @return {Object}
-	 */
-	obj(param) {
-	  return param;
+/**
+ * Cast to object.
+ * @param {Object} param
+ * @return {Object}
+ */
+export function obj(param) {
+  return param;
+}
+
+/**
+ * @type {boolean|undefined}
+ * @private
+ */
+let supportsImageRenderingPixelatedResult_ = undefined;
+
+
+/**
+ * @type {string|undefined}
+ * @private
+ */
+let imageRenderingValueResult_ = undefined;
+
+
+/**
+ * @return {boolean}
+ */
+export function supportsImageRenderingPixelated() {
+  if (supportsImageRenderingPixelatedResult_ === undefined) {
+	const canvas = document.createElement('canvas');
+	canvas.setAttribute('style', 'image-rendering: -moz-crisp-edges; image-rendering: pixelated;');
+	// canvas.style.imageRendering will be undefined, null or an
+	// empty string on unsupported browsers.
+	const tmp = canvas.style['imageRendering']; // non standard
+	supportsImageRenderingPixelatedResult_ = !!tmp;
+	if (supportsImageRenderingPixelatedResult_) {
+	  imageRenderingValueResult_ = tmp;
 	}
-
-	constructor(){
-
-		/**
-		 * @type {boolean|undefined}
-		 * @private
-		 */
-		this.supportsImageRenderingPixelatedResult_ = undefined;
+  }
+  return supportsImageRenderingPixelatedResult_;
+}
 
 
-		/**
-		 * @type {string|undefined}
-		 * @private
-		 */
-		this.imageRenderingValueResult_ = undefined;
+/**
+ * @return {string}
+ */
+export function imageRenderingValue() {
+  supportsImageRenderingPixelated();
+  return imageRenderingValueResult_ || '';
+}
 
-	}
+/**
+ * Return the projection of the source that Cesium should use.
+ *
+ * @param {ol.source.Source} source Source.
+ * @returns {ol.proj.Projection} The projection of the source.
+ */
+export function getSourceProjection(source) {
+  return /** @type {ol.proj.Projection} */ (source.get('olcs.projection'))
+	|| source.getProjection();
+}
 
-	/**
-	 * @return {boolean}
-	 */
-	supportsImageRenderingPixelated() {
-	  if (this.supportsImageRenderingPixelatedResult_ === undefined) {
-		const canvas = document.createElement('canvas');
-		canvas.setAttribute('style', 'image-rendering: -moz-crisp-edges; image-rendering: pixelated;');
-		// canvas.style.imageRendering will be undefined, null or an
-		// empty string on unsupported browsers.
-		const tmp = canvas.style['imageRendering']; // non standard
-		this.supportsImageRenderingPixelatedResult_ = !!tmp;
-		if (this.supportsImageRenderingPixelatedResult_) {
-		  this.imageRenderingValueResult_ = tmp;
-		}
-	  }
-	  return this.supportsImageRenderingPixelatedResult_;
-	}
-
-
-	/**
-	 * @return {string}
-	 */
-	imageRenderingValue() {
-	  this.supportsImageRenderingPixelated();
-	  return this.imageRenderingValueResult_ || '';
-	}
-
-	/**
-	 * Return the projection of the source that Cesium should use.
-	 *
-	 * @param {ol.source.Source} source Source.
-	 * @returns {ol.proj.Projection} The projection of the source.
-	 */
-	getSourceProjection(source) {
-	  return /** @type {ol.proj.Projection} */ (source.get('olcs.projection'))
-		|| source.getProjection();
-	}
-} 
-
-export const olcsUtil = new OLCesiumUtils()
 
 /**
  * @param {ol.Observable} observable

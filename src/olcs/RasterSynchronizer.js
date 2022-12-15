@@ -4,7 +4,7 @@
 import olLayerGroup from 'ol/layer/Group.js';
 import {getUid, stableSort} from './util.js';
 import olcsAbstractSynchronizer from './AbstractSynchronizer.js';
-import {olcsCore} from './core.js';
+import {tileLayerToImageryLayer, updateCesiumLayerProperties} from './core.js';
 
 class RasterSynchronizer extends olcsAbstractSynchronizer {
   /**
@@ -77,7 +77,7 @@ class RasterSynchronizer extends olcsAbstractSynchronizer {
    * @protected
    */
   convertLayerToCesiumImageries(olLayer, viewProj) {
-    const result = olcsCore.tileLayerToImageryLayer(this.map, olLayer, viewProj);
+    const result = tileLayerToImageryLayer(this.map, olLayer, viewProj);
     return result ? [result] : null;
   }
 
@@ -97,7 +97,7 @@ class RasterSynchronizer extends olcsAbstractSynchronizer {
           // the compiler does not seem to be able to infer this
           console.assert(cesiumObjects);
           for (let i = 0; i < cesiumObjects.length; ++i) {
-            olcsCore.updateCesiumLayerProperties(olLayerWithParents, cesiumObjects[i]);
+           updateCesiumLayerProperties(olLayerWithParents, cesiumObjects[i]);
           }
         }));
       });
@@ -125,7 +125,7 @@ class RasterSynchronizer extends olcsAbstractSynchronizer {
       }
 
       for (let i = 0; i < cesiumObjects.length; ++i) {
-        olcsCore.updateCesiumLayerProperties(olLayerWithParents, cesiumObjects[i]);
+        updateCesiumLayerProperties(olLayerWithParents, cesiumObjects[i]);
       }
 
       // there is no way to modify Cesium layer extent,
