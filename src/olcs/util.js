@@ -37,7 +37,7 @@ export function supportsImageRenderingPixelated() {
     const tmp = canvas.style['imageRendering']; // non standard
     supportsImageRenderingPixelatedResult_ = !!tmp;
     if (supportsImageRenderingPixelatedResult_) {
-	  imageRenderingValueResult_ = tmp;
+      imageRenderingValueResult_ = tmp;
     }
   }
   return supportsImageRenderingPixelatedResult_;
@@ -60,7 +60,7 @@ export function imageRenderingValue() {
  */
 export function getSourceProjection(source) {
   return /** @type {ol.proj.Projection} */ (source.get('olcs.projection'))
-	|| source.getProjection();
+  || source.getProjection();
 }
 
 

@@ -54,9 +54,9 @@ export function computePixelSizeAtCoordinate(scene, target) {
   const canvas = scene.canvas;
   const frustum = camera.frustum;
   const distance = Cesium.Cartesian3.magnitude(Cesium.Cartesian3.subtract(
-	  camera.position, target, new Cesium.Cartesian3()));
+      camera.position, target, new Cesium.Cartesian3()));
   return frustum.getPixelDimensions(canvas.clientWidth, canvas.clientHeight,
-	  distance, scene.pixelRatio, new Cesium.Cartesian2());
+      distance, scene.pixelRatio, new Cesium.Cartesian2());
 }
 
 
@@ -73,17 +73,17 @@ export function computeBoundingBoxAtTarget(scene, target, amount) {
   const transform = Cesium.Transforms.eastNorthUpToFixedFrame(target);
 
   const bottomLeft = Cesium.Matrix4.multiplyByPoint(
-	  transform,
-	  new Cesium.Cartesian3(-pixelSize.x * amount, -pixelSize.y * amount, 0),
-	  new Cesium.Cartesian3());
+      transform,
+      new Cesium.Cartesian3(-pixelSize.x * amount, -pixelSize.y * amount, 0),
+      new Cesium.Cartesian3());
 
   const topRight = Cesium.Matrix4.multiplyByPoint(
-	  transform,
-	  new Cesium.Cartesian3(pixelSize.x * amount, pixelSize.y * amount, 0),
-	  new Cesium.Cartesian3());
+      transform,
+      new Cesium.Cartesian3(pixelSize.x * amount, pixelSize.y * amount, 0),
+      new Cesium.Cartesian3());
 
   return Cesium.Ellipsoid.WGS84.cartesianArrayToCartographicArray(
-	  [bottomLeft, topRight]);
+      [bottomLeft, topRight]);
 }
 
 
@@ -97,9 +97,9 @@ export function applyHeightOffsetToGeometry(geometry, height) {
   geometry.applyTransform((input, output, stride) => {
     console.assert(input === output);
     if (stride !== undefined && stride >= 3) {
-	  for (let i = 0; i < output.length; i += stride) {
+      for (let i = 0; i < output.length; i += stride) {
         output[i + 2] = output[i + 2] + height;
-	  }
+      }
     }
     return output;
   });
@@ -159,11 +159,11 @@ export function rotateAroundAxis(camera, angle, axis, transform,
     camera.lookAtTransform(oldTransform);
 
     if (progress < 1) {
-	  window.requestAnimationFrame(step);
+      window.requestAnimationFrame(step);
     } else {
-	  if (callback) {
+      if (callback) {
         callback();
-	  }
+      }
     }
   };
   window.requestAnimationFrame(step);
@@ -223,7 +223,7 @@ export function pickOnTerrainOrEllipsoid(scene, pixel) {
 export function pickBottomPoint(scene) {
   const canvas = scene.canvas;
   const bottom = new Cesium.Cartesian2(
-	  canvas.clientWidth / 2, canvas.clientHeight);
+      canvas.clientWidth / 2, canvas.clientHeight);
   return pickOnTerrainOrEllipsoid(scene, bottom);
 }
 
@@ -237,8 +237,8 @@ export function pickBottomPoint(scene) {
 export function pickCenterPoint(scene) {
   const canvas = scene.canvas;
   const center = new Cesium.Cartesian2(
-	  canvas.clientWidth / 2,
-	  canvas.clientHeight / 2);
+      canvas.clientWidth / 2,
+      canvas.clientHeight / 2);
   return pickOnTerrainOrEllipsoid(scene, center);
 }
 
@@ -261,7 +261,7 @@ export function computeSignedTiltAngleOnGlobe(scene) {
     const ellipsoid = Cesium.Ellipsoid.WGS84;
     const obj = Cesium.IntersectionTests.rayEllipsoid(ray, ellipsoid);
     if (obj) {
-	  target = Cesium.Ray.getPoint(ray, obj.start);
+      target = Cesium.Ray.getPoint(ray, obj.start);
     }
   }
 
@@ -391,18 +391,18 @@ export function sourceToImageryProvider(olMap, source, viewProj, olLayer) {
   let provider = null;
   // Convert ImageWMS to TileWMS
   if (source instanceof olSourceImageWMS && source.getUrl() &&
-	source.getImageLoadFunction() === defaultImageLoadFunction) {
+  source.getImageLoadFunction() === defaultImageLoadFunction) {
     const sourceProps = {
-	  'olcs.proxy': source.get('olcs.proxy'),
-	  'olcs.extent': source.get('olcs.extent'),
-	  'olcs.projection': source.get('olcs.projection'),
-	  'olcs.imagesource': source
+      'olcs.proxy': source.get('olcs.proxy'),
+      'olcs.extent': source.get('olcs.extent'),
+      'olcs.projection': source.get('olcs.projection'),
+      'olcs.imagesource': source
     };
     source = new olSourceTileWMS({
-	  url: source.getUrl(),
-	  attributions: source.getAttributions(),
-	  projection: source.getProjection(),
-	  params: source.getParams()
+      url: source.getUrl(),
+      attributions: source.getAttributions(),
+      projection: source.getProjection(),
+      params: source.getParams()
     });
     source.setProperties(sourceProps);
   }
@@ -411,24 +411,24 @@ export function sourceToImageryProvider(olMap, source, viewProj, olLayer) {
     let projection = getSourceProjection(source);
 
     if (!projection) {
-	  // if not explicit, assume the same projection as view
-	  projection = viewProj;
+    // if not explicit, assume the same projection as view
+      projection = viewProj;
     }
 
     if (isCesiumProjection(projection)) {
-	  provider = new olcsCoreOLImageryProvider(olMap, source, viewProj);
+      provider = new olcsCoreOLImageryProvider(olMap, source, viewProj);
     }
     // Projection not supported by Cesium
     else {
-	  return null;
+      return null;
     }
   } else if (source instanceof olSourceImageStatic) {
     let projection = getSourceProjection(source);
     if (!projection) {
-	  projection = viewProj;
+      projection = viewProj;
     }
     if (isCesiumProjection(projection)) {
-	  provider = new Cesium.SingleTileImageryProvider({
+      provider = new Cesium.SingleTileImageryProvider({
         url: source.getUrl(),
         rectangle: new Cesium.Rectangle.fromDegrees(
             source.getImageExtent()[0],
@@ -436,41 +436,41 @@ export function sourceToImageryProvider(olMap, source, viewProj, olLayer) {
             source.getImageExtent()[2],
             source.getImageExtent()[3]
         )
-	  });
+      });
     }
     // Projection not supported by Cesium
     else {
-	  return null;
+      return null;
     }
   } else if (source instanceof olSourceVectorTile) {
     let projection = getSourceProjection(source);
 
     if (!projection) {
-	  projection = viewProj;
+      projection = viewProj;
     }
     if (skip === false) {
-	  // MVT is experimental, it should be whitelisted to be synchronized
-	  const fromCode = projection.getCode().split(':')[1];
-	  const urls = source.urls.map(u => u.replace(fromCode, '3857'));
-	  const extent = olLayer.getExtent();
-	  const rectangle = extentToRectangle(extent, projection);
-	  const minimumLevel = source.get('olcs_minimumLevel');
-	  const attributionsFunction = source.getAttributions();
-	  const styleFunction = olLayer.getStyleFunction();
-	  let credit;
-	  if (extent && attributionsFunction) {
+    // MVT is experimental, it should be whitelisted to be synchronized
+      const fromCode = projection.getCode().split(':')[1];
+      const urls = source.urls.map(u => u.replace(fromCode, '3857'));
+      const extent = olLayer.getExtent();
+      const rectangle = extentToRectangle(extent, projection);
+      const minimumLevel = source.get('olcs_minimumLevel');
+      const attributionsFunction = source.getAttributions();
+      const styleFunction = olLayer.getStyleFunction();
+      let credit;
+      if (extent && attributionsFunction) {
         const center = getExtentCenter(extent);
         credit = attributionsFunctionToCredits(attributionsFunction, 0, center, extent)[0];
-	  }
+      }
 
-	  provider = new MVTImageryProvider({
+      provider = new MVTImageryProvider({
         credit,
         rectangle,
         minimumLevel,
         styleFunction,
         urls
-	  });
-	  return provider;
+      });
+      return provider;
     }
     return null; // FIXME: it is disabled by default right now
   } else {
@@ -492,7 +492,7 @@ export function sourceToImageryProvider(olMap, source, viewProj, olLayer) {
 export function tileLayerToImageryLayer(olMap, olLayer, viewProj) {
 
   if (!(olLayer instanceof olLayerTile) && !(olLayer instanceof olLayerImage) &&
-	!(olLayer instanceof VectorTileLayer)) {
+  !(olLayer instanceof VectorTileLayer)) {
     return null;
   }
 
@@ -534,11 +534,11 @@ export function updateCesiumLayerProperties(olLayerWithParents, csLayer) {
   [olLayerWithParents.layer].concat(olLayerWithParents.parents).forEach((olLayer) => {
     const layerOpacity = olLayer.getOpacity();
     if (layerOpacity !== undefined) {
-	  opacity *= layerOpacity;
+      opacity *= layerOpacity;
     }
     const layerVisible = olLayer.getVisible();
     if (layerVisible !== undefined) {
-	  visible &= layerVisible;
+      visible &= layerVisible;
     }
   });
   csLayer.alpha = opacity;
@@ -627,7 +627,7 @@ export function convertColorToCesium(olColor) {
     ctx.fillStyle = olColor;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     return new Cesium.ImageMaterialProperty({
-	  image: canvas
+      image: canvas
     });
   }
   console.assert(false, 'impossible');
@@ -650,7 +650,7 @@ export function convertUrlToCesium(url) {
     const stopCharCode = match[2].charCodeAt(0);
     let charCode;
     for (charCode = startCharCode; charCode <= stopCharCode; ++charCode) {
-	  subdomains += String.fromCharCode(charCode);
+      subdomains += String.fromCharCode(charCode);
     }
   }
   return {
@@ -673,14 +673,14 @@ export function resetToNorthZenith(map, scene) {
     const camera = scene.camera;
     const pivot = pickBottomPoint(scene);
     if (!pivot) {
-	  reject('Could not get bottom pivot');
-	  return;
+      reject('Could not get bottom pivot');
+      return;
     }
 
     const currentHeading = map.getView().getRotation();
     if (currentHeading === undefined) {
-	  reject('The view is not initialized');
-	  return;
+      reject('The view is not initialized');
+      return;
     }
     const angle = computeAngleToZenith(scene, pivot);
 
@@ -691,11 +691,11 @@ export function resetToNorthZenith(map, scene) {
     const transform = Cesium.Matrix4.fromTranslation(pivot);
     const axis = camera.right;
     const options = {
-	  callback: () => {
+      callback: () => {
         const view = map.getView();
         normalizeView(view);
         resolve();
-	  }
+      }
     };
     rotateAroundAxis(camera, -angle, axis, transform, options);
   });
@@ -713,8 +713,8 @@ export function rotateAroundBottomCenter(scene, angle) {
     const camera = scene.camera;
     const pivot = pickBottomPoint(scene);
     if (!pivot) {
-	  reject('could not get bottom pivot');
-	  return;
+      reject('could not get bottom pivot');
+      return;
     }
 
     const options = {callback: resolve};
