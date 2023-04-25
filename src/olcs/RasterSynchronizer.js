@@ -97,7 +97,7 @@ class RasterSynchronizer extends olcsAbstractSynchronizer {
           // the compiler does not seem to be able to infer this
           console.assert(cesiumObjects);
           for (let i = 0; i < cesiumObjects.length; ++i) {
-           updateCesiumLayerProperties(olLayerWithParents, cesiumObjects[i]);
+            updateCesiumLayerProperties(olLayerWithParents, cesiumObjects[i]);
           }
         }));
       });
