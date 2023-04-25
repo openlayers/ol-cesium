@@ -13,6 +13,7 @@
       "noImplicitAny": true,
       "declarationMap": true,
       "forceConsistentCasingInFileNames": true,
+      "allowSyntheticDefaultImports": true,
       "paths": {
         "ol/*": ["node_modules/ol/*"]
       },

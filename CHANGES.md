@@ -1,8 +1,15 @@
 # Changelog
 
+## v 2.19.3
+
+* Changes
+  * Support dashed lines by converting the pattern
+
+
 ## v 2.19.2
 
-* Port to OpenLayers 9
+* Changes
+  * Add OpenLayers 9 support
 
 ## v 2.19.1
 
