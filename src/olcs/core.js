@@ -195,7 +195,6 @@ export function setHeadingUsingBottomCenter(scene, heading,
 
   // Actually rotate around the zenith normal
   const transform = Cesium.Matrix4.fromTranslation(zenith);
-  const rotateAroundAxis = rotateAroundAxis;
   rotateAroundAxis(camera, heading, zenith, transform, opt_options);
 }
 
@@ -720,7 +719,6 @@ export function rotateAroundBottomCenter(scene, angle) {
     const options = {callback: resolve};
     const transform = Cesium.Matrix4.fromTranslation(pivot);
     const axis = camera.right;
-    const rotateAroundAxis = rotateAroundAxis;
     rotateAroundAxis(camera, -angle, axis, transform, options);
   });
 }
