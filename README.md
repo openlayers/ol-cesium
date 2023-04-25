@@ -1,4 +1,4 @@
-OpenLayers - Cesium integration library. Create your map using [OpenLayers](https://openlayers.org/), and visualize it on a globe with [Cesium](https://cesiumjs.org).
+OpenLayers - Cesium integration library. Create your map using [OpenLayers](https://openlayers.org/), and visualize it on a globe with [Cesium](https://cesium.com/platform/cesiumjs/).
 See [live examples](https://openlayers.org/ol-cesium/examples/).
 
 
