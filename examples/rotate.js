@@ -1,7 +1,7 @@
 /**
  * @module examples.rotate
  */
-import olcsCore from 'olcs/core.js';
+import {computeSignedTiltAngleOnGlobe, pickBottomPoint, computeAngleToZenith, setHeadingUsingBottomCenter, rotateAroundAxis} from 'olcs/core.js';
 import OLCesium from 'olcs/OLCesium.js';
 import olView from 'ol/View.js';
 import {defaults as olControlDefaults} from 'ol/control.js';
@@ -96,7 +96,7 @@ OlcsControl.prototype.getHeading = function() {
  */
 OlcsControl.prototype.getTiltOnGlobe = function() {
   const scene = this.ol3d_.getCesiumScene();
-  const tiltOnGlobe = olcsCore.computeSignedTiltAngleOnGlobe(scene);
+  const tiltOnGlobe = computeSignedTiltAngleOnGlobe(scene);
   return -tiltOnGlobe;
 };
 
@@ -107,7 +107,7 @@ OlcsControl.prototype.getTiltOnGlobe = function() {
 OlcsControl.prototype.resetToNorthZenith = function(callback) {
   const scene = this.ol3d_.getCesiumScene();
   const camera = scene.camera;
-  const pivot = olcsCore.pickBottomPoint(scene);
+  const pivot = pickBottomPoint(scene);
 
   if (!pivot) {
     callback();
@@ -115,16 +115,16 @@ OlcsControl.prototype.resetToNorthZenith = function(callback) {
   }
 
   const currentHeading = this.getHeading();
-  const angle = olcsCore.computeAngleToZenith(scene, pivot);
+  const angle = computeAngleToZenith(scene, pivot);
 
   // Point to North
-  olcsCore.setHeadingUsingBottomCenter(scene, currentHeading, pivot);
+  setHeadingUsingBottomCenter(scene, currentHeading, pivot);
 
   // Go to zenith
   const transform = Cesium.Matrix4.fromTranslation(pivot);
   const axis = camera.right;
   const options = {callback};
-  olcsCore.rotateAroundAxis(camera, -angle, axis, transform, options);
+  rotateAroundAxis(camera, -angle, axis, transform, options);
 };
 
 
@@ -143,9 +143,9 @@ OlcsControl.prototype.rotate = function(angle) {
  */
 OlcsControl.prototype.setHeading = function(angle) {
   const scene = this.ol3d_.getCesiumScene();
-  const bottom = olcsCore.pickBottomPoint(scene);
+  const bottom = pickBottomPoint(scene);
   if (bottom) {
-    olcsCore.setHeadingUsingBottomCenter(scene, angle, bottom);
+    setHeadingUsingBottomCenter(scene, angle, bottom);
   }
 };
 
@@ -156,7 +156,7 @@ OlcsControl.prototype.setHeading = function(angle) {
 OlcsControl.prototype.tiltOnGlobe = function(angle) {
   const scene = this.ol3d_.getCesiumScene();
   const camera = scene.camera;
-  const pivot = olcsCore.pickBottomPoint(scene);
+  const pivot = pickBottomPoint(scene);
   if (!pivot) {
     // Could not find the bottom point
     return;
@@ -165,7 +165,6 @@ OlcsControl.prototype.tiltOnGlobe = function(angle) {
   const options = {};
   const transform = Cesium.Matrix4.fromTranslation(pivot);
   const axis = camera.right;
-  const rotateAroundAxis = olcsCore.rotateAroundAxis;
   rotateAroundAxis(camera, -angle, axis, transform, options);
 };
 

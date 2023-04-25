@@ -28,7 +28,7 @@ import olInteractionDragAndDrop from 'ol/interaction/DragAndDrop.js';
 import olGeomMultiPolygon from 'ol/geom/MultiPolygon.js';
 import olLayerVector from 'ol/layer/Vector.js';
 import {transform} from 'ol/proj.js';
-import olcsCore from 'olcs/core.js';
+import {createMatrixAtCoordinates} from 'olcs/core.js';
 import {OLCS_ION_TOKEN} from './_common.js';
 
 
@@ -124,7 +124,7 @@ modelFeatures.forEach((feature) => {
     return {
       cesiumOptions: {
         url: 'data/Box.gltf',
-        modelMatrix: olcsCore.createMatrixAtCoordinates(center, rotation),
+        modelMatrix: createMatrixAtCoordinates(center, rotation),
         heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
         minimumPixelSize: 64
       }

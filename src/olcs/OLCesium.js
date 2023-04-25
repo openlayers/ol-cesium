@@ -3,8 +3,8 @@
  */
 import olGeomPoint from 'ol/geom/Point.js';
 import {getTransform} from 'ol/proj.js';
-import olcsUtil from './util.js';
-import olcsCore from './core.js';
+import {supportsImageRenderingPixelated, imageRenderingValue} from './util.js';
+import {ol4326CoordinateToCesiumCartesian} from './core.js';
 import olcsAutoRenderLoop from './AutoRenderLoop.js';
 import olcsCamera from './Camera.js';
 import olcsRasterSynchronizer from './RasterSynchronizer.js';
@@ -130,9 +130,9 @@ class OLCesium {
     canvasAttribute.value = fillArea;
     this.canvas_.setAttributeNode(canvasAttribute);
 
-    if (olcsUtil.supportsImageRenderingPixelated()) {
+    if (supportsImageRenderingPixelated()) {
       // non standard CSS4
-      this.canvas_.style['imageRendering'] = olcsUtil.imageRenderingValue();
+      this.canvas_.style['imageRendering'] = imageRenderingValue();
     }
 
     this.canvas_.oncontextmenu = function() { return false; };
@@ -409,7 +409,7 @@ class OLCesium {
     }
 
     let resolutionScale = this.resolutionScale_;
-    if (!olcsUtil.supportsImageRenderingPixelated()) {
+    if (!supportsImageRenderingPixelated()) {
       resolutionScale *= window.devicePixelRatio || 1.0;
     }
     this.resolutionScaleChanged_ = false;
@@ -706,7 +706,7 @@ class OLCesium {
         console.assert(geometry instanceof olGeomPoint);
         const coo = geometry.getCoordinates();
         const coo4326 = to4326Transform(coo, undefined, coo.length);
-        return olcsCore.ol4326CoordinateToCesiumCartesian(coo4326);
+        return ol4326CoordinateToCesiumCartesian(coo4326);
       };
 
       // Create an invisible point entity for tracking.

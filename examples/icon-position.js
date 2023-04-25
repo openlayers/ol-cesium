@@ -17,7 +17,7 @@ import olStyleFill from 'ol/style/Fill.js';
 import olMap from 'ol/Map.js';
 import olSourceVector from 'ol/source/Vector.js';
 import olLayerVector from 'ol/layer/Vector.js';
-import olcsCore from 'olcs/core.js';
+import {rotateAroundAxis, pickBottomPoint} from 'olcs/core.js';
 import {OLCS_ION_TOKEN} from './_common.js';
 
 
@@ -116,11 +116,10 @@ ol3d.enableAutoRenderLoop();
 
 // Tilt camera
 const camera = scene.camera;
-const pivot = olcsCore.pickBottomPoint(scene);
+const pivot = pickBottomPoint(scene);
 if (pivot) {
   const options = {};
   const transform = Cesium.Matrix4.fromTranslation(pivot);
   const axis = camera.right;
-  const rotateAroundAxis = olcsCore.rotateAroundAxis;
   rotateAroundAxis(camera, -Math.PI / 4, axis, transform, options);
 }

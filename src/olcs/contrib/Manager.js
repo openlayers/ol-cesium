@@ -3,7 +3,7 @@
  */
 import olcsContribLazyLoader from '../contrib/LazyLoader.js';
 import OLCesium from '../OLCesium.js';
-import olcsCore from '../core.js';
+import {resetToNorthZenith, rotateAroundBottomCenter, computeSignedTiltAngleOnGlobe, pickBottomPoint, setHeadingUsingBottomCenter} from '../core.js';
 import {toRadians} from '../math.js';
 import olObservable from 'ol/Observable.js';
 
@@ -245,7 +245,7 @@ const Manager = class extends olObservable {
       if (is3DCurrentlyEnabled) {
         // Disable 3D
         console.assert(this.map);
-        return olcsCore.resetToNorthZenith(this.map, scene).then(() => {
+        return resetToNorthZenith(this.map, scene).then(() => {
           ol3d.setEnabled(false);
           this.dispatchEvent('toggle');
         });
@@ -253,7 +253,7 @@ const Manager = class extends olObservable {
         // Enable 3D
         ol3d.setEnabled(true);
         this.dispatchEvent('toggle');
-        return olcsCore.rotateAroundBottomCenter(scene, this.cesiumInitialTilt_);
+        return rotateAroundBottomCenter(scene, this.cesiumInitialTilt_);
       }
     });
   }
@@ -316,7 +316,7 @@ const Manager = class extends olObservable {
    */
   getTiltOnGlobe() {
     const scene = this.ol3d.getCesiumScene();
-    const tiltOnGlobe = olcsCore.computeSignedTiltAngleOnGlobe(scene);
+    const tiltOnGlobe = computeSignedTiltAngleOnGlobe(scene);
     return -tiltOnGlobe;
   }
 
@@ -326,9 +326,9 @@ const Manager = class extends olObservable {
    */
   setHeading(angle) {
     const scene = this.ol3d.getCesiumScene();
-    const bottom = olcsCore.pickBottomPoint(scene);
+    const bottom = pickBottomPoint(scene);
     if (bottom) {
-      olcsCore.setHeadingUsingBottomCenter(scene, angle, bottom);
+      setHeadingUsingBottomCenter(scene, angle, bottom);
     }
   }
 

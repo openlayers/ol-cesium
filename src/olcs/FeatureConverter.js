@@ -8,9 +8,9 @@ import olSourceCluster from 'ol/source/Cluster.js';
 import {circular as olCreateCircularPolygon} from 'ol/geom/Polygon.js';
 import {boundingExtent, getCenter} from 'ol/extent.js';
 import olGeomSimpleGeometry from 'ol/geom/SimpleGeometry.js';
-import olcsCore from './core.js';
+import {convertColorToCesium, olGeometryCloneTo4326, ol4326CoordinateToCesiumCartesian, ol4326CoordinateArrayToCsCartesians} from './core.js';
 import olcsCoreVectorLayerCounterpart from './core/VectorLayerCounterpart.js';
-import olcsUtil, {getUid, isGroundPolylinePrimitiveSupported} from './util.js';
+import {obj, getUid, isGroundPolylinePrimitiveSupported} from './util.js';
 
 
 /**
@@ -59,7 +59,7 @@ class FeatureConverter {
     const source = evt.target;
     console.assert(source instanceof olSourceVector);
 
-    const cancellers = olcsUtil.obj(source)['olcs_cancellers'];
+    const cancellers = obj(source)['olcs_cancellers'];
     if (cancellers) {
       const feature = evt.feature;
       if (feature) {
@@ -77,7 +77,7 @@ class FeatureConverter {
             cancellers[key]();
           }
         }
-        olcsUtil.obj(source)['olcs_cancellers'] = {};
+        obj(source)['olcs_cancellers'] = {};
       }
     }
   }
@@ -201,7 +201,7 @@ class FeatureConverter {
       olColor = fillColor;
     }
 
-    return olcsCore.convertColorToCesium(olColor);
+    return convertColorToCesium(olColor);
   }
 
   /**
@@ -321,7 +321,7 @@ class FeatureConverter {
    */
   olCircleGeometryToCesium(layer, feature, olGeometry, projection, olStyle) {
 
-    olGeometry = olcsCore.olGeometryCloneTo4326(olGeometry, projection);
+    olGeometry = olGeometryCloneTo4326(olGeometry, projection);
     console.assert(olGeometry.getType() == 'Circle');
 
     // ol.Coordinate
@@ -331,8 +331,8 @@ class FeatureConverter {
     point[0] += olGeometry.getRadius();
 
     // Cesium
-    center = olcsCore.ol4326CoordinateToCesiumCartesian(center);
-    point = olcsCore.ol4326CoordinateToCesiumCartesian(point);
+    center = ol4326CoordinateToCesiumCartesian(center);
+    point = ol4326CoordinateToCesiumCartesian(point);
 
     // Accurate computation of straight distance
     const radius = Cesium.Cartesian3.distance(center, point);
@@ -349,7 +349,7 @@ class FeatureConverter {
       const width = this.extractLineWidthFromOlStyle(olStyle);
       if (width) {
         const circlePolygon = olCreateCircularPolygon(olGeometry.getCenter(), radius);
-        const positions = olcsCore.ol4326CoordinateArrayToCsCartesians(circlePolygon.getLinearRing(0).getCoordinates());
+        const positions = ol4326CoordinateArrayToCsCartesians(circlePolygon.getLinearRing(0).getCoordinates());
         if (!isGroundPolylinePrimitiveSupported(this.scene)) {
           const color = this.extractColorFromOlStyle(olStyle, true);
           outlinePrimitive = this.createStackedGroundCorridors(layer, feature, width, color, positions);
@@ -444,10 +444,10 @@ class FeatureConverter {
    */
   olLineStringGeometryToCesium(layer, feature, olGeometry, projection, olStyle) {
 
-    olGeometry = olcsCore.olGeometryCloneTo4326(olGeometry, projection);
+    olGeometry = olGeometryCloneTo4326(olGeometry, projection);
     console.assert(olGeometry.getType() == 'LineString');
 
-    const positions = olcsCore.ol4326CoordinateArrayToCsCartesians(olGeometry.getCoordinates());
+    const positions = ol4326CoordinateArrayToCsCartesians(olGeometry.getCoordinates());
     const width = this.extractLineWidthFromOlStyle(olStyle);
 
     let outlinePrimitive;
@@ -506,7 +506,7 @@ class FeatureConverter {
    */
   olPolygonGeometryToCesium(layer, feature, olGeometry, projection, olStyle) {
 
-    olGeometry = olcsCore.olGeometryCloneTo4326(olGeometry, projection);
+    olGeometry = olGeometryCloneTo4326(olGeometry, projection);
     console.assert(olGeometry.getType() == 'Polygon');
 
     const heightReference = this.getHeightReference(layer, feature, olGeometry);
@@ -550,7 +550,7 @@ class FeatureConverter {
 
       for (let i = 0; i < rings.length; ++i) {
         const olPos = rings[i].getCoordinates();
-        const positions = olcsCore.ol4326CoordinateArrayToCsCartesians(olPos);
+        const positions = ol4326CoordinateArrayToCsCartesians(olPos);
         console.assert(positions && positions.length > 0);
         if (i == 0) {
           hierarchy.positions = positions;
@@ -707,7 +707,7 @@ class FeatureConverter {
         return;
       }
       const center = olGeometry.getCoordinates();
-      const position = olcsCore.ol4326CoordinateToCesiumCartesian(center);
+      const position = ol4326CoordinateToCesiumCartesian(center);
       let color;
       const opacity = imageStyle.getOpacity();
       if (opacity !== undefined) {
@@ -751,9 +751,9 @@ class FeatureConverter {
       };
       source.on(['removefeature', 'clear'],
           this.boundOnRemoveOrClearFeatureListener_);
-      let cancellers = olcsUtil.obj(source)['olcs_cancellers'];
+      let cancellers = obj(source)['olcs_cancellers'];
       if (!cancellers) {
-        cancellers = olcsUtil.obj(source)['olcs_cancellers'] = {};
+        cancellers = obj(source)['olcs_cancellers'] = {};
       }
 
       const fuid = getUid(feature);
@@ -801,7 +801,7 @@ class FeatureConverter {
       opt_newBillboardCallback
   ) {
     console.assert(olGeometry.getType() == 'Point');
-    olGeometry = olcsCore.olGeometryCloneTo4326(olGeometry, projection);
+    olGeometry = olGeometryCloneTo4326(olGeometry, projection);
 
     let modelPrimitive = null;
     const imageStyle = style.getImage();
@@ -926,7 +926,7 @@ class FeatureConverter {
     }
     const options = /** @type {Cesium.optionsLabelCollection} */ ({});
 
-    options.position = olcsCore.ol4326CoordinateToCesiumCartesian(extentCenter);
+    options.position = ol4326CoordinateToCesiumCartesian(extentCenter);
 
     options.text = text;
 
@@ -1016,7 +1016,7 @@ class FeatureConverter {
     }
 
     let color = outline ? stroke.getColor() : fill.getColor();
-    color = olcsCore.convertColorToCesium(color);
+    color = convertColorToCesium(color);
 
     if (outline && stroke.getLineDash()) {
       return Cesium.Material.fromType('Stripe', {

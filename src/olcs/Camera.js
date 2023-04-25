@@ -5,7 +5,7 @@
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
 import {toRadians, toDegrees} from './math.js';
 import {getTransform} from 'ol/proj.js';
-import olcsCore, {calcDistanceForResolution, calcResolutionForDistance} from './core.js';
+import {pickCenterPoint, calcDistanceForResolution, calcResolutionForDistance} from './core.js';
 
 class Camera {
   /**
@@ -370,7 +370,7 @@ class Camera {
     // target & distance
     const ellipsoid = Cesium.Ellipsoid.WGS84;
     const scene = this.scene_;
-    const target = olcsCore.pickCenterPoint(scene);
+    const target = pickCenterPoint(scene);
 
     let bestTarget = target;
     if (!bestTarget) {

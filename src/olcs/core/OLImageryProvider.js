@@ -1,7 +1,7 @@
 /**
  * @module olcs.core.OLImageryProvider
  */
-import olcsUtil from '../util.js';
+import {getSourceProjection} from '../util.js';
 import {Tile as TileSource} from 'ol/source.js';
 import {attributionsFunctionToCredits} from '../core.js';
 
@@ -112,7 +112,7 @@ class OLImageryProvider /* should not extend Cesium.ImageryProvider */ {
    */
   handleSourceChanged_(frameState) {
     if (!this.ready_ && this.source_.getState() == 'ready') {
-      this.projection_ = olcsUtil.getSourceProjection(this.source_) || this.fallbackProj_;
+      this.projection_ = getSourceProjection(this.source_) || this.fallbackProj_;
       const options = {numberOfLevelZeroTilesX: 1, numberOfLevelZeroTilesY: 1};
 
       if (this.source_.tileGrid !== null) {
