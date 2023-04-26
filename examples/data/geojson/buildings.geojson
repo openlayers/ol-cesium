@@ -6,7 +6,9 @@
       "type": "Feature",
       "properties": {
         "type": "education",
-        "olcs_extruded_height": 7.8
+        "olcs_extruded_height": 7.8,
+        "fillColor": "blue",
+        "strokeColor": "white"
       },
       "geometry": {
         "type": "Polygon",

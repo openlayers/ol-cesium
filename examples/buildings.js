@@ -18,6 +18,19 @@ const raster = new olLayerTile({
 });
 
 const vector = new olLayerVector({
+  style(feature, resolution) {
+    const fillColor = feature.get('fillColor') || 'white';
+    const strokeColor = feature.get('strokeColor') || 'grey';
+    return new olStyleStyle({
+      fill: new olStyleFill({
+        color: fillColor,
+      }),
+      stroke: new olStyleStroke({
+        color: strokeColor,
+        width: 1,
+      }),
+    });
+  },
   source: new olSourceVector({
     format: new olFormatGeoJSON(),
     url: 'data/geojson/buildings.geojson',
