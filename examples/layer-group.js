@@ -8,7 +8,7 @@ import olLayerTile from 'ol/layer/Tile.js';
 import {fromLonLat} from 'ol/proj.js';
 import olSourceOSM from 'ol/source/OSM.js';
 import olSourceTileJSON from 'ol/source/TileJSON.js';
-import OLCesium from 'olcs/OLCesium.js';
+import OLCesium from 'olcs/OLCesium.ts';
 import {OLCS_ION_TOKEN} from './_common.js';
 
 const layer0 = new olLayerTile({

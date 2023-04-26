@@ -1,7 +1,7 @@
 /**
  * @module examples.exports
  */
-import OLCesium from 'olcs/OLCesium.js';
+import OLCesium from 'olcs/OLCesium.ts';
 import {transform} from 'ol/proj.js';
 import olView from 'ol/View.js';
 import olSourceOSM from 'ol/source/OSM.js';

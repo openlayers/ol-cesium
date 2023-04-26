@@ -1,4 +1,4 @@
-import OLCesium from './olcs/OLCesium.js';
+import OLCesium from './olcs/OLCesium.ts';
 
 import AbstractSynchronizer from './olcs/AbstractSynchronizer.js';
 import RasterSynchronizer from './olcs/RasterSynchronizer.js';

@@ -1,12 +1,13 @@
 const path = require('path');
 
-const babelPresets = [['@babel/preset-env', {
-  'targets': {
-    'browsers': ['ie 11'],
-  },
-  'modules': false,
-  'loose': true,
-}]];
+const babelPresets = [
+  ['@babel/preset-env', {
+    'targets': {
+      'browsers': ['safari 13'],
+    },
+    'modules': false,
+    'loose': true,
+  }]];
 
 const olRule = {
   test: /ol\/.*\.js$/,
@@ -30,6 +31,23 @@ const olcsRule = {
   }
 };
 
+const ruleTS = {
+  test: /\.ts$/,
+  use: {
+    loader: 'babel-loader',
+    options: {
+      babelrc: false,
+      presets: [...babelPresets, '@babel/preset-typescript'],
+      plugins: [
+        ['@babel/plugin-syntax-dynamic-import'],
+        ['@babel/plugin-transform-typescript', {allowDeclareFields: true}],
+        ['@babel/proposal-class-properties'],
+      ]
+    }
+  },
+  exclude: /node_modules/,
+};
+
 
 const iconRule = {
   test: /\.(png|svg)$/,
@@ -47,6 +65,7 @@ const config = {
   module: {
     rules: [
       olRule,
+      ruleTS,
       olcsRule,
       iconRule
     ]
@@ -60,6 +79,12 @@ const config = {
     mainFields: ['jsnext:main', 'main'],
     alias: {
       'olcs': path.resolve(__dirname, '../src/olcs'),
+    },
+    fallback: {
+      http: false,
+      https: false,
+      zlib: false,
+      url: false,
     }
   }
 };

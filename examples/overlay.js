@@ -1,7 +1,7 @@
 /**
  * @module examples.overlay
  */
-import OLCesium from 'olcs/OLCesium.js';
+import OLCesium from 'olcs/OLCesium.ts';
 import olMap from 'ol/Map.js';
 import olSourceOSM from 'ol/source/OSM.js';
 import olLayerTile from 'ol/layer/Tile.js';

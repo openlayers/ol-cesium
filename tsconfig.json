@@ -7,12 +7,14 @@
       "baseUrl": "./",
       "skipLibCheck": true,
       "moduleResolution": "node",
+      "noImplicitAny": true,
       "paths": {
         "ol/*": ["node_modules/ol/*"]
       }
     },
     "include": [
       "src/**/*.js",
+      "src/**/*.ts",
       "node_modules/cesium/Source/Cesium.d.ts"
     ],
     "typeAcquisition": {
