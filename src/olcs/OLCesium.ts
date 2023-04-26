@@ -73,6 +73,9 @@ type OLCesiumOptions = {
   sceneOptions: SceneOptions
 }
 
+// FIXME: remove this when all the synchronizers are migrated to typescript.
+type SynchronizerType = AbstractSynchronizer<ImageryLayer | VectorLayerCounterpart>;
+
 /**
  * @typedef {Object} OLCesiumOptions
  * @property {import('ol/Map.js').default} map The OpenLayers map we want to show on a Cesium scene.
@@ -122,6 +125,7 @@ class OLCesium {
   private entityView_: EntityView | null = null;
   private needTrackedEntityUpdate_ = false;
   private boundingSphereScratch_: BoundingSphere = new Cesium.BoundingSphere();
+  private synchronizers_: SynchronizerType[];
 
   constructor(options: OLCesiumOptions) {
     this.map_ = options.map;
@@ -156,7 +160,7 @@ class OLCesium {
 
 
     if (this.isOverMap_ && options.stopOpenLayersEventsPropagation) {
-      const overlayEvents = ['click', 'dblclick', 'mousedown', 'touchstart', 'MSPointerDown', 'pointerdown', 'mousewheel', 'wheel'];
+      const overlayEvents = ['click', 'dblclick', 'mousedown', 'touchstart', 'pointerdown', 'mousewheel', 'wheel'];
       for (let i = 0, ii = overlayEvents.length; i < ii; ++i) {
         this.container_.addEventListener(overlayEvents[i], evt => evt.stopPropagation());
       }
@@ -230,22 +234,36 @@ class OLCesium {
       dataSourceCollection: this.dataSourceCollection_
     });
 
-    const synchronizers = options.createSynchronizers ?
+    this.synchronizers_ = options.createSynchronizers ?
       options.createSynchronizers(this.map_, this.scene_, this.dataSourceCollection_) : [
         new olcsRasterSynchronizer(this.map_, this.scene_),
         new olcsVectorSynchronizer(this.map_, this.scene_),
         new olcsOverlaySynchronizer(this.map_, this.scene_)
-      ];
+      ] as unknown as SynchronizerType[];
 
     // Assures correct canvas size after initialisation
     this.handleResize_();
 
-    for (let i = synchronizers.length - 1; i >= 0; --i) {
-      synchronizers[i].synchronize();
+    for (let i = this.synchronizers_.length - 1; i >= 0; --i) {
+      this.synchronizers_[i].synchronize();
     }
 
     const eventHelper = new Cesium.EventHelper();
     eventHelper.add(this.scene_.postRender, OLCesium.prototype.updateTrackedEntity_, this);
+  }
+
+  /**
+   * Destroys the Cesium resources held by this object.
+   */
+  destroy() {
+    cancelAnimationFrame(this.renderId_);
+    this.renderId_ = undefined;
+    this.synchronizers_.forEach(synchronizer => synchronizer.destroyAll());
+    this.camera_.destroy();
+    this.scene_.destroy();
+    // @ts-ignore TS2341
+    this.scene_._postRender = null;
+    this.container_.remove();
   }
 
   /**

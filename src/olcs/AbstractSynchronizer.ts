@@ -235,7 +235,7 @@ abstract class AbstractSynchronizer<T extends ImageryLayer | VectorLayerCounterp
   /**
    * Destroys all the created Cesium objects.
    */
-  protected destroyAll() {
+  public destroyAll() {
     this.removeAllCesiumObjects(true); // destroy
     let objKey;
     for (objKey in this.olGroupListenKeys_) {

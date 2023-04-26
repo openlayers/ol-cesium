@@ -90,6 +90,11 @@ class Camera {
     this.setView_(this.map_.getView());
   }
 
+  destroy() {
+    olObservableUnByKey(this.viewListenKey_);
+    this.viewListenKey_ = null;
+  }
+
   /**
    * @param {Array.<number>} input Input coordinate array.
    * @param {Array.<number>=} opt_output Output array of coordinate values.
