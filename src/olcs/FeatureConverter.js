@@ -513,7 +513,7 @@ class FeatureConverter {
 
     let fillGeometry, outlineGeometry, outlinePrimitive;
     if ((olGeometry.getCoordinates()[0].length == 5) &&
-        (feature.getGeometry().get('olcs.polygon_kind') === 'rectangle')) {
+        (feature.get('olcs.polygon_kind') === 'rectangle')) {
       // Create a rectangle according to the longitude and latitude curves
       const coordinates = olGeometry.getCoordinates()[0];
       // Extract the West, South, East, North coordinates
@@ -529,17 +529,21 @@ class FeatureConverter {
         }
       }
 
+      const extrudedHeight = feature.getProperty("olcs_extruded_height");
+
       // Render the cartographic rectangle
       fillGeometry = new Cesium.RectangleGeometry({
         ellipsoid: Cesium.Ellipsoid.WGS84,
         rectangle,
-        height: maxHeight
+        height: maxHeight,
+        extrudedHeight: extrudedHeight,
       });
 
       outlineGeometry = new Cesium.RectangleOutlineGeometry({
         ellipsoid: Cesium.Ellipsoid.WGS84,
         rectangle,
-        height: maxHeight
+        height: maxHeight,
+        extrudedHeight: extrudedHeight,
       });
     } else {
       const rings = olGeometry.getLinearRings();
@@ -564,10 +568,13 @@ class FeatureConverter {
         }
       }
 
+      const extrudedHeight = feature.get("olcs_extruded_height");
+
       fillGeometry = new Cesium.PolygonGeometry({
         // always update Cesium externs before adding a property
         polygonHierarchy,
-        perPositionHeight: true
+        perPositionHeight: true,
+        extrudedHeight: extrudedHeight,
       });
 
       // Since Cesium doesn't yet support Polygon outlines on terrain yet (coming soon...?)
@@ -615,7 +622,8 @@ class FeatureConverter {
         outlineGeometry = new Cesium.PolygonOutlineGeometry({
           // always update Cesium externs before adding a property
           polygonHierarchy: hierarchy,
-          perPositionHeight: true
+          perPositionHeight: true,
+          extrudedHeight: extrudedHeight,
         });
       }
     }
