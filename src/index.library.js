@@ -14,16 +14,14 @@ import Manager from './olcs/contrib/Manager.js';
 
 export default OLCesium;
 
-// Using var for phantomJS
-// eslint-disable-next-line no-var
-var olcs = window['olcs'] = {};
+const olcs = window['olcs'] = {};
 olcs.OLCesium = OLCesium;
 
 olcs.AbstractSynchronizer = AbstractSynchronizer;
 olcs.RasterSynchronizer = RasterSynchronizer;
 olcs.VectorSynchronizer = VectorSynchronizer;
 
-olcs.core = core.default;
+olcs.core = core;
 olcs.core.OLImageryProvider = OLImageryProvider;
 olcs.core.VectorLayerCounterpart = VectorLayerCounterpart;
 
