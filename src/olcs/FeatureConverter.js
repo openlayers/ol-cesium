@@ -529,21 +529,21 @@ class FeatureConverter {
         }
       }
 
-      const extrudedHeight = feature.getProperty("olcs_extruded_height");
+      const featureExtrudedHeight = feature.getProperty('olcs_extruded_height');
 
       // Render the cartographic rectangle
       fillGeometry = new Cesium.RectangleGeometry({
         ellipsoid: Cesium.Ellipsoid.WGS84,
         rectangle,
         height: maxHeight,
-        extrudedHeight: extrudedHeight,
+        extrudedHeight: featureExtrudedHeight,
       });
 
       outlineGeometry = new Cesium.RectangleOutlineGeometry({
         ellipsoid: Cesium.Ellipsoid.WGS84,
         rectangle,
         height: maxHeight,
-        extrudedHeight: extrudedHeight,
+        extrudedHeight: featureExtrudedHeight,
       });
     } else {
       const rings = olGeometry.getLinearRings();
@@ -568,13 +568,13 @@ class FeatureConverter {
         }
       }
 
-      const extrudedHeight = feature.get("olcs_extruded_height");
+      const featureExtrudedHeight = feature.get('olcs_extruded_height');
 
       fillGeometry = new Cesium.PolygonGeometry({
         // always update Cesium externs before adding a property
         polygonHierarchy,
         perPositionHeight: true,
-        extrudedHeight: extrudedHeight,
+        extrudedHeight: featureExtrudedHeight,
       });
 
       // Since Cesium doesn't yet support Polygon outlines on terrain yet (coming soon...?)
@@ -623,7 +623,7 @@ class FeatureConverter {
           // always update Cesium externs before adding a property
           polygonHierarchy: hierarchy,
           perPositionHeight: true,
-          extrudedHeight: extrudedHeight,
+          extrudedHeight: featureExtrudedHeight,
         });
       }
     }
