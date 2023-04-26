@@ -191,6 +191,11 @@ Object.defineProperties(OLImageryProvider.prototype, {
         function() {return this.ready_;}
   },
 
+  '_ready': {
+    'get': /** @this {olcs.core.OLImageryProvider} */
+        function() {return this.ready_;}
+  },
+
   'rectangle': {
     'get': /** @this {olcs.core.OLImageryProvider} */
         function() {return this.rectangle_;}
