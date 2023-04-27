@@ -7,8 +7,8 @@ import {ol4326CoordinateToCesiumCartesian} from './core';
 import {getTransform, TransformFunction} from 'ol/proj.js';
 import olcsAutoRenderLoop from './AutoRenderLoop.js';
 import olcsCamera from './Camera.js';
-import olcsRasterSynchronizer from './RasterSynchronizer.js';
-import olcsVectorSynchronizer from './VectorSynchronizer.js';
+import olcsRasterSynchronizer from './RasterSynchronizer';
+import olcsVectorSynchronizer from './VectorSynchronizer';
 import olcsOverlaySynchronizer from './OverlaySynchronizer.js';
 import Map from 'ol/Map'
 import Interaction from 'ol/interaction/Interaction';
@@ -27,7 +27,7 @@ import type {
   ImageryLayer
 } from 'cesium';
 import type AbstractSynchronizer from './AbstractSynchronizer';
-import type VectorLayerCounterpart from "./core/VectorLayerCounterpart";
+import type VectorLayerCounterpart from './core/VectorLayerCounterpart';
 
 /**
  * Moved from Cesium

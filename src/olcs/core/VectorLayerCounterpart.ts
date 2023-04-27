@@ -2,37 +2,35 @@
  * @module olcs.core.VectorLayerCounterpart
  */
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
+import type Projection from 'ol/proj/Projection';
+import type {Billboard, BillboardCollection, Primitive, PrimitiveCollection, Scene} from 'cesium';
+import type {EventsKey} from 'ol/events';
 
 
 /**
  * Context for feature conversion.
- * @typedef {Object} OlFeatureToCesiumContext
- * @property {!(import('ol/Projection.js').default|string)} projection
- * @property {!Cesium.PrimitiveCollection} primitives
- * @property {Object<number, Array<!Cesium.Primitive|!Cesium.Billboard>>} featureToCesiumMap
- * @property {!Cesium.BillboardCollection} billboards
  */
+export type OlFeatureToCesiumContext = {
+  projection: Projection | string,
+  billboards: BillboardCollection,
+  featureToCesiumMap: Record<number, Array<Primitive | Billboard>>,
+  primitives: PrimitiveCollection
+};
+
+export type PrimitiveCollectionCounterpart = PrimitiveCollection & {counterpart: VectorLayerCounterpart};
 
 
 class VectorLayerCounterpart {
+  olListenKeys: EventsKey[] = []
+  context: OlFeatureToCesiumContext;
+  private rootCollection_: PrimitiveCollection;
   /**
   * Result of the conversion of an OpenLayers layer to Cesium.
-  * @param {!(ol.proj.Projection|string)} layerProjection
-  * @param {!Cesium.Scene} scene
   */
-  constructor(layerProjection, scene) {
+  constructor(layerProjection: Projection | string, scene: Scene) {
     const billboards = new Cesium.BillboardCollection({scene});
     const primitives = new Cesium.PrimitiveCollection();
-
-    /**
-    * @type {!Array.<ol.EventsKey>}
-    */
-    this.olListenKeys = [];
-
     this.rootCollection_ = new Cesium.PrimitiveCollection();
-    /**
-    * @type {!OlFeatureToCesiumContext}
-    */
     this.context = {
       projection: layerProjection,
       billboards,
@@ -52,10 +50,7 @@ class VectorLayerCounterpart {
     this.olListenKeys.length = 0;
   }
 
-  /**
-  * @return {!Cesium.Primitive}
-  */
-  getRootPrimitive() {
+  getRootPrimitive(): PrimitiveCollection {
     return this.rootCollection_;
   }
 }
