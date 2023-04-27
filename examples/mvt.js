@@ -17,6 +17,7 @@ import Style from 'ol/style/Style';
 import OSMSource from 'ol/source/OSM.js';
 import {OLCS_ION_TOKEN} from './_common.js';
 
+const Cesium = window.Cesium;
 Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 
 const projection = getProjection('EPSG:3857');
@@ -80,7 +81,7 @@ const ol2d = new olMap({
     createOSMLayer(),
     mvtLayer
   ],
-  target: 'map',
+  target: 'mapCesium',
   view: new View()
 });
 
@@ -103,3 +104,8 @@ document.getElementById('toggle').addEventListener('click', () => {
   styleNumber = (styleNumber + 1) % 2;
   mvtLayer.setStyle(allStyles[styleNumber]);
 });
+
+//##REMOVE## Keep this tag, split code here for code sandbox
+
+import {initCodeSandbox} from './_code-sandbox.js';
+initCodeSandbox('./mvt.js');
