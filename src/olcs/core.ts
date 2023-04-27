@@ -4,7 +4,7 @@
 import {linear as linearEasing} from 'ol/easing.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olLayerImage from 'ol/layer/Image.js';
-import {get as getProjection, transformExtent} from 'ol/proj.js';
+import {get as getProjection, ProjectionLike, transformExtent} from 'ol/proj.js';
 import olSourceImageStatic from 'ol/source/ImageStatic.js';
 import olSourceImageWMS from 'ol/source/ImageWMS.js';
 import olSourceTileImage from 'ol/source/TileImage.js';
@@ -15,48 +15,63 @@ import olcsCoreOLImageryProvider from './core/OLImageryProvider.js';
 import {getSourceProjection} from './util.js';
 import MVTImageryProvider from './MVTImageryProvider.js';
 import VectorTileLayer from 'ol/layer/VectorTile.js';
-import {getCenter as getExtentCenter} from 'ol/extent';
+import {Extent, getCenter as getExtentCenter} from 'ol/extent';
+import BaseLayer from 'ol/layer/Base';
+import LayerGroup from 'ol/layer/Group.js';
+import type {
+  Camera,
+  Cartesian2,
+  Cartesian3,
+  Cartographic,
+  Color,
+  ImageryLayer,
+  Matrix4,
+  Ray,
+  Rectangle,
+  Scene
+} from 'cesium';
+import Geometry from 'ol/geom/Geometry';
+import {Coordinate} from 'ol/coordinate';
+import Source, {Attribution} from 'ol/source/Source';
+import Map from 'ol/Map';
+import Projection from 'ol/proj/Projection';
+import {Color as OLColor} from 'ol/color'
+import View, {ViewStateAndExtent} from 'ol/View';
 
-/**
- * @typedef {Object} CesiumUrlDefinition
- * @property {string} url
- * @property {string} subdomains
- */
 
+type CesiumUrlDefinition = {
+    url: string,
+    subdomains: string
+}
 
 /**
  * Options for rotate around axis core function.
- * @typedef {Object} RotateAroundAxisOption
- * @property {number} [duration]
- * @property {function(number): number} [easing]
- * @property {function(): void} [callback]
  */
+type RotateAroundAxisOption = {
+  duration?: number,
+  easing?: (value: number) => number,
+  callback: () => void
+}
 
 
-
-/**
- * @typedef {Object} LayerWithParents
- * @property {import('ol/layer/Base.js').default} layer
- * @property {Array<import('ol/layer/Group.js').default>} parents
- */
+export type LayerWithParents = {
+  layer: BaseLayer,
+  parents: LayerGroup[] | BaseLayer[]
+}
 
 
 /**
  * Compute the pixel width and height of a point in meters using the
  * camera frustum.
- * @param {!Cesium.Scene} scene
- * @param {!Cesium.Cartesian3} target
- * @return {!Cesium.Cartesian2} the pixel size
- * @api
  */
-export function computePixelSizeAtCoordinate(scene, target) {
+export function computePixelSizeAtCoordinate(scene: Scene, target: Cartesian3): Cartesian2 {
   const camera = scene.camera;
   const canvas = scene.canvas;
   const frustum = camera.frustum;
   const distance = Cesium.Cartesian3.magnitude(Cesium.Cartesian3.subtract(
       camera.position, target, new Cesium.Cartesian3()));
-  return frustum.getPixelDimensions(canvas.clientWidth, canvas.clientHeight,
-      distance, scene.pixelRatio, new Cesium.Cartesian2());
+  // @ts-ignore TS2341
+  return frustum.getPixelDimensions(canvas.clientWidth, canvas.clientHeight, distance, scene.pixelRatio, new Cesium.Cartesian2());
 }
 
 
@@ -68,7 +83,7 @@ export function computePixelSizeAtCoordinate(scene, target) {
  * @return {Array<Cesium.Cartographic>} bottom left and top right
  * coordinates of the box
  */
-export function computeBoundingBoxAtTarget(scene, target, amount) {
+export function computeBoundingBoxAtTarget(scene: Scene, target: Cartesian3, amount: number): Cartographic[] {
   const pixelSize = computePixelSizeAtCoordinate(scene, target);
   const transform = Cesium.Transforms.eastNorthUpToFixedFrame(target);
 
@@ -86,14 +101,7 @@ export function computeBoundingBoxAtTarget(scene, target, amount) {
       [bottomLeft, topRight]);
 }
 
-
-/**
- *
- * @param {!ol.geom.Geometry} geometry
- * @param {number} height
- * @api
- */
-export function applyHeightOffsetToGeometry(geometry, height) {
+export function applyHeightOffsetToGeometry(geometry: Geometry, height: number) {
   geometry.applyTransform((input, output, stride) => {
     console.assert(input === output);
     if (stride !== undefined && stride >= 3) {
@@ -105,16 +113,12 @@ export function applyHeightOffsetToGeometry(geometry, height) {
   });
 }
 
-
-/**
- * @param {ol.Coordinate} coordinates
- * @param {number=} rotation
- * @param {!Cesium.Cartesian3=} translation
- * @param {!Cesium.Cartesian3=} scale
- * @return {!Cesium.Matrix4}
- * @api
- */
-export function createMatrixAtCoordinates(coordinates, rotation = 0, translation = Cesium.Cartesian3.ZERO, scale = new Cesium.Cartesian3(1, 1, 1)) {
+export function createMatrixAtCoordinates(
+    coordinates: Coordinate,
+    rotation = 0,
+    translation = Cesium.Cartesian3.ZERO,
+    scale = new Cesium.Cartesian3(1, 1, 1)
+): Matrix4 {
   const position = ol4326CoordinateToCesiumCartesian(coordinates);
   const rawMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(position);
   const quaternion = Cesium.Quaternion.fromAxisAngle(Cesium.Cartesian3.UNIT_Z, -rotation);
@@ -122,24 +126,15 @@ export function createMatrixAtCoordinates(coordinates, rotation = 0, translation
   return Cesium.Matrix4.multiply(rawMatrix, rotationMatrix, new Cesium.Matrix4());
 }
 
-
-/**
- * @param {!Cesium.Camera} camera
- * @param {number} angle
- * @param {!Cesium.Cartesian3} axis
- * @param {!Cesium.Matrix4} transform
- * @param {RotateAroundAxisOption=} opt_options
- * @api
- */
-export function rotateAroundAxis(camera, angle, axis, transform,
-    opt_options) {
+export function rotateAroundAxis(camera: Camera, angle: number, axis: Cartesian3, transform: Matrix4,
+    opt_options?: RotateAroundAxisOption) {
   const clamp = Cesium.Math.clamp;
   const defaultValue = Cesium.defaultValue;
 
-  const options = opt_options || {};
-  const duration = defaultValue(options.duration, 500); // ms
-  const easing = defaultValue(options.easing, linearEasing);
-  const callback = options.callback;
+  const options: RotateAroundAxisOption = opt_options;
+  const duration = defaultValue(options?.duration, 500); // ms
+  const easing = defaultValue(options?.easing, linearEasing);
+  const callback = options?.callback;
 
   let lastProgress = 0;
   const oldTransform = new Cesium.Matrix4();
@@ -169,16 +164,12 @@ export function rotateAroundAxis(camera, angle, axis, transform,
   window.requestAnimationFrame(step);
 }
 
-
-/**
- * @param {!Cesium.Scene} scene
- * @param {number} heading
- * @param {!Cesium.Cartesian3} bottomCenter
- * @param {RotateAroundAxisOption=} opt_options
- * @api
- */
-export function setHeadingUsingBottomCenter(scene, heading,
-    bottomCenter, opt_options) {
+export function setHeadingUsingBottomCenter(
+    scene: Scene,
+    heading: number,
+    bottomCenter: Cartesian3,
+    options?: RotateAroundAxisOption
+) {
   const camera = scene.camera;
   // Compute the camera position to zenith quaternion
   const angleToZenith = computeAngleToZenith(scene, bottomCenter);
@@ -195,18 +186,14 @@ export function setHeadingUsingBottomCenter(scene, heading,
 
   // Actually rotate around the zenith normal
   const transform = Cesium.Matrix4.fromTranslation(zenith);
-  rotateAroundAxis(camera, heading, zenith, transform, opt_options);
+  rotateAroundAxis(camera, heading, zenith, transform, options);
 }
 
 
 /**
  * Get the 3D position of the given pixel of the canvas.
- * @param {!Cesium.Scene} scene
- * @param {!Cesium.Cartesian2} pixel
- * @return {!Cesium.Cartesian3|undefined}
- * @api
  */
-export function pickOnTerrainOrEllipsoid(scene, pixel) {
+export function pickOnTerrainOrEllipsoid(scene: Scene, pixel: Cartesian2): Cartesian3 {
   const ray = scene.camera.getPickRay(pixel);
   const target = scene.globe.pick(ray, scene);
   return target || scene.camera.pickEllipsoid(pixel);
@@ -215,11 +202,8 @@ export function pickOnTerrainOrEllipsoid(scene, pixel) {
 
 /**
  * Get the 3D position of the point at the bottom-center of the screen.
- * @param {!Cesium.Scene} scene
- * @return {!Cesium.Cartesian3|undefined}
- * @api
  */
-export function pickBottomPoint(scene) {
+export function pickBottomPoint(scene: Scene): Cartesian3 | undefined {
   const canvas = scene.canvas;
   const bottom = new Cesium.Cartesian2(
       canvas.clientWidth / 2, canvas.clientHeight);
@@ -229,11 +213,8 @@ export function pickBottomPoint(scene) {
 
 /**
  * Get the 3D position of the point at the center of the screen.
- * @param {!Cesium.Scene} scene
- * @return {!Cesium.Cartesian3|undefined}
- * @api
  */
-export function pickCenterPoint(scene) {
+export function pickCenterPoint(scene: Scene): Cartesian3 | undefined {
   const canvas = scene.canvas;
   const center = new Cesium.Cartesian2(
       canvas.clientWidth / 2,
@@ -245,12 +226,8 @@ export function pickCenterPoint(scene) {
 /**
  * Compute the signed tilt angle on globe, between the opposite of the
  * camera direction and the target normal. Return undefined if there is no
- * intersection of the camera direction with the globe.
- * @param {!Cesium.Scene} scene
- * @return {number|undefined}
- * @api
  */
-export function computeSignedTiltAngleOnGlobe(scene) {
+export function computeSignedTiltAngleOnGlobe(scene: Scene): number | undefined {
   const camera = scene.camera;
   const ray = new Cesium.Ray(camera.position, camera.direction);
   let target = scene.globe.pick(ray, scene);
@@ -279,11 +256,10 @@ export function computeSignedTiltAngleOnGlobe(scene) {
 
 /**
  * Compute the ray from the camera to the bottom-center of the screen.
- * @param {!Cesium.Scene} scene
- * @return {!Cesium.Ray}
  */
-export function bottomFovRay(scene) {
+export function bottomFovRay(scene: Scene): Ray {
   const camera = scene.camera;
+  // @ts-ignore TS2341
   const fovy2 = camera.frustum.fovy / 2;
   const direction = camera.direction;
   const rotation = Cesium.Quaternion.fromAxisAngle(camera.right, fovy2);
@@ -296,12 +272,8 @@ export function bottomFovRay(scene) {
 
 /**
  * Compute the angle between two Cartesian3.
- * @param {!Cesium.Cartesian3} first
- * @param {!Cesium.Cartesian3} second
- * @param {!Cesium.Cartesian3} normal Normal to test orientation against.
- * @return {number}
  */
-export function signedAngleBetween(first, second, normal) {
+export function signedAngleBetween(first: Cartesian3, second: Cartesian3, normal: Cartesian3): number {
   // We are using the dot for the angle.
   // Then the cross and the dot for the sign.
   const a = new Cesium.Cartesian3();
@@ -328,12 +300,8 @@ export function signedAngleBetween(first, second, normal) {
  * center and the frustrum bottom ray is going through the chosen pivot
  * point.
  * The bottom-center of the screen is a good candidate for the pivot point.
- * @param {!Cesium.Scene} scene
- * @param {!Cesium.Cartesian3} pivot Point around which the camera rotates.
- * @return {number}
- * @api
  */
-export function computeAngleToZenith(scene, pivot) {
+export function computeAngleToZenith(scene: Scene, pivot: Cartesian3): number {
   // This angle is the sum of the angles 'fy' and 'a', which are defined
   // using the pivot point and its surface normal.
   //        Zenith |    camera
@@ -342,6 +310,7 @@ export function computeAngleToZenith(scene, pivot) {
   //             \ |a/
   //              \|/pivot
   const camera = scene.camera;
+  // @ts-ignore TS2341
   const fy = camera.frustum.fovy / 2;
   const ray = bottomFovRay(scene);
   const direction = Cesium.Cartesian3.clone(ray.direction);
@@ -363,9 +332,8 @@ export function computeAngleToZenith(scene, pivot) {
  * @param {ol.Extent} extent Extent.
  * @param {ol.ProjectionLike} projection Extent projection.
  * @return {Cesium.Rectangle} The corresponding Cesium rectangle.
- * @api
  */
-export function extentToRectangle(extent, projection) {
+export function extentToRectangle(extent: Extent, projection: ProjectionLike) {
   if (extent && projection) {
     const ext = transformExtent(extent, projection, 'EPSG:4326');
     return Cesium.Rectangle.fromDegrees(ext[0], ext[1], ext[2], ext[3]);
@@ -374,15 +342,7 @@ export function extentToRectangle(extent, projection) {
   }
 }
 
-
-/**
- * @param {!ol.Map} olMap
- * @param {!ol.source.Source} source
- * @param {!ol.View} viewProj
- * @param {!ol.layer.Base} olLayer
- * @return {!Cesium.ImageryProvider}
- */
-export function sourceToImageryProvider(olMap, source, viewProj, olLayer) {
+export function sourceToImageryProvider(olMap: Map, source: Source, viewProj: Projection, olLayer: BaseLayer): MVTImageryProvider {
   const skip = source.get('olcs_skip');
   if (skip) {
     return null;
@@ -441,7 +401,7 @@ export function sourceToImageryProvider(olMap, source, viewProj, olLayer) {
     else {
       return null;
     }
-  } else if (source instanceof olSourceVectorTile) {
+  } else if (source instanceof olSourceVectorTile && olLayer instanceof VectorTileLayer) {
     let projection = getSourceProjection(source);
 
     if (!projection) {
@@ -450,6 +410,7 @@ export function sourceToImageryProvider(olMap, source, viewProj, olLayer) {
     if (skip === false) {
     // MVT is experimental, it should be whitelisted to be synchronized
       const fromCode = projection.getCode().split(':')[1];
+      // @ts-ignore TS2341
       const urls = source.urls.map(u => u.replace(fromCode, '3857'));
       const extent = olLayer.getExtent();
       const rectangle = extentToRectangle(extent, projection);
@@ -482,13 +443,8 @@ export function sourceToImageryProvider(olMap, source, viewProj, olLayer) {
 /**
  * Creates Cesium.ImageryLayer best corresponding to the given ol.layer.Layer.
  * Only supports raster layers and export function images
- * @param {!ol.Map} olMap
- * @param {!ol.layer.Base} olLayer
- * @param {!ol.proj.Projection} viewProj Projection of the view.
- * @return {?Cesium.ImageryLayer} null if not possible (or supported)
- * @api
  */
-export function tileLayerToImageryLayer(olMap, olLayer, viewProj) {
+export function tileLayerToImageryLayer(olMap: Map, olLayer: BaseLayer, viewProj: Projection): ImageryLayer | null  {
 
   if (!(olLayer instanceof olLayerTile) && !(olLayer instanceof olLayerImage) &&
   !(olLayer instanceof VectorTileLayer)) {
@@ -507,9 +463,9 @@ export function tileLayerToImageryLayer(olMap, olLayer, viewProj) {
     return null;
   }
 
-  const layerOptions = {};
+  const layerOptions: {rectangle?: Rectangle} = {};
 
-  const forcedExtent = /** @type {ol.Extent} */ (olLayer.get('olcs.extent'));
+  const forcedExtent = (olLayer.get('olcs.extent'));
   const ext = forcedExtent || olLayer.getExtent();
   if (ext) {
     layerOptions.rectangle = extentToRectangle(ext, viewProj);
@@ -523,11 +479,8 @@ export function tileLayerToImageryLayer(olMap, olLayer, viewProj) {
 /**
  * Synchronizes the layer rendering properties (opacity, visible)
  * to the given Cesium ImageryLayer.
- * @param {olcsx.LayerWithParents} olLayerWithParents
- * @param {!Cesium.ImageryLayer} csLayer
- * @api
  */
-export function updateCesiumLayerProperties(olLayerWithParents, csLayer) {
+export function updateCesiumLayerProperties(olLayerWithParents: LayerWithParents, csLayer: ImageryLayer) {
   let opacity = 1;
   let visible = true;
   [olLayerWithParents.layer].concat(olLayerWithParents.parents).forEach((olLayer) => {
@@ -537,7 +490,7 @@ export function updateCesiumLayerProperties(olLayerWithParents, csLayer) {
     }
     const layerVisible = olLayer.getVisible();
     if (layerVisible !== undefined) {
-      visible &= layerVisible;
+      visible = visible && layerVisible;
     }
   });
   csLayer.alpha = opacity;
@@ -547,11 +500,8 @@ export function updateCesiumLayerProperties(olLayerWithParents, csLayer) {
 
 /**
  * Convert a 2D or 3D OpenLayers coordinate to Cesium.
- * @param {ol.Coordinate} coordinate Ol3 coordinate.
- * @return {!Cesium.Cartesian3} Cesium cartesian coordinate
- * @api
  */
-export function ol4326CoordinateToCesiumCartesian(coordinate) {
+export function ol4326CoordinateToCesiumCartesian(coordinate: Coordinate): Cartesian3 {
   const coo = coordinate;
   return coo.length > 2 ?
     Cesium.Cartesian3.fromDegrees(coo[0], coo[1], coo[2]) :
@@ -561,11 +511,8 @@ export function ol4326CoordinateToCesiumCartesian(coordinate) {
 
 /**
  * Convert an array of 2D or 3D OpenLayers coordinates to Cesium.
- * @param {Array.<!ol.Coordinate>} coordinates Ol3 coordinates.
- * @return {!Array.<Cesium.Cartesian3>} Cesium cartesian coordinates
- * @api
  */
-export function ol4326CoordinateArrayToCsCartesians(coordinates) {
+export function ol4326CoordinateArrayToCsCartesians(coordinates: Coordinate[]): Cartesian3[] {
   console.assert(coordinates !== null);
   const toCartesian = ol4326CoordinateToCesiumCartesian;
   const cartesians = [];
@@ -580,13 +527,8 @@ export function ol4326CoordinateArrayToCsCartesians(coordinates) {
  * Reproject an OpenLayers geometry to EPSG:4326 if needed.
  * The geometry will be cloned only when original projection is not EPSG:4326
  * and the properties will be shallow copied.
- * @param {!T} geometry
- * @param {!ol.ProjectionLike} projection
- * @return {!T}
- * @template T
- * @api
  */
-export function olGeometryCloneTo4326(geometry, projection) {
+export function olGeometryCloneTo4326<T>(geometry: Geometry, projection: ProjectionLike): T | Geometry {
   console.assert(projection);
 
   const proj4326 = getProjection('EPSG:4326');
@@ -603,11 +545,8 @@ export function olGeometryCloneTo4326(geometry, projection) {
 
 /**
  * Convert an OpenLayers color to Cesium.
- * @param {ol.Color|CanvasGradient|CanvasPattern|string} olColor
- * @return {!Cesium.Color}
- * @api
  */
-export function convertColorToCesium(olColor) {
+export function convertColorToCesium(olColor: OLColor | CanvasGradient | CanvasPattern | string): Color {
   olColor = olColor || 'black';
   if (Array.isArray(olColor)) {
     return new Cesium.Color(
@@ -635,11 +574,8 @@ export function convertColorToCesium(olColor) {
 
 /**
  * Convert an OpenLayers url to Cesium.
- * @param {string} url
- * @return {!CesiumUrlDefinition}
- * @api
  */
-export function convertUrlToCesium(url) {
+export function convertUrlToCesium(url: string): CesiumUrlDefinition {
   let subdomains = '';
   const re = /\{(\d|[a-z])-(\d|[a-z])\}/;
   const match = re.exec(url);
@@ -662,12 +598,8 @@ export function convertUrlToCesium(url) {
 /**
  * Animate the return to a top-down view from the zenith.
  * The camera is rotated to orient to the North.
- * @param {!ol.Map} map
- * @param {!Cesium.Scene} scene
- * @return {Promise<undefined>}
- * @api
  */
-export function resetToNorthZenith(map, scene) {
+export function resetToNorthZenith(map: Map, scene: Scene): Promise<undefined> {
   return new Promise((resolve, reject) => {
     const camera = scene.camera;
     const pivot = pickBottomPoint(scene);
@@ -689,11 +621,11 @@ export function resetToNorthZenith(map, scene) {
     // Go to zenith
     const transform = Cesium.Matrix4.fromTranslation(pivot);
     const axis = camera.right;
-    const options = {
+    const options: RotateAroundAxisOption = {
       callback: () => {
         const view = map.getView();
         normalizeView(view);
-        resolve();
+        resolve(undefined);
       }
     };
     rotateAroundAxis(camera, -angle, axis, transform, options);
@@ -707,7 +639,7 @@ export function resetToNorthZenith(map, scene) {
  * @return {Promise<undefined>}
  * @api
  */
-export function rotateAroundBottomCenter(scene, angle) {
+export function rotateAroundBottomCenter(scene: Scene, angle: number): Promise<undefined> {
   return new Promise((resolve, reject) => {
     const camera = scene.camera;
     const pivot = pickBottomPoint(scene);
@@ -716,7 +648,7 @@ export function rotateAroundBottomCenter(scene, angle) {
       return;
     }
 
-    const options = {callback: resolve};
+    const options: RotateAroundAxisOption = {callback: () => resolve(undefined)};
     const transform = Cesium.Matrix4.fromTranslation(pivot);
     const axis = camera.right;
     rotateAroundAxis(camera, -angle, axis, transform, options);
@@ -727,14 +659,14 @@ export function rotateAroundBottomCenter(scene, angle) {
 /**
  * Set the OpenLayers view to a specific rotation and
  * the nearest resolution.
- * @param {ol.View} view
- * @param {number=} angle
- * @api
  */
-export function normalizeView(view, angle = 0) {
+export function normalizeView(view: View, angle = 0) {
   const resolution = view.getResolution();
   view.setRotation(angle);
+
+  // @ts-ignore TS2341
   if (view.constrainResolution) {
+    // @ts-ignore TS2341
     view.setResolution(view.constrainResolution(resolution));
   } else {
     view.setResolution(view.getConstrainedResolution(resolution));
@@ -743,19 +675,21 @@ export function normalizeView(view, angle = 0) {
 
 /**
  * Check if the given projection is managed by Cesium (WGS84 or Mercator Spheric)
- *
- * @param {ol.proj.Projection} projection Projection to check.
- * @returns {boolean} Whether it's managed by Cesium.
  */
-export function isCesiumProjection(projection) {
+export function isCesiumProjection(projection: Projection): boolean {
   const is3857 = projection.getCode() === 'EPSG:3857';
   const is4326 = projection.getCode() === 'EPSG:4326';
   return is3857 || is4326;
 }
 
-export function attributionsFunctionToCredits(attributionsFunction, zoom, center, extent) {
-  const frameState = {
-    viewState: {zoom, center},
+export function attributionsFunctionToCredits(
+    attributionsFunction: Attribution | null,
+    zoom: number,
+    center: Coordinate,
+    extent: Extent
+) {
+  const frameState: ViewStateAndExtent = {
+    viewState: {zoom, center, projection: undefined, resolution: undefined, rotation: undefined},
     extent,
   };
 
@@ -772,16 +706,16 @@ export function attributionsFunctionToCredits(attributionsFunction, zoom, center
 
 /**
  * calculate the distance between camera and centerpoint based on the resolution and latitude value
- * @param {number} resolution Number of map units per pixel.
- * @param {number} latitude Latitude in radians.
- * @param {import('cesium').Scene} scene.
- * @param {import('ol/proj/Projection').default} projection View projection.
- * @return {number} The calculated distance.
- * @api
  */
-export function calcDistanceForResolution(resolution, latitude, scene, projection) {
+export function calcDistanceForResolution(
+    resolution: number,
+    latitude: number,
+    scene: Scene,
+    projection: Projection
+): number {
   const canvas = scene.canvas;
   const camera = scene.camera;
+  // @ts-ignore TS2341
   const fovy = camera.frustum.fovy; // vertical field of view
   console.assert(!isNaN(fovy));
   const metersPerUnit = projection.getMetersPerUnit();
@@ -815,17 +749,12 @@ export function calcDistanceForResolution(resolution, latitude, scene, projectio
 
 /**
  * calculate the resolution based on a distance(camera to position) and latitude value
- * @param {number} distance
- * @param {number} latitude
- * @param {import('cesium').Scene} scene.
- * @param {import('ol/proj/Projection').default} projection View projection.
- * @return {number} The calculated resolution.
- * @api
  */
-export function calcResolutionForDistance(distance, latitude, scene, projection) {
+export function calcResolutionForDistance(distance: number, latitude: number, scene: Scene, projection: Projection): number {
   // See the reverse calculation (calcDistanceForResolution) for details
   const canvas = scene.canvas;
   const camera = scene.camera;
+  // @ts-ignore TS2341
   const fovy = camera.frustum.fovy; // vertical field of view
   console.assert(!isNaN(fovy));
   const metersPerUnit = projection.getMetersPerUnit();

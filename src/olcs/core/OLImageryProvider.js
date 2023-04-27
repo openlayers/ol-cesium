@@ -3,7 +3,7 @@
  */
 import {getSourceProjection} from '../util.js';
 import {Tile as TileSource} from 'ol/source.js';
-import {attributionsFunctionToCredits} from '../core.js';
+import {attributionsFunctionToCredits} from '../core.ts';
 
 
 const olUseNewCoordinates = (function() {

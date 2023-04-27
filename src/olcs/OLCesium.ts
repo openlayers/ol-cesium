@@ -3,7 +3,7 @@
  */
 import olGeomPoint from 'ol/geom/Point.js';
 import {supportsImageRenderingPixelated, imageRenderingValue} from './util.js';
-import {ol4326CoordinateToCesiumCartesian} from './core.js';
+import {ol4326CoordinateToCesiumCartesian} from './core';
 import {getTransform, TransformFunction} from 'ol/proj.js';
 import olcsAutoRenderLoop from './AutoRenderLoop.js';
 import olcsCamera from './Camera.js';
@@ -11,10 +11,10 @@ import olcsRasterSynchronizer from './RasterSynchronizer.js';
 import olcsVectorSynchronizer from './VectorSynchronizer.js';
 import olcsOverlaySynchronizer from './OverlaySynchronizer.js';
 import Map from 'ol/Map'
-import Interaction from "ol/interaction/Interaction";
-import {Group} from "ol/layer";
-import Feature from "ol/Feature";
-import View from "ol/View";
+import Interaction from 'ol/interaction/Interaction';
+import {Group} from 'ol/layer';
+import Feature from 'ol/Feature';
+import View from 'ol/View';
 import type {
   BoundingSphere, ContextOptions,
   DataSourceCollection,
@@ -23,8 +23,11 @@ import type {
   EntityView,
   Globe,
   JulianDate, MapMode2D, MapProjection, PerspectiveFrustum,
-  Scene
-} from "cesium";
+  Scene,
+  ImageryLayer
+} from 'cesium';
+import type AbstractSynchronizer from './AbstractSynchronizer';
+import type VectorLayerCounterpart from "./core/VectorLayerCounterpart";
 
 /**
  * Moved from Cesium
@@ -65,7 +68,7 @@ type OLCesiumOptions = {
   map: Map,
   time: () => JulianDate,
   target: Element | string,
-  createSynchronizers: any, // todo
+  createSynchronizers: (map: Map, scene: Scene, dataSourceCollection: DataSourceCollection) => AbstractSynchronizer<ImageryLayer | VectorLayerCounterpart>[],
   stopOpenLayersEventsPropagation: boolean,
   sceneOptions: SceneOptions
 }
@@ -119,11 +122,7 @@ class OLCesium {
   private entityView_: EntityView | null = null;
   private needTrackedEntityUpdate_ = false;
   private boundingSphereScratch_: BoundingSphere = new Cesium.BoundingSphere();
-  /**
-   * @param {!OLCesiumOptions} options Options.
-   * @constructor
-   * @api
-   */
+
   constructor(options: OLCesiumOptions) {
     this.map_ = options.map;
 
@@ -368,53 +367,32 @@ class OLCesium {
     (<PerspectiveFrustum>this.scene_.camera.frustum).aspectRatio = width / height;
   }
 
-  /**
-   * @api
-   */
   getCamera(): olcsCamera {
     return this.camera_;
   }
 
-  /**
-   * @api
-   */
   getOlMap(): Map {
     return this.map_;
   }
 
-  /**
-   * @api
-   */
   getOlView(): View {
     const view = this.map_.getView();
     console.assert(view);
     return view;
   }
 
-  /**
-   * @api
-   */
   getCesiumScene(): Scene {
     return this.scene_;
   }
 
-  /**
-   * @api
-   */
   getDataSources(): DataSourceCollection {
     return this.dataSourceCollection_;
   }
 
-  /**
-   * @api
-   */
   getDataSourceDisplay(): DataSourceDisplay {
     return this.dataSourceDisplay_;
   }
 
-  /**
-   * @api
-   */
   getEnabled(): boolean {
     return this.enabled_;
   }
@@ -422,7 +400,6 @@ class OLCesium {
   /**
    * Enables/disables the Cesium.
    * This modifies the visibility style of the container element.
-   * @api
    */
   setEnabled(enable: boolean) {
     if (this.enabled_ === enable) {
@@ -491,7 +468,6 @@ class OLCesium {
    * Preload Cesium so that it is ready when transitioning from 2D to 3D.
    * @param {number} height Target height of the camera
    * @param {number} timeout Milliseconds after which the warming will stop
-   * @api
   */
   warmUp(height: number, timeout: number) {
     if (this.enabled_) {
@@ -519,7 +495,6 @@ class OLCesium {
   /**
    * Block Cesium rendering to save resources.
    * @param {boolean} block True to block.
-   * @api
   */
   setBlockCesiumRendering(block: boolean) {
     if (this.blockCesiumRendering_ !== block) {
@@ -533,7 +508,6 @@ class OLCesium {
   /**
    * Render the globe only when necessary in order to save resources.
    * Experimental.
-   * @api
    */
   enableAutoRenderLoop() {
     if (!this.autoRenderLoop_) {
@@ -543,7 +517,6 @@ class OLCesium {
 
   /**
    * Get the autorender loop.
-   * @api
   */
   getAutoRenderLoop(): olcsAutoRenderLoop {
     return this.autoRenderLoop_;
@@ -561,7 +534,6 @@ class OLCesium {
    * Pixel ratio should also be taken into account; by default, a device with
    * pixel ratio of 2.0 will have a buffer surface 4 times bigger than the client
    * surface.
-   * @api
    */
   setResolutionScale(value: number) {
     value = Math.max(0, value);
@@ -578,7 +550,6 @@ class OLCesium {
    * Set the target frame rate for the renderer. Set to `Number.POSITIVE_INFINITY`
    * to render as quickly as possible.
    * @param {number} value The frame rate, in frames per second.
-   * @api
    */
   setTargetFrameRate(value: number) {
     if (this.targetFrameRate_ !== value) {

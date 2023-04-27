@@ -28,7 +28,7 @@ import olInteractionDragAndDrop from 'ol/interaction/DragAndDrop.js';
 import olGeomMultiPolygon from 'ol/geom/MultiPolygon.js';
 import olLayerVector from 'ol/layer/Vector.js';
 import {transform} from 'ol/proj.js';
-import {createMatrixAtCoordinates} from 'olcs/core.js';
+import {createMatrixAtCoordinates} from 'olcs/core.ts';
 import {OLCS_ION_TOKEN} from './_common.js';
 
 

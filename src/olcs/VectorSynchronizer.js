@@ -8,7 +8,7 @@ import olLayerImage from 'ol/layer/Image.js';
 import {olcsListen, getUid} from './util.js';
 import olLayerVector from 'ol/layer/Vector.js';
 import olLayerVectorTile from 'ol/layer/VectorTile.js';
-import olcsAbstractSynchronizer from './AbstractSynchronizer.js';
+import olcsAbstractSynchronizer from './AbstractSynchronizer.ts';
 import olcsFeatureConverter from './FeatureConverter.js';
 
 class VectorSynchronizer extends olcsAbstractSynchronizer {

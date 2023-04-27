@@ -85,7 +85,8 @@ const config = {
       https: false,
       zlib: false,
       url: false,
-    }
+    },
+    extensions: ['.ts', '.js']
   }
 };
 

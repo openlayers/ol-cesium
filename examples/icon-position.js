@@ -17,7 +17,7 @@ import olStyleFill from 'ol/style/Fill.js';
 import olMap from 'ol/Map.js';
 import olSourceVector from 'ol/source/Vector.js';
 import olLayerVector from 'ol/layer/Vector.js';
-import {rotateAroundAxis, pickBottomPoint} from 'olcs/core.js';
+import {rotateAroundAxis, pickBottomPoint} from 'olcs/core.ts';
 import {OLCS_ION_TOKEN} from './_common.js';
 
 

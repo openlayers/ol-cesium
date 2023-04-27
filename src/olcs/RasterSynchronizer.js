@@ -3,8 +3,8 @@
  */
 import olLayerGroup from 'ol/layer/Group.js';
 import {getUid, stableSort} from './util.js';
-import olcsAbstractSynchronizer from './AbstractSynchronizer.js';
-import {tileLayerToImageryLayer, updateCesiumLayerProperties} from './core.js';
+import olcsAbstractSynchronizer from './AbstractSynchronizer.ts';
+import {tileLayerToImageryLayer, updateCesiumLayerProperties} from './core.ts';
 
 class RasterSynchronizer extends olcsAbstractSynchronizer {
   /**
