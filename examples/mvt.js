@@ -1,7 +1,7 @@
 /**
  * @module examples.mvt
  */
-import OLCesium from 'olcs/OLCesium.js';
+import OLCesium from 'olcs/OLCesium.ts';
 // import MVTImageryProvider from 'olcs/MVTImageryProvider.js';
 
 import olMap from 'ol/Map.js';

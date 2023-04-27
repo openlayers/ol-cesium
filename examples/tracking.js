@@ -1,7 +1,7 @@
 /**
  * @module examples.tracking
  */
-import OLCesium from 'olcs/OLCesium.js';
+import OLCesium from 'olcs/OLCesium.ts';
 import olView from 'ol/View.js';
 import {defaults as olControlDefaults} from 'ol/control.js';
 import olSourceOSM from 'ol/source/OSM.js';

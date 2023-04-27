@@ -2,8 +2,8 @@
  * @module olcs.contrib.Manager
  */
 import olcsContribLazyLoader from '../contrib/LazyLoader.js';
-import OLCesium from '../OLCesium.js';
-import {resetToNorthZenith, rotateAroundBottomCenter, computeSignedTiltAngleOnGlobe, pickBottomPoint, setHeadingUsingBottomCenter} from '../core.js';
+import OLCesium from '../OLCesium.ts';
+import {resetToNorthZenith, rotateAroundBottomCenter, computeSignedTiltAngleOnGlobe, pickBottomPoint, setHeadingUsingBottomCenter} from '../core.ts';
 import {toRadians} from '../math.js';
 import olObservable from 'ol/Observable.js';
 

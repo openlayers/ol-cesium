@@ -2,15 +2,76 @@
  * @module olcs.OLCesium
  */
 import olGeomPoint from 'ol/geom/Point.js';
-import {getTransform} from 'ol/proj.js';
 import {supportsImageRenderingPixelated, imageRenderingValue} from './util.js';
-import {ol4326CoordinateToCesiumCartesian} from './core.js';
+import {ol4326CoordinateToCesiumCartesian} from './core';
+import {getTransform, TransformFunction} from 'ol/proj.js';
 import olcsAutoRenderLoop from './AutoRenderLoop.js';
 import olcsCamera from './Camera.js';
 import olcsRasterSynchronizer from './RasterSynchronizer.js';
 import olcsVectorSynchronizer from './VectorSynchronizer.js';
 import olcsOverlaySynchronizer from './OverlaySynchronizer.js';
+import Map from 'ol/Map'
+import Interaction from 'ol/interaction/Interaction';
+import {Group} from 'ol/layer';
+import Feature from 'ol/Feature';
+import View from 'ol/View';
+import type {
+  BoundingSphere, ContextOptions,
+  DataSourceCollection,
+  DataSourceDisplay,
+  Entity,
+  EntityView,
+  Globe,
+  JulianDate, MapMode2D, MapProjection, PerspectiveFrustum,
+  Scene,
+  ImageryLayer
+} from 'cesium';
+import type AbstractSynchronizer from './AbstractSynchronizer';
+import type VectorLayerCounterpart from "./core/VectorLayerCounterpart";
 
+/**
+ * Moved from Cesium
+ * The state of a BoundingSphere computation being performed by a {@link Visualizer}.
+ */
+const BoundingSphereState: Record<string, number> = {
+  /**
+   * The BoundingSphere has been computed.
+   */
+  DONE: 0,
+  /**
+   * The BoundingSphere is still being computed.
+   */
+  PENDING: 1,
+  /**
+   * The BoundingSphere does not exist.
+   */
+  FAILED: 2,
+}
+
+type SceneOptions = {
+  canvas: HTMLCanvasElement;
+  contextOptions?: ContextOptions;
+  creditContainer?: Element;
+  creditViewport?: Element;
+  mapProjection?: MapProjection;
+  orderIndependentTranslucency?: boolean;
+  scene3DOnly?: boolean;
+  shadows?: boolean;
+  mapMode2D?: MapMode2D;
+  requestRenderMode?: boolean;
+  maximumRenderTimeChange?: number;
+  depthPlaneEllipsoidOffset?: number;
+  msaaSamples?: number;
+}
+
+type OLCesiumOptions = {
+  map: Map,
+  time: () => JulianDate,
+  target: Element | string,
+  createSynchronizers: (map: Map, scene: Scene, dataSourceCollection: DataSourceCollection) => AbstractSynchronizer<ImageryLayer | VectorLayerCounterpart>[],
+  stopOpenLayersEventsPropagation: boolean,
+  sceneOptions: SceneOptions
+}
 
 /**
  * @typedef {Object} OLCesiumOptions
@@ -26,72 +87,55 @@ import olcsOverlaySynchronizer from './OverlaySynchronizer.js';
  * @property {Cesium.SceneOptions} [sceneOptions] Allows the passing of property value to the
  *      `Cesium.Scene`.
  */
-
-
 class OLCesium {
-  /**
-   * @param {!OLCesiumOptions} options Options.
-   * @constructor
-   * @api
-   */
-  constructor(options) {
+  private autoRenderLoop_: olcsAutoRenderLoop | null = null;
+  private map_: Map;
+  private time_: () => JulianDate;
+  private to4326Transform_: TransformFunction;
+  private resolutionScale_ = 1.0;
+  private canvasClientWidth_ = 0.0;
+  private canvasClientHeight_ = 0.0;
+  private resolutionScaleChanged_ = true; // force resize
+  private container_: HTMLElement;
+  private isOverMap_: boolean;
+  private canvas_: HTMLCanvasElement;
+  private enabled_ = false;
+  private pausedInteractions_: Interaction[] = [];
+  private hiddenRootGroup_: Group | null = null;
+  private scene_: Scene;
+  private camera_: olcsCamera;
+  private globe_: Globe;
+  private dataSourceCollection_: DataSourceCollection;
+  private dataSourceDisplay_: DataSourceDisplay;
+  /** Time of the last rendered frame, as returned by `performance.now()`. */
+  private lastFrameTime_ = 0;
+  /** The identifier returned by `requestAnimationFrame`. */
+  private renderId_: number | undefined;
+  /** Target frame rate for the render loop.  */
+  private targetFrameRate_ = Number.POSITIVE_INFINITY;
+  /** If the Cesium render loop is being blocked. */
+  private blockCesiumRendering_ = false;
+  /** If the warmup routine is active. */
+  private warmingUp_ = false;
+  private trackedFeature_: Feature | null = null;
+  private trackedEntity_: Entity | null = null;
+  private entityView_: EntityView | null = null;
+  private needTrackedEntityUpdate_ = false;
+  private boundingSphereScratch_: BoundingSphere = new Cesium.BoundingSphere();
 
-    /**
-     * @type {olcs.AutoRenderLoop}
-     * @private
-     */
-    this.autoRenderLoop_ = null;
-
-    /**
-     * @type {!ol.Map}
-     * @private
-     */
+  constructor(options: OLCesiumOptions) {
     this.map_ = options.map;
 
-    /**
-     * @type {!function(): Cesium.JulianDate}
-     * @private
-     */
-    this.time_ = options.time || function() {
+    this.time_ = options.time || function () {
       return Cesium.JulianDate.now();
     };
 
     /**
      * No change of the view projection.
-     * @private
      */
     this.to4326Transform_ = getTransform(this.map_.getView().getProjection(), 'EPSG:4326');
 
-    /**
-     * @type {number}
-     * @private
-     */
-    this.resolutionScale_ = 1.0;
-
-    /**
-     * @type {number}
-     * @private
-     */
-    this.canvasClientWidth_ = 0.0;
-
-    /**
-     * @type {number}
-     * @private
-     */
-    this.canvasClientHeight_ = 0.0;
-
-    /**
-     * @type {boolean}
-     * @private
-     */
-    this.resolutionScaleChanged_ = true; // force resize
-
     const fillArea = 'position:absolute;top:0;left:0;width:100%;height:100%;';
-
-    /**
-     * @type {!Element}
-     * @private
-     */
     this.container_ = document.createElement('DIV');
     const containerAttribute = document.createAttribute('style');
     containerAttribute.value = `${fillArea}visibility:hidden;`;
@@ -107,8 +151,6 @@ class OLCesium {
      * Whether the Cesium container is placed over the ol map.
      * a target => side by side mode
      * no target => over map mode
-     * @type {boolean}
-     * @private
      */
     this.isOverMap_ = !options.target;
 
@@ -120,12 +162,7 @@ class OLCesium {
       }
     }
 
-
-    /**
-     * @type {!HTMLCanvasElement}
-     * @private
-     */
-    this.canvas_ = /** @type {!HTMLCanvasElement} */ (document.createElement('CANVAS'));
+    this.canvas_ = document.createElement<'canvas'>('canvas');
     const canvasAttribute = document.createAttribute('style');
     canvasAttribute.value = fillArea;
     this.canvas_.setAttributeNode(canvasAttribute);
@@ -135,66 +172,43 @@ class OLCesium {
       this.canvas_.style['imageRendering'] = imageRenderingValue();
     }
 
-    this.canvas_.oncontextmenu = function() { return false; };
-    this.canvas_.onselectstart = function() { return false; };
+    this.canvas_.oncontextmenu = function () {
+      return false;
+    };
+    this.canvas_.onselectstart = function () {
+      return false;
+    };
 
     this.container_.appendChild(this.canvas_);
 
-    /**
-     * @type {boolean}
-     * @private
-     */
-    this.enabled_ = false;
+    const sceneOptions: SceneOptions = options.sceneOptions !== undefined ?
+      {...options.sceneOptions, canvas: this.canvas_, scene3DOnly: true} :
+      {canvas: this.canvas_, scene3DOnly: true};
 
-    /**
-     * @type {!Array.<ol.interaction.Interaction>}
-     * @private
-     */
-    this.pausedInteractions_ = [];
-
-    /**
-     * @type {?ol.layer.Group}
-     * @private
-     */
-    this.hiddenRootGroup_ = null;
-
-    const sceneOptions = options.sceneOptions !== undefined ? options.sceneOptions :
-      /** @type {Cesium.SceneOptions} */ ({});
-    sceneOptions.canvas = this.canvas_;
-    sceneOptions.scene3DOnly = true;
-
-    /**
-     * @type {!Cesium.Scene}
-     * @private
-     */
     this.scene_ = new Cesium.Scene(sceneOptions);
 
     const sscc = this.scene_.screenSpaceCameraController;
 
-    sscc.tiltEventTypes.push({
-      'eventType': Cesium.CameraEventType.LEFT_DRAG,
-      'modifier': Cesium.KeyboardEventModifier.SHIFT
-    });
+    if (!Array.isArray(sscc.tiltEventTypes)) {
+      console.log('sscc is not an array');
+    } else {
+      sscc.tiltEventTypes.push({
+        'eventType': Cesium.CameraEventType.LEFT_DRAG,
+        'modifier': Cesium.KeyboardEventModifier.SHIFT
+      });
 
-    sscc.tiltEventTypes.push({
-      'eventType': Cesium.CameraEventType.LEFT_DRAG,
-      'modifier': Cesium.KeyboardEventModifier.ALT
-    });
+      sscc.tiltEventTypes.push({
+        'eventType': Cesium.CameraEventType.LEFT_DRAG,
+        'modifier': Cesium.KeyboardEventModifier.ALT
+      });
+    }
 
     sscc.enableLook = false;
 
     this.scene_.camera.constrainedAxis = Cesium.Cartesian3.UNIT_Z;
 
-    /**
-     * @type {!olcs.Camera}
-     * @private
-     */
     this.camera_ = new olcsCamera(this.scene_, this.map_);
 
-    /**
-     * @type {!Cesium.Globe}
-     * @private
-     */
     this.globe_ = new Cesium.Globe(Cesium.Ellipsoid.WGS84);
     this.globe_.baseColor = Cesium.Color.WHITE;
     this.scene_.globe = this.globe_;
@@ -230,79 +244,14 @@ class OLCesium {
       synchronizers[i].synchronize();
     }
 
-    /**
-     * Time of the last rendered frame, as returned by `performance.now()`.
-     * @type {number}
-     * @private
-     */
-    this.lastFrameTime_ = 0;
-
-    /**
-     * The identifier returned by `requestAnimationFrame`.
-     * @type {number|undefined}
-     * @private
-     */
-    this.renderId_ = undefined;
-
-    /**
-     * Target frame rate for the render loop.
-     * @type {number}
-     * @private
-     */
-    this.targetFrameRate_ = Number.POSITIVE_INFINITY;
-
-    /**
-     * If the Cesium render loop is being blocked.
-     * @type {boolean}
-     * @private
-     */
-    this.blockCesiumRendering_ = false;
-
-    /**
-     * If the warmup routine is active.
-     * @type {boolean}
-     * @private
-     */
-    this.warmingUp_ = false;
-
-    /**
-     * @type {ol.Feature}
-     * @private
-     */
-    this.trackedFeature_ = null;
-
-    /**
-     * @type {Cesium.Entity}
-     * @private
-     */
-    this.trackedEntity_ = null;
-
-    /**
-     * @type {Cesium.EntityView}
-     * @private
-     */
-    this.entityView_ = null;
-
-    /**
-     * @type {boolean}
-     * @private
-     */
-    this.needTrackedEntityUpdate_ = false;
-
-    /**
-     * @type {!Cesium.BoundingSphere}
-     */
-    this.boundingSphereScratch_ = new Cesium.BoundingSphere();
-
     const eventHelper = new Cesium.EventHelper();
     eventHelper.add(this.scene_.postRender, OLCesium.prototype.updateTrackedEntity_, this);
   }
 
   /**
    * Render the Cesium scene.
-   * @private
    */
-  render_() {
+  private render_() {
     // if a call to `requestAnimationFrame` is pending, cancel it
     if (this.renderId_ !== undefined) {
       cancelAnimationFrame(this.renderId_);
@@ -318,9 +267,8 @@ class OLCesium {
   /**
    * Callback for `requestAnimationFrame`.
    * @param {number} frameTime The frame time, from `performance.now()`.
-   * @private
    */
-  onAnimationFrame_(frameTime) {
+  private onAnimationFrame_(frameTime: number) {
     this.renderId_ = undefined;
 
     // check if a frame was rendered within the target frame rate
@@ -336,6 +284,8 @@ class OLCesium {
     this.lastFrameTime_ = frameTime;
 
     const julianDate = this.time_();
+    // initializeFrame private property
+    // @ts-ignore TS2341
     this.scene_.initializeFrame();
     this.handleResize_();
     this.dataSourceDisplay_.update(julianDate);
@@ -343,8 +293,10 @@ class OLCesium {
     // Update tracked entity
     if (this.entityView_) {
       const trackedEntity = this.trackedEntity_;
+      // getBoundingSphere private property
+      // @ts-ignore TS2341
       const trackedState = this.dataSourceDisplay_.getBoundingSphere(trackedEntity, false, this.boundingSphereScratch_);
-      if (trackedState === Cesium.BoundingSphereState.DONE) {
+      if (trackedState === BoundingSphereState.DONE) {
         this.boundingSphereScratch_.radius = 1; // a radius of 1 is enough for tracking points
         this.entityView_.update(julianDate, this.boundingSphereScratch_);
       }
@@ -357,10 +309,7 @@ class OLCesium {
     this.render_();
   }
 
-  /**
-   * @private
-   */
-  updateTrackedEntity_() {
+  private updateTrackedEntity_() {
     if (!this.needTrackedEntityUpdate_) {
       return;
     }
@@ -368,14 +317,16 @@ class OLCesium {
     const trackedEntity = this.trackedEntity_;
     const scene = this.scene_;
 
+    // getBoundingSphere private property
+    // @ts-ignore TS2341
     const state = this.dataSourceDisplay_.getBoundingSphere(trackedEntity, false, this.boundingSphereScratch_);
-    if (state === Cesium.BoundingSphereState.PENDING) {
+    if (state === BoundingSphereState.PENDING) {
       return;
     }
 
     scene.screenSpaceCameraController.enableTilt = false;
 
-    const bs = state !== Cesium.BoundingSphereState.FAILED ? this.boundingSphereScratch_ : undefined;
+    const bs = state !== BoundingSphereState.FAILED ? this.boundingSphereScratch_ : undefined;
     if (bs) {
       bs.radius = 1;
     }
@@ -384,14 +335,11 @@ class OLCesium {
     this.needTrackedEntityUpdate_ = false;
   }
 
-  /**
-   * @private
-   */
-  handleResize_() {
+  private handleResize_() {
     let width = this.canvas_.clientWidth;
     let height = this.canvas_.clientHeight;
 
-    if (width === 0 | height === 0) {
+    if (width === 0 || height === 0) {
       // The canvas DOM element is not ready yet.
       return;
     }
@@ -416,74 +364,44 @@ class OLCesium {
 
     this.canvas_.width = width;
     this.canvas_.height = height;
-    this.scene_.camera.frustum.aspectRatio = width / height;
+    (<PerspectiveFrustum>this.scene_.camera.frustum).aspectRatio = width / height;
   }
 
-  /**
-   * @return {!olcs.Camera}
-   * @api
-   */
-  getCamera() {
+  getCamera(): olcsCamera {
     return this.camera_;
   }
 
-  /**
-   * @return {!ol.Map}
-   * @api
-   */
-  getOlMap() {
+  getOlMap(): Map {
     return this.map_;
   }
 
-  /**
-   * @return {!ol.View}
-   * @api
-   */
-  getOlView() {
+  getOlView(): View {
     const view = this.map_.getView();
     console.assert(view);
     return view;
   }
 
-  /**
-   * @return {!Cesium.Scene}
-   * @api
-   */
-  getCesiumScene() {
+  getCesiumScene(): Scene {
     return this.scene_;
   }
 
-  /**
-   * @return {!Cesium.DataSourceCollection}
-   * @api
-   */
-  getDataSources() {
+  getDataSources(): DataSourceCollection {
     return this.dataSourceCollection_;
   }
 
-  /**
-   * @return {!Cesium.DataSourceDisplay}
-   * @api
-   */
-  getDataSourceDisplay() {
+  getDataSourceDisplay(): DataSourceDisplay {
     return this.dataSourceDisplay_;
   }
 
-  /**
-   * @return {boolean}
-   * @api
-   */
-  getEnabled() {
+  getEnabled(): boolean {
     return this.enabled_;
   }
 
   /**
    * Enables/disables the Cesium.
    * This modifies the visibility style of the container element.
-   * @param {boolean} enable
-   * @api
    */
-  setEnabled(enable) {
+  setEnabled(enable: boolean) {
     if (this.enabled_ === enable) {
       return;
     }
@@ -503,8 +421,15 @@ class OLCesium {
         interactions.clear();
 
         this.map_.addInteraction = interaction => this.pausedInteractions_.push(interaction);
-        this.map_.removeInteraction = interaction =>
-          this.pausedInteractions_ = this.pausedInteractions_.filter(i => i !== interaction);
+        this.map_.removeInteraction = (interaction) => {
+          let interactionRemoved = false
+          this.pausedInteractions_ = this.pausedInteractions_.filter((i) => {
+            const removed = i !== interaction;
+            if(!interactionRemoved) interactionRemoved = removed
+            return removed
+          })
+          return interactionRemoved ? interaction : undefined;
+        }
 
         const rootGroup = this.map_.getLayerGroup();
         if (rootGroup.getVisible()) {
@@ -543,9 +468,8 @@ class OLCesium {
    * Preload Cesium so that it is ready when transitioning from 2D to 3D.
    * @param {number} height Target height of the camera
    * @param {number} timeout Milliseconds after which the warming will stop
-   * @api
   */
-  warmUp(height, timeout) {
+  warmUp(height: number, timeout: number) {
     if (this.enabled_) {
       // already enabled
       return;
@@ -571,9 +495,8 @@ class OLCesium {
   /**
    * Block Cesium rendering to save resources.
    * @param {boolean} block True to block.
-   * @api
   */
-  setBlockCesiumRendering(block) {
+  setBlockCesiumRendering(block: boolean) {
     if (this.blockCesiumRendering_ !== block) {
       this.blockCesiumRendering_ = block;
 
@@ -585,7 +508,6 @@ class OLCesium {
   /**
    * Render the globe only when necessary in order to save resources.
    * Experimental.
-   * @api
    */
   enableAutoRenderLoop() {
     if (!this.autoRenderLoop_) {
@@ -595,10 +517,8 @@ class OLCesium {
 
   /**
    * Get the autorender loop.
-   * @return {?olcs.AutoRenderLoop}
-   * @api
   */
-  getAutoRenderLoop() {
+  getAutoRenderLoop(): olcsAutoRenderLoop {
     return this.autoRenderLoop_;
   }
 
@@ -614,12 +534,8 @@ class OLCesium {
    * Pixel ratio should also be taken into account; by default, a device with
    * pixel ratio of 2.0 will have a buffer surface 4 times bigger than the client
    * surface.
-   *
-   * @param {number} value
-   * @this {olcs.OLCesium}
-   * @api
    */
-  setResolutionScale(value) {
+  setResolutionScale(value: number) {
     value = Math.max(0, value);
     if (value !== this.resolutionScale_) {
       this.resolutionScale_ = Math.max(0, value);
@@ -634,9 +550,8 @@ class OLCesium {
    * Set the target frame rate for the renderer. Set to `Number.POSITIVE_INFINITY`
    * to render as quickly as possible.
    * @param {number} value The frame rate, in frames per second.
-   * @api
    */
-  setTargetFrameRate(value) {
+  setTargetFrameRate(value: number) {
     if (this.targetFrameRate_ !== value) {
       this.targetFrameRate_ = value;
 
@@ -647,9 +562,8 @@ class OLCesium {
 
   /**
    * Check if OpenLayers map is not properly initialized.
-   * @private
    */
-  throwOnUnitializedMap_() {
+  private throwOnUnitializedMap_() {
     const map = this.map_;
     const view = map.getView();
     const center = view.getCenter();
@@ -658,17 +572,11 @@ class OLCesium {
     }
   }
 
-  /**
-   * @type {ol.Feature}
-   */
-  get trackedFeature() {
+  get trackedFeature(): Feature {
     return this.trackedFeature_;
   }
 
-  /**
-   * @param {ol.Feature} feature
-   */
-  set trackedFeature(feature) {
+  set trackedFeature(feature: Feature) {
     if (this.trackedFeature_ !== feature) {
 
       const scene = this.scene_;
@@ -698,18 +606,19 @@ class OLCesium {
       const toCesiumPosition = function() {
         const geometry = feature.getGeometry();
         console.assert(geometry instanceof olGeomPoint);
-        const coo = geometry.getCoordinates();
+        const coo = geometry instanceof olGeomPoint ? geometry.getCoordinates() : [];
         const coo4326 = to4326Transform(coo, undefined, coo.length);
         return ol4326CoordinateToCesiumCartesian(coo4326);
       };
 
       // Create an invisible point entity for tracking.
-      // It is independant from the primitive/geometry created by the vector synchronizer.
-      const options = {
-        'position': new Cesium.CallbackProperty((time, result) => toCesiumPosition(), false),
-        'point': {
-          'pixelSize': 1,
-          'color': Cesium.Color.TRANSPARENT
+      // It is independent of the primitive/geometry created by the vector synchronizer.
+      const options: Entity.ConstructorOptions = {
+        // @ts-ignore according to Cesium types, not possible to pass CallbackProperty
+        position: new Cesium.CallbackProperty((time, result) => toCesiumPosition(), false),
+        point: {
+          pixelSize: 1,
+          color: Cesium.Color.TRANSPARENT
         }
       };
 

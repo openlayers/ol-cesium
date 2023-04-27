@@ -8,7 +8,7 @@ import olSourceCluster from 'ol/source/Cluster.js';
 import {circular as olCreateCircularPolygon} from 'ol/geom/Polygon.js';
 import {boundingExtent, getCenter} from 'ol/extent.js';
 import olGeomSimpleGeometry from 'ol/geom/SimpleGeometry.js';
-import {convertColorToCesium, olGeometryCloneTo4326, ol4326CoordinateToCesiumCartesian, ol4326CoordinateArrayToCsCartesians} from './core.js';
+import {convertColorToCesium, olGeometryCloneTo4326, ol4326CoordinateToCesiumCartesian, ol4326CoordinateArrayToCsCartesians} from './core.ts';
 import olcsCoreVectorLayerCounterpart from './core/VectorLayerCounterpart.js';
 import {obj, getUid, isGroundPolylinePrimitiveSupported} from './util.js';
 

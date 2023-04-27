@@ -2,74 +2,48 @@
  * @module olcs.AbstractSynchronizer
  */
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
-import olLayerGroup from 'ol/layer/Group.js';
-import {olcsListen, getUid} from './util.js';
+import LayerGroup from 'ol/layer/Group.js';
+import {getUid, olcsListen} from './util.js';
+import Map from 'ol/Map'
+import type {Scene, ImageryLayer} from 'cesium';
+import View from 'ol/View';
+import Collection from 'ol/Collection';
+import BaseLayer from 'ol/layer/Base';
+import {EventsKey} from 'ol/events';
+import {LayerWithParents} from './core';
+import VectorLayerCounterpart from './core/VectorLayerCounterpart';
 
 
-class AbstractSynchronizer {
+abstract class AbstractSynchronizer<T extends ImageryLayer | VectorLayerCounterpart> {
+  protected map: Map;
+  protected view: View;
+  protected scene: Scene;
+  protected olLayers: Collection<BaseLayer>;
+  mapLayerGroup: LayerGroup;
   /**
-   * @param {!ol.Map} map
-   * @param {!Cesium.Scene} scene
-   * @template T
-   * @abstract
-   * @api
+   * Map of OpenLayers layer ids (from getUid) to the Cesium ImageryLayers.
+   * Null value means, that we are unable to create equivalent layers.
    */
-  constructor(map, scene) {
-    /**
-     * @type {!ol.Map}
-     * @protected
-     */
+  protected layerMap: Record<string, Array<T>> = {};
+  /**
+   * Map of listen keys for OpenLayers layer layers ids (from getUid).
+   */
+  protected  olLayerListenKeys: Record<string, Array<EventsKey>> = {};
+  /**
+   * Map of listen keys for OpenLayers layer groups ids (from getUid).
+   */
+  private olGroupListenKeys_: Record<string, Array<EventsKey>> = {};
+
+  protected constructor(map: Map, scene: Scene) {
     this.map = map;
-
-    /**
-     * @type {ol.View}
-     * @protected
-     */
     this.view = map.getView();
-
-    /**
-     * @type {!Cesium.Scene}
-     * @protected
-     */
     this.scene = scene;
-
-    /**
-     * @type {ol.Collection.<ol.layer.Base>}
-     * @protected
-     */
     this.olLayers = map.getLayerGroup().getLayers();
-
-    /**
-     * @type {ol.layer.Group}
-     */
     this.mapLayerGroup = map.getLayerGroup();
-
-    /**
-     * Map of OpenLayers layer ids (from getUid) to the Cesium ImageryLayers.
-     * Null value means, that we are unable to create equivalent layers.
-     * @type {Object.<string, ?Array.<T>>}
-     * @protected
-     */
-    this.layerMap = {};
-
-    /**
-     * Map of listen keys for OpenLayers layer layers ids (from getUid).
-     * @type {!Object.<string, Array<ol.EventsKey>>}
-     * @protected
-     */
-    this.olLayerListenKeys = {};
-
-    /**
-     * Map of listen keys for OpenLayers layer groups ids (from getUid).
-     * @type {!Object.<string, !Array.<ol.EventsKey>>}
-     * @private
-     */
-    this.olGroupListenKeys_ = {};
   }
 
   /**
    * Destroy all and perform complete synchronization of the layers.
-   * @api
    */
   synchronize() {
     this.destroyAll();
@@ -79,20 +53,16 @@ class AbstractSynchronizer {
   /**
    * Order counterparts using the same algorithm as the Openlayers renderer:
    * z-index then original sequence order.
-   * @protected
    */
-  orderLayers() {
+  protected orderLayers() {
     // Ordering logics is handled in subclasses.
   }
 
   /**
    * Add a layer hierarchy.
-   * @param {ol.layer.Base} root
-   * @private
    */
-  addLayers_(root) {
-    /** @type {Array<import('olsc/core.js').LayerWithParents>} */
-    const fifo = [{
+  private addLayers_(root: BaseLayer) {
+    const fifo: LayerWithParents[] = [{
       layer: root,
       parents: []
     }];
@@ -104,7 +74,7 @@ class AbstractSynchronizer {
       console.assert(!this.layerMap[olLayerId]);
 
       let cesiumObjects = null;
-      if (olLayer instanceof olLayerGroup) {
+      if (olLayer instanceof LayerGroup) {
         this.listenForGroupChanges_(olLayer);
         if (olLayer !== this.mapLayerGroup) {
           cesiumObjects = this.createSingleLayerCounterparts(olLayerWithParents);
@@ -112,7 +82,7 @@ class AbstractSynchronizer {
         if (!cesiumObjects) {
           olLayer.getLayers().forEach((l) => {
             if (l) {
-              const newOlLayerWithParents = {
+              const newOlLayerWithParents: LayerWithParents = {
                 layer: l,
                 parents: olLayer === this.mapLayerGroup ?
                   [] :
@@ -129,7 +99,7 @@ class AbstractSynchronizer {
           // for example when a source is set after the layer is added to the map
           const layerId = olLayerId;
           const layerWithParents = olLayerWithParents;
-          const onLayerChange = (e) => {
+          const onLayerChange = () => {
             const cesiumObjs = this.createSingleLayerCounterparts(layerWithParents);
             if (cesiumObjs) {
               // unsubscribe event listener
@@ -152,12 +122,8 @@ class AbstractSynchronizer {
 
   /**
    * Add Cesium objects.
-   * @param {Array.<T>} cesiumObjects
-   * @param {string} layerId
-   * @param {ol.layer.Base} layer
-   * @private
    */
-  addCesiumObjects_(cesiumObjects, layerId, layer) {
+  private addCesiumObjects_(cesiumObjects: Array<T>, layerId: string, layer: BaseLayer) {
     this.layerMap[layerId] = cesiumObjects;
     this.olLayerListenKeys[layerId].push(olcsListen(layer, 'change:zIndex', () => this.orderLayers()));
     cesiumObjects.forEach((cesiumObject) => {
@@ -169,9 +135,8 @@ class AbstractSynchronizer {
    * Remove and destroy a single layer.
    * @param {ol.layer.Layer} layer
    * @return {boolean} counterpart destroyed
-   * @private
    */
-  removeAndDestroySingleLayer_(layer) {
+  private removeAndDestroySingleLayer_(layer: BaseLayer): boolean {
     const uid = getUid(layer).toString();
     const counterparts = this.layerMap[uid];
     if (!!counterparts) {
@@ -188,10 +153,8 @@ class AbstractSynchronizer {
 
   /**
    * Unlisten a single layer group.
-   * @param {ol.layer.Group} group
-   * @private
    */
-  unlistenSingleGroup_(group) {
+  private unlistenSingleGroup_(group: LayerGroup) {
     if (group === this.mapLayerGroup) {
       return;
     }
@@ -206,16 +169,14 @@ class AbstractSynchronizer {
 
   /**
    * Remove layer hierarchy.
-   * @param {ol.layer.Base} root
-   * @private
    */
-  removeLayer_(root) {
+  private removeLayer_(root: BaseLayer) {
     if (!!root) {
       const fifo = [root];
       while (fifo.length > 0) {
         const olLayer = fifo.splice(0, 1)[0];
         const done = this.removeAndDestroySingleLayer_(olLayer);
-        if (olLayer instanceof olLayerGroup) {
+        if (olLayer instanceof LayerGroup) {
           this.unlistenSingleGroup_(olLayer);
           if (!done) {
             // No counterpart for the group itself so removing
@@ -231,19 +192,17 @@ class AbstractSynchronizer {
 
   /**
    * Register listeners for single layer group change.
-   * @param {ol.layer.Group} group
-   * @private
    */
-  listenForGroupChanges_(group) {
+  private listenForGroupChanges_(group: LayerGroup) {
     const uuid = getUid(group).toString();
 
     console.assert(this.olGroupListenKeys_[uuid] === undefined);
 
-    const listenKeyArray = [];
+    const listenKeyArray: EventsKey[] = [];
     this.olGroupListenKeys_[uuid] = listenKeyArray;
 
     // only the keys that need to be relistened when collection changes
-    let contentKeys = [];
+    let contentKeys: EventsKey[] = [];
     const listenAddRemove = (function() {
       const collection = group.getLayers();
       if (collection) {
@@ -275,9 +234,8 @@ class AbstractSynchronizer {
 
   /**
    * Destroys all the created Cesium objects.
-   * @protected
    */
-  destroyAll() {
+  protected destroyAll() {
     this.removeAllCesiumObjects(true); // destroy
     let objKey;
     for (objKey in this.olGroupListenKeys_) {
@@ -294,43 +252,19 @@ class AbstractSynchronizer {
 
   /**
    * Adds a single Cesium object to the collection.
-   * @param {!T} object
-   * @abstract
-   * @protected
    */
-  addCesiumObject(object) {}
+  protected abstract addCesiumObject(object: T): void;
 
-  /**
-   * @param {!T} object
-   * @abstract
-   * @protected
-   */
-  destroyCesiumObject(object) {}
+  protected abstract destroyCesiumObject(object: T): void;
 
   /**
    * Remove single Cesium object from the collection.
-   * @param {!T} object
-   * @param {boolean} destroy
-   * @abstract
-   * @protected
    */
-  removeSingleCesiumObject(object, destroy) {}
+  protected abstract removeSingleCesiumObject(object: T, destroy: boolean): void;
 
-  /**
-   * Remove all Cesium objects from the collection.
-   * @param {boolean} destroy
-   * @abstract
-   * @protected
-   */
-  removeAllCesiumObjects(destroy) {}
+  protected abstract removeAllCesiumObjects(destroy: boolean): void;
 
-  /**
-   * @param {import('olsc/core.js').LayerWithParents} olLayerWithParents
-   * @return {?Array.<T>}
-   * @abstract
-   * @protected
-   */
-  createSingleLayerCounterparts(olLayerWithParents) {}
+  protected abstract createSingleLayerCounterparts(olLayerWithParents: LayerWithParents): Array<T>;
 }
 
 

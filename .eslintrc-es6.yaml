@@ -2,6 +2,8 @@
   env: {
     es6: true
   },
+  parser: "@typescript-eslint/parser",
+  plugins: ["@typescript-eslint"],
   parserOptions: {
     ecmaVersion: 6,
     sourceType: 'module',
@@ -148,6 +150,10 @@
 
     # enforce spacing around the * in yield* expressions
     # http://eslint.org/docs/rules/yield-star-spacing
-    'yield-star-spacing': ['error', 'after']
+    'yield-star-spacing': ['error', 'after'],
+
+    # Enforce the consistent use of single quotes
+    # https://eslint.org/docs/latest/rules/quotes
+    quotes: [ error, single, { avoidEscape: true } ]
   }
 }

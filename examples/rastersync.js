@@ -3,7 +3,7 @@
  */
 import olSourceTileWMS from 'ol/source/TileWMS.js';
 import olSourceStamen from 'ol/source/Stamen.js';
-import OLCesium from 'olcs/OLCesium.js';
+import OLCesium from 'olcs/OLCesium.ts';
 import olLayerGroup from 'ol/layer/Group.js';
 import olMap from 'ol/Map.js';
 import olSourceTileJSON from 'ol/source/TileJSON.js';
