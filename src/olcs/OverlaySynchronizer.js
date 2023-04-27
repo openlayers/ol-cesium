@@ -37,7 +37,7 @@ class OverlaySynchronizer {
     */
     this.overlayContainerStopEvent_ = document.createElement('DIV');
     this.overlayContainerStopEvent_.className = 'ol-overlaycontainer-stopevent';
-    const overlayEvents = ['click', 'dblclick', 'mousedown', 'touchstart', 'MSPointerDown', 'pointerdown', 'mousewheel', 'wheel'];
+    const overlayEvents = ['click', 'dblclick', 'mousedown', 'touchstart', 'pointerdown', 'mousewheel', 'wheel'];
     overlayEvents.forEach((event) => {
       this.overlayContainerStopEvent_.addEventListener(event, evt => evt.stopPropagation());
     });
