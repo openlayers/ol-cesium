@@ -163,7 +163,7 @@ class FeatureConverter {
         flat: true,
         renderState: {
           depthTest: {
-            enabled: true
+            enabled: true,
           }
         },
         material: new Cesium.Material({
@@ -176,9 +176,20 @@ class FeatureConverter {
         })
       });
     } else {
-      primitive.appearance = new Cesium.PerInstanceColorAppearance(options);
+      primitive.appearance = new Cesium.MaterialAppearance({
+        options,
+        material: new Cesium.Material({
+          translucent: color.alpha !== 1,
+          fabric: {
+            type: 'Color',
+            uniforms: {
+              color,
+            }
+          }
+        })
+      });
+      primitive.shadows = 1
     }
-
     this.setReferenceForPicking(layer, feature, primitive);
     return primitive;
   }

@@ -48,6 +48,11 @@ const map = new olMap({
 
 const ol3d = new OLCesium({map, target: 'map3d'});
 ol3d.setEnabled(true);
+const scene = ol3d.getCesiumScene();
+scene.globe.enableLighting = true;
+scene.shadowMap.enabled = true;
+
+
 
 const vectorSource = vector.getSource();
 vectorSource.once('featuresloadend', () => {
@@ -56,9 +61,10 @@ vectorSource.once('featuresloadend', () => {
   }
 });
 
+
 const selectionStyle = new olStyleStyle({
   fill: new olStyleFill({
-    color: [255, 255, 255, 0.6],
+    color: [0, 255, 0, 1],
   }),
   stroke: new olStyleStroke({
     color: [0, 153, 255, 1],
@@ -70,6 +76,7 @@ let selectedFeature;
 map.on('click', (e) => {
   if (selectedFeature) {
     selectedFeature.setStyle(null);
+    console.log(selectedFeature)
   }
   selectedFeature = map.forEachFeatureAtPixel(
       e.pixel,
