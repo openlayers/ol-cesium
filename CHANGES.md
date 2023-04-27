@@ -1,10 +1,12 @@
 # Changelog
 
+# v 2.14.0 - 2023-04-26
 
-# v 2.13.2 - 2022-11-
+* Breaking changes
+  * Use named exports
 
 * Changes
-  * port to CesiumJS 1.99 and OL 7.1
+  * port to CesiumJS 1.104 and OL 7.3
 
 # v 2.13 - 2021-05-20
 
