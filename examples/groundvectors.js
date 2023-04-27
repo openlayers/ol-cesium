@@ -131,6 +131,7 @@ const map = new olMap({
   })
 });
 
+const Cesium = window.Cesium;
 Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 vectorLayer.set('altitudeMode', 'clampToGround');
 const ol3d = new OLCesium({map, target: 'map3d'});
@@ -153,3 +154,8 @@ window['scene'] = scene;
 document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
 
 ol3d.enableAutoRenderLoop();
+
+//##REMOVE## Keep this tag, split code here for code sandbox
+
+import {initCodeSandbox} from './_code-sandbox.js';
+initCodeSandbox('./groundvectors.js', './data/geojson/ground_vector_data.geojson');

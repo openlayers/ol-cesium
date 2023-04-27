@@ -7,6 +7,7 @@ import olLayerTile from 'ol/layer/Tile.js';
 import olMap from 'ol/Map.js';
 import {OLCS_ION_TOKEN} from './_common.js';
 
+const Cesium = window.Cesium;
 Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 const ol2d = new olMap({
   layers: [
@@ -19,7 +20,7 @@ const ol2d = new olMap({
       collapsible: false
     }
   }),
-  target: 'map',
+  target: 'mapCesium',
   view: new olView({
     center: transform([25, 20], 'EPSG:4326', 'EPSG:3857'),
     zoom: 3
@@ -49,9 +50,14 @@ timeElt.style.display = 'none';
 document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
 window['toggleTime'] = function() {
   scene.globe.enableLighting = !scene.globe.enableLighting;
-  if (timeElt.style.display == 'none') {
+  if (timeElt.style.display === 'none') {
     timeElt.style.display = 'inline-block';
   } else {
     timeElt.style.display = 'none';
   }
 };
+
+//##REMOVE## Keep this tag, split code here for code sandbox
+
+import {initCodeSandbox} from './_code-sandbox.js';
+initCodeSandbox('./main.js');
