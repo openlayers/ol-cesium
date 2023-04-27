@@ -2,6 +2,5 @@
 /dist/
 /node_modules/
 /examples/example-list.js
-/package-lock.json
 /compilation-stats.json
 /*.zip

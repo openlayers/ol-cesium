@@ -61,8 +61,8 @@ cleanall:
 	rm -rf .build
 	rm -rf node_modules
 
-.build/node_modules.timestamp: package.json
-	npm install
+.build/node_modules.timestamp: package.json package-lock.json
+	npm ci
 	mkdir -p $(dir $@)
 	touch $@
 
