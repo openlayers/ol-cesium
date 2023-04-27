@@ -76,7 +76,6 @@ let selectedFeature;
 map.on('click', (e) => {
   if (selectedFeature) {
     selectedFeature.setStyle(null);
-    console.log(selectedFeature)
   }
   selectedFeature = map.forEachFeatureAtPixel(
       e.pixel,

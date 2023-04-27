@@ -188,7 +188,7 @@ class FeatureConverter {
           }
         })
       });
-      primitive.shadows = 1
+      primitive.shadows = 1;
     }
     this.setReferenceForPicking(layer, feature, primitive);
     return primitive;
