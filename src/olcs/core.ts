@@ -23,12 +23,13 @@ import type {
   Cartesian2,
   Cartesian3,
   Cartographic,
-  Color,
+  Color, ImageMaterialProperty,
   ImageryLayer,
   Matrix4,
   Ray,
   Rectangle,
-  Scene
+  Scene,
+  SingleTileImageryProvider
 } from 'cesium';
 import Geometry from 'ol/geom/Geometry';
 import {Coordinate} from 'ol/coordinate';
@@ -342,7 +343,12 @@ export function extentToRectangle(extent: Extent, projection: ProjectionLike) {
   }
 }
 
-export function sourceToImageryProvider(olMap: Map, source: Source, viewProj: Projection, olLayer: BaseLayer): MVTImageryProvider {
+export function sourceToImageryProvider(
+    olMap: Map,
+    source: Source,
+    viewProj: Projection,
+    olLayer: BaseLayer
+): olcsCoreOLImageryProvider | MVTImageryProvider | SingleTileImageryProvider {
   const skip = source.get('olcs_skip');
   if (skip) {
     return null;
@@ -387,14 +393,16 @@ export function sourceToImageryProvider(olMap: Map, source: Source, viewProj: Pr
       projection = viewProj;
     }
     if (isCesiumProjection(projection)) {
+      const rectangle: Rectangle = Cesium.Rectangle.fromDegrees(
+          source.getImageExtent()[0],
+          source.getImageExtent()[1],
+          source.getImageExtent()[2],
+          source.getImageExtent()[3],
+          new Cesium.Rectangle()
+      )
       provider = new Cesium.SingleTileImageryProvider({
         url: source.getUrl(),
-        rectangle: new Cesium.Rectangle.fromDegrees(
-            source.getImageExtent()[0],
-            source.getImageExtent()[1],
-            source.getImageExtent()[2],
-            source.getImageExtent()[3]
-        )
+        rectangle
       });
     }
     // Projection not supported by Cesium
@@ -546,7 +554,7 @@ export function olGeometryCloneTo4326<T>(geometry: Geometry, projection: Project
 /**
  * Convert an OpenLayers color to Cesium.
  */
-export function convertColorToCesium(olColor: OLColor | CanvasGradient | CanvasPattern | string): Color {
+export function convertColorToCesium(olColor: OLColor | CanvasGradient | CanvasPattern | string): Color | ImageMaterialProperty {
   olColor = olColor || 'black';
   if (Array.isArray(olColor)) {
     return new Cesium.Color(

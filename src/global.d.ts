@@ -1,1 +1,1 @@
-declare const Cesium = require('cesium');
+declare const Cesium: typeof import('cesium');

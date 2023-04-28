@@ -1,64 +1,45 @@
 /**
  * @module olcs.RasterSynchronizer
  */
-import olLayerGroup from 'ol/layer/Group.js';
+import Map from 'ol/Map';
 import {getUid, stableSort} from './util.js';
-import olcsAbstractSynchronizer from './AbstractSynchronizer.ts';
-import {tileLayerToImageryLayer, updateCesiumLayerProperties} from './core.ts';
+import olcsAbstractSynchronizer from './AbstractSynchronizer';
+import {LayerWithParents, tileLayerToImageryLayer, updateCesiumLayerProperties} from './core';
+import type {Scene, ImageryLayer, ImageryLayerCollection} from 'cesium';
+import type BaseLayer from 'ol/layer/Base';
+import type Projection from 'ol/proj/Projection';
+import BaseVectorLayer from 'ol/layer/BaseVector';
+import LayerGroup from 'ol/layer/Group.js';
 
-class RasterSynchronizer extends olcsAbstractSynchronizer {
+class RasterSynchronizer extends olcsAbstractSynchronizer<ImageryLayer> {
+  private cesiumLayers_: ImageryLayerCollection;
+  private ourLayers_: ImageryLayerCollection;
   /**
    * This object takes care of one-directional synchronization of
    * Openlayers raster layers to the given Cesium globe.
-   * @param {!ol.Map} map
-   * @param {!Cesium.Scene} scene
-   * @constructor
-   * @extends {olcsAbstractSynchronizer.<Cesium.ImageryLayer>}
-   * @api
    */
-  constructor(map, scene) {
+  constructor(map: Map, scene: Scene) {
     super(map, scene);
 
-    /**
-     * @type {!Cesium.ImageryLayerCollection}
-     * @private
-     */
     this.cesiumLayers_ = scene.imageryLayers;
-
-    /**
-     * @type {!Cesium.ImageryLayerCollection}
-     * @private
-     */
     this.ourLayers_ = new Cesium.ImageryLayerCollection();
   }
 
-  /**
-   * @inheritDoc
-   */
-  addCesiumObject(object) {
+  addCesiumObject(object: ImageryLayer): void {
     this.cesiumLayers_.add(object);
     this.ourLayers_.add(object);
   }
 
-  /**
-   * @inheritDoc
-   */
-  destroyCesiumObject(object) {
+  destroyCesiumObject(object: ImageryLayer): void {
     object.destroy();
   }
 
-  /**
-   * @inheritDoc
-   */
-  removeSingleCesiumObject(object, destroy) {
+  removeSingleCesiumObject(object: ImageryLayer, destroy: boolean): void {
     this.cesiumLayers_.remove(object, destroy);
     this.ourLayers_.remove(object, false);
   }
 
-  /**
-   * @inheritDoc
-   */
-  removeAllCesiumObjects(destroy) {
+  removeAllCesiumObjects(destroy: boolean): void {
     for (let i = 0; i < this.ourLayers_.length; ++i) {
       this.cesiumLayers_.remove(this.ourLayers_.get(i), destroy);
     }
@@ -70,21 +51,13 @@ class RasterSynchronizer extends olcsAbstractSynchronizer {
    * May be overriden by child classes to implement custom behavior.
    * The default implementation handles tiled imageries in EPSG:4326 or
    * EPSG:3859.
-   * @param {!ol.layer.Base} olLayer
-   * @param {!ol.proj.Projection} viewProj Projection of the view.
-   * @return {?Array.<!Cesium.ImageryLayer>} array or null if not possible
-   * (or supported)
-   * @protected
    */
-  convertLayerToCesiumImageries(olLayer, viewProj) {
+  protected convertLayerToCesiumImageries(olLayer: BaseLayer, viewProj: Projection): ImageryLayer[] {
     const result = tileLayerToImageryLayer(this.map, olLayer, viewProj);
     return result ? [result] : null;
   }
 
-  /**
-   * @inheritDoc
-   */
-  createSingleLayerCounterparts(olLayerWithParents) {
+  createSingleLayerCounterparts(olLayerWithParents: LayerWithParents): ImageryLayer[] {
     const olLayer = olLayerWithParents.layer;
     const uid = getUid(olLayer).toString();
     const viewProj = this.view.getProjection();
@@ -102,7 +75,7 @@ class RasterSynchronizer extends olcsAbstractSynchronizer {
         }));
       });
 
-      if (olLayer.getStyleFunction) {
+      if (olLayer instanceof BaseVectorLayer) {
         let previousStyleFunction = olLayer.getStyleFunction();
         // there is no convenient way to detect a style function change in OL
         listenKeyArray.push(olLayer.on('change', () => {
@@ -113,10 +86,15 @@ class RasterSynchronizer extends olcsAbstractSynchronizer {
           previousStyleFunction = currentStyleFunction;
           for (let i = 0; i < cesiumObjects.length; ++i) {
             const csObj = cesiumObjects[i];
+            console.log(csObj)
             // clear cache and set new style
+            // @ts-ignore TS2341
             if (csObj._imageryCache && csObj.imageryProvider.cache_) {
+              // @ts-ignore TS2341
               csObj._imageryCache = {};
+              // @ts-ignore TS2341
               csObj.imageryProvider.cache_ = {};
+              // @ts-ignore TS2341
               csObj.imageryProvider.styleFunction_ = currentStyleFunction;
             }
           }
@@ -164,15 +142,15 @@ class RasterSynchronizer extends olcsAbstractSynchronizer {
    */
   orderLayers() {
     const layers = [];
-    const zIndices = {};
-    const queue = [this.mapLayerGroup];
+    const zIndices: Record<number, number> = {};
+    const queue: Array<BaseLayer | LayerGroup> = [this.mapLayerGroup];
 
     while (queue.length > 0) {
       const olLayer = queue.splice(0, 1)[0];
       layers.push(olLayer);
       zIndices[getUid(olLayer)] = olLayer.getZIndex() || 0;
 
-      if (olLayer instanceof olLayerGroup) {
+      if (olLayer instanceof LayerGroup) {
         const sublayers = olLayer.getLayers();
         if (sublayers) {
           // Prepend queue with sublayers in order
@@ -194,10 +172,7 @@ class RasterSynchronizer extends olcsAbstractSynchronizer {
     });
   }
 
-  /**
-   * @param {Cesium.ImageryLayer} counterpart
-   */
-  raiseToTop(counterpart) {
+  raiseToTop(counterpart: ImageryLayer) {
     this.cesiumLayers_.raiseToTop(counterpart);
   }
 }

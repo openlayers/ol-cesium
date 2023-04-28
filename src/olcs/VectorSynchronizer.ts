@@ -1,71 +1,58 @@
 /**
  * @module olcs.VectorSynchronizer
  */
-import olSourceVector from 'ol/source/Vector.js';
+import olSourceVector, {VectorSourceEvent} from 'ol/source/Vector.js';
 import olLayerLayer from 'ol/layer/Layer.js';
 import olSourceCluster from 'ol/source/Cluster.js';
-import olLayerImage from 'ol/layer/Image.js';
 import {olcsListen, getUid} from './util.js';
 import olLayerVector from 'ol/layer/Vector.js';
 import olLayerVectorTile from 'ol/layer/VectorTile.js';
-import olcsAbstractSynchronizer from './AbstractSynchronizer.ts';
+import olcsAbstractSynchronizer from './AbstractSynchronizer';
 import olcsFeatureConverter from './FeatureConverter.js';
+import VectorLayerCounterpart, {
+  OlFeatureToCesiumContext,
+  PrimitiveCollectionCounterpart
+} from './core/VectorLayerCounterpart';
+import type Map from 'ol/Map'
+import {LayerWithParents} from './core';
+import Feature from 'ol/Feature';
+import BaseLayer from 'ol/layer/Base';
+import {Billboard, Primitive, PrimitiveCollection, Scene} from 'cesium';
 
-class VectorSynchronizer extends olcsAbstractSynchronizer {
+class VectorSynchronizer extends olcsAbstractSynchronizer<VectorLayerCounterpart> {
+  protected converter: olcsFeatureConverter;
+  private csAllPrimitives_: PrimitiveCollection
   /**
    * Unidirectionally synchronize OpenLayers vector layers to Cesium.
-   * @param {!ol.Map} map
-   * @param {!Cesium.Scene} scene
-   * @param {olcs.FeatureConverter=} opt_converter
-   * @extends {olcs.AbstractSynchronizer.<olcs.core.VectorLayerCounterpart>}
-   * @api
    */
-  constructor(map, scene, opt_converter) {
+  constructor(map: Map, scene: Scene, opt_converter?: olcsFeatureConverter) {
     super(map, scene);
 
-    /**
-     * @protected
-     */
     this.converter = opt_converter || new olcsFeatureConverter(scene);
-
-    /**
-     * @private
-     */
     this.csAllPrimitives_ = new Cesium.PrimitiveCollection();
     scene.primitives.add(this.csAllPrimitives_);
     this.csAllPrimitives_.destroyPrimitives = false;
   }
 
-  /**
-   * @inheritDoc
-   */
-  addCesiumObject(counterpart) {
+  addCesiumObject(counterpart: VectorLayerCounterpart) {
     console.assert(counterpart);
-    counterpart.getRootPrimitive()['counterpart'] = counterpart;
+    const collection = <PrimitiveCollectionCounterpart>counterpart.getRootPrimitive()
+    collection.counterpart = counterpart;
     this.csAllPrimitives_.add(counterpart.getRootPrimitive());
   }
 
-  /**
-   * @inheritDoc
-   */
-  destroyCesiumObject(object) {
+  destroyCesiumObject(object: VectorLayerCounterpart) {
     object.getRootPrimitive().destroy();
   }
 
-  /**
-   * @inheritDoc
-   */
-  removeSingleCesiumObject(object, destroy) {
+  removeSingleCesiumObject(object: VectorLayerCounterpart, destroy: boolean) {
     object.destroy();
     this.csAllPrimitives_.destroyPrimitives = destroy;
     this.csAllPrimitives_.remove(object.getRootPrimitive());
     this.csAllPrimitives_.destroyPrimitives = false;
   }
 
-  /**
-   * @inheritDoc
-   */
-  removeAllCesiumObjects(destroy) {
+  removeAllCesiumObjects(destroy: boolean) {
     this.csAllPrimitives_.destroyPrimitives = destroy;
     if (destroy) {
       for (let i = 0; i < this.csAllPrimitives_.length; ++i) {
@@ -79,15 +66,13 @@ class VectorSynchronizer extends olcsAbstractSynchronizer {
   /**
    * Synchronizes the layer visibility properties
    * to the given Cesium Primitive.
-   * @param {import('olsc/core.js').LayerWithParents} olLayerWithParents
-   * @param {!Cesium.Primitive} csPrimitive
    */
-  updateLayerVisibility(olLayerWithParents, csPrimitive) {
+  updateLayerVisibility(olLayerWithParents: LayerWithParents, csPrimitive: PrimitiveCollection) {
     let visible = true;
     [olLayerWithParents.layer].concat(olLayerWithParents.parents).forEach((olLayer) => {
       const layerVisible = olLayer.getVisible();
       if (layerVisible !== undefined) {
-        visible &= layerVisible;
+        visible = visible && layerVisible;
       } else {
         visible = false;
       }
@@ -95,11 +80,8 @@ class VectorSynchronizer extends olcsAbstractSynchronizer {
     csPrimitive.show = visible;
   }
 
-  /**
-   * @inheritDoc
-   */
-  createSingleLayerCounterparts(olLayerWithParents) {
-    const olLayer = olLayerWithParents.layer;
+  createSingleLayerCounterparts(olLayerWithParents: LayerWithParents): VectorLayerCounterpart[] {
+    const olLayer: BaseLayer = olLayerWithParents.layer;
     if (!(olLayer instanceof olLayerVector) || olLayer instanceof olLayerVectorTile) {
       return null;
     }
@@ -118,8 +100,8 @@ class VectorSynchronizer extends olcsAbstractSynchronizer {
     console.assert(this.view);
 
     const view = this.view;
-    const featurePrimitiveMap = {};
-    const counterpart = this.converter.olVectorLayerToCesium(olLayer, view,
+    const featurePrimitiveMap: Record<number, Primitive> = {};
+    const counterpart: VectorLayerCounterpart = this.converter.olVectorLayerToCesium(olLayer, view,
         featurePrimitiveMap);
     const csPrimitives = counterpart.getRootPrimitive();
     const olListenKeys = counterpart.olListenKeys;
@@ -131,22 +113,18 @@ class VectorSynchronizer extends olcsAbstractSynchronizer {
     });
     this.updateLayerVisibility(olLayerWithParents, csPrimitives);
 
-    const onAddFeature = (function(feature) {
-      console.assert(
-          (olLayer instanceof olLayerVector) ||
-          (olLayer instanceof olLayerImage)
-      );
+    const onAddFeature = (function(feature: Feature) {
       const context = counterpart.context;
-      const prim = this.converter.convert(olLayer, view, feature, context);
+      const prim: Primitive = this.converter.convert(olLayer, view, feature, context);
       if (prim) {
         featurePrimitiveMap[getUid(feature)] = prim;
         csPrimitives.add(prim);
       }
     }).bind(this);
 
-    const onRemoveFeature = (function(feature) {
+    const onRemoveFeature = (function(feature: Feature) {
       const id = getUid(feature);
-      const context = counterpart.context;
+      const context: OlFeatureToCesiumContext = counterpart.context;
       const bbs = context.featureToCesiumMap[id];
       if (bbs) {
         delete context.featureToCesiumMap[id];
@@ -163,22 +141,22 @@ class VectorSynchronizer extends olcsAbstractSynchronizer {
       }
     }).bind(this);
 
-    olListenKeys.push(olcsListen(source, 'addfeature', (e) => {
+    olListenKeys.push(olcsListen(source, 'addfeature', (e: VectorSourceEvent) => {
       console.assert(e.feature);
       onAddFeature(e.feature);
-    }, this));
+    }));
 
-    olListenKeys.push(olcsListen(source, 'removefeature', (e) => {
+    olListenKeys.push(olcsListen(source, 'removefeature', (e: VectorSourceEvent) => {
       console.assert(e.feature);
       onRemoveFeature(e.feature);
-    }, this));
+    }));
 
-    olListenKeys.push(olcsListen(source, 'changefeature', (e) => {
+    olListenKeys.push(olcsListen(source, 'changefeature', (e: VectorSourceEvent) => {
       const feature = e.feature;
       console.assert(feature);
       onRemoveFeature(feature);
       onAddFeature(feature);
-    }, this));
+    }));
 
     return counterpart ? [counterpart] : null;
   }

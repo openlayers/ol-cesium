@@ -1,12 +1,12 @@
 import OLCesium from './olcs/OLCesium.ts';
 
 import AbstractSynchronizer from './olcs/AbstractSynchronizer.ts';
-import RasterSynchronizer from './olcs/RasterSynchronizer.js';
-import VectorSynchronizer from './olcs/VectorSynchronizer.js';
+import RasterSynchronizer from './olcs/RasterSynchronizer.ts';
+import VectorSynchronizer from './olcs/VectorSynchronizer.ts';
 
 import * as core from './olcs/core.ts';
 import OLImageryProvider from './olcs/core/OLImageryProvider.js';
-import VectorLayerCounterpart from './olcs/core/VectorLayerCounterpart.js';
+import VectorLayerCounterpart from './olcs/core/VectorLayerCounterpart.ts';
 
 import LazyLoader from './olcs/contrib/LazyLoader.js';
 import Manager from './olcs/contrib/Manager.js';
