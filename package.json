@@ -46,7 +46,7 @@
     "fs-extra": "10.1.0",
     "html-loader": "4.2.0",
     "html-webpack-plugin": "5.5.1",
-    "htmlparser2": "8.0.2",
+    "htmlparser2": "9.0.0",
     "jsdoc": "4.0.2",
     "ol": "7.3.0",
     "proj4": "2.9.0",
