@@ -1,22 +1,22 @@
-import MVT from 'ol/format/MVT.js';
-import Style from 'ol/style/Style.js';
-import Stroke from 'ol/style/Stroke.js';
-import {toContext} from 'ol/render.js';
-import {get as getProjection} from 'ol/proj.js';
-import {VERSION as OL_VERSION} from 'ol/util.js';
 import LRUCache from 'ol/structs/LRUCache.js';
-import {getForProjection as getTilegridForProjection} from 'ol/tilegrid.js';
+import MVT from 'ol/format/MVT.js';
+import Stroke from 'ol/style/Stroke.js';
+import Style from 'ol/style/Style.js';
+import {VERSION as OL_VERSION} from 'ol/util.js';
 import {createFromTemplates as createTileUrlFunctions} from 'ol/tileurlfunction.js';
-
+import {get as getProjection} from 'ol/proj.js';
+import {getForProjection as getTilegridForProjection} from 'ol/tilegrid.js';
+import {toContext} from 'ol/render.js';
 
 const format = new MVT();
-const styles = [new Style({
-  stroke: new Stroke({
-    color: 'blue',
-    width: 2
-  })
-})];
-
+const styles = [
+  new Style({
+    stroke: new Stroke({
+      color: 'blue',
+      width: 2,
+    }),
+  }),
+];
 
 export default class MVTImageryProvider {
   constructor(options) {
@@ -27,7 +27,7 @@ export default class MVTImageryProvider {
     this.tileHeight = 256;
     this.maximumLevel = options.maximumLevel || 20;
     this.minimumLevel = options.minimumLevel || 0;
-    this.tilingScheme = new Cesium.WebMercatorTilingScheme;
+    this.tilingScheme = new Cesium.WebMercatorTilingScheme();
     this.rectangle = options.rectangle || this.tilingScheme.rectangle;
     this.errorEvent = new Cesium.Event();
     this.credit = options.credit;
@@ -51,9 +51,7 @@ export default class MVTImageryProvider {
     return [];
   }
 
-  pickFeatures() {
-  }
-
+  pickFeatures() {}
 
   getTileFeatures(z, x, y) {
     const cacheKey = this.getCacheKey_(z, x, y);
@@ -64,9 +62,9 @@ export default class MVTImageryProvider {
     if (!promise) {
       const url = this.getUrl_(z, x, y);
       promise = fetch(url)
-          .then(r => (r.ok ? r : Promise.reject(r)))
-          .then(r => r.arrayBuffer())
-          .then(buffer => this.readFeaturesFromBuffer(buffer));
+        .then((r) => (r.ok ? r : Promise.reject(r)))
+        .then((r) => r.arrayBuffer())
+        .then((buffer) => this.readFeaturesFromBuffer(buffer));
       this.featureCache.set(cacheKey, promise);
       if (this.featureCache.getCount() > 2 * this.featureCache.highWaterMark) {
         while (this.featureCache.canExpireCache()) {
@@ -84,7 +82,7 @@ export default class MVTImageryProvider {
       options = {
         extent: [0, 0, 4096, 4096],
         dataProjection: format.dataProjection,
-        featureProjection: format.dataProjection
+        featureProjection: format.dataProjection,
       };
     }
     const features = format.readFeatures(buffer, options);
@@ -128,13 +126,23 @@ export default class MVTImageryProvider {
         promise = this.tileCache.get(cacheKey);
       }
       if (!promise) {
-        promise = this.getTileFeatures(z, x, y)
-            .then((features) => {
-            // FIXME: here we suppose the 2D projection is in meters
-              this.tilingScheme.tileXYToNativeRectangle(x, y, z, this.tileRectangle_);
-              const resolution = (this.tileRectangle_.east - this.tileRectangle_.west) / this.tileWidth;
-              return this.rasterizeFeatures(features, this.styleFunction_, resolution);
-            });
+        promise = this.getTileFeatures(z, x, y).then((features) => {
+          // FIXME: here we suppose the 2D projection is in meters
+          this.tilingScheme.tileXYToNativeRectangle(
+            x,
+            y,
+            z,
+            this.tileRectangle_
+          );
+          const resolution =
+            (this.tileRectangle_.east - this.tileRectangle_.west) /
+            this.tileWidth;
+          return this.rasterizeFeatures(
+            features,
+            this.styleFunction_,
+            resolution
+          );
+        });
         this.tileCache.set(cacheKey, promise);
         if (this.tileCache.getCount() > 2 * this.tileCache.highWaterMark) {
           while (this.tileCache.canExpireCache()) {
@@ -151,7 +159,9 @@ export default class MVTImageryProvider {
 
   rasterizeFeatures(features, styleFunction, resolution) {
     const canvas = document.createElement('canvas');
-    const vectorContext = toContext(canvas.getContext('2d'), {size: [this.tileWidth, this.tileHeight]});
+    const vectorContext = toContext(canvas.getContext('2d'), {
+      size: [this.tileWidth, this.tileHeight],
+    });
     features.forEach((f) => {
       const styles = styleFunction(f, resolution);
       if (styles) {

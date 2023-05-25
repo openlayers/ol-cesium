@@ -13,7 +13,9 @@ switch (nodeEnv) {
     config = merge(config, require('./buildtools/webpack.prod.js'));
     break;
   default:
-    console.log(`The 'NODE_ENV' environement variable is set to an invalid value: ${process.env.NODE_ENV}.`);
+    console.log(
+      `The 'NODE_ENV' environement variable is set to an invalid value: ${process.env.NODE_ENV}.`
+    );
     process.exit(2);
 }
 
@@ -28,7 +30,9 @@ switch (process.env.TARGET) {
     config = merge(config, require('./buildtools/webpack.umd.js'));
     break;
   default:
-    console.log(`The 'TARGET' environement variable is set to an invalid value: ${process.env.TARGET}.`);
+    console.log(
+      `The 'TARGET' environement variable is set to an invalid value: ${process.env.TARGET}.`
+    );
     process.exit(2);
 }
 

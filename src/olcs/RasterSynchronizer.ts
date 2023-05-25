@@ -4,7 +4,11 @@
 import Map from 'ol/Map';
 import {getUid, stableSort} from './util.js';
 import olcsAbstractSynchronizer from './AbstractSynchronizer';
-import {LayerWithParents, tileLayerToImageryLayer, updateCesiumLayerProperties} from './core';
+import {
+  LayerWithParents,
+  tileLayerToImageryLayer,
+  updateCesiumLayerProperties,
+} from './core';
 import type {Scene, ImageryLayer, ImageryLayerCollection} from 'cesium';
 import type BaseLayer from 'ol/layer/Base';
 import type Projection from 'ol/proj/Projection';
@@ -52,12 +56,17 @@ class RasterSynchronizer extends olcsAbstractSynchronizer<ImageryLayer> {
    * The default implementation handles tiled imageries in EPSG:4326 or
    * EPSG:3859.
    */
-  protected convertLayerToCesiumImageries(olLayer: BaseLayer, viewProj: Projection): ImageryLayer[] {
+  protected convertLayerToCesiumImageries(
+    olLayer: BaseLayer,
+    viewProj: Projection
+  ): ImageryLayer[] {
     const result = tileLayerToImageryLayer(this.map, olLayer, viewProj);
     return result ? [result] : null;
   }
 
-  createSingleLayerCounterparts(olLayerWithParents: LayerWithParents): ImageryLayer[] {
+  createSingleLayerCounterparts(
+    olLayerWithParents: LayerWithParents
+  ): ImageryLayer[] {
     const olLayer = olLayerWithParents.layer;
     const uid = getUid(olLayer).toString();
     const viewProj = this.view.getProjection();
@@ -65,41 +74,50 @@ class RasterSynchronizer extends olcsAbstractSynchronizer<ImageryLayer> {
     const cesiumObjects = this.convertLayerToCesiumImageries(olLayer, viewProj);
     if (cesiumObjects) {
       const listenKeyArray = [];
-      [olLayerWithParents.layer].concat(olLayerWithParents.parents).forEach((olLayerItem) => {
-        listenKeyArray.push(olLayerItem.on(['change:opacity', 'change:visible'], () => {
-          // the compiler does not seem to be able to infer this
-          console.assert(cesiumObjects);
-          for (let i = 0; i < cesiumObjects.length; ++i) {
-            updateCesiumLayerProperties(olLayerWithParents, cesiumObjects[i]);
-          }
-        }));
-      });
+      [olLayerWithParents.layer]
+        .concat(olLayerWithParents.parents)
+        .forEach((olLayerItem) => {
+          listenKeyArray.push(
+            olLayerItem.on(['change:opacity', 'change:visible'], () => {
+              // the compiler does not seem to be able to infer this
+              console.assert(cesiumObjects);
+              for (let i = 0; i < cesiumObjects.length; ++i) {
+                updateCesiumLayerProperties(
+                  olLayerWithParents,
+                  cesiumObjects[i]
+                );
+              }
+            })
+          );
+        });
 
       if (olLayer instanceof BaseVectorLayer) {
         let previousStyleFunction = olLayer.getStyleFunction();
         // there is no convenient way to detect a style function change in OL
-        listenKeyArray.push(olLayer.on('change', () => {
-          const currentStyleFunction = olLayer.getStyleFunction();
-          if (previousStyleFunction === currentStyleFunction) {
-            return;
-          }
-          previousStyleFunction = currentStyleFunction;
-          for (let i = 0; i < cesiumObjects.length; ++i) {
-            const csObj = cesiumObjects[i];
-            console.log(csObj)
-            // clear cache and set new style
-            // @ts-ignore TS2341
-            if (csObj._imageryCache && csObj.imageryProvider.cache_) {
-              // @ts-ignore TS2341
-              csObj._imageryCache = {};
-              // @ts-ignore TS2341
-              csObj.imageryProvider.cache_ = {};
-              // @ts-ignore TS2341
-              csObj.imageryProvider.styleFunction_ = currentStyleFunction;
+        listenKeyArray.push(
+          olLayer.on('change', () => {
+            const currentStyleFunction = olLayer.getStyleFunction();
+            if (previousStyleFunction === currentStyleFunction) {
+              return;
             }
-          }
-          this.scene.requestRender();
-        }));
+            previousStyleFunction = currentStyleFunction;
+            for (let i = 0; i < cesiumObjects.length; ++i) {
+              const csObj = cesiumObjects[i];
+              console.log(csObj);
+              // clear cache and set new style
+              // @ts-ignore TS2341
+              if (csObj._imageryCache && csObj.imageryProvider.cache_) {
+                // @ts-ignore TS2341
+                csObj._imageryCache = {};
+                // @ts-ignore TS2341
+                csObj.imageryProvider.cache_ = {};
+                // @ts-ignore TS2341
+                csObj.imageryProvider.styleFunction_ = currentStyleFunction;
+              }
+            }
+            this.scene.requestRender();
+          })
+        );
       }
 
       for (let i = 0; i < cesiumObjects.length; ++i) {
@@ -108,25 +126,29 @@ class RasterSynchronizer extends olcsAbstractSynchronizer<ImageryLayer> {
 
       // there is no way to modify Cesium layer extent,
       // we have to recreate when OpenLayers layer extent changes:
-      listenKeyArray.push(olLayer.on('change:extent', (e) => {
-        for (let i = 0; i < cesiumObjects.length; ++i) {
-          this.cesiumLayers_.remove(cesiumObjects[i], true); // destroy
-          this.ourLayers_.remove(cesiumObjects[i], false);
-        }
-        delete this.layerMap[getUid(olLayer)]; // invalidate the map entry
-        this.synchronize();
-      }));
-
-      listenKeyArray.push(olLayer.on('change', (e) => {
-        // when the source changes, re-add the layer to force update
-        for (let i = 0; i < cesiumObjects.length; ++i) {
-          const position = this.cesiumLayers_.indexOf(cesiumObjects[i]);
-          if (position >= 0) {
-            this.cesiumLayers_.remove(cesiumObjects[i], false);
-            this.cesiumLayers_.add(cesiumObjects[i], position);
+      listenKeyArray.push(
+        olLayer.on('change:extent', (e) => {
+          for (let i = 0; i < cesiumObjects.length; ++i) {
+            this.cesiumLayers_.remove(cesiumObjects[i], true); // destroy
+            this.ourLayers_.remove(cesiumObjects[i], false);
           }
-        }
-      }));
+          delete this.layerMap[getUid(olLayer)]; // invalidate the map entry
+          this.synchronize();
+        })
+      );
+
+      listenKeyArray.push(
+        olLayer.on('change', (e) => {
+          // when the source changes, re-add the layer to force update
+          for (let i = 0; i < cesiumObjects.length; ++i) {
+            const position = this.cesiumLayers_.indexOf(cesiumObjects[i]);
+            if (position >= 0) {
+              this.cesiumLayers_.remove(cesiumObjects[i], false);
+              this.cesiumLayers_.add(cesiumObjects[i], position);
+            }
+          }
+        })
+      );
 
       this.olLayerListenKeys[uid].push(...listenKeyArray);
     }
@@ -159,15 +181,18 @@ class RasterSynchronizer extends olcsAbstractSynchronizer<ImageryLayer> {
       }
     }
 
-    stableSort(layers, (layer1, layer2) =>
-      zIndices[getUid(layer1)] - zIndices[getUid(layer2)]
+    stableSort(
+      layers,
+      (layer1, layer2) => zIndices[getUid(layer1)] - zIndices[getUid(layer2)]
     );
 
     layers.forEach((olLayer) => {
       const olLayerId = getUid(olLayer).toString();
       const cesiumObjects = this.layerMap[olLayerId];
       if (cesiumObjects) {
-        cesiumObjects.forEach((cesiumObject) => { this.raiseToTop(cesiumObject); });
+        cesiumObjects.forEach((cesiumObject) => {
+          this.raiseToTop(cesiumObject);
+        });
       }
     });
   }
@@ -176,6 +201,5 @@ class RasterSynchronizer extends olcsAbstractSynchronizer<ImageryLayer> {
     this.cesiumLayers_.raiseToTop(counterpart);
   }
 }
-
 
 export default RasterSynchronizer;

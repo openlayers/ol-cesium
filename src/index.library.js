@@ -11,10 +11,9 @@ import VectorLayerCounterpart from './olcs/core/VectorLayerCounterpart.ts';
 import LazyLoader from './olcs/contrib/LazyLoader.js';
 import Manager from './olcs/contrib/Manager.js';
 
-
 export default OLCesium;
 
-const olcs = window['olcs'] = {};
+const olcs = (window['olcs'] = {});
 olcs.OLCesium = OLCesium;
 
 olcs.AbstractSynchronizer = AbstractSynchronizer;

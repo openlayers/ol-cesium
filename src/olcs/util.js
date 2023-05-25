@@ -17,13 +17,11 @@ export function obj(param) {
  */
 let supportsImageRenderingPixelatedResult_ = undefined;
 
-
 /**
  * @type {string|undefined}
  * @private
  */
 let imageRenderingValueResult_ = undefined;
-
 
 /**
  * @return {boolean}
@@ -31,7 +29,10 @@ let imageRenderingValueResult_ = undefined;
 export function supportsImageRenderingPixelated() {
   if (supportsImageRenderingPixelatedResult_ === undefined) {
     const canvas = document.createElement('canvas');
-    canvas.setAttribute('style', 'image-rendering: -moz-crisp-edges; image-rendering: pixelated;');
+    canvas.setAttribute(
+      'style',
+      'image-rendering: -moz-crisp-edges; image-rendering: pixelated;'
+    );
     // canvas.style.imageRendering will be undefined, null or an
     // empty string on unsupported browsers.
     const tmp = canvas.style['imageRendering']; // non standard
@@ -42,7 +43,6 @@ export function supportsImageRenderingPixelated() {
   }
   return supportsImageRenderingPixelatedResult_;
 }
-
 
 /**
  * @return {string}
@@ -56,13 +56,14 @@ export function imageRenderingValue() {
  * Return the projection of the source that Cesium should use.
  *
  * @param {ol.source.Source} source Source.
- * @returns {ol.proj.Projection} The projection of the source.
+ * @return {ol.proj.Projection} The projection of the source.
  */
 export function getSourceProjection(source) {
-  return /** @type {ol.proj.Projection} */ (source.get('olcs.projection'))
-  || source.getProjection();
+  return (
+    /** @type {ol.proj.Projection} */ (source.get('olcs.projection')) ||
+    source.getProjection()
+  );
 }
-
 
 /**
  * @param {ol.Observable} observable
@@ -116,7 +117,7 @@ export function stableSort(arr, compareFnc) {
 
 /**
  * @param {Node} node The node to remove.
- * @returns {Node} The node that was removed or null.
+ * @return {Node} The node that was removed or null.
  */
 export function removeNode(node) {
   return node && node.parentNode ? node.parentNode.removeChild(node) : null;

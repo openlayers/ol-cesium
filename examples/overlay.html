@@ -1,18 +1,18 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="robots" content="index, all" />
     <title>Overlay example</title>
-    <link rel="stylesheet" href="../node_modules/ol/ol.css" type="text/css">
-    <link rel="stylesheet" href="../css/olcs.css" type="text/css">
+    <link rel="stylesheet" href="../node_modules/ol/ol.css" type="text/css" />
+    <link rel="stylesheet" href="../css/olcs.css" type="text/css" />
     <style>
       .ol-popup {
         position: absolute;
         background-color: white;
-        -webkit-filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
-        filter: drop-shadow(0 1px 4px rgba(0,0,0,0.2));
+        -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+        filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
         padding: 15px;
         border-radius: 10px;
         border: 1px solid #cccccc;
@@ -20,10 +20,11 @@
         left: -50px;
         min-width: 280px;
       }
-      .ol-popup:after, .ol-popup:before {
+      .ol-popup:after,
+      .ol-popup:before {
         top: 100%;
         border: solid transparent;
-        content: " ";
+        content: ' ';
         height: 0;
         width: 0;
         position: absolute;
@@ -48,7 +49,7 @@
         right: 8px;
       }
       .ol-popup-closer:after {
-        content: "✖";
+        content: '✖';
       }
       .popover-content {
         min-width: 180px;
@@ -61,28 +62,43 @@
       <div id="popup-content"></div>
     </div>
     <div id="popup-bootstrap" title="Welcome to OpenLayers"></div>
-    <div id="map" style="width:600px;height:400px;float:left;"></div>
-    <div id="map3d" style="width:600px;height:400px;float:left;position:relative;"></div>
+    <div id="map" style="width: 600px; height: 400px; float: left"></div>
+    <div
+      id="map3d"
+      style="width: 600px; height: 400px; float: left; position: relative"
+    ></div>
     <input id="enable" type="button" value="Enable/disable" />
     <form id="click-action-form">
       <fieldset>
         <legend>On Click...</legend>
-        <input type="radio" name="click-action" value="add" checked="true"> ... add a new Overlay <br>
-        <input type="radio" name="click-action" value="new"> ... re-position the Overlay <br>
+        <input type="radio" name="click-action" value="add" checked="true" />
+        ... add a new Overlay <br />
+        <input type="radio" name="click-action" value="new" /> ... re-position
+        the Overlay <br />
       </fieldset>
     </form>
 
     <form id="overlay-type-form">
       <fieldset>
         <legend>What type of overlay to use?</legend>
-        <input type="radio" name="overlay-type" value="default" checked="true"> Default HTML Elements <br>
-        <input type="radio" name="overlay-type" value="popover"> Bootstrap <i>popover</i> <br>
+        <input
+          type="radio"
+          name="overlay-type"
+          value="default"
+          checked="true"
+        />
+        Default HTML Elements <br />
+        <input type="radio" name="overlay-type" value="popover" /> Bootstrap
+        <i>popover</i> <br />
       </fieldset>
     </form>
 
     <script src="inject_ol_cesium.js"></script>
     <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+    />
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   </body>
 </html>

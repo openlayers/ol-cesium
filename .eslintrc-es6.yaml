@@ -20,12 +20,6 @@
       requireReturnForObjectLiteral: true,
     }],
 
-    # require parens in arrow function arguments
-    # http://eslint.org/docs/rules/arrow-parens
-    'arrow-parens': ['error', 'as-needed', {
-      requireForBlockBody: true,
-    }],
-
     # require space before/after arrow function's arrow
     # http://eslint.org/docs/rules/arrow-spacing
     'arrow-spacing': ['error', { before: true, after: true }],

@@ -2,31 +2,31 @@
  * @module examples.main
  */
 import OLCesium from 'olcs/OLCesium.ts';
-import {transform} from 'ol/proj.js';
-import olView from 'ol/View.js';
-import {defaults as olControlDefaults} from 'ol/control.js';
-import olSourceOSM from 'ol/source/OSM.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olMap from 'ol/Map.js';
+import olSourceOSM from 'ol/source/OSM.js';
+import olView from 'ol/View.js';
 import {OLCS_ION_TOKEN} from './_common.js';
+import {defaults as olControlDefaults} from 'ol/control.js';
+import {transform} from 'ol/proj.js';
 
 Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 const ol2d = new olMap({
   layers: [
     new olLayerTile({
-      source: new olSourceOSM()
-    })
+      source: new olSourceOSM(),
+    }),
   ],
   controls: olControlDefaults({
     attributionOptions: {
-      collapsible: false
-    }
+      collapsible: false,
+    },
   }),
   target: 'map',
   view: new olView({
     center: transform([25, 20], 'EPSG:4326', 'EPSG:3857'),
-    zoom: 3
-  })
+    zoom: 3,
+  }),
 });
 
 const timeElt = document.getElementById('time');
@@ -40,17 +40,18 @@ const ol3d = new OLCesium({
       return Cesium.JulianDate.fromDate(d);
     }
     return Cesium.JulianDate.now();
-  }
+  },
 });
 const scene = ol3d.getCesiumScene();
 scene.terrainProvider = Cesium.createWorldTerrain();
 ol3d.setEnabled(true);
 
-
 timeElt.style.display = 'none';
 
-document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
-window['toggleTime'] = function() {
+document
+  .getElementById('enable')
+  .addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
+window['toggleTime'] = function () {
   scene.globe.enableLighting = !scene.globe.enableLighting;
   if (timeElt.style.display == 'none') {
     timeElt.style.display = 'inline-block';

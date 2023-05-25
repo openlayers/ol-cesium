@@ -2,93 +2,97 @@
  * @module examples.vectors
  */
 import OLCesium from 'olcs/OLCesium.ts';
-import olView from 'ol/View.js';
-import {defaults as olControlDefaults} from 'ol/control.js';
-import olSourceOSM from 'ol/source/OSM.js';
-import olLayerTile from 'ol/layer/Tile.js';
-import olStyleText from 'ol/style/Text.js';
-import olStyleIcon from 'ol/style/Icon.js';
-import olStyleStyle from 'ol/style/Style.js';
-import olGeomPoint from 'ol/geom/Point.js';
 import olFeature from 'ol/Feature.js';
-import olStyleStroke from 'ol/style/Stroke.js';
-import {defaults as interactionDefaults} from 'ol/interaction.js';
-import olStyleFill from 'ol/style/Fill.js';
-import olMap from 'ol/Map.js';
-import olSourceVector from 'ol/source/Vector.js';
+import olGeomPoint from 'ol/geom/Point.js';
+import olLayerTile from 'ol/layer/Tile.js';
 import olLayerVector from 'ol/layer/Vector.js';
-import {rotateAroundAxis, pickBottomPoint} from 'olcs/core.ts';
+import olMap from 'ol/Map.js';
+import olSourceOSM from 'ol/source/OSM.js';
+import olSourceVector from 'ol/source/Vector.js';
+import olStyleFill from 'ol/style/Fill.js';
+import olStyleIcon from 'ol/style/Icon.js';
+import olStyleStroke from 'ol/style/Stroke.js';
+import olStyleStyle from 'ol/style/Style.js';
+import olStyleText from 'ol/style/Text.js';
+import olView from 'ol/View.js';
 import {OLCS_ION_TOKEN} from './_common.js';
-
+import {defaults as interactionDefaults} from 'ol/interaction.js';
+import {defaults as olControlDefaults} from 'ol/control.js';
+import {pickBottomPoint, rotateAroundAxis} from 'olcs/core.ts';
 
 const icon1Feature = new olFeature({
-  geometry: new olGeomPoint([700000, 200000])
+  geometry: new olGeomPoint([700000, 200000]),
 });
-icon1Feature.setStyle(new olStyleStyle({
-  image: new olStyleIcon(/** @type {olx.style.IconOptions} */ ({
-    anchor: [0.5, 1],
-    src: 'data/icon.png',
-  })),
-  text: new olStyleText({
-    text: 'Icon with anchor on the bottom center',
-    stroke: new olStyleStroke({
-      color: 'black',
-      width: 3
+icon1Feature.setStyle(
+  new olStyleStyle({
+    image: new olStyleIcon(
+      /** @type {olx.style.IconOptions} */ ({
+        anchor: [0.5, 1],
+        src: 'data/icon.png',
+      })
+    ),
+    text: new olStyleText({
+      text: 'Icon with anchor on the bottom center',
+      stroke: new olStyleStroke({
+        color: 'black',
+        width: 3,
+      }),
+      fill: new olStyleFill({
+        color: 'white',
+      }),
     }),
-    fill: new olStyleFill({
-      color: 'white'
-    })
   })
-}));
+);
 
 const icon2Feature = new olFeature({
-  geometry: new olGeomPoint([1000000, 200000])
+  geometry: new olGeomPoint([1000000, 200000]),
 });
-icon2Feature.setStyle(new olStyleStyle({
-  image: new olStyleIcon(/** @type {olx.style.IconOptions} */ ({
-    src: 'data/image-static.png'
-  })),
-  text: new olStyleText({
-    text: 'Default positioning',
-    stroke: new olStyleStroke({
-      color: 'black',
-      width: 3
+icon2Feature.setStyle(
+  new olStyleStyle({
+    image: new olStyleIcon(
+      /** @type {olx.style.IconOptions} */ ({
+        src: 'data/image-static.png',
+      })
+    ),
+    text: new olStyleText({
+      text: 'Default positioning',
+      stroke: new olStyleStroke({
+        color: 'black',
+        width: 3,
+      }),
+      fill: new olStyleFill({
+        color: 'white',
+      }),
     }),
-    fill: new olStyleFill({
-      color: 'white'
-    })
   })
-}));
+);
 
 const vectorSource = new olSourceVector({
-  features: [
-    icon1Feature,
-    icon2Feature
-  ]
+  features: [icon1Feature, icon2Feature],
 });
 
 const vectorLayer = new olLayerVector({
-  source: vectorSource
+  source: vectorSource,
 });
 
 const map = new olMap({
   interactions: interactionDefaults(),
   layers: [
     new olLayerTile({
-      source: new olSourceOSM()
+      source: new olSourceOSM(),
     }),
-    vectorLayer
+    vectorLayer,
   ],
   target: 'map2d',
   controls: olControlDefaults({
     attributionOptions: {
-      collapsible: false
-    }
+      collapsible: false,
+    },
   }),
   view: new olView({
     center: [850000, 200000],
-    zoom: 7
-  })
+    zoom: 7,
+  }),
 });
 
 Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
@@ -97,7 +101,7 @@ const scene = ol3d.getCesiumScene();
 scene.terrainProvider = Cesium.createWorldTerrain();
 ol3d.setEnabled(true);
 
-window['toggleClampToGround'] = function() {
+window['toggleClampToGround'] = function () {
   let altitudeMode;
   if (!vectorLayer.get('altitudeMode')) {
     altitudeMode = 'clampToGround';
@@ -109,10 +113,11 @@ window['toggleClampToGround'] = function() {
 
 window['ol3d'] = ol3d;
 window['scene'] = scene;
-document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
+document
+  .getElementById('enable')
+  .addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
 
 ol3d.enableAutoRenderLoop();
-
 
 // Tilt camera
 const camera = scene.camera;

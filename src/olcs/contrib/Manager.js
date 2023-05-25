@@ -1,12 +1,17 @@
 /**
  * @module olcs.contrib.Manager
  */
-import olcsContribLazyLoader from '../contrib/LazyLoader.js';
 import OLCesium from '../OLCesium.ts';
-import {resetToNorthZenith, rotateAroundBottomCenter, computeSignedTiltAngleOnGlobe, pickBottomPoint, setHeadingUsingBottomCenter} from '../core.ts';
-import {toRadians} from '../math.js';
 import olObservable from 'ol/Observable.js';
-
+import olcsContribLazyLoader from '../contrib/LazyLoader.js';
+import {
+  computeSignedTiltAngleOnGlobe,
+  pickBottomPoint,
+  resetToNorthZenith,
+  rotateAroundBottomCenter,
+  setHeadingUsingBottomCenter,
+} from '../core.ts';
+import {toRadians} from '../math.js';
 
 /**
  * @typedef {Object} ManagerOptions
@@ -15,15 +20,16 @@ import olObservable from 'ol/Observable.js';
  * @property {string} [cesiumIonDefaultAccessToken]
  */
 
-
 const Manager = class extends olObservable {
   /**
    * @param {string} cesiumUrl
    * @param {olcsx.contrib.ManagerOptions} options
    * @api
    */
-  constructor(cesiumUrl, {map, cameraExtentInRadians, cesiumIonDefaultAccessToken} = {}) {
-
+  constructor(
+    cesiumUrl,
+    {map, cameraExtentInRadians, cesiumIonDefaultAccessToken} = {}
+  ) {
     super();
 
     /**
@@ -57,7 +63,7 @@ const Manager = class extends olObservable {
     this.blockLimiter_ = false;
 
     /**
-     * @type {Promise.<olcs.OLCesium>}
+     * @type {Promise<olcs.OLCesium>}
      * @private
      */
     this.promise_;
@@ -111,12 +117,11 @@ const Manager = class extends olObservable {
      * @protected
      * @param {number} height
      */
-    this.limitCameraToBoundingSphereRatio = height => (height > 3000 ? 9 : 3);
+    this.limitCameraToBoundingSphereRatio = (height) => (height > 3000 ? 9 : 3);
   }
 
-
   /**
-   * @return {Promise.<olcs.OLCesium>}
+   * @return {Promise<olcs.OLCesium>}
    */
   load() {
     if (!this.promise_) {
@@ -125,7 +130,6 @@ const Manager = class extends olObservable {
     }
     return this.promise_;
   }
-
 
   /**
    * @protected
@@ -136,7 +140,11 @@ const Manager = class extends olObservable {
       const rect = new Cesium.Rectangle(...this.cameraExtentInRadians);
       // Set the fly home rectangle
       Cesium.Camera.DEFAULT_VIEW_RECTANGLE = rect;
-      this.boundingSphere_ = Cesium.BoundingSphere.fromRectangle3D(rect, Cesium.Ellipsoid.WGS84, 300); // lux mean height is 300m
+      this.boundingSphere_ = Cesium.BoundingSphere.fromRectangle3D(
+        rect,
+        Cesium.Ellipsoid.WGS84,
+        300
+      ); // lux mean height is 300m
     }
 
     if (this.cesiumIonDefaultAccessToken_) {
@@ -151,7 +159,6 @@ const Manager = class extends olObservable {
     return this.ol3d;
   }
 
-
   /**
    * Application code should override this method.
    * @return {olcs.OLCesium}
@@ -165,7 +172,6 @@ const Manager = class extends olObservable {
     return ol3d;
   }
 
-
   /**
    * @param {!Cesium.Scene} scene The scene, passed as parameter for convenience.
    * @protected
@@ -176,7 +182,6 @@ const Manager = class extends olObservable {
     fog.density = this.fogDensity;
     fog.screenSpaceErrorFactor = this.fogSSEFactor;
   }
-
 
   /**
    * @param {!Cesium.Scene} scene The scene, passed as parameter for convenience.
@@ -196,12 +201,14 @@ const Manager = class extends olObservable {
     scene.backgroundColor = Cesium.Color.WHITE;
 
     if (this.boundingSphere_) {
-      scene.postRender.addEventListener(this.limitCameraToBoundingSphere.bind(this), scene);
+      scene.postRender.addEventListener(
+        this.limitCameraToBoundingSphere.bind(this),
+        scene
+      );
     }
     // Stop rendering Cesium when there is nothing to do. This drastically reduces CPU/GPU consumption.
     this.ol3d.enableAutoRenderLoop();
   }
-
 
   /**
    * Constrain the camera so that it stays close to the bounding sphere of the map extent.
@@ -215,27 +222,27 @@ const Manager = class extends olObservable {
       const position = camera.position;
       const carto = Cesium.Cartographic.fromCartesian(position);
       const ratio = this.limitCameraToBoundingSphereRatio(carto.height);
-      if (Cesium.Cartesian3.distance(this.boundingSphere_.center, position) > this.boundingSphere_.radius * ratio) {
+      if (
+        Cesium.Cartesian3.distance(this.boundingSphere_.center, position) >
+        this.boundingSphere_.radius * ratio
+      ) {
         const currentlyFlying = camera.flying;
         if (currentlyFlying === true) {
           // There is a flying property and its value is true
           return;
-        } else {
-          this.blockLimiter_ = true;
-          const unblockLimiter = () => this.blockLimiter_ = false;
-          camera.flyToBoundingSphere(this.boundingSphere_, {
-            complete: unblockLimiter,
-            cancel: unblockLimiter
-          });
         }
+        this.blockLimiter_ = true;
+        const unblockLimiter = () => (this.blockLimiter_ = false);
+        camera.flyToBoundingSphere(this.boundingSphere_, {
+          complete: unblockLimiter,
+          cancel: unblockLimiter,
+        });
       }
     }
   }
 
-
   /**
    * Enable or disable ol3d with a default animation.
-   * @export
    * @return {Promise<undefined>}
    */
   toggle3d() {
@@ -249,26 +256,23 @@ const Manager = class extends olObservable {
           ol3d.setEnabled(false);
           this.dispatchEvent('toggle');
         });
-      } else {
-        // Enable 3D
-        ol3d.setEnabled(true);
-        this.dispatchEvent('toggle');
-        return rotateAroundBottomCenter(scene, this.cesiumInitialTilt_);
       }
+      // Enable 3D
+      ol3d.setEnabled(true);
+      this.dispatchEvent('toggle');
+      return rotateAroundBottomCenter(scene, this.cesiumInitialTilt_);
     });
   }
-
 
   /**
    * Enable ol3d with a view built from parameters.
    *
-   * @export
    * @param {number} lon
    * @param {number} lat
    * @param {number} elevation
    * @param {number} headingDeg Heading value in degrees.
    * @param {number} pitchDeg Pitch value in degrees.
-   * @returns {Promise<undefined>}
+   * @return {Promise<undefined>}
    */
   set3dWithView(lon, lat, elevation, headingDeg, pitchDeg) {
     return this.load().then((/** @const {!olcs.OLCesium} */ ol3d) => {
@@ -288,20 +292,17 @@ const Manager = class extends olObservable {
 
       camera.setView({
         destination,
-        orientation
+        orientation,
       });
     });
   }
 
-
   /**
-   * @export
    * @return {boolean}
    */
   is3dEnabled() {
     return !!this.ol3d && this.ol3d.getEnabled();
   }
-
 
   /**
    * @return {number}
@@ -309,7 +310,6 @@ const Manager = class extends olObservable {
   getHeading() {
     return this.map ? this.map.getView().getRotation() || 0 : 0;
   }
-
 
   /**
    * @return {number|undefined}
@@ -319,7 +319,6 @@ const Manager = class extends olObservable {
     const tiltOnGlobe = computeSignedTiltAngleOnGlobe(scene);
     return -tiltOnGlobe;
   }
-
 
   /**
    * @param {number} angle
@@ -333,7 +332,6 @@ const Manager = class extends olObservable {
   }
 
   /**
-   * @export
    * @return {olcs.OLCesium}
    */
   getOl3d() {
@@ -341,7 +339,6 @@ const Manager = class extends olObservable {
   }
 
   /**
-   * @export
    * @return {!ol.View}
    */
   getOlView() {
@@ -351,7 +348,6 @@ const Manager = class extends olObservable {
   }
 
   /**
-   * @export
    * @return {Cesium.Matrix4}
    */
   getCesiumViewMatrix() {
@@ -359,7 +355,6 @@ const Manager = class extends olObservable {
   }
 
   /**
-   * @export
    * @return {!Cesium.Scene}
    */
   getCesiumScene() {
@@ -367,9 +362,8 @@ const Manager = class extends olObservable {
   }
 
   /**
-   * @export
    * @param {!Cesium.Rectangle} rectangle
-   * @param {number=} offset in meters
+   * @param {number} [offset=0] in meters
    * @return {Promise<undefined>}
    */
   flyToRectangle(rectangle, offset = 0) {
@@ -390,7 +384,7 @@ const Manager = class extends olObservable {
         destination,
         complete: () => resolve(),
         cancel: () => reject(),
-        endTransform: Cesium.Matrix4.IDENTITY
+        endTransform: Cesium.Matrix4.IDENTITY,
       });
     });
   }
@@ -405,6 +399,5 @@ const Manager = class extends olObservable {
     }
   }
 };
-
 
 export default Manager;

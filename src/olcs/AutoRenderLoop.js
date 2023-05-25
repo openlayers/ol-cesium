@@ -4,7 +4,7 @@
 
 class AutoRenderLoop {
   /**
-   * @constructor
+   * @class
    * @param {olcs.OLCesium} ol3d
    */
   constructor(ol3d) {
@@ -14,10 +14,16 @@ class AutoRenderLoop {
     this._boundNotifyRepaintRequired = this.notifyRepaintRequired.bind(this);
 
     this.repaintEventNames_ = [
-      'mousemove', 'mousedown', 'mouseup',
-      'touchstart', 'touchend', 'touchmove',
-      'pointerdown', 'pointerup', 'pointermove',
-      'wheel'
+      'mousemove',
+      'mousedown',
+      'mouseup',
+      'touchstart',
+      'touchend',
+      'touchmove',
+      'pointerdown',
+      'pointerup',
+      'pointermove',
+      'wheel',
     ];
 
     this.enable();
@@ -30,13 +36,20 @@ class AutoRenderLoop {
     this.scene_.requestRenderMode = true;
     this.scene_.maximumRenderTimeChange = 1000;
     for (const repaintKey of this.repaintEventNames_) {
-      this.canvas_.addEventListener(repaintKey, this._boundNotifyRepaintRequired, false);
+      this.canvas_.addEventListener(
+        repaintKey,
+        this._boundNotifyRepaintRequired,
+        false
+      );
     }
 
     window.addEventListener('resize', this._boundNotifyRepaintRequired, false);
 
     // Listen for changes on the layer group
-    this.ol3d.getOlMap().getLayerGroup().on('change', this._boundNotifyRepaintRequired);
+    this.ol3d
+      .getOlMap()
+      .getLayerGroup()
+      .on('change', this._boundNotifyRepaintRequired);
   }
 
   /**
@@ -44,12 +57,23 @@ class AutoRenderLoop {
    */
   disable() {
     for (const repaintKey of this.repaintEventNames_) {
-      this.canvas_.removeEventListener(repaintKey, this._boundNotifyRepaintRequired, false);
+      this.canvas_.removeEventListener(
+        repaintKey,
+        this._boundNotifyRepaintRequired,
+        false
+      );
     }
 
-    window.removeEventListener('resize', this._boundNotifyRepaintRequired, false);
+    window.removeEventListener(
+      'resize',
+      this._boundNotifyRepaintRequired,
+      false
+    );
 
-    this.ol3d.getOlMap().getLayerGroup().un('change', this._boundNotifyRepaintRequired);
+    this.ol3d
+      .getOlMap()
+      .getLayerGroup()
+      .un('change', this._boundNotifyRepaintRequired);
     this.scene_.requestRenderMode = false;
   }
 
@@ -66,6 +90,5 @@ class AutoRenderLoop {
     this.scene_.requestRender();
   }
 }
-
 
 export default AutoRenderLoop;

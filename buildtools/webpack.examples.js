@@ -17,28 +17,28 @@ for (const filename of glob.sync('examples/*.html', {onlyFiles: true})) {
   if (!fs.existsSync(jsName)) {
     continue;
   }
-  entry[name] = [
-    jsName
-  ];
+  entry[name] = [jsName];
 
   plugins.push(
-      new HtmlWebpackPlugin({
-        template: `examples/${name}.html`,
-        filename: `${exampleFilenamePrefix + name}.html`,
-        chunks: ['commons', name],
-      })
+    new HtmlWebpackPlugin({
+      template: `examples/${name}.html`,
+      filename: `${exampleFilenamePrefix + name}.html`,
+      chunks: ['commons', name],
+    })
   );
 }
 
 // move data folder
-plugins.push(new CopyWebpackPlugin({
-  patterns: [
-    {
-      from: 'examples/data',
-      to: 'data/',
-    },
-  ],
-}));
+plugins.push(
+  new CopyWebpackPlugin({
+    patterns: [
+      {
+        from: 'examples/data',
+        to: 'data/',
+      },
+    ],
+  })
+);
 
 module.exports = {
   entry,
@@ -46,7 +46,7 @@ module.exports = {
     splitChunks: {
       chunks: 'all',
       name: 'commons',
-    }
+    },
   },
   plugins,
 };

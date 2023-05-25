@@ -1,13 +1,17 @@
 const path = require('path');
 
 const babelPresets = [
-  ['@babel/preset-env', {
-    'targets': {
-      'browsers': ['safari 13'],
+  [
+    '@babel/preset-env',
+    {
+      targets: {
+        browsers: ['safari 13'],
+      },
+      modules: false,
+      loose: true,
     },
-    'modules': false,
-    'loose': true,
-  }]];
+  ],
+];
 
 const olRule = {
   test: /ol\/.*\.js$/,
@@ -16,8 +20,8 @@ const olRule = {
     options: {
       babelrc: false,
       presets: babelPresets,
-    }
-  }
+    },
+  },
 };
 
 const olcsRule = {
@@ -27,8 +31,8 @@ const olcsRule = {
     options: {
       babelrc: false,
       presets: babelPresets,
-    }
-  }
+    },
+  },
 };
 
 const ruleTS = {
@@ -42,43 +46,34 @@ const ruleTS = {
         ['@babel/plugin-syntax-dynamic-import'],
         ['@babel/plugin-transform-typescript', {allowDeclareFields: true}],
         ['@babel/proposal-class-properties'],
-      ]
-    }
+      ],
+    },
   },
   exclude: /node_modules/,
 };
 
-
 const iconRule = {
   test: /\.(png|svg)$/,
   use: {
-    loader: 'url-loader'
-  }
+    loader: 'url-loader',
+  },
 };
 
 const config = {
   context: path.resolve(__dirname, '../'),
   devtool: 'source-map',
   output: {
-    path: path.resolve(__dirname, '../dist/')
+    path: path.resolve(__dirname, '../dist/'),
   },
   module: {
-    rules: [
-      olRule,
-      ruleTS,
-      olcsRule,
-      iconRule
-    ]
+    rules: [olRule, ruleTS, olcsRule, iconRule],
   },
-  plugins: [
-  ],
+  plugins: [],
   resolve: {
-    modules: [
-      '../node_modules', '../node_modules/ol/src'
-    ],
+    modules: ['../node_modules', '../node_modules/ol/src'],
     mainFields: ['jsnext:main', 'main'],
     alias: {
-      'olcs': path.resolve(__dirname, '../src/olcs'),
+      olcs: path.resolve(__dirname, '../src/olcs'),
     },
     fallback: {
       http: false,
@@ -86,8 +81,8 @@ const config = {
       zlib: false,
       url: false,
     },
-    extensions: ['.ts', '.js']
-  }
+    extensions: ['.ts', '.js'],
+  },
 };
 
 module.exports = {

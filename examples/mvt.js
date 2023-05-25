@@ -4,18 +4,18 @@
 import OLCesium from 'olcs/OLCesium.ts';
 // import MVTImageryProvider from 'olcs/MVTImageryProvider.js';
 
-import olMap from 'ol/Map.js';
 import './_proj21781.js';
-import TileLayer from 'ol/layer/Tile.js';
-import {get as getProjection} from 'ol/proj.js';
-import View from 'ol/View.js';
 import MVT from 'ol/format/MVT.js';
-import VectorTileLayer from 'ol/layer/VectorTile.js';
-import VectorTileSource from 'ol/source/VectorTile.js';
+import OSMSource from 'ol/source/OSM.js';
 import Stroke from 'ol/style/Stroke';
 import Style from 'ol/style/Style';
-import OSMSource from 'ol/source/OSM.js';
+import TileLayer from 'ol/layer/Tile.js';
+import VectorTileLayer from 'ol/layer/VectorTile.js';
+import VectorTileSource from 'ol/source/VectorTile.js';
+import View from 'ol/View.js';
+import olMap from 'ol/Map.js';
 import {OLCS_ION_TOKEN} from './_common.js';
+import {get as getProjection} from 'ol/proj.js';
 
 Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 
@@ -29,16 +29,13 @@ function createMVTStyle(color = 'purple') {
     new Style({
       stroke: new Stroke({
         color,
-        width: 4
-      })
-    })
+        width: 4,
+      }),
+    }),
   ];
 }
 
-const allStyles = [
-  createMVTStyle(),
-  createMVTStyle('red'),
-];
+const allStyles = [createMVTStyle(), createMVTStyle('red')];
 
 function createMVTLayer(url, maxZoom) {
   const source = new VectorTileSource({
@@ -61,13 +58,14 @@ function createMVTLayer(url, maxZoom) {
     source,
     extent: [572215, 5684416, 1277662, 6145307], // swiss extent
     opacity: 0.6,
-    style: styles
+    style: styles,
   });
 }
 
 export const mvtLayer = createMVTLayer(
-    'https://map.schweizmobil.ch/api/4/mvt_routes/wander/3857/{z}/{x}/{y}.pbf?olcs',
-    20);
+  'https://map.schweizmobil.ch/api/4/mvt_routes/wander/3857/{z}/{x}/{y}.pbf?olcs',
+  20
+);
 
 function createOSMLayer() {
   const source = new OSMSource();
@@ -76,12 +74,9 @@ function createOSMLayer() {
 }
 
 const ol2d = new olMap({
-  layers: [
-    createOSMLayer(),
-    mvtLayer
-  ],
+  layers: [createOSMLayer(), mvtLayer],
   target: 'map',
-  view: new View()
+  view: new View(),
 });
 
 const ol3d = new OLCesium({
@@ -92,13 +87,18 @@ ol3d.setEnabled(false);
 
 const EXTENT = [572215, 5684416, 1277662, 6145307];
 const padding = -50000;
-ol2d.getView().fit([
-  EXTENT[0] - padding, EXTENT[1] - padding,
-  EXTENT[2] + padding, EXTENT[3] + padding,
-]);
+ol2d
+  .getView()
+  .fit([
+    EXTENT[0] - padding,
+    EXTENT[1] - padding,
+    EXTENT[2] + padding,
+    EXTENT[3] + padding,
+  ]);
 
-
-document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
+document
+  .getElementById('enable')
+  .addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
 document.getElementById('toggle').addEventListener('click', () => {
   styleNumber = (styleNumber + 1) % 2;
   mvtLayer.setStyle(allStyles[styleNumber]);

@@ -4,14 +4,14 @@
 import OLCesium from 'olcs/OLCesium.ts';
 
 import Map from 'ol/Map.js';
-import View from 'ol/View.js';
-import {getWidth, getTopLeft} from 'ol/extent.js';
-import TileLayer from 'ol/layer/Tile.js';
-import {get as getProjection} from 'ol/proj.js';
 import OSM from 'ol/source/OSM.js';
+import TileLayer from 'ol/layer/Tile.js';
+import View from 'ol/View.js';
 import WMTS from 'ol/source/WMTS.js';
 import WMTSTileGrid from 'ol/tilegrid/WMTS.js';
 import {OLCS_ION_TOKEN} from './_common.js';
+import {get as getProjection} from 'ol/proj.js';
+import {getTopLeft, getWidth} from 'ol/extent.js';
 
 Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 const projection = getProjection('EPSG:3857');
@@ -29,15 +29,17 @@ const map = new Map({
   layers: [
     new TileLayer({
       source: new OSM(),
-      opacity: 0.7
+      opacity: 0.7,
     }),
     new TileLayer({
       opacity: 0.7,
       source: new WMTS({
-        attributions: 'Tiles © <a href="https://sampleserver6.arcgisonline.com/arcgis/rest/' +
-            'services/WorldTimeZones/MapServer/WMTS/">ArcGIS</a>',
-        url: 'https://sampleserver6.arcgisonline.com/arcgis/rest/' +
-            'services/WorldTimeZones/MapServer/WMTS/',
+        attributions:
+          'Tiles © <a href="https://sampleserver6.arcgisonline.com/arcgis/rest/' +
+          'services/WorldTimeZones/MapServer/WMTS/">ArcGIS</a>',
+        url:
+          'https://sampleserver6.arcgisonline.com/arcgis/rest/' +
+          'services/WorldTimeZones/MapServer/WMTS/',
         layer: 'WorldTimeZones',
         matrixSet: 'GoogleMapsCompatible',
         format: 'image/png',
@@ -45,18 +47,18 @@ const map = new Map({
         tileGrid: new WMTSTileGrid({
           origin: getTopLeft(projectionExtent),
           resolutions,
-          matrixIds
+          matrixIds,
         }),
         style: 'default',
-        wrapX: true
-      })
-    })
+        wrapX: true,
+      }),
+    }),
   ],
   target: 'map',
   view: new View({
     center: [-11158582, 4813697],
-    zoom: 4
-  })
+    zoom: 4,
+  }),
 });
 
 const ol2d = map;
@@ -67,4 +69,6 @@ const scene = ol3d.getCesiumScene();
 scene.terrainProvider = Cesium.createWorldTerrain();
 ol3d.setEnabled(true);
 
-document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
+document
+  .getElementById('enable')
+  .addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));

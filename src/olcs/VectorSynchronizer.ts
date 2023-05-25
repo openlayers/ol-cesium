@@ -11,9 +11,9 @@ import olcsAbstractSynchronizer from './AbstractSynchronizer';
 import olcsFeatureConverter from './FeatureConverter.js';
 import VectorLayerCounterpart, {
   OlFeatureToCesiumContext,
-  PrimitiveCollectionCounterpart
+  PrimitiveCollectionCounterpart,
 } from './core/VectorLayerCounterpart';
-import type Map from 'ol/Map'
+import type Map from 'ol/Map';
 import {LayerWithParents} from './core';
 import Feature from 'ol/Feature';
 import BaseLayer from 'ol/layer/Base';
@@ -21,7 +21,7 @@ import {Billboard, Primitive, PrimitiveCollection, Scene} from 'cesium';
 
 class VectorSynchronizer extends olcsAbstractSynchronizer<VectorLayerCounterpart> {
   protected converter: olcsFeatureConverter;
-  private csAllPrimitives_: PrimitiveCollection
+  private csAllPrimitives_: PrimitiveCollection;
   /**
    * Unidirectionally synchronize OpenLayers vector layers to Cesium.
    */
@@ -36,7 +36,9 @@ class VectorSynchronizer extends olcsAbstractSynchronizer<VectorLayerCounterpart
 
   addCesiumObject(counterpart: VectorLayerCounterpart) {
     console.assert(counterpart);
-    const collection = <PrimitiveCollectionCounterpart>counterpart.getRootPrimitive()
+    const collection = <PrimitiveCollectionCounterpart>(
+      counterpart.getRootPrimitive()
+    );
     collection.counterpart = counterpart;
     this.csAllPrimitives_.add(counterpart.getRootPrimitive());
   }
@@ -67,22 +69,32 @@ class VectorSynchronizer extends olcsAbstractSynchronizer<VectorLayerCounterpart
    * Synchronizes the layer visibility properties
    * to the given Cesium Primitive.
    */
-  updateLayerVisibility(olLayerWithParents: LayerWithParents, csPrimitive: PrimitiveCollection) {
+  updateLayerVisibility(
+    olLayerWithParents: LayerWithParents,
+    csPrimitive: PrimitiveCollection
+  ) {
     let visible = true;
-    [olLayerWithParents.layer].concat(olLayerWithParents.parents).forEach((olLayer) => {
-      const layerVisible = olLayer.getVisible();
-      if (layerVisible !== undefined) {
-        visible = visible && layerVisible;
-      } else {
-        visible = false;
-      }
-    });
+    [olLayerWithParents.layer]
+      .concat(olLayerWithParents.parents)
+      .forEach((olLayer) => {
+        const layerVisible = olLayer.getVisible();
+        if (layerVisible !== undefined) {
+          visible = visible && layerVisible;
+        } else {
+          visible = false;
+        }
+      });
     csPrimitive.show = visible;
   }
 
-  createSingleLayerCounterparts(olLayerWithParents: LayerWithParents): VectorLayerCounterpart[] {
+  createSingleLayerCounterparts(
+    olLayerWithParents: LayerWithParents
+  ): VectorLayerCounterpart[] {
     const olLayer: BaseLayer = olLayerWithParents.layer;
-    if (!(olLayer instanceof olLayerVector) || olLayer instanceof olLayerVectorTile) {
+    if (
+      !(olLayer instanceof olLayerVector) ||
+      olLayer instanceof olLayerVectorTile
+    ) {
       return null;
     }
     console.assert(olLayer instanceof olLayerLayer);
@@ -101,28 +113,37 @@ class VectorSynchronizer extends olcsAbstractSynchronizer<VectorLayerCounterpart
 
     const view = this.view;
     const featurePrimitiveMap: Record<number, Primitive> = {};
-    const counterpart: VectorLayerCounterpart = this.converter.olVectorLayerToCesium(olLayer, view,
-        featurePrimitiveMap);
+    const counterpart: VectorLayerCounterpart =
+      this.converter.olVectorLayerToCesium(olLayer, view, featurePrimitiveMap);
     const csPrimitives = counterpart.getRootPrimitive();
     const olListenKeys = counterpart.olListenKeys;
 
-    [olLayerWithParents.layer].concat(olLayerWithParents.parents).forEach((olLayerItem) => {
-      olListenKeys.push(olcsListen(olLayerItem, 'change:visible', () => {
-        this.updateLayerVisibility(olLayerWithParents, csPrimitives);
-      }));
-    });
+    [olLayerWithParents.layer]
+      .concat(olLayerWithParents.parents)
+      .forEach((olLayerItem) => {
+        olListenKeys.push(
+          olcsListen(olLayerItem, 'change:visible', () => {
+            this.updateLayerVisibility(olLayerWithParents, csPrimitives);
+          })
+        );
+      });
     this.updateLayerVisibility(olLayerWithParents, csPrimitives);
 
-    const onAddFeature = (function(feature: Feature) {
+    const onAddFeature = function (feature: Feature) {
       const context = counterpart.context;
-      const prim: Primitive = this.converter.convert(olLayer, view, feature, context);
+      const prim: Primitive = this.converter.convert(
+        olLayer,
+        view,
+        feature,
+        context
+      );
       if (prim) {
         featurePrimitiveMap[getUid(feature)] = prim;
         csPrimitives.add(prim);
       }
-    }).bind(this);
+    }.bind(this);
 
-    const onRemoveFeature = (function(feature: Feature) {
+    const onRemoveFeature = function (feature: Feature) {
       const id = getUid(feature);
       const context: OlFeatureToCesiumContext = counterpart.context;
       const bbs = context.featureToCesiumMap[id];
@@ -139,24 +160,30 @@ class VectorSynchronizer extends olcsAbstractSynchronizer<VectorLayerCounterpart
       if (csPrimitive) {
         csPrimitives.remove(csPrimitive);
       }
-    }).bind(this);
+    }.bind(this);
 
-    olListenKeys.push(olcsListen(source, 'addfeature', (e: VectorSourceEvent) => {
-      console.assert(e.feature);
-      onAddFeature(e.feature);
-    }));
+    olListenKeys.push(
+      olcsListen(source, 'addfeature', (e: VectorSourceEvent) => {
+        console.assert(e.feature);
+        onAddFeature(e.feature);
+      })
+    );
 
-    olListenKeys.push(olcsListen(source, 'removefeature', (e: VectorSourceEvent) => {
-      console.assert(e.feature);
-      onRemoveFeature(e.feature);
-    }));
+    olListenKeys.push(
+      olcsListen(source, 'removefeature', (e: VectorSourceEvent) => {
+        console.assert(e.feature);
+        onRemoveFeature(e.feature);
+      })
+    );
 
-    olListenKeys.push(olcsListen(source, 'changefeature', (e: VectorSourceEvent) => {
-      const feature = e.feature;
-      console.assert(feature);
-      onRemoveFeature(feature);
-      onAddFeature(feature);
-    }));
+    olListenKeys.push(
+      olcsListen(source, 'changefeature', (e: VectorSourceEvent) => {
+        const feature = e.feature;
+        console.assert(feature);
+        onRemoveFeature(feature);
+        onAddFeature(feature);
+      })
+    );
 
     return counterpart ? [counterpart] : null;
   }
