@@ -42,8 +42,6 @@
     "eslint": "8.41.0",
     "eslint-config-openlayers": "12.0.0",
     "eslint-import-resolver-webpack": "0.13.2",
-    "fast-glob": "3.2.12",
-    "fs-extra": "10.1.0",
     "html-loader": "4.2.0",
     "html-webpack-plugin": "5.5.1",
     "htmlparser2": "8.0.2",
