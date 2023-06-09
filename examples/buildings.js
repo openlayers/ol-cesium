@@ -45,14 +45,10 @@ const map = new olMap({
     zoom: 2,
   }),
 });
+vector.set('olcs_shadows', true);
 
 const ol3d = new OLCesium({map, target: 'map3d'});
 ol3d.setEnabled(true);
-const scene = ol3d.getCesiumScene();
-scene.globe.enableLighting = true;
-scene.shadowMap.enabled = true;
-
-
 
 const vectorSource = vector.getSource();
 vectorSource.once('featuresloadend', () => {

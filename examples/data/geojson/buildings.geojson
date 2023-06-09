@@ -7,6 +7,7 @@
       "properties": {
         "type": "education",
         "olcs_extruded_height": 7.8,
+        "olcs_shadows": true,
         "fillColor": "blue",
         "strokeColor": "white"
       },
@@ -28,6 +29,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 6
       },
@@ -54,6 +56,7 @@
       "properties": {
         "type": "education",
         "olcs_extruded_height": 9,
+        "olcs_shadows": true,
         "levels": 3,
         "roofShape": "flat"
       },
@@ -95,6 +98,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 6
       },
@@ -120,6 +124,7 @@
       "properties": {
         "name": "Kino in der Kulturbrauerei",
         "type": "commercial",
+        "olcs_shadows": true,
         "olcs_extruded_height": 28.2
       },
       "geometry": {
@@ -158,6 +163,7 @@
       "type": "Feature",
       "properties": {
         "type": "commercial",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15.3
       },
       "geometry": {
@@ -178,6 +184,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 24.3,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -203,6 +210,7 @@
       "type": "Feature",
       "properties": {
         "type": "commercial",
+        "olcs_shadows": true,
         "olcs_extruded_height": 7.5
       },
       "geometry": {
@@ -229,6 +237,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -256,6 +265,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -284,6 +294,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -308,6 +319,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 12.7,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -329,6 +341,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofLevels": 1,
@@ -359,6 +372,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox"
@@ -389,6 +403,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofLevels": 1,
@@ -412,6 +427,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofLevels": 1,
@@ -440,6 +456,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofLevels": 1,
@@ -471,6 +488,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -499,6 +517,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 20.1
       },
       "geometry": {
@@ -519,6 +538,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofLevels": 1,
@@ -542,6 +562,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -572,6 +593,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofLevels": 1,
@@ -597,6 +619,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 19.9
       },
       "geometry": {
@@ -617,6 +640,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -645,6 +669,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofLevels": 1,
@@ -668,6 +693,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -698,6 +724,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -723,6 +750,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 2.8
       },
       "geometry": {
@@ -744,6 +772,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -767,6 +796,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -790,6 +820,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -816,6 +847,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -845,6 +877,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -866,6 +899,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -887,6 +921,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -911,6 +946,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -932,6 +968,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -953,6 +990,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -980,6 +1018,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "gabled",
@@ -1009,6 +1048,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofHeight": 3,
@@ -1042,6 +1082,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "gabled",
@@ -1073,6 +1114,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofHeight": 3,
@@ -1104,6 +1146,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -1132,6 +1175,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "gabled",
@@ -1165,6 +1209,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofHeight": 3,
@@ -1188,6 +1233,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofHeight": 3,
@@ -1211,6 +1257,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "gabled",
@@ -1242,6 +1289,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -1266,6 +1314,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -1290,6 +1339,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -1314,6 +1364,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -1338,6 +1389,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -1372,6 +1424,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -1407,6 +1460,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 8.4,
+        "olcs_shadows": true,
         "type": "commercial",
         "building": "97406608"
       },
@@ -1434,6 +1488,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -1464,6 +1519,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -1494,6 +1550,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -1528,6 +1585,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -1561,6 +1619,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofHeight": 3,
@@ -1588,6 +1647,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -1624,6 +1684,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -1657,6 +1718,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofHeight": 3,
@@ -1690,6 +1752,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -1727,6 +1790,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -1762,6 +1826,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "gabled",
@@ -1795,6 +1860,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -1823,6 +1889,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -1854,6 +1921,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -1887,6 +1955,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -1914,6 +1983,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -1944,6 +2014,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -1974,6 +2045,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -2006,6 +2078,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -2030,6 +2103,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -2067,6 +2141,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -2104,6 +2179,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -2139,6 +2215,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -2177,6 +2254,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofHeight": 3,
@@ -2203,6 +2281,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -2235,6 +2314,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -2277,6 +2357,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -2305,6 +2386,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "many",
@@ -2338,6 +2420,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "many",
@@ -2370,6 +2453,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -2402,6 +2486,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 16,
         "levels": 5
       },
@@ -2426,6 +2511,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 16,
         "levels": 5
       },
@@ -2451,6 +2537,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 16,
         "levels": 5
       },
@@ -2483,6 +2570,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 16,
         "levels": 5
       },
@@ -2510,6 +2598,7 @@
       "type": "Feature",
       "properties": {
         "type": "residence:other",
+        "olcs_shadows": true,
         "olcs_extruded_height": 2.5,
         "levels": 1
       },
@@ -2533,6 +2622,7 @@
       "type": "Feature",
       "properties": {
         "type": "residence:other",
+        "olcs_shadows": true,
         "olcs_extruded_height": 2.5,
         "levels": 1
       },
@@ -2554,6 +2644,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -2586,6 +2677,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -2623,6 +2715,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -2656,6 +2749,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -2690,6 +2784,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 21,
         "levels": 6,
         "roofShape": "saltbox",
@@ -2719,6 +2814,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 12,
         "levels": 4
       },
@@ -2756,6 +2852,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -2788,6 +2885,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -2818,6 +2916,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -2850,6 +2949,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -2885,6 +2985,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofHeight": 3,
@@ -2928,6 +3029,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -2962,6 +3064,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -2997,6 +3100,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -3031,6 +3135,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -3073,6 +3178,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -3110,6 +3216,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -3141,6 +3248,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -3176,6 +3284,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -3204,6 +3313,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -3228,6 +3338,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -3258,6 +3369,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -3282,6 +3394,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -3314,6 +3427,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -3342,6 +3456,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -3372,6 +3487,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -3403,6 +3519,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 22,
+        "olcs_shadows": true,
         "type": "residential"
       },
       "geometry": {
@@ -3432,6 +3549,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -3458,6 +3576,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -3492,6 +3611,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "gabled",
@@ -3517,6 +3637,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -3551,6 +3672,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -3583,6 +3705,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -3615,6 +3738,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -3643,6 +3767,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -3675,6 +3800,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -3705,6 +3831,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -3736,6 +3863,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -3766,6 +3894,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -3795,6 +3924,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -3824,6 +3954,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -3854,6 +3985,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -3884,6 +4016,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "quadruple_saltbox",
@@ -3914,6 +4047,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -3958,6 +4092,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "many",
@@ -3985,6 +4120,7 @@
       "properties": {
         "type": "education",
         "olcs_extruded_height": 6,
+        "olcs_shadows": true,
         "levels": 2
       },
       "geometry": {
@@ -4009,6 +4145,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "many",
@@ -4042,6 +4179,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "quadruple_saltbox",
@@ -4081,6 +4219,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -4117,6 +4256,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -4151,6 +4291,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "many",
@@ -4192,6 +4333,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "many",
@@ -4232,6 +4374,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "many",
@@ -4272,6 +4415,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -4303,6 +4447,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -4333,6 +4478,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "many",
@@ -4373,6 +4519,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "gambrel",
@@ -4410,6 +4557,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -4444,6 +4592,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -4472,6 +4621,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofHeight": 3,
@@ -4495,6 +4645,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -4528,6 +4679,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -4560,6 +4712,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -4588,6 +4741,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -4631,6 +4785,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -4659,6 +4814,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -4696,6 +4852,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -4730,6 +4887,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofHeight": 3,
@@ -4758,6 +4916,7 @@
         "name": "Platzhaus",
         "type": "residence:other",
         "olcs_extruded_height": 3,
+        "olcs_shadows": true,
         "levels": 1
       },
       "geometry": {
@@ -4780,6 +4939,7 @@
         "name": "Kiezkind",
         "type": "residential",
         "olcs_extruded_height": 3,
+        "olcs_shadows": true,
         "levels": 1
       },
       "geometry": {
@@ -4800,6 +4960,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -4838,6 +4999,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -4870,6 +5032,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -4903,6 +5066,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofLevels": 1,
@@ -4939,6 +5103,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 21.8
       },
       "geometry": {
@@ -4972,6 +5137,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofLevels": 1,
@@ -5008,6 +5174,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22
       },
       "geometry": {
@@ -5044,6 +5211,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -5078,6 +5246,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -5117,6 +5286,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -5156,6 +5326,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -5194,6 +5365,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -5229,6 +5401,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5,
         "roofMaterial": "roof_tiles",
@@ -5257,6 +5430,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5,
         "roofMaterial": "roof_tiles",
@@ -5291,6 +5465,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5,
         "roofMaterial": "roof_tiles",
@@ -5325,6 +5500,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofMaterial": "metal",
@@ -5353,6 +5529,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5,
         "roofMaterial": "roof_tiles",
@@ -5382,6 +5559,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 3,
+        "olcs_shadows": true,
         "levels": 1,
         "type": "commercial"
       },
@@ -5403,6 +5581,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 6
       },
@@ -5430,6 +5609,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 6
       },
@@ -5457,6 +5637,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -5478,6 +5659,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofShape": "gabled",
@@ -5504,6 +5686,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -5542,6 +5725,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -5567,6 +5751,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 3,
+        "olcs_shadows": true,
         "levels": 1,
         "type": "commercial"
       },
@@ -5588,6 +5773,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 3,
+        "olcs_shadows": true,
         "levels": 1,
         "type": "commercial"
       },
@@ -5609,6 +5795,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 21,
         "levels": 6,
         "roofLevels": 1,
@@ -5637,6 +5824,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -5658,6 +5846,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -5685,6 +5874,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -5710,6 +5900,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -5733,6 +5924,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -5756,6 +5948,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -5783,6 +5976,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -5810,6 +6004,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -5837,6 +6032,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -5866,6 +6062,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -5890,6 +6087,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 3.1,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -5912,6 +6110,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 3.9,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -5932,6 +6131,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 3.9,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -5954,6 +6154,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 6.4,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -5974,6 +6175,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 7.2,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -5997,6 +6199,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -6018,6 +6221,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 16.9,
+        "olcs_shadows": true,
         "type": "residential"
       },
       "geometry": {
@@ -6038,6 +6242,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofLevels": 1,
@@ -6061,6 +6266,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -6098,6 +6304,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 6,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -6120,6 +6327,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -6147,6 +6355,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -6168,6 +6377,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -6189,6 +6399,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -6210,6 +6421,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -6242,6 +6454,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 3.6,
+        "olcs_shadows": true,
         "type": "residential"
       },
       "geometry": {
@@ -6262,6 +6475,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -6289,6 +6503,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -6314,6 +6529,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -6335,6 +6551,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -6363,6 +6580,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -6384,6 +6602,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 15.9,
+        "olcs_shadows": true,
         "type": "residential"
       },
       "geometry": {
@@ -6408,6 +6627,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -6433,6 +6653,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -6458,6 +6679,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -6479,6 +6701,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -6506,6 +6729,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -6529,6 +6753,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -6558,6 +6783,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 3.8,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -6580,6 +6806,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -6605,6 +6832,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -6634,6 +6862,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -6657,6 +6886,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -6688,6 +6918,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofShape": "gabled",
@@ -6719,6 +6950,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "flat"
@@ -6746,6 +6978,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -6767,6 +7000,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -6788,6 +7022,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -6814,6 +7049,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 21,
         "levels": 7
       },
@@ -6851,6 +7087,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -6877,6 +7114,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -6898,6 +7136,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -6919,6 +7158,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -6940,6 +7180,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -6968,6 +7209,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -6992,6 +7234,7 @@
       "properties": {
         "type": "residential",
         "olcs_extruded_height": 3,
+        "olcs_shadows": true,
         "levels": 1
       },
       "geometry": {
@@ -7012,6 +7255,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -7035,6 +7279,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -7056,6 +7301,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -7081,6 +7327,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5,
         "roofShape": "double_saltbox"
@@ -7106,6 +7353,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -7131,6 +7379,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -7157,6 +7406,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -7180,6 +7430,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -7201,6 +7452,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -7224,6 +7476,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -7245,6 +7498,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -7266,6 +7520,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 1.7,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -7286,6 +7541,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 18.4,
+        "olcs_shadows": true,
         "type": "residential"
       },
       "geometry": {
@@ -7311,6 +7567,7 @@
       "type": "Feature",
       "properties": {
         "type": "residence:other",
+        "olcs_shadows": true,
         "olcs_extruded_height": 1
       },
       "geometry": {
@@ -7331,6 +7588,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 6,
         "roofShape": "flat"
@@ -7365,6 +7623,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 20.3,
+        "olcs_shadows": true,
         "type": "residential"
       },
       "geometry": {
@@ -7385,6 +7644,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 13.5,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -7405,6 +7665,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 4.3,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -7425,6 +7686,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 4.1,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -7445,6 +7707,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 19.1,
+        "olcs_shadows": true,
         "type": "residential"
       },
       "geometry": {
@@ -7465,6 +7728,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 3.4,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -7485,6 +7749,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 2.7,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -7507,6 +7772,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 22.8,
+        "olcs_shadows": true,
         "type": "residential"
       },
       "geometry": {
@@ -7527,6 +7793,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofLevels": 1,
@@ -7553,6 +7820,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 2.4,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -7573,6 +7841,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 22.6,
+        "olcs_shadows": true,
         "type": "residential"
       },
       "geometry": {
@@ -7594,6 +7863,7 @@
       "properties": {
         "type": "residential",
         "olcs_extruded_height": 6,
+        "olcs_shadows": true,
         "levels": 2
       },
       "geometry": {
@@ -7617,6 +7887,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 20.9,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -7639,6 +7910,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -7661,6 +7933,7 @@
       "properties": {
         "type": "residence:other",
         "olcs_extruded_height": 3,
+        "olcs_shadows": true,
         "levels": 1
       },
       "geometry": {
@@ -7699,6 +7972,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -7720,6 +7994,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -7746,6 +8021,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofHeight": 3,
@@ -7769,6 +8045,7 @@
       "type": "Feature",
       "properties": {
         "type": "residence:other",
+        "olcs_shadows": true,
         "olcs_extruded_height": 10,
         "levels": 2
       },
@@ -7794,6 +8071,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 15.7,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -7814,6 +8092,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -7850,6 +8129,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -7876,6 +8156,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -7911,6 +8192,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -7937,6 +8219,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 21.8
       },
       "geometry": {
@@ -7967,6 +8250,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 5.6,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -7987,6 +8271,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -8015,6 +8300,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -8045,6 +8331,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 21,
         "levels": 6,
         "roofShape": "saltbox",
@@ -8069,6 +8356,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -8097,6 +8385,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 12,
         "levels": 4
       },
@@ -8160,6 +8449,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 21,
         "levels": 6,
         "roofShape": "saltbox",
@@ -8184,6 +8474,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 24.1
       },
       "geometry": {
@@ -8216,6 +8507,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 16.1,
+        "olcs_shadows": true,
         "type": "residential"
       },
       "geometry": {
@@ -8241,6 +8533,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 2,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -8264,6 +8557,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 18.3,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -8284,6 +8578,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 3,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -8304,6 +8599,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 7.6,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -8329,6 +8625,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 3.9,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -8349,6 +8646,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 5.4,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -8369,6 +8667,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -8400,6 +8699,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -8435,6 +8735,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -8458,6 +8759,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -8481,6 +8783,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -8504,6 +8807,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -8527,6 +8831,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -8553,6 +8858,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -8578,6 +8884,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -8601,6 +8908,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -8622,6 +8930,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -8645,6 +8954,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -8666,6 +8976,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -8693,6 +9004,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -8716,6 +9028,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -8741,6 +9054,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -8770,6 +9084,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -8797,6 +9112,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -8822,6 +9138,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -8848,6 +9165,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -8877,6 +9195,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -8898,6 +9217,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -8924,6 +9244,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -8945,6 +9266,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 18.4,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -8965,6 +9287,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 15.2,
+        "olcs_shadows": true,
         "type": "residential"
       },
       "geometry": {
@@ -8985,6 +9308,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 19.5,
+        "olcs_shadows": true,
         "type": "residential"
       },
       "geometry": {
@@ -9008,6 +9332,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -9031,6 +9356,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -9056,6 +9382,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -9079,6 +9406,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -9101,6 +9429,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -9124,6 +9453,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 5.9,
+        "olcs_shadows": true,
         "type": "residential"
       },
       "geometry": {
@@ -9145,6 +9475,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofHeight": 3,
@@ -9179,6 +9510,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 5.3,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -9200,6 +9532,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 5.3,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -9220,6 +9553,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 5.3,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -9240,6 +9574,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 2.5,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -9260,6 +9595,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 5,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -9280,6 +9616,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 5.4,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -9300,6 +9637,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 19.4,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -9320,6 +9658,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 3,
+        "olcs_shadows": true,
         "type": "residential"
       },
       "geometry": {
@@ -9341,6 +9680,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofHeight": 3,
@@ -9364,6 +9704,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 21.9
       },
       "geometry": {
@@ -9386,6 +9727,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 21.9
       },
       "geometry": {
@@ -9407,6 +9749,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 6.9,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -9427,6 +9770,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -9448,6 +9792,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 5.3,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -9472,6 +9817,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 4.2,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -9492,6 +9838,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 20.6,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -9512,6 +9859,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 10.8,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -9532,6 +9880,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 1.9,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -9552,6 +9901,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 2.7,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -9579,6 +9929,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 6.2,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -9599,6 +9950,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 18.4,
+        "olcs_shadows": true,
         "type": "residential"
       },
       "geometry": {
@@ -9629,6 +9981,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 2.9,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -9651,6 +10004,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 21.1,
+        "olcs_shadows": true,
         "type": "residential"
       },
       "geometry": {
@@ -9677,6 +10031,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 3.8,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -9697,6 +10052,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 4.1,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -9717,6 +10073,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 5.3,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -9737,6 +10094,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 2.6,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -9761,6 +10119,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -9790,6 +10149,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 3.5,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -9810,6 +10170,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -9838,6 +10199,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -9870,6 +10232,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -9901,6 +10264,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -9924,6 +10288,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 12.2
       },
       "geometry": {
@@ -9948,6 +10313,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -9977,6 +10343,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -10011,6 +10378,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -10043,6 +10411,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -10074,6 +10443,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -10105,6 +10475,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 7.4,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -10128,6 +10499,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -10149,6 +10521,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -10170,6 +10543,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -10200,6 +10574,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -10226,6 +10601,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 7.8,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -10248,6 +10624,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 8.5,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -10268,6 +10645,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 3.3,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -10288,6 +10666,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 5.6,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -10308,6 +10687,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 3.8,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -10330,6 +10710,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 20.9,
+        "olcs_shadows": true,
         "type": "residential"
       },
       "geometry": {
@@ -10352,6 +10733,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 4.9,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -10372,6 +10754,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 4.7,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -10393,6 +10776,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 16.9,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -10413,6 +10797,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 3.2,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -10433,6 +10818,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 7.5,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -10453,6 +10839,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 8.5,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -10473,6 +10860,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 18.4,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -10493,6 +10881,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofLevels": 1,
@@ -10523,6 +10912,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -10546,6 +10936,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -10571,6 +10962,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -10600,6 +10992,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -10627,6 +11020,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -10654,6 +11048,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -10685,6 +11080,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -10713,6 +11109,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -10741,6 +11138,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -10769,6 +11167,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -10796,6 +11195,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -10826,6 +11226,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -10856,6 +11257,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -10886,6 +11288,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -10915,6 +11318,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -10939,6 +11343,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -10969,6 +11374,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -10992,6 +11398,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -11020,6 +11427,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -11059,6 +11467,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -11082,6 +11491,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -11105,6 +11515,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -11129,6 +11540,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -11150,6 +11562,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 12.3
       },
       "geometry": {
@@ -11170,6 +11583,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 20,
+        "olcs_shadows": true,
         "type": "residential"
       },
       "geometry": {
@@ -11192,6 +11606,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 1.4,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -11211,6 +11626,7 @@
       "id": "610007756",
       "type": "Feature",
       "properties": {
+        "olcs_shadows": true,
         "olcs_extruded_height": 3
       },
       "geometry": {
@@ -11231,6 +11647,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 11.2,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -11251,6 +11668,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 4.5,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -11271,6 +11689,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 3.4,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -11291,6 +11710,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 3.1,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -11315,6 +11735,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 21.1,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -11335,6 +11756,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 1.2,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -11371,6 +11793,7 @@
       "id": "610007764",
       "type": "Feature",
       "properties": {
+        "olcs_shadows": true,
         "olcs_extruded_height": 15
       },
       "geometry": {
@@ -11391,6 +11814,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 2.3,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -11413,6 +11837,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 21.5,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -11433,6 +11858,7 @@
       "type": "Feature",
       "properties": {
         "type": "office",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -11465,6 +11891,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -11490,6 +11917,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -11515,6 +11943,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 8.4,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -11537,6 +11966,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 6.5,
+        "olcs_shadows": true,
         "type": "residential"
       },
       "geometry": {
@@ -11561,6 +11991,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 3.3,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -11581,6 +12012,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 15.2,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -11601,6 +12033,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 2.2,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -11621,6 +12054,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 21,
         "levels": 7
       },
@@ -11646,6 +12080,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -11674,6 +12109,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -11699,6 +12135,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -11723,6 +12160,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 6
       },
@@ -11744,6 +12182,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 6,
         "roofColor": "#808080",
@@ -11770,6 +12209,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 6,
         "roofMaterial": "roof_tiles",
@@ -11798,6 +12238,7 @@
       "properties": {
         "type": "commercial",
         "olcs_extruded_height": 3,
+        "olcs_shadows": true,
         "levels": 1,
         "roofShape": "flat"
       },
@@ -11819,6 +12260,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 9,
+        "olcs_shadows": true,
         "levels": 3,
         "type": "commercial",
         "building": "23098418"
@@ -11849,6 +12291,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 3,
+        "olcs_shadows": true,
         "levels": 1,
         "type": "commercial",
         "building": "23098418"
@@ -11872,6 +12315,7 @@
       "properties": {
         "shape": "none",
         "olcs_extruded_height": 9.2,
+        "olcs_shadows": true,
         "type": "residential",
         "building": "23098418"
       },
@@ -11895,6 +12339,7 @@
       "properties": {
         "shape": "none",
         "olcs_extruded_height": 12.9,
+        "olcs_shadows": true,
         "type": "commercial",
         "building": "23098418"
       },
@@ -11917,6 +12362,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 3,
+        "olcs_shadows": true,
         "levels": 1,
         "type": "commercial",
         "building": "23098418"
@@ -11941,6 +12387,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -11972,6 +12419,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -12005,6 +12453,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -12042,6 +12491,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 6,
         "roofShape": "gabled",
@@ -12076,6 +12526,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -12097,6 +12548,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -12121,6 +12573,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -12146,6 +12599,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -12177,6 +12631,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -12202,6 +12657,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -12223,6 +12679,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -12248,6 +12705,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -12279,6 +12737,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 6
       },
@@ -12306,6 +12765,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -12334,6 +12794,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -12355,6 +12816,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -12381,6 +12843,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -12406,6 +12869,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -12427,6 +12891,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 3.5,
+        "olcs_shadows": true,
         "type": "residential"
       },
       "geometry": {
@@ -12448,6 +12913,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 19.9,
+        "olcs_shadows": true,
         "type": "residential"
       },
       "geometry": {
@@ -12470,6 +12936,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 21,
         "levels": 6,
         "roofLevels": 1,
@@ -12493,6 +12960,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofShape": "gabled",
@@ -12522,6 +12990,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -12550,6 +13019,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 21,
         "levels": 6,
         "roofShape": "gabled",
@@ -12583,6 +13053,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofShape": "gabled",
@@ -12610,6 +13081,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -12641,6 +13113,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -12668,6 +13141,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 6,
         "roofShape": "gabled",
@@ -12691,6 +13165,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 6,
         "roofShape": "gabled",
@@ -12714,6 +13189,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofColor": "#ff0000"
@@ -12744,6 +13220,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 6,
         "roofShape": "gabled",
@@ -12771,6 +13248,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -12800,6 +13278,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -12829,6 +13308,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -12855,6 +13335,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -12881,6 +13362,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -12914,6 +13396,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -12947,6 +13430,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -12972,6 +13456,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 6
       },
@@ -12998,6 +13483,7 @@
       "properties": {
         "type": "commercial",
         "olcs_extruded_height": 6,
+        "olcs_shadows": true,
         "levels": 2
       },
       "geometry": {
@@ -13021,6 +13507,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofLevels": 1,
@@ -13050,6 +13537,7 @@
       "properties": {
         "type": "residential",
         "olcs_extruded_height": 9,
+        "olcs_shadows": true,
         "levels": 3
       },
       "geometry": {
@@ -13074,6 +13562,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -13106,6 +13595,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -13138,6 +13628,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -13168,6 +13659,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 6.9,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -13188,6 +13680,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -13213,6 +13706,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 21
       },
       "geometry": {
@@ -13240,6 +13734,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 25.4
       },
       "geometry": {
@@ -13263,6 +13758,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 28.3
       },
       "geometry": {
@@ -13287,6 +13783,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22
       },
       "geometry": {
@@ -13315,6 +13812,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22.8
       },
       "geometry": {
@@ -13341,6 +13839,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22.4
       },
       "geometry": {
@@ -13370,6 +13869,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 21.7
       },
       "geometry": {
@@ -13399,6 +13899,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofLevels": 1,
@@ -13426,6 +13927,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofLevels": 1,
@@ -13453,6 +13955,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofLevels": 1,
@@ -13480,6 +13983,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofLevels": 1,
@@ -13515,6 +14019,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofLevels": 1,
@@ -13544,6 +14049,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofLevels": 1,
@@ -13576,6 +14082,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofLevels": 1,
@@ -13607,6 +14114,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofLevels": 1,
@@ -13639,6 +14147,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofLevels": 1,
@@ -13666,6 +14175,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofLevels": 1,
@@ -13696,6 +14206,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofLevels": 1,
@@ -13730,6 +14241,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofLevels": 1,
@@ -13764,6 +14276,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 7.9
       },
       "geometry": {
@@ -13788,6 +14301,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 5.9
       },
       "geometry": {
@@ -13810,6 +14324,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 9,
+        "olcs_shadows": true,
         "levels": 3,
         "type": "commercial",
         "building": "23098410"
@@ -13840,6 +14355,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -13907,6 +14423,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -13933,6 +14450,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -13969,6 +14487,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -14003,6 +14522,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -14037,6 +14557,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -14067,6 +14588,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -14094,6 +14616,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -14123,6 +14646,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -14156,6 +14680,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -14180,6 +14705,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -14216,6 +14742,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -14243,6 +14770,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -14275,6 +14803,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -14301,6 +14830,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -14329,6 +14859,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -14353,6 +14884,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -14381,6 +14913,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -14410,6 +14943,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -14435,6 +14969,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -14458,6 +14993,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -14481,6 +15017,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -14512,6 +15049,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -14537,6 +15075,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -14562,6 +15101,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22
       },
       "geometry": {
@@ -14584,6 +15124,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -14611,6 +15152,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -14636,6 +15178,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -14659,6 +15202,7 @@
       "properties": {
         "type": "residential",
         "olcs_extruded_height": 8,
+        "olcs_shadows": true,
         "levels": 2
       },
       "geometry": {
@@ -14679,6 +15223,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -14700,6 +15245,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15.8
       },
       "geometry": {
@@ -14722,6 +15268,7 @@
         "name": "Elias Kuppelsaal",
         "type": "religious",
         "olcs_extruded_height": 3,
+        "olcs_shadows": true,
         "levels": 1,
         "roofShape": "dome"
       },
@@ -14755,6 +15302,7 @@
       "properties": {
         "type": "residence:other",
         "olcs_extruded_height": 3,
+        "olcs_shadows": true,
         "levels": 1
       },
       "geometry": {
@@ -14775,6 +15323,7 @@
       "type": "Feature",
       "properties": {
         "type": "education",
+        "olcs_shadows": true,
         "olcs_extruded_height": 20,
         "levels": 5
       },
@@ -14814,6 +15363,7 @@
       "properties": {
         "name": "Eliaskirche",
         "type": "religious",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -14844,6 +15394,7 @@
       "type": "Feature",
       "properties": {
         "type": "education",
+        "olcs_shadows": true,
         "olcs_extruded_height": 19,
         "levels": 4
       },
@@ -14869,6 +15420,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -14898,6 +15450,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -14924,6 +15477,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -14949,6 +15503,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -14977,6 +15532,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 1.1,
+        "olcs_shadows": true,
         "type": "residential"
       },
       "geometry": {
@@ -15002,6 +15558,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 7.5,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -15028,6 +15585,7 @@
       "id": "1138324769",
       "type": "Feature",
       "properties": {
+        "olcs_shadows": true,
         "olcs_extruded_height": 15
       },
       "geometry": {
@@ -15048,6 +15606,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofLevels": 1,
@@ -15081,6 +15640,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 23
       },
       "geometry": {
@@ -15111,6 +15671,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofLevels": 1,
@@ -15143,6 +15704,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22.2
       },
       "geometry": {
@@ -15172,6 +15734,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 24.4
       },
       "geometry": {
@@ -15198,6 +15761,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 21.8
       },
       "geometry": {
@@ -15227,6 +15791,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 21.9
       },
       "geometry": {
@@ -15255,6 +15820,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 21.6
       },
       "geometry": {
@@ -15284,6 +15850,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 18,
         "levels": 5,
         "roofShape": "double_saltbox",
@@ -15318,6 +15885,7 @@
       "type": "Feature",
       "properties": {
         "type": "education",
+        "olcs_shadows": true,
         "olcs_extruded_height": 28.3
       },
       "geometry": {
@@ -15374,6 +15942,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -15402,6 +15971,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -15428,6 +15998,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -15453,6 +16024,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -15485,6 +16057,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -15509,6 +16082,7 @@
       "properties": {
         "type": "residential",
         "olcs_extruded_height": 6,
+        "olcs_shadows": true,
         "levels": 2,
         "roofShape": "skillion",
         "roofDirection": 124.8
@@ -15534,6 +16108,7 @@
       "properties": {
         "type": "residential",
         "olcs_extruded_height": 6,
+        "olcs_shadows": true,
         "levels": 2,
         "roofShape": "skillion",
         "roofDirection": 26.8
@@ -15556,6 +16131,7 @@
       "type": "Feature",
       "properties": {
         "olcs_extruded_height": 16.3,
+        "olcs_shadows": true,
         "type": "commercial"
       },
       "geometry": {
@@ -15576,6 +16152,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -15609,6 +16186,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -15630,6 +16208,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -15651,6 +16230,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -15672,6 +16252,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -15699,6 +16280,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -15728,6 +16310,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -15753,6 +16336,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -15778,6 +16362,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -15803,6 +16388,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -15826,6 +16412,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -15849,6 +16436,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -15872,6 +16460,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -15895,6 +16484,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "gabled",
@@ -15924,6 +16514,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -15954,6 +16545,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -15975,6 +16567,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -15996,6 +16589,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -16024,6 +16618,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -16048,6 +16643,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -16069,6 +16665,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -16095,6 +16692,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofHeight": 3,
@@ -16127,6 +16725,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -16148,6 +16747,7 @@
       "type": "Feature",
       "properties": {
         "type": "education",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -16187,6 +16787,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -16208,6 +16809,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5,
         "roofShape": "gabled",
@@ -16238,6 +16840,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -16259,6 +16862,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -16280,6 +16884,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -16311,6 +16916,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -16332,6 +16938,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -16362,6 +16969,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -16394,6 +17002,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -16421,6 +17030,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 3
       },
@@ -16450,6 +17060,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -16477,6 +17088,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -16504,6 +17116,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -16527,6 +17140,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -16548,6 +17162,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -16571,6 +17186,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -16592,6 +17208,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -16619,6 +17236,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 15,
         "levels": 5
       },
@@ -16646,6 +17264,7 @@
       "type": "Feature",
       "properties": {
         "type": "residence:other",
+        "olcs_shadows": true,
         "olcs_extruded_height": 20.5
       },
       "geometry": {
@@ -16669,6 +17288,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -16693,6 +17313,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -16714,6 +17335,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -16735,6 +17357,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -16756,6 +17379,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -16777,6 +17401,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -16798,6 +17423,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -16819,6 +17445,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -16840,6 +17467,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
@@ -16861,6 +17489,7 @@
       "type": "Feature",
       "properties": {
         "type": "residential",
+        "olcs_shadows": true,
         "olcs_extruded_height": 22,
         "levels": 5
       },
