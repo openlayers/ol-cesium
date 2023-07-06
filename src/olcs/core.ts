@@ -19,6 +19,7 @@ import {Extent, getCenter as getExtentCenter} from 'ol/extent';
 import BaseLayer from 'ol/layer/Base';
 import LayerGroup from 'ol/layer/Group.js';
 import type {
+  BoundingSphere,
   Camera,
   Cartesian2,
   Cartesian3,
@@ -773,4 +774,33 @@ export function calcResolutionForDistance(distance: number, latitude: number, sc
   const resolution = visibleMapUnits / canvas.clientHeight;
 
   return resolution;
+}
+
+/**
+ * Constrain the camera so that it stays close to the bounding sphere of the map extent.
+ * Near the ground the allowed distance is shorter.
+ */
+export function limitCameraToBoundingSphere(camera: Camera, boundingSphere: BoundingSphere, ratio: (height: number) => number): () => void {
+  let blockLimiter = false;
+  return function () {
+    if (!blockLimiter) {
+      const position = camera.position;
+      const carto = Cesium.Cartographic.fromCartesian(position);
+      if (Cesium.Cartesian3.distance(boundingSphere.center, position) > boundingSphere.radius * ratio(carto.height)) {
+        // @ts-ignore TS2339: FIXME, there is no flying property in Camera
+        const currentlyFlying = camera.flying;
+        if (currentlyFlying === true) {
+          // There is a flying property and its value is true
+          return;
+        } else {
+          blockLimiter = true;
+          const unblockLimiter = () => (blockLimiter = false);
+          camera.flyToBoundingSphere(boundingSphere, {
+            complete: unblockLimiter,
+            cancel: unblockLimiter,
+          });
+        }
+      }
+    }
+  };
 }
