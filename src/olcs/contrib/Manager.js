@@ -3,7 +3,7 @@
  */
 import olcsContribLazyLoader from '../contrib/LazyLoader.js';
 import OLCesium from '../OLCesium.ts';
-import {resetToNorthZenith, rotateAroundBottomCenter, computeSignedTiltAngleOnGlobe, pickBottomPoint, setHeadingUsingBottomCenter} from '../core.ts';
+import {resetToNorthZenith, rotateAroundBottomCenter, computeSignedTiltAngleOnGlobe, pickBottomPoint, setHeadingUsingBottomCenter, limitCameraToBoundingSphere} from '../core.ts';
 import {toRadians} from '../math.js';
 import olObservable from 'ol/Observable.js';
 
@@ -49,12 +49,6 @@ const Manager = class extends olObservable {
      * @type {Cesium.BoundingSphere}
      */
     this.boundingSphere_;
-
-    /**
-     * @type {boolean}
-     * @private
-     */
-    this.blockLimiter_ = false;
 
     /**
      * @type {Promise.<olcs.OLCesium>}
@@ -202,42 +196,11 @@ const Manager = class extends olObservable {
     scene.backgroundColor = Cesium.Color.WHITE;
 
     if (this.boundingSphere_) {
-      scene.postRender.addEventListener(this.limitCameraToBoundingSphere.bind(this), scene);
+      scene.postRender.addEventListener(limitCameraToBoundingSphere(scene.camera, this.boundingSphere_, this.limitCameraToBoundingSphereRatio));
     }
     // Stop rendering Cesium when there is nothing to do. This drastically reduces CPU/GPU consumption.
     this.ol3d.enableAutoRenderLoop();
   }
-
-
-  /**
-   * Constrain the camera so that it stays close to the bounding sphere of the map extent.
-   * Near the ground the allowed distance is shorter.
-   * @protected
-   */
-  limitCameraToBoundingSphere() {
-    if (this.boundingSphere_ && !this.blockLimiter_) {
-      const scene = this.ol3d.getCesiumScene();
-      const camera = scene.camera;
-      const position = camera.position;
-      const carto = Cesium.Cartographic.fromCartesian(position);
-      const ratio = this.limitCameraToBoundingSphereRatio(carto.height);
-      if (Cesium.Cartesian3.distance(this.boundingSphere_.center, position) > this.boundingSphere_.radius * ratio) {
-        const currentlyFlying = camera.flying;
-        if (currentlyFlying === true) {
-          // There is a flying property and its value is true
-          return;
-        } else {
-          this.blockLimiter_ = true;
-          const unblockLimiter = () => this.blockLimiter_ = false;
-          camera.flyToBoundingSphere(this.boundingSphere_, {
-            complete: unblockLimiter,
-            cancel: unblockLimiter
-          });
-        }
-      }
-    }
-  }
-
 
   /**
    * Enable or disable ol3d with a default animation.

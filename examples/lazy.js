@@ -30,5 +30,6 @@ const ol2d = new olMap({
 
 window['manager'] = new olcsContribManager(window.CESIUM_URL, {
   map: ol2d,
+  cameraExtentInRadians: [0.0897, 0.7923, 0.2003, 0.8417],
   cesiumIonDefaultAccessToken: OLCS_ION_TOKEN
 });
