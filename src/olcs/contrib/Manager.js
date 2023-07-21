@@ -160,8 +160,14 @@ const Manager = class extends olObservable {
     console.assert(this.map);
     const ol3d = new OLCesium({map: this.map});
     const scene = ol3d.getCesiumScene();
-    const terrainProvider = Cesium.createWorldTerrain();
-    scene.terrainProvider = terrainProvider;
+    if (Cesium.createWorldTerrain) {
+      const terrainProvider = Cesium.createWorldTerrain();
+      scene.terrainProvider = terrainProvider;
+    } else {
+      // v107+
+      Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
+    }
+
     return ol3d;
   }
 

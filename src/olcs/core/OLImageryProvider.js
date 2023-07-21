@@ -62,7 +62,7 @@ class OLImageryProvider /* should not extend Cesium.ImageryProvider */ {
      * @type {?Cesium.TilingScheme}
      * @private
      */
-    this.tilingScheme_ = null;
+    this.tilingScheme_ = new Cesium.WebMercatorTilingScheme(); // cesium v107+ don't wait for ready anymore
 
     /**
      * @type {?Cesium.Rectangle}

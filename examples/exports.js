@@ -25,7 +25,7 @@ const ol2d = new olMap({
 
 const ol3d = new OLCesium({map: ol2d});
 const scene = ol3d.getCesiumScene();
-scene.terrainProvider = Cesium.createWorldTerrain();
+Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
 
 ol3d.setEnabled(true);
 const camera = ol3d.getCamera();

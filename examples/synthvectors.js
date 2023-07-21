@@ -37,7 +37,7 @@ const map = new olMap({
 Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 const ol3d = new OLCesium({map});
 const scene = ol3d.getCesiumScene();
-scene.terrainProvider = Cesium.createWorldTerrain();
+Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
 ol3d.setEnabled(true);
 
 // Show off 3D feature picking

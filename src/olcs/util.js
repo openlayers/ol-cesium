@@ -138,3 +138,29 @@ export function isGroundPolylinePrimitiveSupported(scene) {
   const obj = Cesium.GroundPolylinePrimitive;
   return obj && obj.isSupported(scene);
 }
+
+
+export function waitReady(object) {
+  const p = object.readyPromise;
+  if (p) {
+    return p;
+  }
+  if (object.ready !== undefined) {
+    if (object.ready) {
+      return Promise.resolve(object);
+    }
+    return new Promise((resolve, _) => {
+      // FIXME: this is crazy
+      // alternative: intercept _ready = true
+      // altnerative: pass a timeout
+      const stopper = setInterval(() => {
+        if (object.ready) {
+          clearInterval(stopper);
+          resolve(object);
+        }
+      }, 20);
+    });
+  }
+  return Promise.reject('Not a readyable object');
+}
+

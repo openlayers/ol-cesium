@@ -10,7 +10,7 @@ import {boundingExtent, getCenter} from 'ol/extent.js';
 import olGeomSimpleGeometry from 'ol/geom/SimpleGeometry.js';
 import {convertColorToCesium, olGeometryCloneTo4326, ol4326CoordinateToCesiumCartesian, ol4326CoordinateArrayToCsCartesians} from './core.ts';
 import olcsCoreVectorLayerCounterpart from './core/VectorLayerCounterpart.ts';
-import {obj, getUid, isGroundPolylinePrimitiveSupported} from './util.js';
+import {obj, getUid, isGroundPolylinePrimitiveSupported, waitReady} from './util.js';
 
 
 /**
@@ -363,7 +363,7 @@ class FeatureConverter {
             }),
             classificationType: Cesium.ClassificationType.TERRAIN,
           });
-          outlinePrimitive.readyPromise.then(() => {
+          waitReady(outlinePrimitive).then(() => {
             this.setReferenceForPicking(layer, feature, outlinePrimitive._primitive);
           });
         }
@@ -476,7 +476,7 @@ class FeatureConverter {
           geometry
         }),
         outlinePrimitive = new Cesium.GroundPolylinePrimitive(primitiveOptions);
-        outlinePrimitive.readyPromise.then(() => {
+        waitReady(outlinePrimitive).then(() => {
           this.setReferenceForPicking(layer, feature, outlinePrimitive._primitive);
         });
       } else {
@@ -611,7 +611,7 @@ class FeatureConverter {
               geometryInstances
             };
             outlinePrimitive = new Cesium.GroundPolylinePrimitive(primitiveOptions);
-            outlinePrimitive.readyPromise.then(() => {
+            waitReady(outlinePrimitive).then(() => {
               this.setReferenceForPicking(layer, feature, outlinePrimitive._primitive);
             });
           }
@@ -816,11 +816,19 @@ class FeatureConverter {
     if (imageStyle) {
       const olcsModelFunction = /** @type {function():olcsx.ModelStyle} */ (olGeometry.get('olcs_model') || feature.get('olcs_model'));
       if (olcsModelFunction) {
+        modelPrimitive = new Cesium.PrimitiveCollection();
         const olcsModel = olcsModelFunction();
         const options = /** @type {Cesium.ModelFromGltfOptions} */ (Object.assign({}, {scene: this.scene}, olcsModel.cesiumOptions));
-        const model = Cesium.Model.fromGltf(options);
-        modelPrimitive = new Cesium.PrimitiveCollection();
-        modelPrimitive.add(model);
+        if (Cesium.Model.fromGltf) {
+          // pre Cesium v107
+          const model = Cesium.Model.fromGltf(options);
+          modelPrimitive.add(model);
+        } else {
+          Cesium.Model.fromGltfAsync(options).then((model) => {
+            modelPrimitive.add(model);
+          });
+        }
+
         if (olcsModel.debugModelMatrix) {
           modelPrimitive.add(new Cesium.DebugModelMatrixPrimitive({
             modelMatrix: olcsModel.debugModelMatrix
