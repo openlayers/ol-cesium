@@ -47,7 +47,7 @@ const ol3d = new OLCesium({
   }
 });
 const scene = ol3d.getCesiumScene();
-scene.terrainProvider = Cesium.createWorldTerrain();
+Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
 ol3d.setEnabled(true);
 
 document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));

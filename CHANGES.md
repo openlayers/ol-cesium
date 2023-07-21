@@ -4,6 +4,7 @@
 
 * Changes
   * Add function to grab a screenshot from rendered Cesium globe (client side printing)
+  * Port to OL 7.4 and CesiumJS 1.107
 
 # v 2.14.0 - 2023-04-26
 

@@ -26,4 +26,4 @@ echo
 echo "cd ../.. && rm -rf $BUILD && npm publish && buildtools/publish-website.sh"
 echo "git tag $TAG && git push --tags"
 echo
-echo "In addition, create the release on github and announce it"
+echo "In addition, create the release on github (upload the zip) and announce it"

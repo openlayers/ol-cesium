@@ -41,7 +41,7 @@ const ol2d = new olMap({
 Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 const ol3d = new OLCesium({map: ol2d, target: 'map3d'});
 const scene = ol3d.getCesiumScene();
-scene.terrainProvider = Cesium.createWorldTerrain();
+Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
 
 ol3d.setEnabled(true);
 

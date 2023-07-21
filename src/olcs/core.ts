@@ -37,13 +37,13 @@ import Source, {Attribution} from 'ol/source/Source';
 import Map from 'ol/Map';
 import Projection from 'ol/proj/Projection';
 import {Color as OLColor} from 'ol/color'
-import View, {ViewStateAndExtent} from 'ol/View';
-
+import View from 'ol/View';
 
 type CesiumUrlDefinition = {
     url: string,
     subdomains: string
 }
+
 
 /**
  * Options for rotate around axis core function.
@@ -696,15 +696,14 @@ export function attributionsFunctionToCredits(
     center: Coordinate,
     extent: Extent
 ) {
-  const frameState: ViewStateAndExtent = {
-    viewState: {zoom, center, projection: undefined, resolution: undefined, rotation: undefined},
-    extent,
-  };
 
   if (!attributionsFunction) {
     return [];
   }
-  let attributions = attributionsFunction(frameState);
+  let attributions = attributionsFunction({
+    viewState: {zoom, center, projection: undefined, resolution: undefined, rotation: undefined},
+    extent,
+  });
   if (!Array.isArray(attributions)) {
     attributions = [attributions];
   }
