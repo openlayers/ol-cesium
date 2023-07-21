@@ -1,5 +1,10 @@
 # Changelog
 
+# v 2.15 - 2023-07-21
+
+* Changes
+  * Add function to grab a screenshot from rendered Cesium globe (client side printing)
+
 # v 2.14.0 - 2023-04-26
 
 * Breaking changes
@@ -355,9 +360,9 @@
     curves instead of straight lines. This functionality can be activated by
     setting the olcs.polygon_kind property to 'rectangle' on the OpenLayers
     geometry.
-  * Add support to set a proxy for Cesium to load layer not accessible 
-    due to missing CORS headers (eg. when user can't modify configuration 
-    of the mapservice used). This functionality can be activated by 
+  * Add support to set a proxy for Cesium to load layer not accessible
+    due to missing CORS headers (eg. when user can't modify configuration
+    of the mapservice used). This functionality can be activated by
     setting the olcs.proxy property to the OpenLayers source.
 
 ## v 1.15 - 2016-04-28
@@ -465,7 +470,7 @@
     * Core static functions for converting from OL3 features to Cesium primitives
       have been moved into a class designed for inheritance.
       The `olcs.FeatureConverter` may be extended and passed as a parameter of
-      the `olcs.VectorSynchronizer` constructor. See the synchronizer function 
+      the `olcs.VectorSynchronizer` constructor. See the synchronizer function
       parameter of the `olcs.OLCesium` constructor. Subclassing requires that
       the subclass and the library code be compiled together.
       One way of migrating existing code is to define a global variable:
