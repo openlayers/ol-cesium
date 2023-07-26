@@ -190,10 +190,20 @@ const Manager = class extends olObservable {
     scene.backgroundColor = Cesium.Color.WHITE;
 
     if (this.boundingSphere_) {
-      scene.postRender.addEventListener(limitCameraToBoundingSphere(scene.camera, this.boundingSphere_, this.limitCameraToBoundingSphereRatio));
+      scene.postRender.addEventListener(this.limitCameraToBoundingSphere.bind(this));
     }
     // Stop rendering Cesium when there is nothing to do. This drastically reduces CPU/GPU consumption.
     this.ol3d.enableAutoRenderLoop();
+  }
+
+  /**
+   * Constrain the camera so that it stays close to the bounding sphere of the map extent.
+   * Near the ground the allowed distance is shorter.
+   * @protected
+   */
+  limitCameraToBoundingSphere() {
+    const scene = this.ol3d.getCesiumScene();
+    limitCameraToBoundingSphere(scene.camera, this.boundingSphere_, this.limitCameraToBoundingSphereRatio);
   }
 
   /**
