@@ -1,6 +1,6 @@
 # Changelog
 
-# v 2.15 - 2023-07-21
+# v 2.15 - 2023-07-26
 
 * Changes
   * Add function to grab a screenshot from rendered Cesium globe (client side printing)

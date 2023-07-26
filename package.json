@@ -1,6 +1,6 @@
 {
   "name": "ol-cesium",
-  "version": "2.14.0",
+  "version": "2.15.0",
   "description": "OpenLayers Cesium integration library",
   "scripts": {
     "build-examples": "cross-env NODE_ENV=production TARGET=examples webpack --progress --bail",
