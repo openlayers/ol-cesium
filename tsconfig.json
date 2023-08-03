@@ -1,17 +1,18 @@
 {
     "compilerOptions": {
-      "target": "es6",
-      "lib": ["es2017", "dom"],
+      "target": "es2020",
+      "lib": ["es2020", "dom"],
       "allowJs": true,
       //"checkJs": true,
-      "noEmit": true,
       "baseUrl": "./",
       "skipLibCheck": true,
       "moduleResolution": "node",
       "noImplicitAny": true,
       "paths": {
         "ol/*": ["node_modules/ol/*"]
-      }
+      },
+      "declaration": true,
+      "declarationDir": "./types"
     },
     "include": [
       "src/**/*.js",
