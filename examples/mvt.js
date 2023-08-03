@@ -12,8 +12,8 @@ import View from 'ol/View.js';
 import MVT from 'ol/format/MVT.js';
 import VectorTileLayer from 'ol/layer/VectorTile.js';
 import VectorTileSource from 'ol/source/VectorTile.js';
-import Stroke from 'ol/style/Stroke';
-import Style from 'ol/style/Style';
+import Stroke from 'ol/style/Stroke.js';
+import Style from 'ol/style/Style.js';
 import OSMSource from 'ol/source/OSM.js';
 import {OLCS_ION_TOKEN} from './_common.js';
 

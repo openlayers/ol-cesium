@@ -4,7 +4,7 @@
 import Map from 'ol/Map';
 import {getUid, stableSort} from './util.js';
 import olcsAbstractSynchronizer from './AbstractSynchronizer';
-import {LayerWithParents, tileLayerToImageryLayer, updateCesiumLayerProperties} from './core';
+import {type LayerWithParents, tileLayerToImageryLayer, updateCesiumLayerProperties} from './core';
 import type {Scene, ImageryLayer, ImageryLayerCollection} from 'cesium';
 import type BaseLayer from 'ol/layer/Base';
 import type Projection from 'ol/proj/Projection';

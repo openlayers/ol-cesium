@@ -4,7 +4,7 @@
 import {linear as linearEasing} from 'ol/easing.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olLayerImage from 'ol/layer/Image.js';
-import {get as getProjection, ProjectionLike, transformExtent} from 'ol/proj.js';
+import {get as getProjection, type ProjectionLike, transformExtent} from 'ol/proj.js';
 import olSourceImageStatic from 'ol/source/ImageStatic.js';
 import olSourceImageWMS from 'ol/source/ImageWMS.js';
 import olSourceTileImage from 'ol/source/TileImage.js';
@@ -15,8 +15,8 @@ import olcsCoreOLImageryProvider from './core/OLImageryProvider.js';
 import {getSourceProjection} from './util.js';
 import MVTImageryProvider from './MVTImageryProvider.js';
 import VectorTileLayer from 'ol/layer/VectorTile.js';
-import {Extent, getCenter as getExtentCenter} from 'ol/extent';
-import BaseLayer from 'ol/layer/Base';
+import {type Extent, getCenter as getExtentCenter} from 'ol/extent.js';
+import BaseLayer from 'ol/layer/Base.js';
 import LayerGroup from 'ol/layer/Group.js';
 import type {
   BoundingSphere,
@@ -32,13 +32,16 @@ import type {
   Scene,
   SingleTileImageryProvider
 } from 'cesium';
-import Geometry from 'ol/geom/Geometry';
-import {Coordinate} from 'ol/coordinate';
-import Source, {Attribution} from 'ol/source/Source';
-import Map from 'ol/Map';
-import Projection from 'ol/proj/Projection';
-import {Color as OLColor} from 'ol/color'
-import View from 'ol/View';
+import Geometry from 'ol/geom/Geometry.js';
+import type {Coordinate} from 'ol/coordinate.js';
+import Source from 'ol/source/Source.js';
+// eslint-disable-next-line no-duplicate-imports
+import type {Attribution} from 'ol/source/Source.js';
+
+import Map from 'ol/Map.js';
+import Projection from 'ol/proj/Projection.js';
+import type {Color as OLColor} from 'ol/color.js';
+import View from 'ol/View.js';
 
 type CesiumUrlDefinition = {
     url: string,

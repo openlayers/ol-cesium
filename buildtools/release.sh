@@ -9,7 +9,8 @@ VERSION=ol-cesium-$TAG
 cp -R dist/ $VERSION && zip -r $VERSION.zip $VERSION; rm -rf $VERSION
 
 mkdir -p $BUILD
-cp -R src/olcs/* $BUILD 
+node_modules/.bin/tsc
+cp -R out/olcs/* $BUILD
 cp ./css/olcs.css $BUILD
 cp package.json $BUILD
 sed -i 's/ol-cesium/olcs/g' $BUILD/package.json

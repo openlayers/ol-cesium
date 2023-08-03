@@ -1,11 +1,14 @@
-const path = require('path');
-const fs = require('fs');
-const glob = require('fast-glob');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+import path from 'path';
+import fs from 'fs';
+import glob from 'fast-glob';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
+import { fileURLToPath } from 'url';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const plugins = [];
 const entry = {};
+
 
 const exampleFilenamePrefix = process.env.DEV_SERVER ? 'examples/' : '';
 
@@ -40,7 +43,7 @@ plugins.push(new CopyWebpackPlugin({
   ],
 }));
 
-module.exports = {
+export default Object.assign({
   entry,
   optimization: {
     splitChunks: {
@@ -49,12 +52,8 @@ module.exports = {
     }
   },
   plugins,
-};
-
-if (!process.env.DEV_SERVER) {
-  Object.assign(module.exports, {
-    output: {
-      path: path.resolve(__dirname, '../dist/examples/'),
-    },
-  });
-}
+}, !process.env.DEV_SERVER ? {
+  output: {
+    path: path.resolve(__dirname, '../dist/examples/'),
+  },
+} : {});

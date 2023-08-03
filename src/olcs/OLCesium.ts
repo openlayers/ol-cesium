@@ -4,17 +4,17 @@
 import olGeomPoint from 'ol/geom/Point.js';
 import {supportsImageRenderingPixelated, imageRenderingValue} from './util.js';
 import {ol4326CoordinateToCesiumCartesian} from './core';
-import {getTransform, TransformFunction} from 'ol/proj.js';
+import {getTransform, type TransformFunction} from 'ol/proj.js';
 import olcsAutoRenderLoop from './AutoRenderLoop.js';
 import olcsCamera from './Camera.js';
 import olcsRasterSynchronizer from './RasterSynchronizer';
 import olcsVectorSynchronizer from './VectorSynchronizer';
 import olcsOverlaySynchronizer from './OverlaySynchronizer.js';
-import Map from 'ol/Map'
-import Interaction from 'ol/interaction/Interaction';
-import {Group} from 'ol/layer';
-import Feature from 'ol/Feature';
-import View from 'ol/View';
+import Map from 'ol/Map.js';
+import Interaction from 'ol/interaction/Interaction.js';
+import {Group} from 'ol/layer.js';
+import Feature from 'ol/Feature.js';
+import View from 'ol/View.js';
 import type {
   BoundingSphere, ContextOptions,
   DataSourceCollection,

@@ -1,13 +1,16 @@
 {
     "compilerOptions": {
-      "target": "es2020",
-      "lib": ["es2020", "dom"],
+      "target": "ES2022",
+      "lib": ["es2023", "dom"],
       "allowJs": true,
       //"checkJs": true,
       "baseUrl": "./",
       "skipLibCheck": true,
-      "moduleResolution": "node",
+      "moduleResolution": "Node",
+      "verbatimModuleSyntax": true,
+      "outDir": "./out",
       "noImplicitAny": true,
+      "forceConsistentCasingInFileNames": true,
       "paths": {
         "ol/*": ["node_modules/ol/*"]
       },

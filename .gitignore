@@ -5,3 +5,5 @@
 /compilation-stats.json
 /*.zip
 *.swp
+/out
+/types

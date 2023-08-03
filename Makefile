@@ -66,7 +66,7 @@ cleanall:
 	mkdir -p $(dir $@)
 	touch $@
 
-.build/eslint.timestamp: $(SRC_JS_FILES) $(EXAMPLES_JS_FILES) $(WEBPACK_CONFIG_FILES) .build/node_modules.timestamp
+.build/eslint.timestamp: $(SRC_JS_FILES) $(EXAMPLES_JS_FILES) .build/node_modules.timestamp
 	TARGET=examples ./node_modules/.bin/eslint $(filter-out .build/node_modules.timestamp, $^)
 	touch $@
 

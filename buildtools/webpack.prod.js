@@ -1,6 +1,6 @@
-const TerserPlugin = require('terser-webpack-plugin');
+import TerserPlugin from 'terser-webpack-plugin';
 
-module.exports = {
+export default {
   mode: 'production',
   output: {
     filename: '[name].[chunkhash:20].js'

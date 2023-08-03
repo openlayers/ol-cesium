@@ -1,4 +1,5 @@
-const path = require('path');
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const babelPresets = [
   ['@babel/preset-env', {
@@ -55,6 +56,8 @@ const iconRule = {
   }
 };
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 const config = {
   context: path.resolve(__dirname, '../'),
   devtool: 'source-map',
@@ -89,6 +92,6 @@ const config = {
   }
 };
 
-module.exports = {
+export default {
   config,
 };

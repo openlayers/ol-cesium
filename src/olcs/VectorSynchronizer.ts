@@ -10,14 +10,14 @@ import olLayerVectorTile from 'ol/layer/VectorTile.js';
 import olcsAbstractSynchronizer from './AbstractSynchronizer';
 import olcsFeatureConverter from './FeatureConverter.js';
 import VectorLayerCounterpart, {
-  OlFeatureToCesiumContext,
-  PrimitiveCollectionCounterpart
+  type OlFeatureToCesiumContext,
+  type PrimitiveCollectionCounterpart
 } from './core/VectorLayerCounterpart';
-import type Map from 'ol/Map'
-import {LayerWithParents} from './core';
-import Feature from 'ol/Feature';
-import BaseLayer from 'ol/layer/Base';
-import {Billboard, Primitive, PrimitiveCollection, Scene} from 'cesium';
+import type Map from 'ol/Map.js';
+import {type LayerWithParents} from './core';
+import Feature from 'ol/Feature.js';
+import BaseLayer from 'ol/layer/Base.js';
+import {Primitive, PrimitiveCollection, Scene} from 'cesium';
 
 class VectorSynchronizer extends olcsAbstractSynchronizer<VectorLayerCounterpart> {
   protected converter: olcsFeatureConverter;
