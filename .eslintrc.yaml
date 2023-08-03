@@ -29,6 +29,12 @@
       }
     }]
   },
+  overrides: [{
+  "files": [ "examples/*.js" ],
+  "rules": {
+    "import/no-unresolved": 0
+  }
+}],
   globals: {
     webpack: false,
     Cesium: false
