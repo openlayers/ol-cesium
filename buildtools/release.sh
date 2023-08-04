@@ -2,12 +2,15 @@
 
 BUILD=.build/olcs_build
 
-make dist
 
 TAG=v`buildtools/get-version.sh version | cut -d. -f1-2`
 VERSION=ol-cesium-$TAG
+
+echo "# Preparing ol-cesium zip file"
+make dist
 cp -R dist/ $VERSION && zip -r $VERSION.zip $VERSION; rm -rf $VERSION
 
+echo "# Preparing olcs package"
 mkdir -p $BUILD
 node_modules/.bin/tsc
 cp -R out/olcs/* $BUILD
