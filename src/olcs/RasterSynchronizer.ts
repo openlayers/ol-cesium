@@ -86,7 +86,6 @@ class RasterSynchronizer extends olcsAbstractSynchronizer<ImageryLayer> {
           previousStyleFunction = currentStyleFunction;
           for (let i = 0; i < cesiumObjects.length; ++i) {
             const csObj = cesiumObjects[i];
-            console.log(csObj)
             // clear cache and set new style
             // @ts-ignore TS2341
             if (csObj._imageryCache && csObj.imageryProvider.cache_) {
