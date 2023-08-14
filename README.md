@@ -96,6 +96,8 @@ Going further
 
 See the [examples](https://openlayers.org/ol-cesium/examples/).
 
+Use properties to control specific aspects of OL-Cesium integration, see the [PROPERTIES.MD](https://github.com/openlayers/ol-cesium/blob/master/PROPERTIES.md).
+
 If you are new to Cesium, you should also check the [Cesium tutorials](https://cesiumjs.org/tutorials).
 
 

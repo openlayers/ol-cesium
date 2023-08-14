@@ -190,10 +190,6 @@ class FeatureConverter {
       });
       if (feature.get('olcs_shadows') || layer.get('olcs_shadows')) {
         primitive.shadows = 1;
-        if (!this.scene.shadowMap.enabled) {
-          this.scene.shadowMap.enabled = true;
-          this.scene.globe.enableLighting = true;
-        }
       }
     }
     this.setReferenceForPicking(layer, feature, primitive);

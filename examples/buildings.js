@@ -45,10 +45,21 @@ const map = new olMap({
     zoom: 2,
   }),
 });
+// Enable the property 'olcs_shadows' for the entire set of features 
+// Alternatively, you can enable 'olcs_shadows' for each feature individually   
 vector.set('olcs_shadows', true);
+
 
 const ol3d = new OLCesium({map, target: 'map3d'});
 ol3d.setEnabled(true);
+
+// Be aware that enabling the following properties can impact performance
+// Enable shadow map to allow Cesium to cast scene's shadows
+const scene = ol3d.getCesiumScene();
+scene.shadowMap.enabled = true;
+// Enable lighting the globe with the sun as a light source to have dynamic lighting conditions according to the position of the sun
+scene.globe.enableLighting = true;
+
 
 const vectorSource = vector.getSource();
 vectorSource.once('featuresloadend', () => {
