@@ -45,8 +45,8 @@ const map = new olMap({
     zoom: 2,
   }),
 });
-// Enable the property 'olcs_shadows' for the entire set of features 
-// Alternatively, you can enable 'olcs_shadows' for each feature individually   
+// Enable the property 'olcs_shadows' for the entire set of features
+// Alternatively, you can enable 'olcs_shadows' for each feature individually
 vector.set('olcs_shadows', true);
 
 
