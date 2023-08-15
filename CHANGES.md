@@ -5,6 +5,7 @@
 * Changes
   * Ensure published olcs package only contains javascript (no typescript)
   * Add computeDPIForPDF function to help creating pdfs with mapfish print
+  * Port to OL 7.5 and CesiumJS 1.108
 * Deprecation
   * computeRectangle and RectangleOutput should now be imported from printUtils
 
