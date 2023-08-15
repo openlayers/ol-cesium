@@ -88,13 +88,17 @@ class RasterSynchronizer extends olcsAbstractSynchronizer<ImageryLayer> {
             const csObj = cesiumObjects[i];
             // clear cache and set new style
             // @ts-ignore TS2341
-            if (csObj._imageryCache && csObj.imageryProvider.cache_) {
+            if (csObj._imageryCache) {
               // @ts-ignore TS2341
               csObj._imageryCache = {};
-              // @ts-ignore TS2341
-              csObj.imageryProvider.cache_ = {};
-              // @ts-ignore TS2341
-              csObj.imageryProvider.styleFunction_ = currentStyleFunction;
+            }
+
+            const ip = csObj.imageryProvider;
+            if (ip) {
+               // @ts-ignore TS2341
+               ip.tileCache?.clear();
+               // @ts-ignore TS2341
+               ip.styleFunction_ = currentStyleFunction;
             }
           }
           this.scene.requestRender();
