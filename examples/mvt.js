@@ -87,8 +87,9 @@ const ol2d = new olMap({
 const ol3d = new OLCesium({
   map: ol2d,
 });
-ol3d.getCesiumScene();
-ol3d.setEnabled(false);
+setTimeout(() => {
+  ol3d.setEnabled(true);
+});
 
 const EXTENT = [572215, 5684416, 1277662, 6145307];
 const padding = -50000;

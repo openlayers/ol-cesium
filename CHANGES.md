@@ -1,9 +1,14 @@
 # Changelog
 
-# v 2.15.2 - 2023-08-07
+# v 2.15.2 - 2023-08-15
 
 * Changes
   * Ensure published olcs package only contains javascript (no typescript)
+  * Add computeDPIForPDF function to help creating pdfs with mapfish print
+  * Port to OL 7.5 and CesiumJS 1.108
+  * Fix changing style of MVTImageryProvider
+* Deprecation
+  * computeRectangle and RectangleOutput should now be imported from printUtils
 
 # v 2.15 - 2023-07-26
 
