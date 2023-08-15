@@ -4,13 +4,13 @@
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
 import LayerGroup from 'ol/layer/Group.js';
 import {getUid, olcsListen} from './util.js';
-import Map from 'ol/Map'
+import Map from 'ol/Map.js';
 import type {Scene, ImageryLayer} from 'cesium';
-import View from 'ol/View';
-import Collection from 'ol/Collection';
-import BaseLayer from 'ol/layer/Base';
-import {EventsKey} from 'ol/events';
-import {LayerWithParents} from './core';
+import View from 'ol/View.js';
+import Collection from 'ol/Collection.js';
+import BaseLayer from 'ol/layer/Base.js';
+import type {EventsKey} from 'ol/events.js';
+import type {LayerWithParents} from './core.js';
 import VectorLayerCounterpart from './core/VectorLayerCounterpart';
 
 

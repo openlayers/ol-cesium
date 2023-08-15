@@ -1,8 +1,10 @@
-const path = require('path');
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const nodeEnv = process.env['NODE_ENV'] || 'development';
 const filename = nodeEnv === 'development' ? 'olcesium-debug.umd.js' : 'olcesium.umd.js';
-module.exports = {
+export default {
   entry: './src/index.library.js',
   output: {
     library: 'olcs',

@@ -4,7 +4,7 @@
 import Map from 'ol/Map';
 import {getUid, stableSort} from './util.js';
 import olcsAbstractSynchronizer from './AbstractSynchronizer';
-import {LayerWithParents, tileLayerToImageryLayer, updateCesiumLayerProperties} from './core';
+import {type LayerWithParents, tileLayerToImageryLayer, updateCesiumLayerProperties} from './core';
 import type {Scene, ImageryLayer, ImageryLayerCollection} from 'cesium';
 import type BaseLayer from 'ol/layer/Base';
 import type Projection from 'ol/proj/Projection';
@@ -86,7 +86,6 @@ class RasterSynchronizer extends olcsAbstractSynchronizer<ImageryLayer> {
           previousStyleFunction = currentStyleFunction;
           for (let i = 0; i < cesiumObjects.length; ++i) {
             const csObj = cesiumObjects[i];
-            console.log(csObj)
             // clear cache and set new style
             // @ts-ignore TS2341
             if (csObj._imageryCache && csObj.imageryProvider.cache_) {

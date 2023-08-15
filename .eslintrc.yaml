@@ -4,11 +4,6 @@
     'openlayers',
     '.eslintrc-es6.yaml'
   ],
-  settings: {
-    'import/resolver': {
-      'webpack': {}
-    }
-  },
   rules: {
     no-console: 0,
     comma-dangle: 0,
@@ -34,6 +29,12 @@
       }
     }]
   },
+  overrides: [{
+  "files": [ "examples/*.js" ],
+  "rules": {
+    "import/no-unresolved": 0
+  }
+}],
   globals: {
     webpack: false,
     Cesium: false

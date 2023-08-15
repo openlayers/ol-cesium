@@ -1,5 +1,10 @@
 # Changelog
 
+# v 2.15.2 - 2023-08-07
+
+* Changes
+  * Ensure published olcs package only contains javascript (no typescript)
+
 # v 2.15 - 2023-07-26
 
 * Changes
