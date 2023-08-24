@@ -41,6 +41,7 @@ ol3d.setEnabled(true);
 
 
 document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
+document.getElementById('printScale').addEventListener('change', evt => scaleGlobe(Number.parseFloat(evt.target.value)));
 
 function scalingOptions() {
   const printValue = document.querySelector('#printValue').value;
@@ -55,12 +56,30 @@ function scalingOptions() {
 }
 autoDrawMask(scene, () => scalingOptions().scaling);
 
+function scaleGlobe(value) {
+  /**
+   * @type {HTMLCanvasElement}
+   */
+  const canvas = scene.canvas;
+  const currentScale = canvas.width / canvas.clientWidth;
+  if (Math.abs(currentScale - value) < 0.01) {
+    return;
+  }
+  canvas.width = canvas.clientWidth * value;
+  canvas.height = canvas.clientHeight * value;
+}
 
 window['takeScreenshot'] = async function() {
   const r = scalingOptions();
   console.log(r);
   const value = await takeScreenshot(scene, r);
   const img = new Image();
+  /**
+   * @type {HTMLCanvasElement}
+   */
+  const canvas = scene.canvas;
   img.src = value;
+  img.width = r.width / (canvas.width / canvas.clientWidth);
+  img.height = r.height / (canvas.height / canvas.clientHeight);
   document.body.append(img);
 };
