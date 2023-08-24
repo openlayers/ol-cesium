@@ -7,6 +7,7 @@
   * Add computeDPIForPDF function to help creating pdfs with mapfish print
   * Port to OL 7.5 and CesiumJS 1.108
   * Fix changing style of MVTImageryProvider
+  * Fix panning and pinch movements
 * Deprecation
   * computeRectangle and RectangleOutput should now be imported from printUtils
 
