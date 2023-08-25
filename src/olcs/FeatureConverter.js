@@ -177,7 +177,7 @@ class FeatureConverter {
       });
     } else {
       primitive.appearance = new Cesium.MaterialAppearance({
-        options,
+        ...options,
         material: new Cesium.Material({
           translucent: color.alpha !== 1,
           fabric: {
