@@ -13,5 +13,5 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Make dist
-        run: make dist
+      - name: Pseudo release
+        run: buildtools/release.sh
