@@ -1,14 +1,14 @@
 /**
  * @module olcs.RasterSynchronizer
  */
-import Map from 'ol/Map';
+import Map from 'ol/Map.js';
 import {getUid, stableSort} from './util.js';
 import olcsAbstractSynchronizer from './AbstractSynchronizer';
 import {type LayerWithParents, tileLayerToImageryLayer, updateCesiumLayerProperties} from './core';
 import type {Scene, ImageryLayer, ImageryLayerCollection} from 'cesium';
-import type BaseLayer from 'ol/layer/Base';
-import type Projection from 'ol/proj/Projection';
-import BaseVectorLayer from 'ol/layer/BaseVector';
+import type BaseLayer from 'ol/layer/Base.js';
+import type Projection from 'ol/proj/Projection.js';
+import BaseVectorLayer from 'ol/layer/BaseVector.js';
 import LayerGroup from 'ol/layer/Group.js';
 
 class RasterSynchronizer extends olcsAbstractSynchronizer<ImageryLayer> {

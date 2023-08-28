@@ -18,6 +18,7 @@ cp ./css/olcs.css $BUILD
 cp package.json $BUILD
 sed -i 's/ol-cesium/olcs/g' $BUILD/package.json
 sed -i '/"main"/d' $BUILD/package.json
+node buildtools/fix_paths.js $BUILD
 
 echo
 ls $BUILD

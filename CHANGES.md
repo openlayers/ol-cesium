@@ -1,6 +1,11 @@
 # Changelog
 
-# v 2.15.2 - 2023-08-15
+# v 2.15.2 - 2023-08-28
+
+* Changes
+  * Rewrite .ts and empty extensions to .js in olcs package
+
+# v 2.15.1 - 2023-08-24
 
 * Changes
   * Ensure published olcs package only contains javascript (no typescript)
