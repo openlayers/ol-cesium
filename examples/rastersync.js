@@ -2,7 +2,7 @@
  * @module examples.rastersync
  */
 import olSourceTileWMS from 'ol/source/TileWMS.js';
-import olSourceStamen from 'ol/source/Stamen.js';
+import StadiaMaps from 'ol/source/StadiaMaps.js';
 import OLCesium from 'olcs/OLCesium.ts';
 import olLayerGroup from 'ol/layer/Group.js';
 import olMap from 'ol/Map.js';
@@ -47,9 +47,9 @@ ol3d.setEnabled(true);
 
 const addStamen = function() { // eslint-disable-line no-unused-vars
   ol2d.addLayer(new olLayerTile({
-    source: new olSourceStamen({
+    source: new StadiaMaps({
       opacity: 0.7,
-      layer: 'watercolor'
+      layer: 'stamen_watercolor'
     })
   }));
 };

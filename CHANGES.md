@@ -1,5 +1,11 @@
 # Changelog
 
+
+# v 2.16 - 2023-09-03
+
+* Changes
+  * Port to OpenLayers 8
+
 # v 2.15.2 - 2023-08-28
 
 * Changes
