@@ -5,6 +5,7 @@
 
 * Changes
   * Port to OpenLayers 8
+  * Port to Cesium 1.109
 
 # v 2.15.2 - 2023-08-28
 
