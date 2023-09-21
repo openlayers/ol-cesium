@@ -139,7 +139,7 @@ class OLCesium {
      */
     this.to4326Transform_ = getTransform(this.map_.getView().getProjection(), 'EPSG:4326');
 
-    const fillArea = 'position:absolute;top:0;left:0;width:100%;height:100%;touch-action:none';
+    const fillArea = 'position:absolute;top:0;left:0;width:100%;height:100%;touch-action:none;';
     this.container_ = document.createElement('DIV');
     const containerAttribute = document.createAttribute('style');
     containerAttribute.value = `${fillArea}visibility:hidden;`;
