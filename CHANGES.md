@@ -1,5 +1,11 @@
 # Changelog
 
+# v 2.17 - 
+
+* Changed
+  * Port to OpenLayers 8.1
+  * Port to Cesium 1.110
+
 
 # v 2.16 - 2023-09-03
 
