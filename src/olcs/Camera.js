@@ -446,7 +446,7 @@ class Camera {
     const old = this.lastCameraViewMatrix_;
     const current = this.cam_.viewMatrix;
 
-    if (!old || !Cesium.Matrix4.equalsEpsilon(old, current, 1e-5)) {
+    if (!old || !Cesium.Matrix4.equalsEpsilon(old, current, 1e-7)) {
       this.lastCameraViewMatrix_ = current.clone();
       if (opt_dontSync !== true) {
         this.updateView();
