@@ -5,6 +5,7 @@
 * Changed
   * Port to OpenLayers 8.1
   * Port to Cesium 1.110
+  * Increased camera synchronization precision
 
 
 # v 2.16 - 2023-09-03
