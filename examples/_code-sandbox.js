@@ -80,6 +80,10 @@ function initCodeSandboxButton(options) {
           }
         },
       },
+      'data/icon.png': {
+        "isBinary": true,
+        content: "https://openlayers.org/ol-cesium/examples/data/icon.png"
+      },
       'index.js': {
         content: indexJsContent,
       },
