@@ -11,7 +11,9 @@ export async function initCodeSandbox(indexJsPath, ...filesPathes) {
   const response = await fetch(indexJsPath);
   const txtData = await response.text();
   let indexJsContent = txtData.split('//##REMOVE##')[0];
-
+  
+  indexJsContent = indexJsContent.replace('olcs/core.ts', 'olcs/core.js');
+  indexJsContent = indexJsContent.replace('import OLCesium from \'olcs/OLCesium.ts\';', 'import OLCesium from \'olcs/OLCesium.js\';');
   indexJsContent = indexJsContent.replace('import {OLCS_ION_TOKEN} from \'./_common.js\';', '');
   indexJsContent = indexJsContent.replace('OLCS_ION_TOKEN', `'${OLCS_ION_TOKEN}'`);
 
@@ -50,31 +52,31 @@ function initCodeSandboxButton(options) {
   <title>Ol-Cesium example</title>
   <meta charset="UTF-8" />
   <link rel="stylesheet" href="node_modules/ol/ol.css">  
-  <script src="https://cesium.com/downloads/cesiumjs/releases/1.104/Build/Cesium/Cesium.js"></script>
+  <script type="text/javascript" src="node_modules/cesium/Build/Cesium/Cesium.js"></script>
   </head>
   <body>
   ${indexHtmlContent}
-  <script src="/index.js"></script>
   </body>
+  <script type="module" src="/index.js"></script>
 </html>`;
   const parameters = {
-    template: 'parcel',
     files: {
       'package.json': {
         content: {
-          'main': 'index.html',
+          'source': 'index.html',
           'scripts': {
-            'start': 'parcel index.html --open',
-            'build': 'parcel build index.html'
+            "start": "vite",
+            "build": "vite build"
           },
-          'devDependencies': {
-            '@babel/core': '7.2.0',
-            'parcel-bundler': '^1.6.1',
+          "devDependencies": {            
+            "vite": "^3.2.3",
+            "typescript": "latest"
           },
-          'dependencies': {
-            'ol': 'latest',
-            'olcs': '^2.13.1',
-            'proj4': '2.9.0',
+          "dependencies": {
+            "olcs": "^2.15.2",
+            "proj4": "2.9.0",
+            "cesium": "1.110",
+            "ol": "8.1.0"
           }
         },
       },
