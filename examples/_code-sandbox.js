@@ -83,6 +83,10 @@ function initCodeSandboxButton(options) {
         "isBinary": true,
         content: "https://openlayers.org/ol-cesium/examples/data/geojson/countries.geojson"
       },
+      'data/geojson/buildings.geojson': {
+        "isBinary": true,
+        content: "https://openlayers.org/ol-cesium/examples/data/geojson/buildings.geojson"
+      },
       'data/icon.png': {
         "isBinary": true,
         content: "https://openlayers.org/ol-cesium/examples/data/icon.png"

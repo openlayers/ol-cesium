@@ -1,18 +1,32 @@
-<?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="robots" content="index, all" />
-    <title>olcesium buildings example</title>
+    <title>Ol-Cesium | Buildings example</title>
     <link rel="stylesheet" href="../node_modules/ol/ol.css" type="text/css"></link>
   </head>
+
   <body>
-    <div id="map2d" style="width:600px;height:400px;float:left;"></div>
-    <div id="map3d" style="width:600px;height:400px;float:left;position:relative;"></div>
-    <div>A building may be highlighted by clicking it on the OpenLayers map.
-      <br/>It gets automatically selected in Cesium.
-      <br/>If you see flickering in Cesium, please check your graphic card drivers.</div>
-      <script src="./inject_ol_cesium.js"></script>
-      <script type="module" src="./buildings.js"></script>  </body>
+    <div style="text-align: right;">
+      <button id="sandbox-button"><i class="fab fa-codepen fa-lg"></i> Edit in sandbox</button>
+      <form method="POST" id="sandbox-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
+        <input id="sandbox-params" type="hidden" name="parameters">
+      </form>
+    </div>
+
+    <div id="example-html-source">
+      <div class="clear-map-sandbox" id="map2d" style="width:600px;height:400px;float:left;"></div>
+      <div class="clear-map-sandbox" id="mapCesium" style="width:600px;height:400px;float:left;position:relative;"></div>
+      <div>
+        A building may be highlighted by clicking it on the OpenLayers map.
+        <br/>It gets automatically selected in Cesium.
+        <br/>If you see flickering in Cesium, please check your graphic card drivers.
+      </div>
+    </div>
+    
+    <script src="./inject_ol_cesium.js"></script>
+    <script type="module" src="./buildings.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lz-string@1.4.4/libs/lz-string.min.js"></script>
+  </body>
 </html>
