@@ -12,8 +12,7 @@ export async function initCodeSandbox(indexJsPath, ...filesPathes) {
   const txtData = await response.text();
   let indexJsContent = txtData.split('//##REMOVE##')[0];
   
-  indexJsContent = indexJsContent.replace('olcs/core.ts', 'olcs/core.js');
-  indexJsContent = indexJsContent.replace('import OLCesium from \'olcs/OLCesium.ts\';', 'import OLCesium from \'olcs/OLCesium.js\';');
+  indexJsContent = indexJsContent.replaceAll(/(olcs\/.*?).ts('?;?)/ig, '$1.js$2');
   indexJsContent = indexJsContent.replace('import {OLCS_ION_TOKEN} from \'./_common.js\';', '');
   indexJsContent = indexJsContent.replace('OLCS_ION_TOKEN', `'${OLCS_ION_TOKEN}'`);
 
