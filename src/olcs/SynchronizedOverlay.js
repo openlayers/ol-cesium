@@ -74,7 +74,6 @@ class SynchronizedOverlay extends olOverlay {
     this.listenerKeys_ = [];
     // synchronize our Overlay with the parent Overlay
     const setPropertyFromEvent = event => this.setPropertyFromEvent_(event);
-    this.listenerKeys_.push(this.parent_.on('change:position', setPropertyFromEvent));
     this.listenerKeys_.push(this.parent_.on('change:element', setPropertyFromEvent));
     this.listenerKeys_.push(this.parent_.on('change:offset', setPropertyFromEvent));
     this.listenerKeys_.push(this.parent_.on('change:position', setPropertyFromEvent));
