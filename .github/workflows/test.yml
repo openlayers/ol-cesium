@@ -13,5 +13,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
+      - name: Lint
+        run: npm run lint
       - name: Pseudo release
         run: buildtools/release.sh

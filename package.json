@@ -9,6 +9,7 @@
     "build-umd": "cross-env NODE_ENV=production TARGET=umd webpack --progress --bail",
     "start": "cross-env DEV_SERVER=1 NODE_ENV=development TARGET=examples webpack serve --port 3000 --progress --bail --static-directory .",
     "typecheck": "tsc --pretty",
+    "lint": "eslint src",
     "doc": "typedoc --name ol-cesium --excludeExternals --out dist/apidoc --entryPoints src/index.library.js --tsconfig ./tsconfig.json"
   },
   "main": "./dist/olcesium.js",
