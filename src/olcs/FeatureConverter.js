@@ -963,7 +963,7 @@ class FeatureConverter {
 
     const offsetX = style.getOffsetX();
     const offsetY = style.getOffsetY();
-    if (offsetX != 0 && offsetY != 0) {
+    if (offsetX != 0 || offsetY != 0) {
       const offset = new Cesium.Cartesian2(offsetX, offsetY);
       options.pixelOffset = offset;
     }
