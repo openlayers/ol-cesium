@@ -17,11 +17,9 @@ export type OlFeatureToCesiumContext = {
   primitives: PrimitiveCollection
 };
 
-export type PrimitiveCollectionCounterpart = PrimitiveCollection & {counterpart: VectorLayerCounterpart};
-
 
 class VectorLayerCounterpart {
-  olListenKeys: EventsKey[] = []
+  olListenKeys: EventsKey[] = [];
   context: OlFeatureToCesiumContext;
   private rootCollection_: PrimitiveCollection;
   /**
@@ -57,3 +55,4 @@ class VectorLayerCounterpart {
 
 
 export default VectorLayerCounterpart;
+export type PrimitiveCollectionCounterpart = PrimitiveCollection & {counterpart: VectorLayerCounterpart};

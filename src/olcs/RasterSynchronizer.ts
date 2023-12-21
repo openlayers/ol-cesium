@@ -95,10 +95,10 @@ class RasterSynchronizer extends olcsAbstractSynchronizer<ImageryLayer> {
 
             const ip = csObj.imageryProvider;
             if (ip) {
-               // @ts-ignore TS2341
-               ip.tileCache?.clear();
-               // @ts-ignore TS2341
-               ip.styleFunction_ = currentStyleFunction;
+              // @ts-ignore TS2341
+              ip.tileCache?.clear();
+              // @ts-ignore TS2341
+              ip.styleFunction_ = currentStyleFunction;
             }
           }
           this.scene.requestRender();

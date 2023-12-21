@@ -46,7 +46,7 @@ const BoundingSphereState: Record<string, number> = {
    * The BoundingSphere does not exist.
    */
   FAILED: 2,
-}
+};
 
 type SceneOptions = {
   canvas: HTMLCanvasElement;
@@ -130,7 +130,7 @@ class OLCesium {
   constructor(options: OLCesiumOptions) {
     this.map_ = options.map;
 
-    this.time_ = options.time || function () {
+    this.time_ = options.time || function() {
       return Cesium.JulianDate.now();
     };
 
@@ -176,10 +176,10 @@ class OLCesium {
       this.canvas_.style['imageRendering'] = imageRenderingValue();
     }
 
-    this.canvas_.oncontextmenu = function () {
+    this.canvas_.oncontextmenu = function() {
       return false;
     };
-    this.canvas_.onselectstart = function () {
+    this.canvas_.onselectstart = function() {
       return false;
     };
 
@@ -382,7 +382,7 @@ class OLCesium {
 
     this.canvas_.width = width;
     this.canvas_.height = height;
-    (<PerspectiveFrustum>this.scene_.camera.frustum).aspectRatio = width / height;
+    (<PerspectiveFrustum> this.scene_.camera.frustum).aspectRatio = width / height;
   }
 
   getCamera(): olcsCamera {
@@ -440,14 +440,14 @@ class OLCesium {
 
         this.map_.addInteraction = interaction => this.pausedInteractions_.push(interaction);
         this.map_.removeInteraction = (interaction) => {
-          let interactionRemoved = false
+          let interactionRemoved = false;
           this.pausedInteractions_ = this.pausedInteractions_.filter((i) => {
             const removed = i !== interaction;
-            if(!interactionRemoved) interactionRemoved = removed
-            return removed
-          })
+            if (!interactionRemoved) {interactionRemoved = removed;}
+            return removed;
+          });
           return interactionRemoved ? interaction : undefined;
-        }
+        };
 
         const rootGroup = this.map_.getLayerGroup();
         if (rootGroup.getVisible()) {
