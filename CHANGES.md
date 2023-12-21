@@ -1,12 +1,11 @@
 # Changelog
 
-# v 2.17 - 
+# v 2.16.1 - 2023-12-21
 
 * Changed
-  * Port to OpenLayers 8.1
-  * Port to Cesium 1.110
+  * Port to OpenLayers 8.2
+  * Port to Cesium 1.112
   * Increased camera synchronization precision
-
 
 # v 2.16 - 2023-09-03
 
