@@ -28,7 +28,7 @@ abstract class AbstractSynchronizer<T extends ImageryLayer | VectorLayerCounterp
   /**
    * Map of listen keys for OpenLayers layer layers ids (from getUid).
    */
-  protected  olLayerListenKeys: Record<string, Array<EventsKey>> = {};
+  protected olLayerListenKeys: Record<string, Array<EventsKey>> = {};
   /**
    * Map of listen keys for OpenLayers layer groups ids (from getUid).
    */

@@ -403,7 +403,7 @@ export function sourceToImageryProvider(
           source.getImageExtent()[2],
           source.getImageExtent()[3],
           new Cesium.Rectangle()
-      )
+      );
       provider = new Cesium.SingleTileImageryProvider({
         url: source.getUrl(),
         rectangle
@@ -456,7 +456,7 @@ export function sourceToImageryProvider(
  * Creates Cesium.ImageryLayer best corresponding to the given ol.layer.Layer.
  * Only supports raster layers and export function images
  */
-export function tileLayerToImageryLayer(olMap: Map, olLayer: BaseLayer, viewProj: Projection): ImageryLayer | null  {
+export function tileLayerToImageryLayer(olMap: Map, olLayer: BaseLayer, viewProj: Projection): ImageryLayer | null {
 
   if (!(olLayer instanceof olLayerTile) && !(olLayer instanceof olLayerImage) &&
   !(olLayer instanceof VectorTileLayer)) {
@@ -784,7 +784,7 @@ export function calcResolutionForDistance(distance: number, latitude: number, sc
  */
 export function limitCameraToBoundingSphere(camera: Camera, boundingSphere: BoundingSphere, ratio: (height: number) => number): () => void {
   let blockLimiter = false;
-  return function () {
+  return function() {
     if (!blockLimiter) {
       const position = camera.position;
       const carto = Cesium.Cartographic.fromCartesian(position);

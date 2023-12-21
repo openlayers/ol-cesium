@@ -21,7 +21,7 @@ import {Primitive, PrimitiveCollection, Scene} from 'cesium';
 
 class VectorSynchronizer extends olcsAbstractSynchronizer<VectorLayerCounterpart> {
   protected converter: olcsFeatureConverter;
-  private csAllPrimitives_: PrimitiveCollection
+  private csAllPrimitives_: PrimitiveCollection;
   /**
    * Unidirectionally synchronize OpenLayers vector layers to Cesium.
    */
@@ -36,7 +36,7 @@ class VectorSynchronizer extends olcsAbstractSynchronizer<VectorLayerCounterpart
 
   addCesiumObject(counterpart: VectorLayerCounterpart) {
     console.assert(counterpart);
-    const collection = <PrimitiveCollectionCounterpart>counterpart.getRootPrimitive()
+    const collection = <PrimitiveCollectionCounterpart>counterpart.getRootPrimitive();
     collection.counterpart = counterpart;
     this.csAllPrimitives_.add(counterpart.getRootPrimitive());
   }
