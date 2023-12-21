@@ -6,6 +6,10 @@
     "automerge": true
   },
   "packageRules": [{
+    "matchPackagePrefixes": ["ol", "cesium"],
+    "matchUpdateTypes": ["minor"],
+    "enabled": false
+  }, {
     "matchUpdateTypes": ["minor", "patch"],
     "groupName": "all patch and minor versions"
   }]
