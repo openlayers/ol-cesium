@@ -15,13 +15,14 @@ import olGeomPoint from 'ol/geom/Point.js';
 import olMap from 'ol/Map.js';
 import {OLCS_ION_TOKEN} from './_common.js';
 
+const Cesium = window.Cesium;
+Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 
 const point = new olGeomPoint([700000, 200000, 100000]);
 
 const iconFeature = new olFeature({
   geometry: point
 });
-
 
 const iconStyle = new olStyleStyle({
   image: new olStyleIcon(/** @type {olx.style.IconOptions} */ ({
@@ -35,7 +36,6 @@ const iconStyle = new olStyleStyle({
 
 iconFeature.setStyle(iconStyle);
 
-
 const vectorSource2 = new olSourceVector({
   features: [iconFeature]
 });
@@ -44,7 +44,6 @@ const vectorLayer2 = new olLayerVector({
   source: vectorSource2
 });
 
-
 const map = new olMap({
   layers: [
     new olLayerTile({
@@ -52,7 +51,7 @@ const map = new olMap({
     }),
     vectorLayer2
   ],
-  target: 'map2d',
+  target: 'mapCesium',
   controls: olControlDefaults({
     attributionOptions: {
       collapsible: false
@@ -64,9 +63,7 @@ const map = new olMap({
   })
 });
 
-
-Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
-const ol3d = new OLCesium({map/*, target: 'map3d'*/});
+const ol3d = new OLCesium({map});
 const scene = ol3d.getCesiumScene();
 Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
 ol3d.setEnabled(true);
@@ -86,3 +83,8 @@ setInterval(() => {
   ]);
   iconFeature.changed();
 }, 100);
+
+//##REMOVE## Keep this tag, split code here for code sandbox
+
+import {initCodeSandbox} from './_code-sandbox.js';
+initCodeSandbox('./tracking.js');

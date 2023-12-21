@@ -21,7 +21,7 @@ const ol2d = new olMap({
       collapsible: false
     }
   }),
-  target: 'map',
+  target: 'mapCesium',
   view: new olView({
     center: transform([25, 20], 'EPSG:4326', 'EPSG:3857'),
     zoom: 3
@@ -33,3 +33,8 @@ window['manager'] = new olcsContribManager(window.CESIUM_URL, {
   cameraExtentInRadians: [0.0897, 0.7923, 0.2003, 0.8417],
   cesiumIonDefaultAccessToken: OLCS_ION_TOKEN
 });
+
+//##REMOVE## Keep this tag, split code here for code sandbox
+
+import {initCodeSandbox} from './_code-sandbox.js';
+initCodeSandbox('./lazy.js');

@@ -13,6 +13,7 @@ import {takeScreenshot} from 'olcs/print/takeCesiumScreenshot.ts';
 import {autoDrawMask} from 'olcs/print/drawCesiumMask.ts';
 import {computeRectangle} from 'olcs/print/computeRectangle.ts';
 
+const Cesium = window.Cesium;
 Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 const ol2d = new olMap({
   layers: [
@@ -25,7 +26,7 @@ const ol2d = new olMap({
       collapsible: false
     }
   }),
-  target: 'map',
+  target: 'mapCesium',
   view: new olView({
     center: transform([25, 20], 'EPSG:4326', 'EPSG:3857'),
     zoom: 3
@@ -81,5 +82,10 @@ window['takeScreenshot'] = async function() {
   img.src = value;
   img.width = r.width / (canvas.width / canvas.clientWidth);
   img.height = r.height / (canvas.height / canvas.clientHeight);
-  document.body.append(img);
+  document.querySelector("#screenshots").append(img);
 };
+
+//##REMOVE## Keep this tag, split code here for code sandbox
+
+import {initCodeSandbox} from './_code-sandbox.js';
+initCodeSandbox('./print.js');

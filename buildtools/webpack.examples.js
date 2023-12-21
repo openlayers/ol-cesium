@@ -28,7 +28,7 @@ for (const filename of glob.sync('examples/*.html', {onlyFiles: true})) {
       new HtmlWebpackPlugin({
         template: `examples/${name}.html`,
         filename: `${exampleFilenamePrefix + name}.html`,
-        chunks: ['commons', name],
+        chunks: ['commons', '_code-sandbox', name],
       })
   );
 }

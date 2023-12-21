@@ -35,7 +35,7 @@ const map = new olMap({
 });
 
 
-const ol3d = new OLCesium({map, target: 'map3d'});
+const ol3d = new OLCesium({map, target: 'mapCesium'});
 ol3d.setEnabled(true);
 
 
@@ -62,3 +62,8 @@ map.on('click', (e) => {
     selectedFeature.setStyle(selectionStyle);
   }
 });
+
+//##REMOVE## Keep this tag, split code here for code sandbox
+
+import {initCodeSandbox} from './_code-sandbox.js';
+initCodeSandbox('./selection.js');
