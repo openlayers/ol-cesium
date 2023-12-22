@@ -2,10 +2,10 @@
  * @module olcs.OLCesium
  */
 import olGeomPoint from 'ol/geom/Point.js';
-import {supportsImageRenderingPixelated, imageRenderingValue} from './util.js';
+import {supportsImageRenderingPixelated, imageRenderingValue} from './util';
 import {ol4326CoordinateToCesiumCartesian} from './core';
 import {getTransform, type TransformFunction} from 'ol/proj.js';
-import olcsAutoRenderLoop from './AutoRenderLoop.js';
+import olcsAutoRenderLoop from './AutoRenderLoop';
 import olcsCamera from './Camera.js';
 import olcsRasterSynchronizer from './RasterSynchronizer';
 import olcsVectorSynchronizer from './VectorSynchronizer';
@@ -66,11 +66,11 @@ type SceneOptions = {
 
 type OLCesiumOptions = {
   map: Map,
-  time: () => JulianDate,
-  target: Element | string,
-  createSynchronizers: (map: Map, scene: Scene, dataSourceCollection: DataSourceCollection) => AbstractSynchronizer<ImageryLayer | VectorLayerCounterpart>[],
-  stopOpenLayersEventsPropagation: boolean,
-  sceneOptions: SceneOptions
+  time?: () => JulianDate,
+  target?: Element | string,
+  createSynchronizers?: (map: Map, scene: Scene, dataSourceCollection: DataSourceCollection) => AbstractSynchronizer<ImageryLayer | VectorLayerCounterpart>[],
+  stopOpenLayersEventsPropagation?: boolean,
+  sceneOptions?: SceneOptions
 }
 
 // FIXME: remove this when all the synchronizers are migrated to typescript.

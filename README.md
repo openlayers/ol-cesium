@@ -39,7 +39,7 @@ npm i --save olcs
 
 Then import the parts you need. Example:
 ```js
-import OLCesium from 'olcs/OLCesium.js';
+import OLCesium from 'olcs/OLCesium';
 const ol3d = new OLCesium({map: ol2dMap}); // ol2dMap is the ol.Map instance
 ol3d.setEnabled(true);
 ```

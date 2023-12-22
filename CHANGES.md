@@ -5,6 +5,9 @@
 * Breaking changes
   * Remove olcsListen wrapper. Use observable.on(type, listener) instead
   * Stop using stable sort (we assume it is implemented by all browsers now)
+  * Make LazyLoader.promise private
+  * Map is now a required parameter of olcs.Manager
+  * Remove unnecessary getOlView, getCesiumViewMatrix, getCameraExtentRectangle from ols.Manager
 * Changes
   * Migrate more files to typescript
 

@@ -4,7 +4,7 @@
 import olSourceVector, {VectorSourceEvent} from 'ol/source/Vector.js';
 import olLayerLayer from 'ol/layer/Layer.js';
 import olSourceCluster from 'ol/source/Cluster.js';
-import {getUid} from './util.js';
+import {getUid} from './util';
 import olLayerVector from 'ol/layer/Vector.js';
 import olLayerVectorTile from 'ol/layer/VectorTile.js';
 import olcsAbstractSynchronizer from './AbstractSynchronizer';

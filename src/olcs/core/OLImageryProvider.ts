@@ -1,9 +1,9 @@
 /**
  * @module olcs.core.OLImageryProvider
  */
-import {getSourceProjection} from '../util.js';
+import {getSourceProjection} from '../util';
 import {TileImage, Tile as TileSource} from 'ol/source.js';
-import {attributionsFunctionToCredits} from '../core.js';
+import {attributionsFunctionToCredits} from '../core.ts';
 import type {Map} from 'ol';
 import type {Projection} from 'ol/proj.js';
 import type {Credit, Event, ImageryLayerFeatureInfo, ImageryProvider, ImageryTypes, Proxy, Rectangle, Request, TileDiscardPolicy, TilingScheme} from 'cesium';
