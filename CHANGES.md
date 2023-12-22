@@ -10,6 +10,7 @@
   * Remove unnecessary getOlView, getCesiumViewMatrix, getCameraExtentRectangle from ols.Manager
 * Changes
   * Migrate more files to typescript
+  * Deprecate some unnecessary wrappers in Camera
 
 # v 2.16.1 - 2023-12-21
 

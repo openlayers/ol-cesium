@@ -1,6 +1,6 @@
 import olcsContribLazyLoader from './LazyLoader';
 import OLCesium from '../OLCesium';
-import {resetToNorthZenith, rotateAroundBottomCenter, computeSignedTiltAngleOnGlobe, pickBottomPoint, setHeadingUsingBottomCenter, limitCameraToBoundingSphere} from '../core.ts';
+import {resetToNorthZenith, rotateAroundBottomCenter, computeSignedTiltAngleOnGlobe, pickBottomPoint, setHeadingUsingBottomCenter, limitCameraToBoundingSphere} from '../core';
 import {toRadians} from '../math';
 import Observable from 'ol/Observable.js';
 import type OLMap from 'ol/Map.js';
