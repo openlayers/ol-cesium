@@ -6,7 +6,7 @@ import {supportsImageRenderingPixelated, imageRenderingValue} from './util';
 import {ol4326CoordinateToCesiumCartesian} from './core';
 import {getTransform, type TransformFunction} from 'ol/proj.js';
 import olcsAutoRenderLoop from './AutoRenderLoop';
-import olcsCamera from './Camera.js';
+import olcsCamera from './Camera';
 import olcsRasterSynchronizer from './RasterSynchronizer';
 import olcsVectorSynchronizer from './VectorSynchronizer';
 import olcsOverlaySynchronizer from './OverlaySynchronizer.js';
