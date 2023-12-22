@@ -3,7 +3,7 @@
  */
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
 import LayerGroup from 'ol/layer/Group.js';
-import {getUid, olcsListen} from './util.js';
+import {getUid} from './util.js';
 import Map from 'ol/Map.js';
 import type {Scene, ImageryLayer} from 'cesium';
 import View from 'ol/View.js';
@@ -108,7 +108,7 @@ abstract class AbstractSynchronizer<T extends ImageryLayer | VectorLayerCounterp
               this.orderLayers();
             }
           };
-          this.olLayerListenKeys[olLayerId].push(olcsListen(layerWithParents.layer, 'change', onLayerChange));
+          this.olLayerListenKeys[olLayerId].push(layerWithParents.layer.on('change', onLayerChange));
         }
       }
       // add Cesium layers
@@ -125,7 +125,7 @@ abstract class AbstractSynchronizer<T extends ImageryLayer | VectorLayerCounterp
    */
   private addCesiumObjects_(cesiumObjects: Array<T>, layerId: string, layer: BaseLayer) {
     this.layerMap[layerId] = cesiumObjects;
-    this.olLayerListenKeys[layerId].push(olcsListen(layer, 'change:zIndex', () => this.orderLayers()));
+    this.olLayerListenKeys[layerId].push(layer.on('change:zIndex', () => this.orderLayers()));
     cesiumObjects.forEach((cesiumObject) => {
       this.addCesiumObject(cesiumObject);
     });
