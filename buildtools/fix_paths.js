@@ -16,7 +16,7 @@ function handleFile(filePath) {
       let newline = undefined;
       if (line.endsWith(".ts';")) {
         newline = line.replace(".ts';", ".js';");
-      } else if (line.includes("from './")) {
+      } else if (line.includes("from './") || line.includes("from '../")) {
         newline = line.replace("';", ".js';");
       } else {
         console.error('XX', filePath, line);

@@ -3,13 +3,13 @@ import Style, {type StyleFunction} from 'ol/style/Style.js';
 import Stroke from 'ol/style/Stroke.js';
 import {toContext} from 'ol/render.js';
 import {get as getProjection} from 'ol/proj.js';
-import {VERSION as OL_VERSION} from 'ol/util';
+import {VERSION as OL_VERSION} from 'ol/util.js';
 import LRUCache from 'ol/structs/LRUCache.js';
 import {getForProjection as getTilegridForProjection} from 'ol/tilegrid.js';
 import {createFromTemplates as createTileUrlFunctions} from 'ol/tileurlfunction.js';
 import type {Credit, Event, ImageryLayerFeatureInfo, ImageryProvider, ImageryTypes, Proxy, Rectangle, Request, TileDiscardPolicy, TilingScheme} from 'cesium';
-import type {UrlFunction} from 'ol/Tile';
-import RenderFeature from 'ol/render/Feature';
+import type {UrlFunction} from 'ol/Tile.js';
+import RenderFeature from 'ol/render/Feature.js';
 import {createEmptyCanvas} from './core/OLImageryProvider';
 
 
