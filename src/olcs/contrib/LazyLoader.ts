@@ -2,29 +2,22 @@
  * @module olcs.contrib.LazyLoader
  */
 export default class LazyLoader {
+  private promise: Promise<void> | undefined;
+  private url_: string;
+
   /**
-   * @param {string} url
+   * @param url
    * @api
    */
-  constructor(url) {
-    /**
-     * @type {Promise<undefined>}
-     * @protected
-     */
-    this.promise;
-
-    /**
-     * @private
-     * @type {string}
-     */
+  constructor(url: string) {
     this.url_ = url;
   }
 
   /**
-   * @return {Promise<undefined>}
+   * Load Cesium by injecting a script tag.
    * @api
    */
-  load() {
+  load(): Promise<void> {
     if (!this.promise) {
       // not yet loading
       this.promise = new Promise((resolve, reject) => {

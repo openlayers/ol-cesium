@@ -3,7 +3,7 @@
  */
 import olOverlay from 'ol/Overlay.js';
 import {transform} from 'ol/proj.js';
-import {removeNode, removeChildren} from './util.ts';
+import {removeNode, removeChildren} from './util';
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
 
 

@@ -2,7 +2,7 @@
  * @module olcs.RasterSynchronizer
  */
 import Map from 'ol/Map.js';
-import {getUid} from './util.js';
+import {getUid} from './util';
 import olcsAbstractSynchronizer from './AbstractSynchronizer';
 import {type LayerWithParents, tileLayerToImageryLayer, updateCesiumLayerProperties} from './core';
 import type {Scene, ImageryLayer, ImageryLayerCollection} from 'cesium';

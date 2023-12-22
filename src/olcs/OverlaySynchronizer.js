@@ -2,7 +2,7 @@
  * @module olcs.OverlaySynchronizer
  */
 import olcsSynchronizedOverlay from './SynchronizedOverlay.js';
-import {getUid} from './util.ts';
+import {getUid} from './util';
 
 class OverlaySynchronizer {
   /**

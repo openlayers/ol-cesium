@@ -8,8 +8,8 @@ import * as core from './olcs/core.ts';
 import OLImageryProvider from './olcs/core/OLImageryProvider.ts';
 import VectorLayerCounterpart from './olcs/core/VectorLayerCounterpart.ts';
 
-import LazyLoader from './olcs/contrib/LazyLoader.js';
-import Manager from './olcs/contrib/Manager.js';
+import LazyLoader from './olcs/contrib/LazyLoader.ts';
+import Manager from './olcs/contrib/Manager.ts';
 
 
 export default OLCesium;

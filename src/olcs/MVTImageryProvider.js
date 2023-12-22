@@ -3,7 +3,7 @@ import Style from 'ol/style/Style.js';
 import Stroke from 'ol/style/Stroke.js';
 import {toContext} from 'ol/render.js';
 import {get as getProjection} from 'ol/proj.js';
-import {VERSION as OL_VERSION} from 'ol/util.js';
+import {VERSION as OL_VERSION} from 'ol/util';
 import LRUCache from 'ol/structs/LRUCache.js';
 import {getForProjection as getTilegridForProjection} from 'ol/tilegrid.js';
 import {createFromTemplates as createTileUrlFunctions} from 'ol/tileurlfunction.js';
