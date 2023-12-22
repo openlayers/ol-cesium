@@ -9,6 +9,13 @@ import type {Projection} from 'ol/proj.js';
 import type {Credit, Event, ImageryLayerFeatureInfo, ImageryProvider, ImageryTypes, Proxy, Rectangle, Request, TileDiscardPolicy, TilingScheme} from 'cesium';
 
 
+export function createEmptyCanvas(): HTMLCanvasElement {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1;
+  canvas.height = 1;
+  return canvas;
+}
+
 const olUseNewCoordinates = (function() {
   const tileSource = new TileSource({
     projection: 'EPSG:3857',
@@ -27,8 +34,8 @@ class OLImageryProvider implements ImageryProvider /* should not extend Cesium.I
   private fallbackProj_: Projection | undefined;
   private map_: Map;
   private shouldRequestNextLevel: boolean;
-  private emptyCanvas_: HTMLCanvasElement;
-  private emptyCanvasPromise_: Promise<HTMLCanvasElement>;
+  private emptyCanvas_: HTMLCanvasElement = createEmptyCanvas();
+  private emptyCanvasPromise_: Promise<HTMLCanvasElement> = Promise.resolve(this.emptyCanvas_);
   private tilingScheme_: TilingScheme;
   private ready_: boolean;
   private rectangle_: Rectangle;
@@ -60,7 +67,7 @@ class OLImageryProvider implements ImageryProvider /* should not extend Cesium.I
    * to the event, you will be notified of the error and can potentially recover from it.  Event listeners
    * are passed an instance of {@link TileProviderError}.
    */
-  readonly errorEvent: Event;
+  readonly errorEvent: Event = new Cesium.Event();
 
   /**
    * Gets the credit to display when this imagery provider is active.  Typically this is used to credit
@@ -191,9 +198,9 @@ class OLImageryProvider implements ImageryProvider /* should not extend Cesium.I
 
     this.projection_ = null;
 
-    this.fallbackProj_ = opt_fallbackProj || null;
-
     this.ready_ = false;
+
+    this.fallbackProj_ = opt_fallbackProj || null;
 
     // cesium v107+ don't wait for ready anymore so we put somehing here while it loads
     this.tilingScheme_ = new Cesium.WebMercatorTilingScheme();
@@ -215,13 +222,6 @@ class OLImageryProvider implements ImageryProvider /* should not extend Cesium.I
         this.proxy = new Cesium.DefaultProxy(proxy);
       }
     }
-
-    this.errorEvent = new Cesium.Event();
-
-    this.emptyCanvas_ = document.createElement('canvas');
-    this.emptyCanvas_.width = 1;
-    this.emptyCanvas_.height = 1;
-    this.emptyCanvasPromise_ = Promise.resolve(this.emptyCanvas_);
 
     this.source_.on('change', (e) => {
       this.handleSourceChanged_();
