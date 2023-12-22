@@ -3,7 +3,7 @@
  */
 
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
-import {toRadians, toDegrees} from './math.js';
+import {toRadians, toDegrees} from './math.ts';
 import {getTransform} from 'ol/proj.js';
 import {pickCenterPoint, calcDistanceForResolution, calcResolutionForDistance} from './core.ts';
 

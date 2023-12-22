@@ -5,7 +5,7 @@ import RasterSynchronizer from './olcs/RasterSynchronizer.ts';
 import VectorSynchronizer from './olcs/VectorSynchronizer.ts';
 
 import * as core from './olcs/core.ts';
-import OLImageryProvider from './olcs/core/OLImageryProvider.js';
+import OLImageryProvider from './olcs/core/OLImageryProvider.ts';
 import VectorLayerCounterpart from './olcs/core/VectorLayerCounterpart.ts';
 
 import LazyLoader from './olcs/contrib/LazyLoader.js';

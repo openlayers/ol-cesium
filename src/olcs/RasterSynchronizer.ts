@@ -2,7 +2,7 @@
  * @module olcs.RasterSynchronizer
  */
 import Map from 'ol/Map.js';
-import {getUid, stableSort} from './util.js';
+import {getUid} from './util.js';
 import olcsAbstractSynchronizer from './AbstractSynchronizer';
 import {type LayerWithParents, tileLayerToImageryLayer, updateCesiumLayerProperties} from './core';
 import type {Scene, ImageryLayer, ImageryLayerCollection} from 'cesium';
@@ -162,7 +162,9 @@ class RasterSynchronizer extends olcsAbstractSynchronizer<ImageryLayer> {
       }
     }
 
-    stableSort(layers, (layer1, layer2) =>
+    // We assume sort is stable (which has been in the spec since a long time already).
+    // See https://caniuse.com/mdn-javascript_builtins_array_sort_stable
+    layers.sort((layer1, layer2) =>
       zIndices[getUid(layer1)] - zIndices[getUid(layer2)]
     );
 

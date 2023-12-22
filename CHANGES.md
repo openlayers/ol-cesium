@@ -1,5 +1,13 @@
 # Changelog
 
+# v 2.17
+
+* Breaking changes
+  * Remove olcsListen wrapper. Use observable.on(type, listener) instead
+  * Stop using stable sort (we assume it is implemented by all browsers now)
+* Changes
+  * Migrate more files to typescript
+
 # v 2.16.1 - 2023-12-21
 
 * Changed

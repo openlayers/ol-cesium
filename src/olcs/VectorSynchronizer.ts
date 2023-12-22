@@ -4,7 +4,7 @@
 import olSourceVector, {VectorSourceEvent} from 'ol/source/Vector.js';
 import olLayerLayer from 'ol/layer/Layer.js';
 import olSourceCluster from 'ol/source/Cluster.js';
-import {olcsListen, getUid} from './util.js';
+import {getUid} from './util.js';
 import olLayerVector from 'ol/layer/Vector.js';
 import olLayerVectorTile from 'ol/layer/VectorTile.js';
 import olcsAbstractSynchronizer from './AbstractSynchronizer';
@@ -107,7 +107,7 @@ class VectorSynchronizer extends olcsAbstractSynchronizer<VectorLayerCounterpart
     const olListenKeys = counterpart.olListenKeys;
 
     [olLayerWithParents.layer].concat(olLayerWithParents.parents).forEach((olLayerItem) => {
-      olListenKeys.push(olcsListen(olLayerItem, 'change:visible', () => {
+      olListenKeys.push(olLayerItem.on('change:visible', () => {
         this.updateLayerVisibility(olLayerWithParents, csPrimitives);
       }));
     });
@@ -141,17 +141,17 @@ class VectorSynchronizer extends olcsAbstractSynchronizer<VectorLayerCounterpart
       }
     }).bind(this);
 
-    olListenKeys.push(olcsListen(source, 'addfeature', (e: VectorSourceEvent) => {
+    olListenKeys.push(source.on('addfeature', (e: VectorSourceEvent) => {
       console.assert(e.feature);
       onAddFeature(e.feature);
     }));
 
-    olListenKeys.push(olcsListen(source, 'removefeature', (e: VectorSourceEvent) => {
+    olListenKeys.push(source.on('removefeature', (e: VectorSourceEvent) => {
       console.assert(e.feature);
       onRemoveFeature(e.feature);
     }));
 
-    olListenKeys.push(olcsListen(source, 'changefeature', (e: VectorSourceEvent) => {
+    olListenKeys.push(source.on('changefeature', (e: VectorSourceEvent) => {
       const feature = e.feature;
       console.assert(feature);
       onRemoveFeature(feature);

@@ -4,7 +4,7 @@
 import olcsContribLazyLoader from '../contrib/LazyLoader.js';
 import OLCesium from '../OLCesium.ts';
 import {resetToNorthZenith, rotateAroundBottomCenter, computeSignedTiltAngleOnGlobe, pickBottomPoint, setHeadingUsingBottomCenter, limitCameraToBoundingSphere} from '../core.ts';
-import {toRadians} from '../math.js';
+import {toRadians} from '../math.ts';
 import olObservable from 'ol/Observable.js';
 
 
@@ -247,7 +247,7 @@ const Manager = class extends olObservable {
    * @param {number} elevation
    * @param {number} headingDeg Heading value in degrees.
    * @param {number} pitchDeg Pitch value in degrees.
-   * @returns {Promise<undefined>}
+   * @return {Promise<undefined>}
    */
   set3dWithView(lon, lat, elevation, headingDeg, pitchDeg) {
     return this.load().then((/** @const {!olcs.OLCesium} */ ol3d) => {
