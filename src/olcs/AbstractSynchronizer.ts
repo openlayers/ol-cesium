@@ -10,7 +10,7 @@ import View from 'ol/View.js';
 import Collection from 'ol/Collection.js';
 import BaseLayer from 'ol/layer/Base.js';
 import type {EventsKey} from 'ol/events.js';
-import type {LayerWithParents} from './core.ts';
+import type {LayerWithParents} from './core';
 import VectorLayerCounterpart from './core/VectorLayerCounterpart';
 
 

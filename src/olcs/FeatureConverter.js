@@ -10,7 +10,7 @@ import {boundingExtent, getCenter} from 'ol/extent.js';
 import olGeomSimpleGeometry from 'ol/geom/SimpleGeometry.js';
 import {convertColorToCesium, olGeometryCloneTo4326, ol4326CoordinateToCesiumCartesian, ol4326CoordinateArrayToCsCartesians} from './core.ts';
 import olcsCoreVectorLayerCounterpart from './core/VectorLayerCounterpart.ts';
-import {getUid, isGroundPolylinePrimitiveSupported, waitReady} from './util';
+import {getUid, isGroundPolylinePrimitiveSupported, waitReady} from './util.ts';
 
 /**
  * Cast to object.

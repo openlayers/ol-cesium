@@ -13,7 +13,7 @@ import olSourceVectorTile from 'ol/source/VectorTile.js';
 import {defaultImageLoadFunction} from 'ol/source/Image.js';
 import olcsCoreOLImageryProvider from './core/OLImageryProvider';
 import {getSourceProjection} from './util';
-import MVTImageryProvider from './MVTImageryProvider.js';
+import MVTImageryProvider from './MVTImageryProvider';
 import VectorTileLayer from 'ol/layer/VectorTile.js';
 import {type Extent, getCenter as getExtentCenter} from 'ol/extent.js';
 import BaseLayer from 'ol/layer/Base.js';
