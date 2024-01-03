@@ -28,7 +28,7 @@ const olUseNewCoordinates = (function() {
 })();
 
 
-class OLImageryProvider implements ImageryProvider /* should not extend Cesium.ImageryProvider */ {
+export default class OLImageryProvider implements ImageryProvider /* should not extend Cesium.ImageryProvider */ {
   private source_: TileImage;
   private projection_: Projection | undefined;
   private fallbackProj_: Projection | undefined;
@@ -306,6 +306,3 @@ class OLImageryProvider implements ImageryProvider /* should not extend Cesium.I
     }
   }
 }
-
-
-export default OLImageryProvider;

@@ -11,7 +11,7 @@ import type OLCesium from './OLCesium';
  * An alternative mechanism in Cesium is on-demand rendering.
  * This class makes use of this alternative method and add some additionnal render points.
  */
-class AutoRenderLoop {
+export default class AutoRenderLoop {
   ol3d: OLCesium;
   private scene_: Scene;
   private canvas_: HTMLCanvasElement;
@@ -76,6 +76,3 @@ class AutoRenderLoop {
     this.scene_.requestRender();
   }
 }
-
-
-export default AutoRenderLoop;

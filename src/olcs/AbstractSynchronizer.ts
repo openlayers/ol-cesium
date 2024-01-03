@@ -14,7 +14,7 @@ import type {LayerWithParents} from './core';
 import VectorLayerCounterpart from './core/VectorLayerCounterpart';
 
 
-abstract class AbstractSynchronizer<T extends ImageryLayer | VectorLayerCounterpart> {
+export default abstract class AbstractSynchronizer<T extends ImageryLayer | VectorLayerCounterpart> {
   protected map: Map;
   protected view: View;
   protected scene: Scene;
@@ -266,6 +266,3 @@ abstract class AbstractSynchronizer<T extends ImageryLayer | VectorLayerCounterp
 
   protected abstract createSingleLayerCounterparts(olLayerWithParents: LayerWithParents): Array<T>;
 }
-
-
-export default AbstractSynchronizer;

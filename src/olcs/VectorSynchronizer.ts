@@ -19,7 +19,7 @@ import Feature from 'ol/Feature.js';
 import BaseLayer from 'ol/layer/Base.js';
 import {PrimitiveCollection, Scene} from 'cesium';
 
-class VectorSynchronizer extends olcsAbstractSynchronizer<VectorLayerCounterpart> {
+export default class VectorSynchronizer extends olcsAbstractSynchronizer<VectorLayerCounterpart> {
   protected converter: olcsFeatureConverter;
   private csAllPrimitives_: PrimitiveCollection;
   /**
@@ -160,5 +160,3 @@ class VectorSynchronizer extends olcsAbstractSynchronizer<VectorLayerCounterpart
     return counterpart ? [counterpart] : null;
   }
 }
-
-export default VectorSynchronizer;

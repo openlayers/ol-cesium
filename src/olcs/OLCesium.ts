@@ -9,7 +9,7 @@ import olcsAutoRenderLoop from './AutoRenderLoop';
 import olcsCamera from './Camera';
 import olcsRasterSynchronizer from './RasterSynchronizer';
 import olcsVectorSynchronizer from './VectorSynchronizer';
-import olcsOverlaySynchronizer from './OverlaySynchronizer.js';
+import olcsOverlaySynchronizer from './OverlaySynchronizer';
 import Map from 'ol/Map.js';
 import Interaction from 'ol/interaction/Interaction.js';
 import {Group} from 'ol/layer.js';
@@ -90,7 +90,7 @@ type SynchronizerType = AbstractSynchronizer<ImageryLayer | VectorLayerCounterpa
  * @property {Cesium.SceneOptions} [sceneOptions] Allows the passing of property value to the
  *      `Cesium.Scene`.
  */
-class OLCesium {
+export default class OLCesium {
   private autoRenderLoop_: olcsAutoRenderLoop | null = null;
   private map_: Map;
   private time_: () => JulianDate;
@@ -644,5 +644,3 @@ class OLCesium {
     }
   }
 }
-
-export default OLCesium;
