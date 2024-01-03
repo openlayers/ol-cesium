@@ -81,14 +81,6 @@ export function removeChildren(node: Node) {
   }
 }
 
-/**
- * @param {Cesium.Scene} scene The scene.
- */
-export function isGroundPolylinePrimitiveSupported(scene: Scene): boolean {
-  const obj = Cesium.GroundPolylinePrimitive;
-  return obj && obj.isSupported(scene);
-}
-
 
 export function waitReady<Type>(object: Type): Promise<Type> {
   const o = object as any;
