@@ -11,7 +11,7 @@ import type Projection from 'ol/proj/Projection.js';
 import BaseVectorLayer from 'ol/layer/BaseVector.js';
 import LayerGroup from 'ol/layer/Group.js';
 
-class RasterSynchronizer extends olcsAbstractSynchronizer<ImageryLayer> {
+export default class RasterSynchronizer extends olcsAbstractSynchronizer<ImageryLayer> {
   private cesiumLayers_: ImageryLayerCollection;
   private ourLayers_: ImageryLayerCollection;
   /**
@@ -181,6 +181,3 @@ class RasterSynchronizer extends olcsAbstractSynchronizer<ImageryLayer> {
     this.cesiumLayers_.raiseToTop(counterpart);
   }
 }
-
-
-export default RasterSynchronizer;

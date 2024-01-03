@@ -64,24 +64,6 @@ export function getUid(obj: any): number {
   return obj.olcs_uid || (obj.olcs_uid = ++uidCounter_);
 }
 
-/**
- * @param node The node to remove.
- * @return The node that was removed or null.
- */
-export function removeNode(node: Node): Node {
-  return node && node.parentNode ? node.parentNode.removeChild(node) : null;
-}
-
-/**
- * @param {Node} node The node to remove the children from.
- */
-export function removeChildren(node: Node) {
-  while (node.lastChild) {
-    node.removeChild(node.lastChild);
-  }
-}
-
-
 export function waitReady<Type>(object: Type): Promise<Type> {
   const o = object as any;
   const p = o.readyPromise;
