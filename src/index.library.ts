@@ -1,30 +1,16 @@
 import OLCesium from './olcs/OLCesium';
-
-import AbstractSynchronizer from './olcs/AbstractSynchronizer';
-import RasterSynchronizer from './olcs/RasterSynchronizer';
-import VectorSynchronizer from './olcs/VectorSynchronizer';
-
-import * as core from './olcs/core';
-import OLImageryProvider from './olcs/core/OLImageryProvider';
-import VectorLayerCounterpart from './olcs/core/VectorLayerCounterpart';
-
-import LazyLoader from './olcs/contrib/LazyLoader';
-import Manager from './olcs/contrib/Manager';
-
-
 export default OLCesium;
 
-const olcs = window['olcs'] = {};
-olcs.OLCesium = OLCesium;
+export {default as AbstractSynchronizer} from './olcs/AbstractSynchronizer';
+export {default as RasterSynchronizer} from './olcs/RasterSynchronizer';
+export {default as VectorSynchronizer} from './olcs/VectorSynchronizer';
 
-olcs.AbstractSynchronizer = AbstractSynchronizer;
-olcs.RasterSynchronizer = RasterSynchronizer;
-olcs.VectorSynchronizer = VectorSynchronizer;
+export {default as OLImageryProvider} from './olcs/core/OLImageryProvider';
+export {default as VectorLayerCounterpart} from './olcs/core/VectorLayerCounterpart';
 
-olcs.core = core;
-olcs.core.OLImageryProvider = OLImageryProvider;
-olcs.core.VectorLayerCounterpart = VectorLayerCounterpart;
+export {default as LazyLoader} from './olcs/contrib/LazyLoader';
+export {default as Manager} from './olcs/contrib/Manager';
 
-olcs.contrib = {};
-olcs.contrib.LazyLoader = LazyLoader;
-olcs.contrib.Manager = Manager;
+
+export {default as FeatureConverter} from './olcs/FeatureConverter';
+export {default as OLCSCamera} from './olcs/Camera';
