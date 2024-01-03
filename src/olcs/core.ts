@@ -540,14 +540,14 @@ export function ol4326CoordinateArrayToCsCartesians(coordinates: Coordinate[]): 
  * The geometry will be cloned only when original projection is not EPSG:4326
  * and the properties will be shallow copied.
  */
-export function olGeometryCloneTo4326<T>(geometry: Geometry, projection: ProjectionLike): T | Geometry {
+export function olGeometryCloneTo4326<T extends Geometry>(geometry: T, projection: ProjectionLike): T {
   console.assert(projection);
 
   const proj4326 = getProjection('EPSG:4326');
   const proj = getProjection(projection);
   if (proj.getCode() !== proj4326.getCode()) {
     const properties = geometry.getProperties();
-    geometry = geometry.clone();
+    geometry = geometry.clone() as T;
     geometry.transform(proj, proj4326);
     geometry.setProperties(properties);
   }

@@ -8,6 +8,7 @@
   * Make LazyLoader.promise private
   * Map is now a required parameter of olcs.Manager
   * Remove unnecessary getOlView, getCesiumViewMatrix, getCameraExtentRectangle from ols.Manager
+  * Remove obsolete stacked corridor function (ground polylines are now supported in Cesium)
 * Changes
   * Migrate more files to typescript
   * Deprecate some unnecessary wrappers in Camera

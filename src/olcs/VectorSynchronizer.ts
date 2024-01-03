@@ -8,7 +8,7 @@ import {getUid} from './util';
 import olLayerVector from 'ol/layer/Vector.js';
 import olLayerVectorTile from 'ol/layer/VectorTile.js';
 import olcsAbstractSynchronizer from './AbstractSynchronizer';
-import olcsFeatureConverter from './FeatureConverter.js';
+import olcsFeatureConverter from './FeatureConverter';
 import VectorLayerCounterpart, {
   type OlFeatureToCesiumContext,
   type PrimitiveCollectionCounterpart
@@ -17,7 +17,7 @@ import type Map from 'ol/Map.js';
 import {type LayerWithParents} from './core';
 import Feature from 'ol/Feature.js';
 import BaseLayer from 'ol/layer/Base.js';
-import {Primitive, PrimitiveCollection, Scene} from 'cesium';
+import {PrimitiveCollection, Scene} from 'cesium';
 
 class VectorSynchronizer extends olcsAbstractSynchronizer<VectorLayerCounterpart> {
   protected converter: olcsFeatureConverter;
@@ -100,9 +100,8 @@ class VectorSynchronizer extends olcsAbstractSynchronizer<VectorLayerCounterpart
     console.assert(this.view);
 
     const view = this.view;
-    const featurePrimitiveMap: Record<number, Primitive> = {};
-    const counterpart: VectorLayerCounterpart = this.converter.olVectorLayerToCesium(olLayer, view,
-        featurePrimitiveMap);
+    const featurePrimitiveMap: Record<number, PrimitiveCollection> = {};
+    const counterpart: VectorLayerCounterpart = this.converter.olVectorLayerToCesium(olLayer, view, featurePrimitiveMap);
     const csPrimitives = counterpart.getRootPrimitive();
     const olListenKeys = counterpart.olListenKeys;
 
@@ -113,16 +112,16 @@ class VectorSynchronizer extends olcsAbstractSynchronizer<VectorLayerCounterpart
     });
     this.updateLayerVisibility(olLayerWithParents, csPrimitives);
 
-    const onAddFeature = (function(feature: Feature) {
+    const onAddFeature = (feature: Feature) => {
       const context = counterpart.context;
-      const prim: Primitive = this.converter.convert(olLayer, view, feature, context);
+      const prim: PrimitiveCollection = this.converter.convert(olLayer, view, feature, context);
       if (prim) {
         featurePrimitiveMap[getUid(feature)] = prim;
         csPrimitives.add(prim);
       }
-    }).bind(this);
+    };
 
-    const onRemoveFeature = (function(feature: Feature) {
+    const onRemoveFeature = (feature: Feature) => {
       const id = getUid(feature);
       const context: OlFeatureToCesiumContext = counterpart.context;
       const bbs = context.featureToCesiumMap[id];
@@ -139,7 +138,7 @@ class VectorSynchronizer extends olcsAbstractSynchronizer<VectorLayerCounterpart
       if (csPrimitive) {
         csPrimitives.remove(csPrimitive);
       }
-    }).bind(this);
+    };
 
     olListenKeys.push(source.on('addfeature', (e: VectorSourceEvent) => {
       console.assert(e.feature);
