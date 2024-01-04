@@ -1,6 +1,3 @@
-/**
- * @module olcs.OverlaySynchronizer
- */
 import type {Collection, Map as OLMap, Overlay} from 'ol';
 import SynchronizedOverlay from './SynchronizedOverlay';
 import {getUid} from './util';

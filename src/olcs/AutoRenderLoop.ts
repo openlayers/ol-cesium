@@ -1,7 +1,3 @@
-/**
- * @module olcs.AutoRenderLoop
- */
-
 import type {Scene} from 'cesium';
 import type OLCesium from './OLCesium';
 

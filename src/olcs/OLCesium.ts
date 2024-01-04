@@ -1,6 +1,3 @@
-/**
- * @module olcs.OLCesium
- */
 import olGeomPoint from 'ol/geom/Point.js';
 import {supportsImageRenderingPixelated, imageRenderingValue} from './util';
 import {ol4326CoordinateToCesiumCartesian} from './core';

@@ -1,6 +1,3 @@
-/**
- * @module olcs.core.VectorLayerCounterpart
- */
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
 import type Projection from 'ol/proj/Projection.js';
 import type {Billboard, BillboardCollection, Primitive, PrimitiveCollection, Scene} from 'cesium';

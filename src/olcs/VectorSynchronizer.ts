@@ -1,6 +1,3 @@
-/**
- * @module olcs.VectorSynchronizer
- */
 import olSourceVector, {VectorSourceEvent} from 'ol/source/Vector.js';
 import olLayerLayer from 'ol/layer/Layer.js';
 import olSourceCluster from 'ol/source/Cluster.js';

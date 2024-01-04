@@ -1,6 +1,3 @@
-/**
- * @module olcs.AbstractSynchronizer
- */
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
 import LayerGroup from 'ol/layer/Group.js';
 import {getUid} from './util';

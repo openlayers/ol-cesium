@@ -1,6 +1,3 @@
-/**
- * @module olcs.core.OLImageryProvider
- */
 import {getSourceProjection} from '../util';
 import {TileImage, Tile as TileSource} from 'ol/source.js';
 import {attributionsFunctionToCredits} from '../core';
@@ -65,7 +62,7 @@ export default class OLImageryProvider implements ImageryProvider /* should not 
   /**
    * Gets an event that is raised when the imagery provider encounters an asynchronous error.  By subscribing
    * to the event, you will be notified of the error and can potentially recover from it.  Event listeners
-   * are passed an instance of {@link TileProviderError}.
+   * are passed an instance of {@link Cesium.TileProviderError}.
    */
   readonly errorEvent: Event = new Cesium.Event();
 
@@ -189,7 +186,7 @@ export default class OLImageryProvider implements ImageryProvider /* should not 
   /**
    * Special class derived from Cesium.ImageryProvider
    * that is connected to the given ol.source.TileImage.
-   * @param map OL map
+   * @param olMap OL map
    * @param source Tile image source
    * @param [opt_fallbackProj] Projection to assume if source has no projection
    */

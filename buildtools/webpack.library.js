@@ -1,5 +1,5 @@
 import path from 'path';
-import { fileURLToPath } from 'url';
+import {fileURLToPath} from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const olRegExp = /^ol\/.+$/;
@@ -9,7 +9,7 @@ const extensionReplacerRegExp = new RegExp('\\.js$');
 const nodeEnv = process.env['NODE_ENV'] || 'development';
 const filename = nodeEnv === 'development' ? 'olcesium-debug.js' : 'olcesium.js';
 export default {
-  entry: './src/index.library.js',
+  entry: './src/index.library.ts',
   output: {
     library: 'olcs_unused_var',
     filename,

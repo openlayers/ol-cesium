@@ -1,6 +1,3 @@
-/**
- * @module olcs.RasterSynchronizer
- */
 import Map from 'ol/Map.js';
 import {getUid} from './util';
 import olcsAbstractSynchronizer from './AbstractSynchronizer';

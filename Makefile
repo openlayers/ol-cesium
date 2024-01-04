@@ -13,7 +13,7 @@ help:
 	@echo
 	@echo "Main targets:"
 	@echo
-	@echo "- dist                    Create a "distribution" for the library (dist/olcesium.js and dist/olcesium.umd.js)"
+	@echo "- dist                    Create a "distribution" for the library (dist/olcesium.js)"
 	@echo "- lint                    Check the code with the linter"
 	@echo "- serve                   Run a development web server for running the examples"
 	@echo "- clean                   Remove generated files"
@@ -74,7 +74,7 @@ CS_BUILD=node_modules/cesium/Build
 OL_CSS_DIR=node_modules/ol
 .build/dist-examples.timestamp: dist/examples/index.html $(EXAMPLES_FILES) $(WEBPACK_CONFIG_FILES) .build/node_modules.timestamp
 	npm run build-examples
-	cp -f examples/inject_ol_cesium.js examples/oldfashioned.html dist/examples/
+	cp -f examples/inject_ol_cesium.js dist/examples/
 	mkdir -p dist/$(OL_CSS_DIR); cp $(OL_CSS_DIR)/ol.css dist/$(OL_CSS_DIR)
 	mkdir -p dist/$(CS_BUILD); rm -rf dist/$(CS_BUILD)/* ; cp -Rf $(CS_BUILD)/Cesium* dist/$(CS_BUILD)/
 	touch $@
@@ -85,6 +85,4 @@ dist/examples/index.html: $(EXAMPLES_FILES)
 
 dist/olcesium.js: $(SRC_JS_FILES) $(WEBPACK_CONFIG_FILES) .build/node_modules.timestamp
 	mkdir -p $(dir $@)
-	npm run build-library-debug
 	npm run build-library
-	npm run build-umd

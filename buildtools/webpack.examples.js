@@ -1,9 +1,8 @@
 import path from 'path';
 import fs from 'fs';
-import glob from 'fast-glob';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
-import { fileURLToPath } from 'url';
+import {fileURLToPath} from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const plugins = [];
@@ -12,8 +11,9 @@ const entry = {};
 
 const exampleFilenamePrefix = process.env.DEV_SERVER ? 'examples/' : '';
 
-const splitter = /.*\/(.*)\.html/;
-for (const filename of glob.sync('examples/*.html', {onlyFiles: true})) {
+const splitter = /(.*)\.html/;
+const htmls = fs.readdirSync('./examples', {withFileTypes: true}).filter(item => !item.isDirectory()).map(item => item.name).filter(n => n.endsWith('.html'));
+for (const filename of htmls) {
   const matches = filename.match(splitter);
   const name = matches[1];
   const jsName = `./examples/${name}.js`;

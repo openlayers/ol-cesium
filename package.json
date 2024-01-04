@@ -1,20 +1,41 @@
 {
-  "name": "ol-cesium",
-  "version": "2.16.1",
-  "description": "OpenLayers Cesium integration library",
+  "name": "olcs",
+  "version": "2.17.0",
+  "description": "OpenLayers Cesium integration and plugin library",
   "scripts": {
-    "build-examples": "cross-env NODE_ENV=production TARGET=examples webpack --progress --bail",
-    "build-library": "cross-env NODE_ENV=production TARGET=library webpack --progress --bail",
-    "build-library-debug": "cross-env NODE_ENV=development TARGET=library webpack --progress --bail",
-    "build-umd": "cross-env NODE_ENV=production TARGET=umd webpack --progress --bail",
-    "start": "cross-env DEV_SERVER=1 NODE_ENV=development TARGET=examples webpack serve --port 3000 --progress --bail --static-directory .",
-    "typecheck": "tsc --pretty",
-    "lint": "eslint src",
-    "doc": "typedoc --name ol-cesium --excludeExternals --out dist/apidoc --entryPoints src/index.library.js --tsconfig ./tsconfig.json"
+    "build-examples": "cross-env TARGET=examples webpack --progress --bail",
+    "start": "cross-env DEV_SERVER=1 TARGET=examples webpack serve --port 3000 --progress --bail --static-directory .",
+    "prepare": "tsc --pretty && npm run doc",
+    "typecheck": "tsc --pretty --noEmit",
+    "lint": "eslint src buildtools examples",
+    "doc": "typedoc --name ol-cesium --excludeExternals --out apidoc --entryPoints src/index.library.ts --tsconfig ./tsconfig.json"
   },
-  "main": "./dist/olcesium.js",
-  "module": "./dist/olcesium.umd.js",
+  "source": "./src/index.library.ts",
   "type": "module",
+  "main": "./lib/index.library.js",
+  "exports": {
+    ".": "./lib/index.library.js",
+    "./src/*": "./lib/olcs/*.js",
+    "./ts/*": "./lib/olcs/*.ts",
+    "./*": "./lib/olcs/*.js"
+  },
+  "types": "lib/types.d.ts",
+  "directories": {
+    "doc": "apidoc/"
+  },
+  "homepage": "https://github.com/openlayers/ol-cesium/",
+  "keywords": [
+    "Cesium",
+    "OpenLayers",
+    "OL",
+    "Synchronization",
+    "Plugins"
+  ],
+  "files": [
+    "src/",
+    "lib/",
+    "apidoc/"
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/openlayers/ol-cesium.git"
@@ -23,6 +44,13 @@
   "bugs": {
     "url": "https://github.com/openlayers/ol-cesium/issues"
   },
+  "maintainers": [
+    {
+      "name": "Guillaume Beraudo",
+      "email": "guillaume.beraudo@camptocamp.com",
+      "url": "https://github.com/gberaudo"
+    }
+  ],
   "peerDependencies": {
     "cesium": ">= 1.62.0",
     "ol": ">= 6.0.1 || 7 || 8"

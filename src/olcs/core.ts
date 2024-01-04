@@ -1,6 +1,3 @@
-/**
- * @module olcs.core
- */
 import {linear as linearEasing} from 'ol/easing.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olLayerImage from 'ol/layer/Image.js';

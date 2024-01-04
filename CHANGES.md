@@ -9,6 +9,8 @@
   * Map is now a required parameter of olcs.Manager
   * Remove unnecessary getOlView, getCesiumViewMatrix, getCameraExtentRectangle from ols.Manager
   * Remove obsolete stacked corridor function (ground polylines are now supported in Cesium)
+  * Remove oldfashioned (window.olcs global) production build (use a bundler)
+  * Remove UMD build (use the ES6 build)
 * Changes
   * Migrate more files to typescript
   * Deprecate some unnecessary wrappers in Camera

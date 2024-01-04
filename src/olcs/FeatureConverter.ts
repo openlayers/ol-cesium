@@ -133,7 +133,7 @@ export default class FeatureConverter {
    * Basics primitive creation using a color attribute.
    * Note that Cesium has 'interior' and outline geometries.
    * @param layer
-   * @param OpenLayers feature.
+   * @param feature OpenLayers feature.
    * @param olGeometry OpenLayers geometry.
    * @param geometry
    * @param color

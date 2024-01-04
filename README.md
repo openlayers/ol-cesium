@@ -52,45 +52,6 @@ For this, simply add the Cesium script to your html:
 
 For Cesium integration with Webpack, see [ol-cesium-webpack-example](https://github.com/gberaudo/ol-cesium-webpack-example).
 
-### As an old-fashioned independent library (need update)
-
-- build the library in dist/olcs.js:
-```bash
-npm i --save olcs
-npm run build-library
-```
-
-- get the CSS and JS from the full build at https://openlayers.org/download/
-
-- use as follow:
-```js
-const ol3d = new olcs.OLCesium({map: ol2dMap}); // ol2dMap is the ol.Map instance
-ol3d.setEnabled(true);
-```
-
-For the remaining steps, see the [old fashioned example](https://openlayers.org/ol-cesium/examples/oldfashioned.html).
-Notably, you need the Cesium library.
-
-### As an UMD library (Angular, ...)
-```bash
-npm i --save ol-cesium
-```
-The UMD-specific build is located here: `node_modules/ol-cesium/dist/olcesium.umd.js`
-
-
-Then import the parts you need. Example:
-```js
-import OLCesium from 'ol-cesium';
-const ol3d = new OLCesium({map: ol2dMap}); // ol2dMap is the ol.Map instance
-ol3d.setEnabled(true);
-```
-
-In addition, you need to expose the Cesium library as `window.Cesium`.
-For this, simply add the Cesium script to your html:
-```html
-<script type="text/javascript" src="..your_path../Cesium.js"></script>
-```
-
 Going further
 -------------
 
