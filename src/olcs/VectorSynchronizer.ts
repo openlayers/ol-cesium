@@ -14,7 +14,7 @@ import type Map from 'ol/Map.js';
 import {type LayerWithParents} from './core';
 import Feature from 'ol/Feature.js';
 import BaseLayer from 'ol/layer/Base.js';
-import {PrimitiveCollection, Scene} from 'cesium';
+import type {PrimitiveCollection, Scene} from 'cesium';
 
 export default class VectorSynchronizer extends olcsAbstractSynchronizer<VectorLayerCounterpart> {
   protected converter: olcsFeatureConverter;

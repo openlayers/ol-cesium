@@ -1,7 +1,4 @@
-/**
- * @module examples.wmts
- */
-import OLCesium from 'olcs/OLCesium.ts';
+import OLCesium from 'olcs';
 
 import Map from 'ol/Map.js';
 import View from 'ol/View.js';

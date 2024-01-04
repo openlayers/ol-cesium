@@ -67,7 +67,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const config = {
   mode: 'development',
   context: path.resolve(__dirname, '../'),
-  devtool: 'source-map',
+  devtool: 'eval-source-map',
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, '../dist/')
@@ -83,12 +83,20 @@ const config = {
   plugins: [
   ],
   resolve: {
+    fullySpecified: false,
     modules: [
       // This fallback is useful when npm-linking OpenLayers
       '../node_modules', '../node_modules/ol/src'
     ],
-    // mainFields: ['module', 'jsnext:main', 'main'],
     alias: {
+      /* FIXME?
+      We articially map the olcs imports from the examples to the typescript source code
+      This has 2 advantages:
+      - workaround the requirement to have '.js' suffixes in newer node/webpack versions;
+      - have the examples update automatically when the source code change (otherwise we would need a tsc pass).
+      But also drawbacks:
+      - we are not testing the real package we publish
+*/
       'olcs': path.resolve(__dirname, '../src/olcs'),
     },
     fallback: {

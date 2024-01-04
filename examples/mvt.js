@@ -1,7 +1,4 @@
-/**
- * @module examples.mvt
- */
-import OLCesium from 'olcs/OLCesium.ts';
+import OLCesium from 'olcs';
 import olMap from 'ol/Map.js';
 import './_proj21781.js';
 import TileLayer from 'ol/layer/Tile.js';

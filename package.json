@@ -3,18 +3,18 @@
   "version": "2.17.0",
   "description": "OpenLayers Cesium integration and plugin library",
   "scripts": {
-    "build-examples": "cross-env TARGET=examples webpack --progress --bail",
+    "build-examples": "rm -rf dist; mkdir -p dist/examples; mkdir -p dist/node_modules/ol; mkdir -p dist/node_modules/cesium/Build/; cp examples/inject_ol_cesium.js dist/examples; cp node_modules/ol/ol.css dist/node_modules/ol/; cp -R node_modules/cesium/Build/CesiumUnminified node_modules/cesium/Build/Cesium dist/node_modules/cesium/Build/; cross-env TARGET=examples webpack --progress --bail",
     "start": "cross-env DEV_SERVER=1 TARGET=examples webpack serve --port 3000 --progress --bail --static-directory .",
     "prepare": "tsc --pretty && npm run doc",
     "typecheck": "tsc --pretty --noEmit",
     "lint": "eslint src buildtools examples",
-    "doc": "typedoc --name ol-cesium --excludeExternals --out apidoc --entryPoints src/index.library.ts --tsconfig ./tsconfig.json"
+    "doc": "typedoc --name ol-cesium --excludeExternals --out apidoc --entryPoints src/olcs.ts --tsconfig ./tsconfig.json"
   },
-  "source": "./src/index.library.ts",
+  "source": "./src/olcs.ts",
   "type": "module",
-  "main": "./lib/index.library.js",
+  "main": "./lib/olcs.js",
   "exports": {
-    ".": "./lib/index.library.js",
+    ".": "./lib/olcs.js",
     "./src/*": "./lib/olcs/*.js",
     "./ts/*": "./lib/olcs/*.ts",
     "./*": "./lib/olcs/*.js"

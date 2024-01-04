@@ -7,7 +7,7 @@ import olGeomSimpleGeometry from 'ol/geom/SimpleGeometry.js';
 import {convertColorToCesium, olGeometryCloneTo4326, ol4326CoordinateToCesiumCartesian, ol4326CoordinateArrayToCsCartesians} from './core';
 import VectorLayerCounterpart, {type OlFeatureToCesiumContext} from './core/VectorLayerCounterpart';
 import {getUid, waitReady} from './util';
-import {type CircleGeometry, type CircleOutlineGeometry, Primitive, type Billboard, type Label, type Matrix4, type Scene, Geometry as CSGeometry, Color as CSColor, GroundPrimitive, PrimitiveCollection, ImageMaterialProperty, BillboardCollection, Cartesian3, GroundPolylinePrimitive, PolygonHierarchy, HeightReference, Model, LabelCollection, Material} from 'cesium';
+import type {CircleGeometry, CircleOutlineGeometry, Primitive, Billboard, Label, Matrix4, Scene, Geometry as CSGeometry, Color as CSColor, GroundPrimitive, PrimitiveCollection, ImageMaterialProperty, BillboardCollection, Cartesian3, GroundPolylinePrimitive, PolygonHierarchy, HeightReference, Model, LabelCollection, Material} from 'cesium';
 import type VectorLayer from 'ol/layer/Vector.js';
 import type ImageLayer from 'ol/layer/Image.js';
 import type {Feature, View} from 'ol';
@@ -221,7 +221,7 @@ export default class FeatureConverter {
           }
         })
       });
-      if (primitive instanceof Primitive && (feature.get('olcs_shadows') || layer.get('olcs_shadows'))) {
+      if (primitive instanceof Cesium.Primitive && (feature.get('olcs_shadows') || layer.get('olcs_shadows'))) {
         primitive.shadows = 1;
       }
     }

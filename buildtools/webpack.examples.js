@@ -54,6 +54,6 @@ export default Object.assign({
   plugins,
 }, !process.env.DEV_SERVER ? {
   output: {
-    path: path.resolve(__dirname, '../dist/examples/'),
+    path: path.resolve(__dirname, '../dist/examples'),
   },
 } : {});
