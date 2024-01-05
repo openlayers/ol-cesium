@@ -8,6 +8,10 @@ Each month, a new release is published in accordance to https://github.com/openl
 - Check the Cesium CHANGES.md for API changes and update the Cesium externs
 - Update the version number in `package.json`
 - Compile from scratch and run all tests:
-  - `make dist serve`
-  - check examples both in development and hosted modes
-- Run buildtools/release.sh and follow instructions
+  - npm run lint
+  - npm run typecheck
+  - npm start; open http://localhost:3000/examples # test all examples (dev mode)
+  - npm run build-examples; python3 -m http.server --directory dist 12345; open http://localhost:12345/examples # test all examples (built mode)
+- Publish with:
+  - npm pack
+  - npm publish # this will publish package olcs (ol-cesium package is obsolete and not updated anymore)

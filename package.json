@@ -19,7 +19,7 @@
     "./ts/*": "./lib/olcs/*.ts",
     "./*": "./lib/olcs/*.js"
   },
-  "types": "lib/types.d.ts",
+  "types": "lib/types/olcs.d.ts",
   "directories": {
     "doc": "apidoc/"
   },
@@ -32,6 +32,8 @@
     "Plugins"
   ],
   "files": [
+    "PROPERTIES.md",
+    "css/",
     "src/",
     "lib/",
     "apidoc/"
