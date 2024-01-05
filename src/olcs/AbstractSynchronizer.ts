@@ -1,14 +1,14 @@
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
 import LayerGroup from 'ol/layer/Group.js';
 import {getUid} from './util';
-import Map from 'ol/Map.js';
+import type Map from 'ol/Map.js';
 import type {Scene, ImageryLayer} from 'cesium';
-import View from 'ol/View.js';
-import Collection from 'ol/Collection.js';
-import BaseLayer from 'ol/layer/Base.js';
+import type View from 'ol/View.js';
+import type Collection from 'ol/Collection.js';
+import type BaseLayer from 'ol/layer/Base.js';
 import type {EventsKey} from 'ol/events.js';
 import type {LayerWithParents} from './core';
-import VectorLayerCounterpart from './core/VectorLayerCounterpart';
+import type VectorLayerCounterpart from './core/VectorLayerCounterpart';
 
 
 export default abstract class AbstractSynchronizer<T extends ImageryLayer | VectorLayerCounterpart> {

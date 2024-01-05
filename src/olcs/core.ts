@@ -13,8 +13,8 @@ import {getSourceProjection} from './util';
 import MVTImageryProvider from './MVTImageryProvider';
 import VectorTileLayer from 'ol/layer/VectorTile.js';
 import {type Extent, getCenter as getExtentCenter} from 'ol/extent.js';
-import BaseLayer from 'ol/layer/Base.js';
-import LayerGroup from 'ol/layer/Group.js';
+import type BaseLayer from 'ol/layer/Base.js';
+import type LayerGroup from 'ol/layer/Group.js';
 import type {
   BoundingSphere,
   Camera,
@@ -29,16 +29,16 @@ import type {
   Scene,
   SingleTileImageryProvider
 } from 'cesium';
-import Geometry from 'ol/geom/Geometry.js';
+import type Geometry from 'ol/geom/Geometry.js';
 import type {Coordinate} from 'ol/coordinate.js';
-import Source from 'ol/source/Source.js';
+import type Source from 'ol/source/Source.js';
 // eslint-disable-next-line no-duplicate-imports
 import type {Attribution} from 'ol/source/Source.js';
 
-import Map from 'ol/Map.js';
-import Projection from 'ol/proj/Projection.js';
+import type Map from 'ol/Map.js';
+import type Projection from 'ol/proj/Projection.js';
 import type {Color as OLColor} from 'ol/color.js';
-import View from 'ol/View.js';
+import type View from 'ol/View.js';
 
 type CesiumUrlDefinition = {
     url: string,

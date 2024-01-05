@@ -1,5 +1,5 @@
 import OLStyleIcon from 'ol/style/Icon.js';
-import VectorSource, {VectorSourceEvent} from 'ol/source/Vector.js';
+import VectorSource, {type VectorSourceEvent} from 'ol/source/Vector.js';
 import OLClusterSource from 'ol/source/Cluster.js';
 import {circular as olCreateCircularPolygon} from 'ol/geom/Polygon.js';
 import {boundingExtent, getCenter} from 'ol/extent.js';
@@ -16,7 +16,7 @@ import {type default as Style, type StyleFunction} from 'ol/style/Style.js';
 import type {ColorLike as OLColorLike} from 'ol/colorlike.js';
 import type {Color as OLColor} from 'ol/color.js';
 import type {ProjectionLike} from 'ol/proj.js';
-import {MultiLineString, Geometry as OLGeometry, type Circle, type LineString, type Point, type Polygon, MultiPolygon, MultiPoint, GeometryCollection} from 'ol/geom.js';
+import {Geometry as OLGeometry, type MultiLineString, type MultiPolygon, type MultiPoint, type GeometryCollection, type Circle, type LineString, type Point, type Polygon} from 'ol/geom.js';
 import type ImageStyle from 'ol/style/Image.js';
 
 

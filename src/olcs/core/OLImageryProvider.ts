@@ -1,5 +1,5 @@
 import {getSourceProjection} from '../util';
-import {TileImage, Tile as TileSource} from 'ol/source.js';
+import {Tile as TileSource, type TileImage} from 'ol/source.js';
 import {attributionsFunctionToCredits} from '../core';
 import type {Map} from 'ol';
 import type {Projection} from 'ol/proj.js';

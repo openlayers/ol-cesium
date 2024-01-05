@@ -1,4 +1,4 @@
-import olSourceVector, {VectorSourceEvent} from 'ol/source/Vector.js';
+import olSourceVector, {type VectorSourceEvent} from 'ol/source/Vector.js';
 import olLayerLayer from 'ol/layer/Layer.js';
 import olSourceCluster from 'ol/source/Cluster.js';
 import {getUid} from './util';
@@ -6,14 +6,16 @@ import olLayerVector from 'ol/layer/Vector.js';
 import olLayerVectorTile from 'ol/layer/VectorTile.js';
 import olcsAbstractSynchronizer from './AbstractSynchronizer';
 import olcsFeatureConverter from './FeatureConverter';
-import VectorLayerCounterpart, {
+import type VectorLayerCounterpart from './core/VectorLayerCounterpart';
+// eslint-disable-next-line no-duplicate-imports
+import {
   type OlFeatureToCesiumContext,
   type PrimitiveCollectionCounterpart
 } from './core/VectorLayerCounterpart';
 import type Map from 'ol/Map.js';
 import {type LayerWithParents} from './core';
-import Feature from 'ol/Feature.js';
-import BaseLayer from 'ol/layer/Base.js';
+import type Feature from 'ol/Feature.js';
+import type BaseLayer from 'ol/layer/Base.js';
 import type {PrimitiveCollection, Scene} from 'cesium';
 
 export default class VectorSynchronizer extends olcsAbstractSynchronizer<VectorLayerCounterpart> {
