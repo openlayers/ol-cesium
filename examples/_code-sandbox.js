@@ -72,9 +72,9 @@ function initCodeSandboxButton(options) {
             "typescript": "latest"
           },
           "dependencies": {
-            "olcs": "^2.15.2",
+            "olcs": "2.15.2",
             "proj4": "2.9.0",
-            "cesium": "1.110",
+            "cesium": "1.108",
             "ol": "8.1.0"
           }
         },
