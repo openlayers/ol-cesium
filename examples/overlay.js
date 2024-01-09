@@ -8,7 +8,6 @@ import {defaults as olControlDefaults} from 'ol/control.js';
 import olOverlay from 'ol/Overlay.js';
 import {toStringHDMS} from 'ol/coordinate.js';
 import {OLCS_ION_TOKEN} from './_common.js';
-/* global $ */
 
 const source = new olSourceOSM();
 
@@ -32,7 +31,7 @@ const ol2d = new olMap({
 });
 const ol3d = new OLCesium({
   map: ol2d,
-  target: 'map3d'
+  target: 'mapCesium'
 });
 const scene = ol3d.getCesiumScene();
 Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
@@ -66,6 +65,8 @@ class OverlayHandler {
     clickForm.onchange = function(event) {
       const checked = $('input[name="click-action"]:checked').val();
       this.options.add = checked === 'add';
+
+      console.log("checked", checked)
     }.bind(this);
 
     const typeForm = document.getElementById('overlay-type-form');
@@ -170,3 +171,8 @@ class OverlayHandler {
 new OverlayHandler(ol2d, ol3d, scene);
 
 document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
+
+//##REMOVE## Keep this tag, split code here for code sandbox
+
+import {initCodeSandbox} from './_code-sandbox.js';
+initCodeSandbox('./overlay.js');
