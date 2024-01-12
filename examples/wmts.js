@@ -22,7 +22,7 @@ for (let z = 0; z < 14; ++z) {
   matrixIds[z] = z;
 }
 
-const map = new Map({
+const ol2d = new Map({
   layers: [
     new TileLayer({
       source: new OSM(),
@@ -49,14 +49,13 @@ const map = new Map({
       })
     })
   ],
-  target: 'map',
+  target: 'mapCesium',
   view: new View({
     center: [-11158582, 4813697],
     zoom: 4
   })
 });
 
-const ol2d = map;
 const ol3d = new OLCesium({
   map: ol2d,
 });
@@ -65,3 +64,8 @@ Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
 ol3d.setEnabled(true);
 
 document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
+
+//##REMOVE## Keep this tag, split code here for code sandbox
+
+import {initCodeSandbox} from './_code-sandbox.js';
+initCodeSandbox('./wmts.js');
