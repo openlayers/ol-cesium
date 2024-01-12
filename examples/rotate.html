@@ -1,20 +1,36 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="robots" content="index, all" />
-    <title>olcesium animated rotation example</title>
+    <title>Ol-Cesium | Animated rotation example</title>
     <link rel="stylesheet" href="../node_modules/ol/ol.css" type="text/css"></link>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" crossorigin="anonymous">
     <style>.cesium-credit-textContainer { display: inline-block; font-size: 50%; line-height: 100%;}</style>
   </head>
   <body>
-    <div id="map2d" style="width:600px;height:400px;float:left;"></div>
-    <div><input type="button" value="Reset to North" onclick="control.resetToNorthZenith(function() {console.log('end')})" /></div>
-    <div><input type="button" value="Tilt on globe" onclick="control.tiltOnGlobe(0.05)" /></div>
-    <div><input type="button" value="Rotate map" onclick="control.rotate(0.05)" /></div>
-    <div>Animated rotation a la Google Map.</div>
+    <div style="text-align: right;">
+      <button id="sandbox-button"><i class="fab fa-codepen fa-lg"></i> Edit in sandbox</button>
+      <form method="POST" id="sandbox-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
+        <input id="sandbox-params" type="hidden" name="parameters">
+      </form>
+    </div>
+    <div id="example-html-source">
+      <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+        <div class="clear-map-sandbox" id="mapCesium" style="width:600px;height:400px;float:left;"></div>
+        <div>
+          <div style="display: flex; flex-direction: column; gap: 5px;">
+            <div><input type="button" value="Reset to North" onclick="control.resetToNorthZenith(function() {console.log('end')})" /></div>
+            <div><input type="button" value="Tilt on globe" onclick="control.tiltOnGlobe(0.05)" /></div>
+            <div><input type="button" value="Rotate map" onclick="control.rotate(0.05)" /></div>
+            <div>Animated rotation a la Google Map.</div>
+          </div>
+        </div>
+      </div>
+    </div>
     <script src="./inject_ol_cesium.js"></script>
     <script type="module" src="./rotate.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lz-string@1.4.4/libs/lz-string.min.js"></script>
   </body>
 </html>

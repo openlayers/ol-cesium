@@ -13,7 +13,7 @@ const map = new olMap({
       source: new olSourceOSM()
     })
   ],
-  target: 'map2d',
+  target: 'mapCesium',
   controls: olControlDefaults({
     attributionOptions: {
       collapsible: false
@@ -167,3 +167,8 @@ OlcsControl.prototype.tiltOnGlobe = function(angle) {
 
 
 window['control'] = new OlcsControl(ol3d); // eslint-disable-line no-unused-vars
+
+//##REMOVE## Keep this tag, split code here for code sandbox
+
+import {initCodeSandbox} from './_code-sandbox.js';
+initCodeSandbox('./rotate.js');
