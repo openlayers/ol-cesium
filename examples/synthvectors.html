@@ -1,24 +1,46 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html lang="en">
+
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="robots" content="index, all" />
-    <title>olcesium synthetic vector layer example using several layers</title>
+    <title>Ol-Cesium | Synthetic vector layer example using several layers</title>
     <link rel="stylesheet" href="../node_modules/ol/ol.css" type="text/css">
+    <link rel="stylesheet" type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" crossorigin="anonymous">
   </head>
+
   <body>
-    <div id="map2d" style="width:600px;height:400px;float:left;"></div>
-    <div>
-      <input type="button" value="Add 1k Features" onclick="javascript:addFeatures()" />
-      <span id="total"></span>
+    <div style="text-align: right;">
+      <button id="sandbox-button"><i class="fab fa-codepen fa-lg"></i> Edit in sandbox</button>
+      <form method="POST" id="sandbox-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
+        <input id="sandbox-params" type="hidden" name="parameters">
+      </form>
     </div>
-    <div id="created"></div>
-    <div id="added"></div>
-    <input type="button" value="Clear" onclick="javascript:clearFeatures()" />
-    <div>Click to add a new layer of 1000 randomly colored circles.
-      <br />Other shapes or icons may be used in spite of the circles.
-      <script src="./inject_ol_cesium.js"></script>
-      <script type="module" src="./synthvectors.js"></script>
+
+    <div id="example-html-source">
+      <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+        <div>
+          <div class="clear-map-sandbox" id="mapCesium" style="width:600px;height:400px;float:left;"></div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+          <div>
+            <input type="button" value="Add 1k Features" onclick="javascript:addFeatures()" />
+            <span id="total"></span>
+          </div>
+          <div id="created"></div>
+          <div id="added"></div>
+          <div><input type="button" value="Clear" onclick="javascript:clearFeatures()" /></div>
+          <div>Click to add a new layer of 1000 randomly colored circles.
+            <br />Other shapes or icons may be used in spite of the circles.
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="./inject_ol_cesium.js"></script>
+    <script type="module" src="./synthvectors.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lz-string@1.4.4/libs/lz-string.min.js"></script>
   </body>
+
 </html>

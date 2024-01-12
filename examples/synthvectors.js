@@ -24,7 +24,7 @@ const tile = new olLayerTile({
 
 const map = new olMap({
   layers: [tile],
-  target: 'map2d',
+  target: 'mapCesium',
   view: new olView({
     center: [0, 0],
     zoom: 2
@@ -115,3 +115,8 @@ window['addFeatures'] = function() {
   document.getElementById('created').innerHTML = `Features created in ${created}ms.`;
   document.getElementById('added').innerHTML = `Features added in ${added}ms.`;
 };
+
+//##REMOVE## Keep this tag, split code here for code sandbox
+
+import {initCodeSandbox} from './_code-sandbox.js';
+initCodeSandbox('./synthvectors.js');
