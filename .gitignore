@@ -8,4 +8,4 @@ node_modules/
 /*.zip
 *.swp
 /*.tgz
-.parcel-cache
+.parcel-cache/
