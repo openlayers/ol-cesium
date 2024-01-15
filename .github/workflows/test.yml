@@ -17,5 +17,7 @@ jobs:
         run: npm ci
       - name: Lint
         run: npm run lint
-      - name: Pseudo release
-        run: buildtools/release.sh
+      - name: Prepare
+        run: npm run prepare
+      - name: Build examples
+        run: npm run build-examples
