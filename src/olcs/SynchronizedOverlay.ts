@@ -1,6 +1,3 @@
-/**
- * @module olcs.SynchronizedOverlay
- */
 import OLOverlay from 'ol/Overlay.js';
 import {transform} from 'ol/proj.js';
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';

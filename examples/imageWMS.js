@@ -1,7 +1,4 @@
-/**
- * @module examples.main
- */
-import OLCesium from 'olcs/OLCesium.ts';
+import OLCesium from 'olcs';
 import olView from 'ol/View.js';
 import {defaults as olControlDefaults} from 'ol/control.js';
 import olSourceImageWMS from 'ol/source/ImageWMS.js';

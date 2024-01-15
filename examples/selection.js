@@ -1,10 +1,7 @@
-/**
- * @module examples.selection
- */
 import olStyleStroke from 'ol/style/Stroke.js';
 import olStyleFill from 'ol/style/Fill.js';
 import olStyleStyle from 'ol/style/Style.js';
-import OLCesium from 'olcs/OLCesium.ts';
+import OLCesium from 'olcs';
 import olView from 'ol/View.js';
 import olFormatGeoJSON from 'ol/format/GeoJSON.js';
 import olSourceVector from 'ol/source/Vector.js';

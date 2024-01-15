@@ -1,12 +1,9 @@
-/**
- * @module examples.synthvectors
- */
 import olLayerVector from 'ol/layer/Vector.js';
 import olSourceVector from 'ol/source/Vector.js';
 import olStyleFill from 'ol/style/Fill.js';
 import olStyleCircle from 'ol/style/Circle.js';
 import olStyleStyle from 'ol/style/Style.js';
-import OLCesium from 'olcs/OLCesium.ts';
+import OLCesium from 'olcs';
 import olView from 'ol/View.js';
 import olMap from 'ol/Map.js';
 import olSourceOSM from 'ol/source/OSM.js';

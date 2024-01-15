@@ -1,6 +1,3 @@
-/**
- * @module olcs.contrib.LazyLoader
- */
 export default class LazyLoader {
   private promise: Promise<void> | undefined;
   private url_: string;

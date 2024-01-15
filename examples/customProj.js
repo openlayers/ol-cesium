@@ -1,7 +1,4 @@
-/**
- * @module examples.customProj
- */
-import OLCesium from 'olcs/OLCesium.ts';
+import OLCesium from 'olcs';
 import olView from 'ol/View.js';
 import olSourceImageWMS from 'ol/source/ImageWMS.js';
 import olSourceOSM from 'ol/source/OSM.js';

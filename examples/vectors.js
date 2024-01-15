@@ -1,7 +1,4 @@
-/**
- * @module examples.vectors
- */
-import OLCesium from 'olcs/OLCesium.ts';
+import OLCesium, {createMatrixAtCoordinates} from 'olcs';
 import olView from 'ol/View.js';
 import {defaults as olControlDefaults} from 'ol/control.js';
 import olSourceOSM from 'ol/source/OSM.js';
@@ -28,7 +25,6 @@ import olInteractionDragAndDrop from 'ol/interaction/DragAndDrop.js';
 import olGeomMultiPolygon from 'ol/geom/MultiPolygon.js';
 import olLayerVector from 'ol/layer/Vector.js';
 import {transform} from 'ol/proj.js';
-import {createMatrixAtCoordinates} from 'olcs/core.ts';
 import {OLCS_ION_TOKEN} from './_common.js';
 
 

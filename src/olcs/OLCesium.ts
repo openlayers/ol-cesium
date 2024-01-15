@@ -1,6 +1,3 @@
-/**
- * @module olcs.OLCesium
- */
 import olGeomPoint from 'ol/geom/Point.js';
 import {supportsImageRenderingPixelated, imageRenderingValue} from './util';
 import {ol4326CoordinateToCesiumCartesian} from './core';
@@ -10,11 +7,11 @@ import olcsCamera from './Camera';
 import olcsRasterSynchronizer from './RasterSynchronizer';
 import olcsVectorSynchronizer from './VectorSynchronizer';
 import olcsOverlaySynchronizer from './OverlaySynchronizer';
-import Map from 'ol/Map.js';
-import Interaction from 'ol/interaction/Interaction.js';
-import {Group} from 'ol/layer.js';
-import Feature from 'ol/Feature.js';
-import View from 'ol/View.js';
+import type Map from 'ol/Map.js';
+import type Interaction from 'ol/interaction/Interaction.js';
+import type {Group} from 'ol/layer.js';
+import type Feature from 'ol/Feature.js';
+import type View from 'ol/View.js';
 import type {
   BoundingSphere, ContextOptions,
   DataSourceCollection,

@@ -1,6 +1,3 @@
-/**
- * @module examples.layer-group
- */
 import olMap from 'ol/Map.js';
 import olView from 'ol/View.js';
 import olLayerGroup from 'ol/layer/Group.js';
@@ -8,7 +5,7 @@ import olLayerTile from 'ol/layer/Tile.js';
 import {fromLonLat} from 'ol/proj.js';
 import olSourceOSM from 'ol/source/OSM.js';
 import olSourceTileJSON from 'ol/source/TileJSON.js';
-import OLCesium from 'olcs/OLCesium.ts';
+import OLCesium from 'olcs';
 import {OLCS_ION_TOKEN} from './_common.js';
 
 const layer0 = new olLayerTile({

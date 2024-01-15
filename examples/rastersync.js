@@ -1,9 +1,6 @@
-/**
- * @module examples.rastersync
- */
 import olSourceTileWMS from 'ol/source/TileWMS.js';
 import StadiaMaps from 'ol/source/StadiaMaps.js';
-import OLCesium from 'olcs/OLCesium.ts';
+import OLCesium from 'olcs';
 import olLayerGroup from 'ol/layer/Group.js';
 import olMap from 'ol/Map.js';
 import olSourceTileJSON from 'ol/source/TileJSON.js';

@@ -1,4 +1,3 @@
-import type {Scene} from 'cesium';
 import type {Projection} from 'ol/proj';
 import type {Source} from 'ol/source';
 

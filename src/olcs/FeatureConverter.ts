@@ -1,5 +1,5 @@
 import OLStyleIcon from 'ol/style/Icon.js';
-import VectorSource, {VectorSourceEvent} from 'ol/source/Vector.js';
+import VectorSource, {type VectorSourceEvent} from 'ol/source/Vector.js';
 import OLClusterSource from 'ol/source/Cluster.js';
 import {circular as olCreateCircularPolygon} from 'ol/geom/Polygon.js';
 import {boundingExtent, getCenter} from 'ol/extent.js';
@@ -7,7 +7,7 @@ import olGeomSimpleGeometry from 'ol/geom/SimpleGeometry.js';
 import {convertColorToCesium, olGeometryCloneTo4326, ol4326CoordinateToCesiumCartesian, ol4326CoordinateArrayToCsCartesians} from './core';
 import VectorLayerCounterpart, {type OlFeatureToCesiumContext} from './core/VectorLayerCounterpart';
 import {getUid, waitReady} from './util';
-import {type CircleGeometry, type CircleOutlineGeometry, Primitive, type Billboard, type Label, type Matrix4, type Scene, Geometry as CSGeometry, Color as CSColor, GroundPrimitive, PrimitiveCollection, ImageMaterialProperty, BillboardCollection, Cartesian3, GroundPolylinePrimitive, PolygonHierarchy, HeightReference, Model, LabelCollection, Material} from 'cesium';
+import type {CircleGeometry, CircleOutlineGeometry, Primitive, Billboard, Label, Matrix4, Scene, Geometry as CSGeometry, Color as CSColor, GroundPrimitive, PrimitiveCollection, ImageMaterialProperty, BillboardCollection, Cartesian3, GroundPolylinePrimitive, PolygonHierarchy, HeightReference, Model, LabelCollection, Material} from 'cesium';
 import type VectorLayer from 'ol/layer/Vector.js';
 import type ImageLayer from 'ol/layer/Image.js';
 import type {Feature, View} from 'ol';
@@ -16,7 +16,7 @@ import {type default as Style, type StyleFunction} from 'ol/style/Style.js';
 import type {ColorLike as OLColorLike} from 'ol/colorlike.js';
 import type {Color as OLColor} from 'ol/color.js';
 import type {ProjectionLike} from 'ol/proj.js';
-import {MultiLineString, Geometry as OLGeometry, type Circle, type LineString, type Point, type Polygon, MultiPolygon, MultiPoint, GeometryCollection} from 'ol/geom.js';
+import {Geometry as OLGeometry, type MultiLineString, type MultiPolygon, type MultiPoint, type GeometryCollection, type Circle, type LineString, type Point, type Polygon} from 'ol/geom.js';
 import type ImageStyle from 'ol/style/Image.js';
 
 
@@ -133,7 +133,7 @@ export default class FeatureConverter {
    * Basics primitive creation using a color attribute.
    * Note that Cesium has 'interior' and outline geometries.
    * @param layer
-   * @param OpenLayers feature.
+   * @param feature OpenLayers feature.
    * @param olGeometry OpenLayers geometry.
    * @param geometry
    * @param color
@@ -221,7 +221,7 @@ export default class FeatureConverter {
           }
         })
       });
-      if (primitive instanceof Primitive && (feature.get('olcs_shadows') || layer.get('olcs_shadows'))) {
+      if (primitive instanceof Cesium.Primitive && (feature.get('olcs_shadows') || layer.get('olcs_shadows'))) {
         primitive.shadows = 1;
       }
     }

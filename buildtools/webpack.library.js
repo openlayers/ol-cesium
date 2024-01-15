@@ -9,7 +9,7 @@ const extensionReplacerRegExp = new RegExp('\\.js$');
 const nodeEnv = process.env['NODE_ENV'] || 'development';
 const filename = nodeEnv === 'development' ? 'olcesium-debug.js' : 'olcesium.js';
 export default {
-  entry: './src/index.library.js',
+  entry: './src/olcs.ts',
   output: {
     library: 'olcs_unused_var',
     filename,

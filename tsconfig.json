@@ -3,26 +3,26 @@
       "target": "ES2022",
       "lib": ["es2023", "dom"],
       "allowJs": true,
-      //"checkJs": true,
       "baseUrl": "./",
       "skipLibCheck": true,
       "moduleResolution": "Node",
+      "module": "ES2022",
       "verbatimModuleSyntax": true,
-      "outDir": "./out",
+      "outDir": "./lib",
+      "inlineSourceMap": true,
       "noImplicitAny": true,
+      "declarationMap": true,
       "forceConsistentCasingInFileNames": true,
       "paths": {
         "ol/*": ["node_modules/ol/*"]
       },
       "declaration": true,
-      "declarationDir": "./types"
+      "declarationDir": "./lib/types"
     },
     "include": [
-      "src/**/*.js",
-      "src/**/*.ts",
-      "node_modules/cesium/Source/Cesium.d.ts"
+      "src/**/*.ts"
     ],
     "typeAcquisition": {
-      "exclude": ["cesium"]
+      "enable": false
     }
 }
