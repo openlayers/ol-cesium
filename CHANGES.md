@@ -1,6 +1,6 @@
 # Changelog
 
-# v 2.17
+# v 2.17 - 2023-01-15
 
 * Breaking changes
   * Remove olcsListen wrapper. Use observable.on(type, listener) instead
