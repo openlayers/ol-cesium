@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="robots" content="index, all" />
     <title>olcesium raster layer synchronization example</title>
-    <link rel="stylesheet" href="../node_modules/ol/ol.css" type="text/css">
+    <link rel="stylesheet" href="../../node_modules/ol/ol.css" type="text/css">
     <style>
       fieldset {display:inline-block;float:left;}
       label {display:block;}
@@ -42,6 +42,7 @@
       <label>Z-index</label>
       <input type="range" min="-10" max="10" step="1" oninput="global.layer2.setZIndex(parseFloat(this.value))" />
     </fieldset>
-    <script src="inject_ol_cesium.js"></script>
+    <script src="./inject_ol_cesium.js"></script>
+    <script type="module" src="./rastersync.js"></script>
   </body>
 </html>

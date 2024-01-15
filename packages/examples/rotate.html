@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="robots" content="index, all" />
     <title>olcesium animated rotation example</title>
-    <link rel="stylesheet" href="../node_modules/ol/ol.css" type="text/css"></link>
+    <link rel="stylesheet" href="../../node_modules/ol/ol.css" type="text/css"></link>
     <style>.cesium-credit-textContainer { display: inline-block; font-size: 50%; line-height: 100%;}</style>
   </head>
   <body>
@@ -14,6 +14,7 @@
     <div><input type="button" value="Tilt on globe" onclick="control.tiltOnGlobe(0.05)" /></div>
     <div><input type="button" value="Rotate map" onclick="control.rotate(0.05)" /></div>
     <div>Animated rotation a la Google Map.</div>
-    <script src="inject_ol_cesium.js"></script>
+    <script src="./inject_ol_cesium.js"></script>
+    <script type="module" src="./rotate.js"></script>
   </body>
 </html>

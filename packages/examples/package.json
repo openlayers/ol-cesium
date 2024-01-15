@@ -1,0 +1,27 @@
+{
+  "name": "examples",
+  "version": "1.0.0",
+  "description": "",
+  "targets": {
+    "examples": {
+      "source": "./index.html",
+      "context": "browser",
+      "optimize": true,
+      "isLibrary": false,
+      "sourceMap": true
+    }
+  },
+  "type": "module",
+  "scripts": {
+    "start": "parcel serve --target examples",
+    "bundle": "rm -rf dist; parcel build; cp -RL Cesium CesiumUnminified data dist/",
+    "serve-bundle": " python3 -m http.server --directory dist 12345"
+  },
+  "alias": {
+    "olcs": "../../lib/olcs"
+  },
+  "license": "BSD-2-Clause",
+  "devDependencies": {
+    "parcel": "^2.11.0"
+  }
+}

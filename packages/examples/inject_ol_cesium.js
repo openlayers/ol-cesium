@@ -7,11 +7,10 @@
   window.IS_DEV = isDev;
   var cs = isDev ? 'CesiumUnminified/Cesium.js' : 'Cesium/Cesium.js';
 
-  window.CESIUM_URL = `../node_modules/cesium/Build/${cs}`;
+  window.CESIUM_URL = `${cs}`;
   if (!window.LAZY_CESIUM) {
     document.write(`<scr${'i'}pt type="text/javascript" src="${window.CESIUM_URL}"></scr${'i'}pt>`);
   }
 
   /* eslint-enable no-var */
 })();
-
