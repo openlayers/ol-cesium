@@ -23,6 +23,9 @@ const olRule = {
 
 const olcsRule = {
   test: /olcs\/.*\.js$/,
+  resolve: {
+    fullySpecified: false
+  },
   use: {
     loader: 'babel-loader',
     options: {
@@ -34,6 +37,9 @@ const olcsRule = {
 
 const ruleTS = {
   test: /\.ts$/,
+  resolve: {
+    fullySpecified: false
+  },
   use: {
     loader: 'babel-loader',
     options: {

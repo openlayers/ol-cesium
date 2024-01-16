@@ -1,25 +1,32 @@
-/**
- * @module olcs.AutoRenderLoop
- */
+import type {Scene} from 'cesium';
+import type OLCesium from './OLCesium';
 
-class AutoRenderLoop {
+/**
+ * By default Cesium (used to?) renders as often as possible.
+ * This is a waste of resources (CPU/GPU/battery).
+ * An alternative mechanism in Cesium is on-demand rendering.
+ * This class makes use of this alternative method and add some additionnal render points.
+ */
+export default class AutoRenderLoop {
+  ol3d: OLCesium;
+  private scene_: Scene;
+  private canvas_: HTMLCanvasElement;
+  private _boundNotifyRepaintRequired: typeof this.notifyRepaintRequired;
+  private repaintEventNames_ = [
+    'mousemove', 'mousedown', 'mouseup',
+    'touchstart', 'touchend', 'touchmove',
+    'pointerdown', 'pointerup', 'pointermove',
+    'wheel'
+  ] as const;
+
   /**
-   * @constructor
-   * @param {olcs.OLCesium} ol3d
+   * @param ol3d
    */
-  constructor(ol3d) {
+  constructor(ol3d: OLCesium) {
     this.ol3d = ol3d;
     this.scene_ = ol3d.getCesiumScene();
     this.canvas_ = this.scene_.canvas;
     this._boundNotifyRepaintRequired = this.notifyRepaintRequired.bind(this);
-
-    this.repaintEventNames_ = [
-      'mousemove', 'mousedown', 'mouseup',
-      'touchstart', 'touchend', 'touchmove',
-      'pointerdown', 'pointerup', 'pointermove',
-      'wheel'
-    ];
-
     this.enable();
   }
 
@@ -56,7 +63,6 @@ class AutoRenderLoop {
   /**
    * Restart render loop.
    * Force a restart of the render loop.
-   * @api
    */
   restartRenderLoop() {
     this.notifyRepaintRequired();
@@ -66,6 +72,3 @@ class AutoRenderLoop {
     this.scene_.requestRender();
   }
 }
-
-
-export default AutoRenderLoop;

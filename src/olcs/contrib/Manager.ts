@@ -1,11 +1,11 @@
-/**
- * @module olcs.contrib.Manager
- */
-import olcsContribLazyLoader from '../contrib/LazyLoader.js';
-import OLCesium from '../OLCesium.ts';
-import {resetToNorthZenith, rotateAroundBottomCenter, computeSignedTiltAngleOnGlobe, pickBottomPoint, setHeadingUsingBottomCenter, limitCameraToBoundingSphere} from '../core.ts';
-import {toRadians} from '../math.js';
-import olObservable from 'ol/Observable.js';
+import olcsContribLazyLoader from './LazyLoader';
+import OLCesium from '../OLCesium';
+import {resetToNorthZenith, rotateAroundBottomCenter, computeSignedTiltAngleOnGlobe, pickBottomPoint, setHeadingUsingBottomCenter, limitCameraToBoundingSphere} from '../core';
+import {toRadians} from '../math';
+import Observable from 'ol/Observable.js';
+import type OLMap from 'ol/Map.js';
+import type {Extent} from 'ol/extent.js';
+import type {BoundingSphere, Matrix4, Rectangle, Scene} from 'cesium';
 
 
 /**
@@ -16,103 +16,49 @@ import olObservable from 'ol/Observable.js';
  */
 
 
-const Manager = class extends olObservable {
+export default class Manager extends Observable {
+  private cesiumUrl_: string;
+  private boundingSphere_: BoundingSphere;
+  private promise_: Promise<OLCesium>;
+  private cesiumIonDefaultAccessToken_: string;
+  protected map: OLMap;
+  protected cameraExtentInRadians: Extent;
+  protected ol3d: OLCesium;
+  private cesiumInitialTilt_ = toRadians(50);
+
+  protected fogDensity = 0.0001;
+
+  protected fogSSEFactor = 25;
+
+  protected minimumZoomDistance = 2;
+
+  /**
+   * Limit the maximum distance to the earth to 10'000km.
+   */
+  protected maximumZoomDistance: number = 10000000;
+
+  // when closer to 3000m, restrict the available positions harder
+  protected limitCameraToBoundingSphereRatio = (height: number) => (height > 3000 ? 9 : 3);
+
   /**
    * @param {string} cesiumUrl
    * @param {olcsx.contrib.ManagerOptions} options
    * @api
    */
-  constructor(cesiumUrl, {map, cameraExtentInRadians, cesiumIonDefaultAccessToken} = {}) {
-
+  constructor(cesiumUrl: string, {map, cameraExtentInRadians, cesiumIonDefaultAccessToken}: {map: OLMap, cameraExtentInRadians?: Extent, cesiumIonDefaultAccessToken?: string}) {
     super();
-
-    /**
-     * @type {string}
-     * @private
-     */
     this.cesiumUrl_ = cesiumUrl;
-
-    /**
-     * @type {ol.Map}
-     * @protected
-     */
+    console.assert(map);
     this.map = map;
-
-    /**
-     * @type {ol.Extent}
-     * @protected
-     */
     this.cameraExtentInRadians = cameraExtentInRadians || null;
-
-    /**
-     * @private
-     * @type {Cesium.BoundingSphere}
-     */
-    this.boundingSphere_;
-
-    /**
-     * @type {Promise.<olcs.OLCesium>}
-     * @private
-     */
-    this.promise_;
-
-    /**
-     * @type {string}
-     * @private
-     */
     this.cesiumIonDefaultAccessToken_ = cesiumIonDefaultAccessToken;
-
-    /**
-     * @type {olcs.OLCesium}
-     * @protected
-     */
-    this.ol3d;
-
-    /**
-     * @const {number} Tilt angle in radians
-     * @private
-     */
-    this.cesiumInitialTilt_ = toRadians(50);
-
-    /**
-     * @protected
-     * @type {number}
-     */
-    this.fogDensity = 0.0001;
-
-    /**
-     * @protected
-     * @type {number}
-     */
-    this.fogSSEFactor = 25;
-
-    /**
-     * Limit the minimum distance to the terrain to 2m.
-     * @protected
-     * @type {number}
-     */
-    this.minimumZoomDistance = 2;
-
-    /**
-     * Limit the maximum distance to the earth to 10'000km.
-     * @protected
-     * @type {number}
-     */
-    this.maximumZoomDistance = 10000000;
-
-    // when closer to 3000m, restrict the available positions harder
-    /**
-     * @protected
-     * @param {number} height
-     */
-    this.limitCameraToBoundingSphereRatio = height => (height > 3000 ? 9 : 3);
   }
 
 
   /**
-   * @return {Promise.<olcs.OLCesium>}
+   * Lazy load Cesium.
    */
-  load() {
+  load(): Promise<OLCesium> {
     if (!this.promise_) {
       const cesiumLazyLoader = new olcsContribLazyLoader(this.cesiumUrl_);
       this.promise_ = cesiumLazyLoader.load().then(() => this.onCesiumLoaded());
@@ -122,10 +68,9 @@ const Manager = class extends olObservable {
 
 
   /**
-   * @protected
-   * @return {olcs.OLCesium}
+   * Hook called when Cesium has been lazy loaded.
    */
-  onCesiumLoaded() {
+  protected onCesiumLoaded(): OLCesium {
     if (this.cameraExtentInRadians) {
       const rect = new Cesium.Rectangle(...this.cameraExtentInRadians);
       // Set the fly home rectangle
@@ -148,13 +93,13 @@ const Manager = class extends olObservable {
 
   /**
    * Application code should override this method.
-   * @return {olcs.OLCesium}
    */
-  instantiateOLCesium() {
-    console.assert(this.map);
+  instantiateOLCesium(): OLCesium {
     const ol3d = new OLCesium({map: this.map});
     const scene = ol3d.getCesiumScene();
-    if (Cesium.createWorldTerrain) {
+    // LEGACY
+    if ('createWorldTerrain' in Cesium) {
+      // @ts-ignore
       const terrainProvider = Cesium.createWorldTerrain();
       scene.terrainProvider = terrainProvider;
     } else {
@@ -167,10 +112,9 @@ const Manager = class extends olObservable {
 
 
   /**
-   * @param {!Cesium.Scene} scene The scene, passed as parameter for convenience.
-   * @protected
+   * Override with custom performance optimization logics, if needed.
    */
-  configureForPerformance(scene) {
+  protected configureForPerformance(scene: Scene) {
     const fog = scene.fog;
     fog.enabled = true;
     fog.density = this.fogDensity;
@@ -179,10 +123,9 @@ const Manager = class extends olObservable {
 
 
   /**
-   * @param {!Cesium.Scene} scene The scene, passed as parameter for convenience.
-   * @protected
+   * Override with custom usabliity logics, id needed.
    */
-  configureForUsability(scene) {
+  configureForUsability(scene: Scene) {
     const sscController = scene.screenSpaceCameraController;
     sscController.minimumZoomDistance = this.minimumZoomDistance;
     sscController.maximumZoomDistance = this.maximumZoomDistance;
@@ -205,19 +148,16 @@ const Manager = class extends olObservable {
   /**
    * Constrain the camera so that it stays close to the bounding sphere of the map extent.
    * Near the ground the allowed distance is shorter.
-   * @protected
    */
-  limitCameraToBoundingSphere() {
+  protected limitCameraToBoundingSphere() {
     const scene = this.ol3d.getCesiumScene();
     limitCameraToBoundingSphere(scene.camera, this.boundingSphere_, this.limitCameraToBoundingSphereRatio);
   }
 
   /**
    * Enable or disable ol3d with a default animation.
-   * @export
-   * @return {Promise<undefined>}
    */
-  toggle3d() {
+  toggle3d(): Promise<void> {
     return this.load().then((/** @const {!olcs.OLCesium} */ ol3d) => {
       const is3DCurrentlyEnabled = ol3d.getEnabled();
       const scene = ol3d.getCesiumScene();
@@ -240,17 +180,9 @@ const Manager = class extends olObservable {
 
   /**
    * Enable ol3d with a view built from parameters.
-   *
-   * @export
-   * @param {number} lon
-   * @param {number} lat
-   * @param {number} elevation
-   * @param {number} headingDeg Heading value in degrees.
-   * @param {number} pitchDeg Pitch value in degrees.
-   * @returns {Promise<undefined>}
    */
-  set3dWithView(lon, lat, elevation, headingDeg, pitchDeg) {
-    return this.load().then((/** @const {!olcs.OLCesium} */ ol3d) => {
+  set3dWithView(lon: number, lat: number, elevation: number, headingDeg: number, pitchDeg: number): Promise<void> {
+    return this.load().then((ol3d) => {
       const is3DCurrentlyEnabled = ol3d.getEnabled();
       const scene = ol3d.getCesiumScene();
       const camera = scene.camera;
@@ -274,10 +206,9 @@ const Manager = class extends olObservable {
 
 
   /**
-   * @export
-   * @return {boolean}
+   * Whether OL-Cesium has been loaded and 3D mode is enabled.
    */
-  is3dEnabled() {
+  is3dEnabled(): boolean {
     return !!this.ol3d && this.ol3d.getEnabled();
   }
 
@@ -285,7 +216,7 @@ const Manager = class extends olObservable {
   /**
    * @return {number}
    */
-  getHeading() {
+  getHeading(): number {
     return this.map ? this.map.getView().getRotation() || 0 : 0;
   }
 
@@ -301,9 +232,10 @@ const Manager = class extends olObservable {
 
 
   /**
-   * @param {number} angle
+   * Set heading.
+   * This assumes ol3d has been loaded.
    */
-  setHeading(angle) {
+  setHeading(angle: number) {
     const scene = this.ol3d.getCesiumScene();
     const bottom = pickBottomPoint(scene);
     if (bottom) {
@@ -311,47 +243,23 @@ const Manager = class extends olObservable {
     }
   }
 
-  /**
-   * @export
-   * @return {olcs.OLCesium}
-   */
-  getOl3d() {
+  getOl3d(): OLCesium {
     return this.ol3d;
   }
 
-  /**
-   * @export
-   * @return {!ol.View}
-   */
-  getOlView() {
-    const view = this.map.getView();
-    console.assert(view);
-    return view;
-  }
-
-  /**
-   * @export
-   * @return {Cesium.Matrix4}
-   */
-  getCesiumViewMatrix() {
+  getCesiumViewMatrix(): Matrix4 {
     return this.ol3d.getCesiumScene().camera.viewMatrix;
   }
 
-  /**
-   * @export
-   * @return {!Cesium.Scene}
-   */
-  getCesiumScene() {
+  getCesiumScene(): Scene {
     return this.ol3d.getCesiumScene();
   }
 
   /**
-   * @export
-   * @param {!Cesium.Rectangle} rectangle
-   * @param {number=} offset in meters
-   * @return {Promise<undefined>}
+   * Fly to some rectangle.
+   * This assumes ol3d has been loaded.
    */
-  flyToRectangle(rectangle, offset = 0) {
+  flyToRectangle(rectangle: Rectangle, offset = 0): Promise<void> {
     const camera = this.getCesiumScene().camera;
     const destination = camera.getRectangleCameraCoordinates(rectangle);
 
@@ -373,17 +281,4 @@ const Manager = class extends olObservable {
       });
     });
   }
-
-  /**
-   * @protected
-   * @return {Cesium.Rectangle|undefined}
-   */
-  getCameraExtentRectangle() {
-    if (this.cameraExtentInRadians) {
-      return new Cesium.Rectangle(...this.cameraExtentInRadians);
-    }
-  }
-};
-
-
-export default Manager;
+}

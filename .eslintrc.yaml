@@ -34,6 +34,8 @@ rules:
       arguments: 2
     }
     }]
+  '@typescript-eslint/consistent-type-imports': error
+  '@typescript-eslint/no-unused-vars': [error, {vars: all, args: none}]
 overrides:
   - files: [ "examples/*.js" ]
     rules:

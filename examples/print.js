@@ -1,7 +1,4 @@
-/**
- * @module examples.print
- */
-import OLCesium from 'olcs/OLCesium.ts';
+import OLCesium, {takeScreenshot, autoDrawMask, computeRectangle} from 'olcs';
 import {transform} from 'ol/proj.js';
 import olView from 'ol/View.js';
 import {defaults as olControlDefaults} from 'ol/control.js';
@@ -9,9 +6,7 @@ import olSourceOSM from 'ol/source/OSM.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olMap from 'ol/Map.js';
 import {OLCS_ION_TOKEN} from './_common.js';
-import {takeScreenshot} from 'olcs/print/takeCesiumScreenshot.ts';
-import {autoDrawMask} from 'olcs/print/drawCesiumMask.ts';
-import {computeRectangle} from 'olcs/print/computeRectangle.ts';
+
 
 Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 const ol2d = new olMap({

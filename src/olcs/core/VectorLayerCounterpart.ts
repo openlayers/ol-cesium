@@ -1,6 +1,3 @@
-/**
- * @module olcs.core.VectorLayerCounterpart
- */
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
 import type Projection from 'ol/proj/Projection.js';
 import type {Billboard, BillboardCollection, Primitive, PrimitiveCollection, Scene} from 'cesium';
@@ -18,7 +15,7 @@ export type OlFeatureToCesiumContext = {
 };
 
 
-class VectorLayerCounterpart {
+export default class VectorLayerCounterpart {
   olListenKeys: EventsKey[] = [];
   context: OlFeatureToCesiumContext;
   private rootCollection_: PrimitiveCollection;
@@ -54,5 +51,4 @@ class VectorLayerCounterpart {
 }
 
 
-export default VectorLayerCounterpart;
 export type PrimitiveCollectionCounterpart = PrimitiveCollection & {counterpart: VectorLayerCounterpart};

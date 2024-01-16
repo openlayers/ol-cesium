@@ -1,20 +1,17 @@
-/**
- * @module olcs.AbstractSynchronizer
- */
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
 import LayerGroup from 'ol/layer/Group.js';
-import {getUid, olcsListen} from './util.js';
-import Map from 'ol/Map.js';
+import {getUid} from './util';
+import type Map from 'ol/Map.js';
 import type {Scene, ImageryLayer} from 'cesium';
-import View from 'ol/View.js';
-import Collection from 'ol/Collection.js';
-import BaseLayer from 'ol/layer/Base.js';
+import type View from 'ol/View.js';
+import type Collection from 'ol/Collection.js';
+import type BaseLayer from 'ol/layer/Base.js';
 import type {EventsKey} from 'ol/events.js';
-import type {LayerWithParents} from './core.js';
-import VectorLayerCounterpart from './core/VectorLayerCounterpart';
+import type {LayerWithParents} from './core';
+import type VectorLayerCounterpart from './core/VectorLayerCounterpart';
 
 
-abstract class AbstractSynchronizer<T extends ImageryLayer | VectorLayerCounterpart> {
+export default abstract class AbstractSynchronizer<T extends ImageryLayer | VectorLayerCounterpart> {
   protected map: Map;
   protected view: View;
   protected scene: Scene;
@@ -108,7 +105,7 @@ abstract class AbstractSynchronizer<T extends ImageryLayer | VectorLayerCounterp
               this.orderLayers();
             }
           };
-          this.olLayerListenKeys[olLayerId].push(olcsListen(layerWithParents.layer, 'change', onLayerChange));
+          this.olLayerListenKeys[olLayerId].push(layerWithParents.layer.on('change', onLayerChange));
         }
       }
       // add Cesium layers
@@ -125,7 +122,7 @@ abstract class AbstractSynchronizer<T extends ImageryLayer | VectorLayerCounterp
    */
   private addCesiumObjects_(cesiumObjects: Array<T>, layerId: string, layer: BaseLayer) {
     this.layerMap[layerId] = cesiumObjects;
-    this.olLayerListenKeys[layerId].push(olcsListen(layer, 'change:zIndex', () => this.orderLayers()));
+    this.olLayerListenKeys[layerId].push(layer.on('change:zIndex', () => this.orderLayers()));
     cesiumObjects.forEach((cesiumObject) => {
       this.addCesiumObject(cesiumObject);
     });
@@ -266,6 +263,3 @@ abstract class AbstractSynchronizer<T extends ImageryLayer | VectorLayerCounterp
 
   protected abstract createSingleLayerCounterparts(olLayerWithParents: LayerWithParents): Array<T>;
 }
-
-
-export default AbstractSynchronizer;

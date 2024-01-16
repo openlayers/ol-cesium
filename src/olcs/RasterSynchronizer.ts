@@ -1,8 +1,5 @@
-/**
- * @module olcs.RasterSynchronizer
- */
-import Map from 'ol/Map.js';
-import {getUid, stableSort} from './util.js';
+import type Map from 'ol/Map.js';
+import {getUid} from './util';
 import olcsAbstractSynchronizer from './AbstractSynchronizer';
 import {type LayerWithParents, tileLayerToImageryLayer, updateCesiumLayerProperties} from './core';
 import type {Scene, ImageryLayer, ImageryLayerCollection} from 'cesium';
@@ -11,7 +8,7 @@ import type Projection from 'ol/proj/Projection.js';
 import BaseVectorLayer from 'ol/layer/BaseVector.js';
 import LayerGroup from 'ol/layer/Group.js';
 
-class RasterSynchronizer extends olcsAbstractSynchronizer<ImageryLayer> {
+export default class RasterSynchronizer extends olcsAbstractSynchronizer<ImageryLayer> {
   private cesiumLayers_: ImageryLayerCollection;
   private ourLayers_: ImageryLayerCollection;
   /**
@@ -162,7 +159,9 @@ class RasterSynchronizer extends olcsAbstractSynchronizer<ImageryLayer> {
       }
     }
 
-    stableSort(layers, (layer1, layer2) =>
+    // We assume sort is stable (which has been in the spec since a long time already).
+    // See https://caniuse.com/mdn-javascript_builtins_array_sort_stable
+    layers.sort((layer1, layer2) =>
       zIndices[getUid(layer1)] - zIndices[getUid(layer2)]
     );
 
@@ -179,6 +178,3 @@ class RasterSynchronizer extends olcsAbstractSynchronizer<ImageryLayer> {
     this.cesiumLayers_.raiseToTop(counterpart);
   }
 }
-
-
-export default RasterSynchronizer;

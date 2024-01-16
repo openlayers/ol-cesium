@@ -1,6 +1,3 @@
-/**
- * @module olcs.core
- */
 import {linear as linearEasing} from 'ol/easing.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olLayerImage from 'ol/layer/Image.js';
@@ -11,13 +8,13 @@ import olSourceTileImage from 'ol/source/TileImage.js';
 import olSourceTileWMS from 'ol/source/TileWMS.js';
 import olSourceVectorTile from 'ol/source/VectorTile.js';
 import {defaultImageLoadFunction} from 'ol/source/Image.js';
-import olcsCoreOLImageryProvider from './core/OLImageryProvider.js';
-import {getSourceProjection} from './util.js';
-import MVTImageryProvider from './MVTImageryProvider.js';
+import olcsCoreOLImageryProvider from './core/OLImageryProvider';
+import {getSourceProjection} from './util';
+import MVTImageryProvider from './MVTImageryProvider';
 import VectorTileLayer from 'ol/layer/VectorTile.js';
 import {type Extent, getCenter as getExtentCenter} from 'ol/extent.js';
-import BaseLayer from 'ol/layer/Base.js';
-import LayerGroup from 'ol/layer/Group.js';
+import type BaseLayer from 'ol/layer/Base.js';
+import type LayerGroup from 'ol/layer/Group.js';
 import type {
   BoundingSphere,
   Camera,
@@ -32,16 +29,16 @@ import type {
   Scene,
   SingleTileImageryProvider
 } from 'cesium';
-import Geometry from 'ol/geom/Geometry.js';
+import type Geometry from 'ol/geom/Geometry.js';
 import type {Coordinate} from 'ol/coordinate.js';
-import Source from 'ol/source/Source.js';
+import type Source from 'ol/source/Source.js';
 // eslint-disable-next-line no-duplicate-imports
 import type {Attribution} from 'ol/source/Source.js';
 
-import Map from 'ol/Map.js';
-import Projection from 'ol/proj/Projection.js';
+import type Map from 'ol/Map.js';
+import type Projection from 'ol/proj/Projection.js';
 import type {Color as OLColor} from 'ol/color.js';
-import View from 'ol/View.js';
+import type View from 'ol/View.js';
 
 type CesiumUrlDefinition = {
     url: string,
@@ -540,14 +537,14 @@ export function ol4326CoordinateArrayToCsCartesians(coordinates: Coordinate[]): 
  * The geometry will be cloned only when original projection is not EPSG:4326
  * and the properties will be shallow copied.
  */
-export function olGeometryCloneTo4326<T>(geometry: Geometry, projection: ProjectionLike): T | Geometry {
+export function olGeometryCloneTo4326<T extends Geometry>(geometry: T, projection: ProjectionLike): T {
   console.assert(projection);
 
   const proj4326 = getProjection('EPSG:4326');
   const proj = getProjection(projection);
   if (proj.getCode() !== proj4326.getCode()) {
     const properties = geometry.getProperties();
-    geometry = geometry.clone();
+    geometry = geometry.clone() as T;
     geometry.transform(proj, proj4326);
     geometry.setProperties(properties);
   }

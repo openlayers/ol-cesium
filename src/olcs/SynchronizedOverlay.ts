@@ -1,79 +1,91 @@
-/**
- * @module olcs.SynchronizedOverlay
- */
-import olOverlay from 'ol/Overlay.js';
+import OLOverlay from 'ol/Overlay.js';
 import {transform} from 'ol/proj.js';
-import {removeNode, removeChildren} from './util.js';
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
+import type {Scene} from 'cesium';
+import type OverlaySynchronizer from './OverlaySynchronizer';
+import type {EventsKey} from 'ol/events';
+import type {ObjectEvent} from 'ol/Object';
 
 
 /**
- * Options for SynchronizedOverlay
- * @typedef {Object} SynchronizedOverlayOptions
- * @property {!Cesium.Scene} scene
- * @property {olOverlay} parent
- * @property {!import('olsc/OverlaySynchronizer.js').default} synchronizer
+ * @param node The node to remove.
+ * @return The node that was removed or null.
  */
+function removeNode(node: Node): Node {
+  return node && node.parentNode ? node.parentNode.removeChild(node) : null;
+}
+
+/**
+ * @param {Node} node The node to remove the children from.
+ */
+function removeChildren(node: Node) {
+  while (node.lastChild) {
+    node.removeChild(node.lastChild);
+  }
+}
+
+function cloneNode<T extends Node, U extends Node>(node: T, parent: U): T {
+  const clone = node.cloneNode() as T;
+  if (node.nodeName === 'CANVAS') {
+    const ctx = (clone as unknown as HTMLCanvasElement).getContext('2d');
+    ctx.drawImage(node as unknown as HTMLCanvasElement, 0, 0);
+  }
+  if (parent) {
+    parent.appendChild(clone);
+  }
+  if (node.nodeType !== Node.TEXT_NODE) {
+    clone.addEventListener('click', (event) => {
+      node.dispatchEvent(new MouseEvent('click', event));
+      event.stopPropagation();
+    });
+  }
+  const nodes = node.childNodes;
+  for (let i = 0; i < nodes.length; i++) {
+    if (!nodes[i]) {
+      continue;
+    }
+    cloneNode(nodes[i], clone);
+  }
+  return clone;
+}
 
 
-class SynchronizedOverlay extends olOverlay {
+interface SynchronizedOverlayOptions {
+  scene: Scene;
+  parent: OLOverlay;
+  synchronizer: OverlaySynchronizer;
+}
+
+
+export default class SynchronizedOverlay extends OLOverlay {
+
+  private scenePostRenderListenerRemover_?: Function = null;
+  private scene_: Scene;
+  private synchronizer_: OverlaySynchronizer;
+  private parent_: OLOverlay;
+  private positionWGS84_: number[];
+  private observer_: MutationObserver;
+  private attributeObserver_: MutationObserver[] = [];
+  private listenerKeys_: EventsKey[];
+
+
   /**
-   * @param {olcsx.SynchronizedOverlayOptions} options SynchronizedOverlay Options.
+   * @param options SynchronizedOverlay Options.
    * @api
    */
-  constructor(options) {
+  constructor(options: SynchronizedOverlayOptions) {
     const parent = options.parent;
     super(parent.getOptions());
-
-    /**
-     * @private
-     * @type {?Function}
-     */
-    this.scenePostRenderListenerRemover_ = null;
-
-    /**
-     * @private
-     * @type {!Cesium.Scene}
-     */
     this.scene_ = options.scene;
-
-    /**
-     * @private
-     * @type {!olcs.OverlaySynchronizer}
-     */
     this.synchronizer_ = options.synchronizer;
-
-    /**
-     * @private
-     * @type {!ol.Overlay}
-     */
     this.parent_ = parent;
-
-    /**
-     * @private
-     * @type {ol.Coordinate|undefined}
-     */
     this.positionWGS84_ = undefined;
-
-    /**
-     * @private
-     * @type {MutationObserver}
-     */
     this.observer_ = new MutationObserver(this.handleElementChanged.bind(this));
-
-    /**
-     * @private
-     * @type {Array.<MutationObserver>}
-     */
     this.attributeObserver_ = [];
-
-    /**
-     * @private
-     * @type {Array<ol.EventsKey>}
-     */
     this.listenerKeys_ = [];
+
     // synchronize our Overlay with the parent Overlay
-    const setPropertyFromEvent = event => this.setPropertyFromEvent_(event);
+    const setPropertyFromEvent = (event: ObjectEvent) => this.setPropertyFromEvent_(event);
     this.listenerKeys_.push(this.parent_.on('change:element', setPropertyFromEvent));
     this.listenerKeys_.push(this.parent_.on('change:offset', setPropertyFromEvent));
     this.listenerKeys_.push(this.parent_.on('change:position', setPropertyFromEvent));
@@ -86,10 +98,9 @@ class SynchronizedOverlay extends olOverlay {
   }
 
   /**
-   * @param {Node} target
-   * @private
+   * @param target
    */
-  observeTarget_(target) {
+  private observeTarget_(target: Node) {
     if (!this.observer_) {
       // not ready, skip the event (this occurs on construction)
       return;
@@ -120,10 +131,9 @@ class SynchronizedOverlay extends olOverlay {
 
   /**
    *
-   * @param {ol.Object.Event} event
-   * @private
+   * @param event
    */
-  setPropertyFromEvent_(event) {
+  private setPropertyFromEvent_(event: ObjectEvent) {
     if (event.target && event.key) {
       this.set(event.key, event.target.get(event.key));
     }
@@ -132,10 +142,10 @@ class SynchronizedOverlay extends olOverlay {
   /**
    * Get the scene associated with this overlay.
    * @see ol.Overlay.prototype.getMap
-   * @return {!Cesium.Scene} The scene that the overlay is part of.
+   * @return The scene that the overlay is part of.
    * @api
    */
-  getScene() {
+  getScene(): Scene {
     return this.scene_;
   }
 
@@ -181,35 +191,11 @@ class SynchronizedOverlay extends olOverlay {
    * @override
    */
   handleElementChanged() {
-    function cloneNode(node, parent) {
-      const clone = node.cloneNode();
-      if (node.nodeName === 'CANVAS') {
-        const ctx = clone.getContext('2d');
-        ctx.drawImage(node, 0, 0);
-      }
-      if (parent) {
-        parent.appendChild(clone);
-      }
-      if (node.nodeType != Node.TEXT_NODE) {
-        clone.addEventListener('click', (event) => {
-          node.dispatchEvent(new MouseEvent('click', event));
-          event.stopPropagation();
-        });
-      }
-      const nodes = node.childNodes;
-      for (let i = 0; i < nodes.length; i++) {
-        if (!nodes[i]) {
-          continue;
-        }
-        cloneNode(nodes[i], clone);
-      }
-      return clone;
-    }
     removeChildren(this.element);
     const element = this.getElement();
     if (element) {
       if (element.parentNode && element.parentNode.childNodes) {
-        for (const node of element.parentNode.childNodes) {
+        for (const node of Array.from(element.parentNode.childNodes)) {
           const clonedNode = cloneNode(node, null);
           this.element.appendChild(clonedNode);
         }
@@ -278,7 +264,8 @@ class SynchronizedOverlay extends olOverlay {
     }
     olObservableUnByKey(this.listenerKeys_);
     this.listenerKeys_.splice(0);
-    if (this.element.removeNode) {
+    if ('removeNode' in this.element) {
+      // @ts-ignore
       this.element.removeNode(true);
     } else {
       this.element.remove();
@@ -286,5 +273,3 @@ class SynchronizedOverlay extends olOverlay {
     this.element = null;
   }
 }
-
-export default SynchronizedOverlay;

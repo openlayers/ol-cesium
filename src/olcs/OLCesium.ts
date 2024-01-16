@@ -1,20 +1,17 @@
-/**
- * @module olcs.OLCesium
- */
 import olGeomPoint from 'ol/geom/Point.js';
-import {supportsImageRenderingPixelated, imageRenderingValue} from './util.js';
+import {supportsImageRenderingPixelated, imageRenderingValue} from './util';
 import {ol4326CoordinateToCesiumCartesian} from './core';
 import {getTransform, type TransformFunction} from 'ol/proj.js';
-import olcsAutoRenderLoop from './AutoRenderLoop.js';
-import olcsCamera from './Camera.js';
+import olcsAutoRenderLoop from './AutoRenderLoop';
+import olcsCamera from './Camera';
 import olcsRasterSynchronizer from './RasterSynchronizer';
 import olcsVectorSynchronizer from './VectorSynchronizer';
-import olcsOverlaySynchronizer from './OverlaySynchronizer.js';
-import Map from 'ol/Map.js';
-import Interaction from 'ol/interaction/Interaction.js';
-import {Group} from 'ol/layer.js';
-import Feature from 'ol/Feature.js';
-import View from 'ol/View.js';
+import olcsOverlaySynchronizer from './OverlaySynchronizer';
+import type Map from 'ol/Map.js';
+import type Interaction from 'ol/interaction/Interaction.js';
+import type {Group} from 'ol/layer.js';
+import type Feature from 'ol/Feature.js';
+import type View from 'ol/View.js';
 import type {
   BoundingSphere, ContextOptions,
   DataSourceCollection,
@@ -66,11 +63,11 @@ type SceneOptions = {
 
 type OLCesiumOptions = {
   map: Map,
-  time: () => JulianDate,
-  target: Element | string,
-  createSynchronizers: (map: Map, scene: Scene, dataSourceCollection: DataSourceCollection) => AbstractSynchronizer<ImageryLayer | VectorLayerCounterpart>[],
-  stopOpenLayersEventsPropagation: boolean,
-  sceneOptions: SceneOptions
+  time?: () => JulianDate,
+  target?: Element | string,
+  createSynchronizers?: (map: Map, scene: Scene, dataSourceCollection: DataSourceCollection) => AbstractSynchronizer<ImageryLayer | VectorLayerCounterpart>[],
+  stopOpenLayersEventsPropagation?: boolean,
+  sceneOptions?: SceneOptions
 }
 
 // FIXME: remove this when all the synchronizers are migrated to typescript.
@@ -90,7 +87,7 @@ type SynchronizerType = AbstractSynchronizer<ImageryLayer | VectorLayerCounterpa
  * @property {Cesium.SceneOptions} [sceneOptions] Allows the passing of property value to the
  *      `Cesium.Scene`.
  */
-class OLCesium {
+export default class OLCesium {
   private autoRenderLoop_: olcsAutoRenderLoop | null = null;
   private map_: Map;
   private time_: () => JulianDate;
@@ -644,5 +641,3 @@ class OLCesium {
     }
   }
 }
-
-export default OLCesium;

@@ -1,89 +1,58 @@
-/**
- * @module olcs.Camera
- */
-
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
-import {toRadians, toDegrees} from './math.js';
+import {toRadians, toDegrees} from './math';
 import {getTransform} from 'ol/proj.js';
-import {pickCenterPoint, calcDistanceForResolution, calcResolutionForDistance} from './core.ts';
+import {pickCenterPoint, calcDistanceForResolution, calcResolutionForDistance} from './core';
+import type {Map, View} from 'ol';
+import type {Scene, Camera as CesiumCamera, Matrix4, HeadingPitchRollValues} from 'cesium';
+import type {EventsKey} from 'ol/events.js';
 
-class Camera {
+/**
+ * @param input Input coordinate array.
+ * @param opt_output Output array of coordinate values.
+ * @param opt_dimension Dimension.
+ * @return Input coordinate array (same array as input).
+ */
+export function identityProjection(input: number[], opt_output?: number[], opt_dimension?: number): number[] {
+  const dim = opt_dimension || input.length;
+  if (opt_output) {
+    for (let i = 0; i < dim; ++i) {
+      opt_output[i] = input[i];
+    }
+  }
+  return input;
+}
+
+export default class Camera {
+  private scene_: Scene;
+  private cam_: CesiumCamera;
+  private map_: Map;
+  private view_: View;
+
+  private viewListenKey_: EventsKey = null;
+
+  private toLonLat_ = identityProjection;
+  private fromLonLat_ = identityProjection;
+
+  /**
+   * 0 -- topdown, PI/2 -- the horizon
+   */
+  private tilt_: number = 0;
+  private distance_ = 0;
+  private lastCameraViewMatrix_: Matrix4 = null;
+
+  /**
+   * This is used to discard change events on view caused by updateView method.
+   */
+  private viewUpdateInProgress_ = false;
+
   /**
    * This object takes care of additional 3d-specific properties of the view and
    * ensures proper synchronization with the underlying raw Cesium.Camera object.
-   * @param {!Cesium.Scene} scene
-   * @param {!ol.Map} map
-   * @api
    */
-  constructor(scene, map) {
-    /**
-     * @type {!Cesium.Scene}
-     * @private
-     */
+  constructor(scene: Scene, map: Map) {
     this.scene_ = scene;
-
-    /**
-     * @type {!Cesium.Camera}
-     * @private
-     */
     this.cam_ = scene.camera;
-
-    /**
-     * @type {!ol.Map}
-     * @private
-     */
     this.map_ = map;
-
-    /**
-     * @type {?ol.View}
-     * @private
-     */
-    this.view_ = null;
-
-    /**
-     * @type {?ol.EventsKey}
-     * @private
-     */
-    this.viewListenKey_ = null;
-
-    /**
-     * @type {!ol.TransformFunction}
-     * @private
-     */
-    this.toLonLat_ = Camera.identityProjection;
-
-    /**
-     * @type {!ol.TransformFunction}
-     * @private
-     */
-    this.fromLonLat_ = Camera.identityProjection;
-
-    /**
-     * 0 -- topdown, PI/2 -- the horizon
-     * @type {number}
-     * @private
-     */
-    this.tilt_ = 0;
-
-    /**
-     * @type {number}
-     * @private
-     */
-    this.distance_ = 0;
-
-    /**
-     * @type {?Cesium.Matrix4}
-     * @private
-     */
-    this.lastCameraViewMatrix_ = null;
-
-    /**
-     * This is used to discard change events on view caused by updateView method.
-     * @type {boolean}
-     * @private
-     */
-    this.viewUpdateInProgress_ = false;
-
     this.map_.on('change:view', (e) => {
       this.setView_(this.map_.getView());
     });
@@ -96,26 +65,10 @@ class Camera {
   }
 
   /**
-   * @param {Array.<number>} input Input coordinate array.
-   * @param {Array.<number>=} opt_output Output array of coordinate values.
-   * @param {number=} opt_dimension Dimension.
-   * @return {Array.<number>} Input coordinate array (same array as input).
-   */
-  static identityProjection(input, opt_output, opt_dimension) {
-    const dim = opt_dimension || input.length;
-    if (opt_output) {
-      for (let i = 0; i < dim; ++i) {
-        opt_output[i] = input[i];
-      }
-    }
-    return input;
-  }
-
-  /**
    * @param {?ol.View} view New view to use.
    * @private
    */
-  setView_(view) {
+  setView_(view: View | undefined) {
     if (this.view_) {
       olObservableUnByKey(this.viewListenKey_);
       this.viewListenKey_ = null;
@@ -130,30 +83,26 @@ class Camera {
       this.toLonLat_ = toLonLat;
       this.fromLonLat_ = fromLonLat;
 
-      this.viewListenKey_ = view.on('propertychange', e => this.handleViewEvent_(e));
+      this.viewListenKey_ = view.on('propertychange', e => this.handleViewChangedEvent_());
 
       this.readFromView();
     } else {
-      this.toLonLat_ = Camera.identityProjection;
-      this.fromLonLat_ = Camera.identityProjection;
+      this.toLonLat_ = identityProjection;
+      this.fromLonLat_ = identityProjection;
     }
   }
 
-  /**
-   * @param {?} e
-   * @private
-   */
-  handleViewEvent_(e) {
+  private handleViewChangedEvent_() {
     if (!this.viewUpdateInProgress_) {
       this.readFromView();
     }
   }
 
   /**
-   * @param {number} heading In radians.
-   * @api
+   * @deprecated
+   * @param heading In radians.
    */
-  setHeading(heading) {
+  setHeading(heading: number) {
     if (!this.view_) {
       return;
     }
@@ -162,10 +111,10 @@ class Camera {
   }
 
   /**
-   * @return {number|undefined} Heading in radians.
-   * @api
+   * @deprecated
+   * @return Heading in radians.
    */
-  getHeading() {
+  getHeading(): number|undefined {
     if (!this.view_) {
       return undefined;
     }
@@ -174,46 +123,42 @@ class Camera {
   }
 
   /**
-   * @param {number} tilt In radians.
-   * @api
+   * @param tilt In radians.
    */
-  setTilt(tilt) {
+  setTilt(tilt: number) {
     this.tilt_ = tilt;
     this.updateCamera_();
   }
 
   /**
-   * @return {number} Tilt in radians.
-   * @api
+   * @return Tilt in radians.
    */
-  getTilt() {
+  getTilt(): number {
     return this.tilt_;
   }
 
   /**
-   * @param {number} distance In meters.
-   * @api
+   * @param distance In meters.
    */
-  setDistance(distance) {
+  setDistance(distance: number) {
     this.distance_ = distance;
     this.updateCamera_();
     this.updateView();
   }
 
   /**
-   * @return {number} Distance in meters.
-   * @api
+   * @return Distance in meters.
    */
-  getDistance() {
+  getDistance(): number {
     return this.distance_;
   }
 
   /**
+   * @deprecated
    * Shortcut for ol.View.setCenter().
-   * @param {!ol.Coordinate} center Same projection as the ol.View.
-   * @api
+   * @param center Same projection as the ol.View.
    */
-  setCenter(center) {
+  setCenter(center: number[]) {
     if (!this.view_) {
       return;
     }
@@ -221,6 +166,7 @@ class Camera {
   }
 
   /**
+   * @deprecated
    * Shortcut for ol.View.getCenter().
    * @return {ol.Coordinate|undefined} Same projection as the ol.View.
    * @api
@@ -234,10 +180,9 @@ class Camera {
 
   /**
    * Sets the position of the camera.
-   * @param {!ol.Coordinate} position Same projection as the ol.View.
-   * @api
+   * @param position Same projection as the ol.View.
    */
-  setPosition(position) {
+  setPosition(position: number[]) {
     if (!this.toLonLat_) {
       return;
     }
@@ -257,10 +202,10 @@ class Camera {
 
   /**
    * Calculates position under the camera.
-   * @return {!ol.Coordinate|undefined} Same projection as the ol.View.
+   * @return Coordinates in same projection as the ol.View.
    * @api
    */
-  getPosition() {
+  getPosition(): number[] | undefined {
     if (!this.fromLonLat_) {
       return undefined;
     }
@@ -275,10 +220,9 @@ class Camera {
   }
 
   /**
-   * @param {number} altitude In meters.
-   * @api
+   * @param altitude In meters.
    */
-  setAltitude(altitude) {
+  setAltitude(altitude: number) {
     const carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(
         this.cam_.position);
     carto.height = altitude;
@@ -288,10 +232,9 @@ class Camera {
   }
 
   /**
-   * @return {number} Altitude in meters.
-   * @api
+   * @return Altitude in meters.
    */
-  getAltitude() {
+  getAltitude(): number {
     const carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(
         this.cam_.position);
 
@@ -301,9 +244,8 @@ class Camera {
   /**
    * Updates the state of the underlying Cesium.Camera
    * according to the current values of the properties.
-   * @private
    */
-  updateCamera_() {
+  private updateCamera_() {
     if (!this.view_ || !this.toLonLat_) {
       return;
     }
@@ -323,8 +265,7 @@ class Camera {
 
     const destination = Cesium.Ellipsoid.WGS84.cartographicToCartesian(carto);
 
-    /** @type {Cesium.optionsOrientation} */
-    const orientation = {
+    const orientation: HeadingPitchRollValues = {
       pitch: this.tilt_ - Cesium.Math.PI_OVER_TWO,
       heading: -this.view_.getRotation(),
       roll: undefined
@@ -341,7 +282,6 @@ class Camera {
 
   /**
    * Calculates the values of the properties from the current ol.View state.
-   * @api
    */
   readFromView() {
     if (!this.view_ || !this.toLonLat_) {
@@ -364,7 +304,6 @@ class Camera {
   /**
    * Calculates the values of the properties from the current Cesium.Camera state.
    * Modifies the center, resolution and rotation properties of the view.
-   * @api
    */
   updateView() {
     if (!this.view_ || !this.fromLonLat_) {
@@ -440,9 +379,9 @@ class Camera {
 
   /**
    * Check if the underlying camera state has changed and ensure synchronization.
-   * @param {boolean=} opt_dontSync Do not synchronize the view.
+   * @param opt_dontSync Do not synchronize the view.
    */
-  checkCameraChange(opt_dontSync) {
+  checkCameraChange(opt_dontSync?: boolean) {
     const old = this.lastCameraViewMatrix_;
     const current = this.cam_.viewMatrix;
 
@@ -456,26 +395,21 @@ class Camera {
 
   /**
    * calculate the distance between camera and centerpoint based on the resolution and latitude value
-   * @param {number} resolution Number of map units per pixel.
-   * @param {number} latitude Latitude in radians.
-   * @return {number} The calculated distance.
-   * @api
+   * @param resolution Number of map units per pixel.
+   * @param latitude Latitude in radians.
+   * @return The calculated distance.
    */
-  calcDistanceForResolution(resolution, latitude) {
+  calcDistanceForResolution(resolution: number, latitude: number): number {
     return calcDistanceForResolution(resolution, latitude, this.scene_, this.view_.getProjection());
   }
 
   /**
    * calculate the resolution based on a distance(camera to position) and latitude value
-   * @param {number} distance
-   * @param {number} latitude
-   * @return {number} The calculated resolution.
-   * @api
+   * @param distance
+   * @param latitude
+   * @return} The calculated resolution.
    */
-  calcResolutionForDistance(distance, latitude) {
+  calcResolutionForDistance(distance: number, latitude: number): number {
     return calcResolutionForDistance(distance, latitude, this.scene_, this.view_.getProjection());
   }
 }
-
-
-export default Camera;

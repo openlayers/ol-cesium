@@ -1,7 +1,4 @@
-/**
- * @module examples.sidebyside
- */
-import OLCesium from 'olcs/OLCesium.ts';
+import OLCesium from 'olcs';
 import olSourceOSM from 'ol/source/OSM.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olMap from 'ol/Map.js';

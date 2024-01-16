@@ -13,7 +13,7 @@ cp -R dist/ $VERSION && zip -r $VERSION.zip $VERSION; rm -rf $VERSION
 echo "# Preparing olcs package"
 mkdir -p $BUILD
 node_modules/.bin/tsc
-cp -R out/olcs/* $BUILD
+cp -R lib/olcs/* $BUILD
 cp ./css/olcs.css $BUILD
 cp package.json $BUILD
 sed -i 's/ol-cesium/olcs/g' $BUILD/package.json

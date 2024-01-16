@@ -2,6 +2,10 @@ import fs from 'fs';
 import path from 'path';
 
 function handleFile(filePath) {
+  if (filePath.endsWith('.d.ts')) {
+    console.log('Skipping', filePath);
+    return;
+  }
   fs.readFile(filePath, 'utf-8', (error, content) => {
     if (error) {
       console.error('Error reading the file:', error);
@@ -10,13 +14,13 @@ function handleFile(filePath) {
     const split = content.split('\n');
     let changed = false;
     const newSplit = split.map((line) => {
-      if (!line.startsWith('import') || line.endsWith(".js';") || line.includes("from 'cesium")) {
+      if (!(line.startsWith('import') || line.startsWith('export')) || !line.endsWith(';') || line.endsWith(".js';") || line.includes("from 'cesium") || line === 'export default OLCesium;') {
         return line;
       }
       let newline = undefined;
       if (line.endsWith(".ts';")) {
         newline = line.replace(".ts';", ".js';");
-      } else if (line.includes("from './")) {
+      } else if (line.includes("from './") || line.includes("from '../")) {
         newline = line.replace("';", ".js';");
       } else {
         console.error('XX', filePath, line);

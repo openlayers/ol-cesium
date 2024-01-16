@@ -1,5 +1,19 @@
 # Changelog
 
+# v 2.17 - 2023-01-15
+
+* Breaking changes
+  * Remove olcsListen wrapper. Use observable.on(type, listener) instead
+  * Stop using stable sort (we assume it is implemented by all browsers now)
+  * Make LazyLoader.promise private
+  * Map is now a required parameter of olcs.Manager
+  * Remove unnecessary getOlView, getCesiumViewMatrix, getCameraExtentRectangle from ols.Manager
+  * Remove obsolete stacked corridor function (ground polylines are now supported in Cesium)
+* Changes
+  * Migrate more files to typescript
+  * Deprecate some unnecessary wrappers in Camera
+  * Port to Cesium 1.113
+
 # v 2.16.1 - 2023-12-21
 
 * Changed

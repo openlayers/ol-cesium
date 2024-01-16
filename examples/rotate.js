@@ -1,8 +1,4 @@
-/**
- * @module examples.rotate
- */
-import {computeSignedTiltAngleOnGlobe, pickBottomPoint, computeAngleToZenith, setHeadingUsingBottomCenter, rotateAroundAxis} from 'olcs/core.ts';
-import OLCesium from 'olcs/OLCesium.ts';
+import OLCesium, {computeSignedTiltAngleOnGlobe, pickBottomPoint, computeAngleToZenith, setHeadingUsingBottomCenter, rotateAroundAxis} from 'olcs';
 import olView from 'ol/View.js';
 import {defaults as olControlDefaults} from 'ol/control.js';
 import olSourceOSM from 'ol/source/OSM.js';
