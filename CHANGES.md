@@ -13,6 +13,11 @@
   * Migrate more files to typescript
   * Deprecate some unnecessary wrappers in Camera
   * Port to Cesium 1.113
+* Deprecation
+  * The UMD build is deprecated and will be removed in 2.18. You should use a bundler.
+  * The "oldfashioned" build is deprecated and will be removed in 2.18. Switch to using ES modules and a bundler.
+  * The export `window.olcs`is deprecatd and will be removed in 2.18.
+  * If you have any comment regarding these changes reach to us.
 
 # v 2.16.1 - 2023-12-21
 
