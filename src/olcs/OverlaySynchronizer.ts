@@ -3,6 +3,8 @@ import SynchronizedOverlay from './SynchronizedOverlay';
 import {getUid} from './util';
 import type {Scene} from 'cesium';
 import type {CollectionEvent} from 'ol/Collection.js';
+import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
+import type {EventsKey} from 'ol/events';
 
 export default class OverlaySynchronizer {
   private overlayCollection_: Collection<Overlay>;
@@ -10,6 +12,7 @@ export default class OverlaySynchronizer {
   private overlayContainer_: HTMLDivElement;
   private overlayMap_: Map<number, SynchronizedOverlay> = new Map();
   private overlayEvents = ['click', 'dblclick', 'mousedown', 'touchstart', 'pointerdown', 'mousewheel', 'wheel'];
+  private listenerKeys_: EventsKey[];
 
   /**
   * @param map
@@ -59,8 +62,12 @@ export default class OverlaySynchronizer {
   synchronize() {
     this.destroyAll();
     this.overlayCollection_.forEach((overlay) => { this.addOverlay(overlay); });
-    this.overlayCollection_.on('add', (evt: CollectionEvent<Overlay>) => this.addOverlay(evt.element));
-    this.overlayCollection_.on('remove', (evt: CollectionEvent<Overlay>) => this.removeOverlay(evt.element));
+    this.listenerKeys_.push(
+        this.overlayCollection_.on('add', (evt: CollectionEvent<Overlay>) => this.addOverlay(evt.element))
+    );
+    this.listenerKeys_.push(
+        this.overlayCollection_.on('remove', (evt: CollectionEvent<Overlay>) => this.removeOverlay(evt.element))
+    );
   }
 
 
@@ -102,5 +109,7 @@ export default class OverlaySynchronizer {
       overlay.destroy();
     });
     this.overlayMap_.clear();
+    olObservableUnByKey(this.listenerKeys_);
+    this.listenerKeys_.splice(0);
   }
 }
