@@ -99,6 +99,7 @@ export default class OverlaySynchronizer {
   */
   protected destroyAll() {
     this.overlayMap_.forEach((overlay: SynchronizedOverlay) => {
+      this.map_.removeOverlay(overlay);
       overlay.destroy();
     });
     this.overlayMap_.clear();
