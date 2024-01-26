@@ -110,6 +110,6 @@ export default class OverlaySynchronizer {
     });
     this.overlayMap_.clear();
     olObservableUnByKey(this.listenerKeys_);
-    this.listenerKeys_.splice(0);
+    this.listenerKeys_.length = 0;
   }
 }
