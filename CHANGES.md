@@ -1,5 +1,11 @@
 # Changelog
 
+# v 2.18 - 2023-01-29
+
+* Breaking changes
+  * Remove deprecated oldfashioned build
+  * Remove UMD build
+
 # v 2.17 - 2023-01-15
 
 * Breaking changes

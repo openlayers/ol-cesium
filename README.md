@@ -1,16 +1,19 @@
-OpenLayers - Cesium integration library. Create your map using [OpenLayers](https://openlayers.org/), and visualize it on a globe with [Cesium](https://cesium.com/platform/cesiumjs/).
+# OpenLayers - Cesium library
+
+OLCS is an opensource JS library for making [OpenLayers](https://openlayers.org/) and [CesiumJS](https://cesium.com/platform/cesiumjs/) works together, in the same application.
+It addresses several use-cases:
+
+- [Adding 3D to an existing OpenLayers map](#Adding 3D to an existing OpenLayers map)
+- [Extending CesiumJS with new capabilities](#Extending CesiumJS with new capabilities)
+- [Cherry-picking the pieces you need](#Cherry-picking the pieces you need)
+
 See [live examples](https://openlayers.org/ol-cesium/examples/).
 
+The npm package is called [olcs](https://www.npmjs.com/package/olcs).
+Note that CesiumJS is accessed through the global `window.Cesium` object.
 
-ES6 modules
------------
+## Features
 
-Since version 2.0, the code is entirely based on ES6 modules and syntax.
-It requires OpenLayers 6.x.
-A convenient ES6 package `olcs` is available on npm.
-
-Features
---------
 Switch smoothly between 2D and 3D and synchronize:
 
 - Map context (bounding box and zoom level);
@@ -26,62 +29,98 @@ The library is configurable and extensible and allows:
 
 For synchronization of maps in projections other than EPSG:4326 and EPSG:3857 you need 2 datasets, see the customProj example.
 
-Integration in your application
--------------------------------
+## Adding 3D to an existing OpenLayers map
 
-There are several ways to integrate OL-Cesium in your application.
-In all cases OpenLayers and Cesium are peer-dependencies of OL-Cesium, your application need to depend on a compatible version of OpenLayers and of Cesium. Note that Cesium is accessed through the global `window.Cesium` object. OpenLayers is accessed through ES6 imports.
-
-### As an ES6 library (recommended method)
-```bash
-npm i --save olcs
-```
-
-Then import the parts you need. Example:
 ```js
-import OLCesium from 'olcs/OLCesium';
-const ol3d = new OLCesium({map: ol2dMap}); // ol2dMap is the ol.Map instance
-ol3d.setEnabled(true);
+// Create an OpenLayers map or start from an existing one.
+import Map from 'ol/Map.js';
+const ol2dMap = new Map({
+    ...
+});
+ol2dMap.addLayer(....)
 ```
 
-In addition, you need to expose the Cesium library as `window.Cesium`.
-For this, simply add the Cesium script to your html:
+```js
+// Pass the map to the OL-Cesium constructor
+// OL-Cesium will create and synchronize a 3D CesiumJs globe from your layers and data.
+import OLCesium from 'olcs';
+const ol3d = new OLCesium({map: ol2dMap});
+```
+
+```js
+ol3d.setEnabled(true); // switch to 3D - show the globe
+ol3d.setEnabled(true); // switch to 2D - show the map
+```
+
+Build with your prefered bundler.
+
+You can use any version of CesiumJS: latest upstream, a fork...
+Simply provide it as `window.Cesium` global:
+
 ```html
-<script type="text/javascript" src="..your_path../Cesium.js"></script>
+<script src="https://cesium.com/downloads/cesiumjs/releases/1.113/Build/Cesium/Cesium.js"></script>
 ```
 
-For Cesium integration with Webpack, see [ol-cesium-webpack-example](https://github.com/gberaudo/ol-cesium-webpack-example).
+## Extending CesiumJS with new capabilities
 
-Going further
--------------
+```js
+// Start from a CesiumJS globe
+const viewer = getYourCesiumJSViewer();
 
-See the [examples](https://openlayers.org/ol-cesium/examples/).
+// Add OpenLayers imagery provider
+import {OLImageryProvider} from 'olcs';
+viewer.scene.imageryLayers.addImageryProvider(new OLImageryProvider(...));
+
+// Add Mapbox MVT imagery provider (client side rendering)
+import {MVTImageryProvider} from 'olcs';
+viewer.scene.imageryLayers.addImageryProvider(new MVTImageryProvider(...));
+```
+
+This is a bit limited at the moment but idea would be to implement:
+
+- client side reprojection;
+- full client side MVT rendering;
+- GeoTIFF rendering;
+- ... any feature available in OpenLayers.
+
+## Cherry-picking the pieces you need
+
+Specific low level functionnalities can be cherry-picked from the library.
+For example:
+
+```js
+// GoogleMap rotating effect
+import {rotateAroundBottomCenter} from 'olcs';
+rotateAroundBottomCenter(viewer.scene, someAngle);
+```
+
+```ts
+// convert OpenLayers Vector Layer to CesiumJS primitives
+import {FeatureConverter} from 'olcs';
+const converter = new FeatureConverter(viewer.scene);
+const featurePrimitiveMap: Record<number, PrimitiveCollection> = {};
+const counterpart: VectorLayerCounterpart = this.converter.olVectorLayerToCesium(olLayer, view, featurePrimitiveMap);
+const csPrimitives = counterpart.getRootPrimitive();
+viewer.scene.primitives.add(csPrimitives);
+```
+
+```js
+// Even more powerful, use a synchronizer
+import {VectorSynchronizer} from 'olcs';
+const synchronizer = new VectorSynchronizer(ol2dMtheap, viewer.scene);
+```
+
+If you think some low level features should be spotlited here, open an issue and let's discuss it.
+
+## Configuration
 
 Use properties to control specific aspects of OL-Cesium integration, see the [PROPERTIES.MD](https://github.com/openlayers/ol-cesium/blob/master/PROPERTIES.md).
 
-If you are new to Cesium, you should also check the [Cesium tutorials](https://cesiumjs.org/tutorials).
+Also, check the [api doc](https://openlayers.org/ol-cesium/apidoc/).
 
+## Limitations due to OpenLayers
 
-Running the examples in debug mode
-----------------------------------
-
-This is useful for contributing to Ol-Cesium, because it loads the
-source files instead of a minified build:
-
-    $ make serve
-
-will make the distribution examples available at http://localhost:3000/examples
-
-Running the unminified version of Cesium
-----------------------------------------
-
-Passing the parameter `?mode=dev` to an example will load the debug version of
-Cesium instead of the minified one. This is helpful when something breaks inside
-Cesium. In distribution mode, an unminified version of OpenLayers and Ol-Cesium is
-also loaded.
-
-Limitations
------------
+There are a few limitations due to decisions on
 
 - OpenLayers unmanaged layers are not discoverable and as a consequence not
 supported. Plain layers should be used instead of the synchronization managed
@@ -89,7 +128,6 @@ manually. See https://github.com/openlayers/ol-cesium/issues/350.
 
 - OpenLayers interactions are not supported in 3d. See https://github.com/openlayers/ol-cesium/issues/655.
 
-Release process
----------------
+## Contributing
 
-See [RELEASE.md](https://github.com/openlayers/ol-cesium/blob/master/RELEASE.md).
+See [CONTRIBUTING.md](./CONTRIBUTING.md).
