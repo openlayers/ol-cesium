@@ -119,7 +119,7 @@ modelFeatures.forEach((feature) => {
     const rotation = /** @type {number} */ (feature.get('rotation'));
     return {
       cesiumOptions: {
-        url: 'data/Box.gltf',
+        url: './data/Box.gltf',
         modelMatrix: createMatrixAtCoordinates(center, rotation),
         heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
         minimumPixelSize: 64

@@ -1,8 +1,11 @@
 #!/bin/bash -ex
 
 # Create distribution
-make cleanall
-make dist
+npm ci
+npm run lint
+npm run typecheck
+npm run build-examples
+npm run doc; cp -R apidoc dist/doc
 
 CLONE=".build/gh-pages-clone"
 # Publish distribution contents to gh-pages

@@ -1,20 +1,59 @@
 {
-  "name": "ol-cesium",
+  "name": "olcs",
   "version": "2.17.0",
-  "description": "OpenLayers Cesium integration library",
+  "description": "OpenLayers Cesium integration and plugin library",
   "scripts": {
-    "build-examples": "cross-env NODE_ENV=production TARGET=examples webpack --progress --bail",
-    "build-library": "cross-env NODE_ENV=production TARGET=library webpack --progress --bail",
-    "build-library-debug": "cross-env NODE_ENV=development TARGET=library webpack --progress --bail",
-    "build-umd": "cross-env NODE_ENV=production TARGET=umd webpack --progress --bail",
-    "start": "cross-env DEV_SERVER=1 NODE_ENV=development TARGET=examples webpack serve --port 3000 --progress --bail --static-directory .",
-    "typecheck": "tsc --pretty",
-    "lint": "eslint src",
-    "doc": "typedoc --name ol-cesium --excludeExternals --out dist/apidoc --entryPoints src/olcs.ts --tsconfig ./tsconfig.json"
+    "build-examples": "rm -rf dist; parcel build; mkdir -p dist/examples/node_modules/ol; mkdir -p dist/examples/node_modules/cesium/Build/; cp examples/inject_ol_cesium.js dist/examples/; cp node_modules/ol/ol.css dist/examples/node_modules/ol/; cp -R node_modules/cesium/Build/CesiumUnminified node_modules/cesium/Build/Cesium dist/examples/node_modules/cesium/Build/; cp -R examples/data dist/examples/",
+    "prepare": "tsc --pretty && node buildtools/fix_paths_recast.js; npm run doc",
+    "typecheck": "tsc --pretty --noEmit",
+    "lint": "eslint src buildtools examples",
+    "check": "npm lint && npm typecheck",
+    "doc": "typedoc --name ol-cesium --excludeExternals --out apidoc --entryPoints src/olcs.ts --tsconfig ./tsconfig.json",
+    "start": "parcel serve --target examples",
+    "serve-built-examples": "python3 -m http.server --directory dist 12345"
   },
-  "main": "./dist/olcesium.js",
-  "module": "./dist/olcesium.umd.js",
+  "targets": {
+    "examples": {
+      "source": "./examples/index.html",
+      "distDir": "dist/examples/",
+      "context": "browser",
+      "publicUrl": "./",
+      "optimize": true,
+      "isLibrary": false,
+      "sourceMap": true
+    }
+  },
+  "alias": {
+    "olcs": "./lib/olcs"
+  },
+  "source": "./src/olcs.ts",
   "type": "module",
+  "main": "./lib/olcs.js",
+  "exports": {
+    ".": "./lib/olcs.js",
+    "./src/*": "./lib/olcs/*.js",
+    "./ts/*": "./lib/olcs/*.ts",
+    "./*": "./lib/olcs/*.js"
+  },
+  "types": "lib/types/olcs.d.ts",
+  "directories": {
+    "doc": "apidoc/"
+  },
+  "homepage": "https://github.com/openlayers/ol-cesium/",
+  "keywords": [
+    "Cesium",
+    "OpenLayers",
+    "OL",
+    "Synchronization",
+    "Plugins"
+  ],
+  "files": [
+    "PROPERTIES.md",
+    "css/",
+    "src/",
+    "lib/",
+    "apidoc/"
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/openlayers/ol-cesium.git"
@@ -23,40 +62,32 @@
   "bugs": {
     "url": "https://github.com/openlayers/ol-cesium/issues"
   },
+  "maintainers": [
+    {
+      "name": "Guillaume Beraudo",
+      "email": "guillaume.beraudo@camptocamp.com",
+      "url": "https://github.com/gberaudo"
+    }
+  ],
   "peerDependencies": {
     "cesium": ">= 1.62.0",
     "ol": ">= 6.0.1 || 7 || 8"
   },
   "devDependencies": {
-    "@babel/core": "7.23.7",
-    "@babel/plugin-syntax-dynamic-import": "7.8.3",
-    "@babel/plugin-transform-typescript": "7.23.6",
-    "@babel/preset-env": "7.23.8",
-    "@babel/preset-typescript": "7.23.3",
+    "@babel/parser": "^7.23.6",
     "@mapbox/geojsonhint": "3.3.0",
-    "@types/webpack": "5.28.5",
     "@typescript-eslint/eslint-plugin": "6.18.1",
     "@typescript-eslint/parser": "6.18.1",
-    "babel-loader": "9.1.3",
     "cesium": "1.113.0",
-    "copy-webpack-plugin": "12.0.1",
-    "cross-env": "7.0.3",
     "eslint": "8.56.0",
     "eslint-config-openlayers": "12.0.0",
     "eslint-import-resolver-typescript": "3.6.1",
-    "eslint-import-resolver-webpack": "0.13.8",
     "eslint-plugin-import": "2.29.1",
-    "html-loader": "4.2.0",
-    "html-webpack-plugin": "5.6.0",
-    "htmlparser2": "9.1.0",
-    "jsdoc": "4.0.2",
     "ol": "8.2.0",
+    "parcel": "2.11.0",
     "proj4": "2.10.0",
+    "recast": "^0.23.4",
     "typedoc": "0.25.7",
-    "typescript": "5.3.3",
-    "webpack": "5.89.0",
-    "webpack-cli": "5.1.4",
-    "webpack-dev-server": "4.15.1",
-    "webpack-merge": "5.10.0"
+    "typescript": "5.3.3"
   }
 }
