@@ -3,7 +3,6 @@ import Style, {type StyleFunction} from 'ol/style/Style.js';
 import Stroke from 'ol/style/Stroke.js';
 import {toContext} from 'ol/render.js';
 import {get as getProjection} from 'ol/proj.js';
-import {VERSION as OL_VERSION} from 'ol/util.js';
 import LRUCache from 'ol/structs/LRUCache.js';
 import {getForProjection as getTilegridForProjection} from 'ol/tilegrid.js';
 import {createFromTemplates as createTileUrlFunctions} from 'ol/tileurlfunction.js';
@@ -182,30 +181,12 @@ export default class MVTImageryProvider implements ImageryProvider {
   }
 
   readFeaturesFromBuffer(buffer: ArrayBuffer): RenderFeature[] {
-    let options;
-    if (OL_VERSION <= '6.4.4') {
-      // See https://github.com/openlayers/openlayers/pull/11540
-      options = {
-        extent: [0, 0, 4096, 4096],
-        dataProjection: this.projection_,
-        featureProjection: this.projection_
-      };
-    }
-    const features = format.readFeatures(buffer, options) as RenderFeature[];
+    const features = format.readFeatures(buffer) as RenderFeature[];
     const scaleFactor = this.tileWidth / 4096;
     features.forEach((f) => {
       const flatCoordinates = f.getFlatCoordinates();
-      let flip = false;
       for (let i = 0; i < flatCoordinates.length; ++i) {
         flatCoordinates[i] *= scaleFactor;
-        if (flip) {
-          // FIXME: why do we need this now?
-          flatCoordinates[i] = this.tileWidth - flatCoordinates[i];
-        }
-        if (OL_VERSION <= '6.4.4') {
-          // LEGACY
-          flip = !flip;
-        }
       }
     });
 

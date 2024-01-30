@@ -70,8 +70,8 @@
     }
   ],
   "peerDependencies": {
-    "cesium": ">= 1.62.0",
-    "ol": ">= 6.0.1 || 7 || 8"
+    "cesium": ">= 1.90.0",
+    "ol": ">= 7 || 8"
   },
   "devDependencies": {
     "@babel/parser": "7.23.9",

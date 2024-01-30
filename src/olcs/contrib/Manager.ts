@@ -97,16 +97,7 @@ export default class Manager extends Observable {
   instantiateOLCesium(): OLCesium {
     const ol3d = new OLCesium({map: this.map});
     const scene = ol3d.getCesiumScene();
-    // LEGACY
-    if ('createWorldTerrain' in Cesium) {
-      // @ts-ignore
-      const terrainProvider = Cesium.createWorldTerrain();
-      scene.terrainProvider = terrainProvider;
-    } else {
-      // v107+
-      Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
-    }
-
+    Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
     return ol3d;
   }
 
