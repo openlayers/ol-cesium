@@ -12,7 +12,7 @@ export default class OverlaySynchronizer {
   private overlayContainer_: HTMLDivElement;
   private overlayMap_: Map<number, SynchronizedOverlay> = new Map();
   private overlayEvents = ['click', 'dblclick', 'mousedown', 'touchstart', 'pointerdown', 'mousewheel', 'wheel'];
-  private listenerKeys_: EventsKey[];
+  private listenerKeys_: EventsKey[] = [];
 
   /**
   * @param map
