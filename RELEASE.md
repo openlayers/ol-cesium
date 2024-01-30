@@ -13,5 +13,7 @@ Each month, a new release is published in accordance to https://github.com/openl
   - npm start; open http://localhost:3000/examples # test all examples (dev mode)
   - npm run build-examples; python3 -m http.server --directory dist 12345; open http://localhost:12345/examples # test all examples (built mode)
 - Publish with:
+  - npm version minor # or patch
   - npm pack
   - npm publish # this will publish package olcs (ol-cesium package is obsolete and not updated anymore)
+  - git push --tags
