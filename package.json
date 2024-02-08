@@ -7,7 +7,7 @@
     "prepare": "tsc --pretty && node buildtools/fix_paths_recast.js; npm run doc",
     "typecheck": "tsc --pretty --noEmit",
     "lint": "eslint src buildtools examples",
-    "check": "npm lint && npm typecheck",
+    "checks": "npm run lint && npm run typecheck",
     "doc": "typedoc --name ol-cesium --excludeExternals --out apidoc --entryPoints src/olcs.ts --tsconfig ./tsconfig.json",
     "start": "parcel serve --target examples",
     "serve-built-examples": "python3 -m http.server --directory dist 12345"
