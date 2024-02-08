@@ -95,6 +95,7 @@ export default class SynchronizedOverlay extends OLOverlay {
 
     this.handleMapChanged();
     this.handleElementChanged();
+    this.handlePositionChanged();
   }
 
   /**
@@ -176,6 +177,10 @@ export default class SynchronizedOverlay extends OLOverlay {
    * @override
    */
   handlePositionChanged() {
+    // check if constructor has completed
+    if (!this.parent_) {
+      return;
+    }
     // transform position to WGS84
     const position = this.getPosition();
     if (position) {
