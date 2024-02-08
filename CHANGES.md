@@ -5,6 +5,10 @@
 * Breaking changes
   * Bump minimal supported version of OL and CesiumJS and remove compatibility code
 
+* Changes
+  * Port to Cesium 1.114
+  * Fix synchronized overlay initialization
+
 ## v 2.18 - 2023-01-29
 
 * Breaking changes
