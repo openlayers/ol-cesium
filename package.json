@@ -76,8 +76,8 @@
   "devDependencies": {
     "@babel/parser": "7.23.9",
     "@mapbox/geojsonhint": "3.3.0",
-    "@typescript-eslint/eslint-plugin": "6.21.0",
-    "@typescript-eslint/parser": "6.21.0",
+    "@typescript-eslint/eslint-plugin": "7.0.2",
+    "@typescript-eslint/parser": "7.0.2",
     "buffer": "^6.0.3",
     "cesium": "1.114.0",
     "eslint": "8.56.0",
