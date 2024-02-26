@@ -1,5 +1,9 @@
 # Changelog
 
+## v 2.19.2
+
+* Port to OpenLayers 9
+
 ## v 2.19.1
 
 * Export OverlaySynchronizer

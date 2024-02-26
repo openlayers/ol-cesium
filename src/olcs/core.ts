@@ -39,6 +39,7 @@ import type Map from 'ol/Map.js';
 import type Projection from 'ol/proj/Projection.js';
 import type {Color as OLColor} from 'ol/color.js';
 import type View from 'ol/View.js';
+import type {ColorLike, PatternDescriptor} from 'ol/colorlike.js';
 
 type CesiumUrlDefinition = {
     url: string,
@@ -555,7 +556,7 @@ export function olGeometryCloneTo4326<T extends Geometry>(geometry: T, projectio
 /**
  * Convert an OpenLayers color to Cesium.
  */
-export function convertColorToCesium(olColor: OLColor | CanvasGradient | CanvasPattern | string): Color | ImageMaterialProperty {
+export function convertColorToCesium(olColor: ColorLike | OLColor | PatternDescriptor | CanvasGradient | CanvasPattern | string): Color | ImageMaterialProperty {
   olColor = olColor || 'black';
   if (Array.isArray(olColor)) {
     return new Cesium.Color(

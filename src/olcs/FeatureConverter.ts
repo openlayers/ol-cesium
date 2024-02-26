@@ -13,7 +13,7 @@ import type ImageLayer from 'ol/layer/Image.js';
 import type {Feature, View} from 'ol';
 import type Text from 'ol/style/Text.js';
 import {type default as Style, type StyleFunction} from 'ol/style/Style.js';
-import type {ColorLike as OLColorLike} from 'ol/colorlike.js';
+import type {ColorLike as OLColorLike, PatternDescriptor} from 'ol/colorlike.js';
 import type {Color as OLColor} from 'ol/color.js';
 import type {ProjectionLike} from 'ol/proj.js';
 import {Geometry as OLGeometry, type MultiLineString, type MultiPolygon, type MultiPoint, type GeometryCollection, type Circle, type LineString, type Point, type Polygon} from 'ol/geom.js';
@@ -236,10 +236,10 @@ export default class FeatureConverter {
    * @return {!CSColor}
    */
   protected extractColorFromOlStyle(style: Style | Text, outline: boolean) {
-    const fillColor = style.getFill() ? style.getFill().getColor() : null;
+    const fillColor = style.getFill()?.getColor();
     const strokeColor = style.getStroke() ? style.getStroke().getColor() : null;
 
-    let olColor: OLColorLike | OLColor = 'black';
+    let olColor: OLColorLike | OLColor| PatternDescriptor = 'black';
     if (strokeColor && outline) {
       olColor = strokeColor;
     } else if (fillColor) {
