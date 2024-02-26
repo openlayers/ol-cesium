@@ -1,5 +1,9 @@
 # Changelog
 
+## v 2.19.1
+
+* Export OverlaySynchronizer
+
 ## v 2.19
 
 * Breaking changes
