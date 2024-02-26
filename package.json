@@ -71,7 +71,7 @@
   ],
   "peerDependencies": {
     "cesium": ">= 1.90.0",
-    "ol": "7 || 8"
+    "ol": "7 || 8 || 9"
   },
   "devDependencies": {
     "@babel/parser": "7.23.9",
@@ -83,7 +83,7 @@
     "eslint-config-openlayers": "12.0.0",
     "eslint-import-resolver-typescript": "3.6.1",
     "eslint-plugin-import": "2.29.1",
-    "ol": "8.2.0",
+    "ol": "9.0.0",
     "parcel": "2.11.0",
     "proj4": "2.10.0",
     "recast": "^0.23.4",
