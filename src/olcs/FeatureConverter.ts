@@ -976,12 +976,11 @@ export default class FeatureConverter {
     const olColor = outline ? stroke.getColor() : fill.getColor();
     const color = convertColorToCesium(olColor);
 
-    if (outline && stroke.getLineDash()) {
-      return Cesium.Material.fromType('Stripe', {
-        horizontal: false,
-        repeat: 500, // TODO how to calculate this?
-        evenColor: color,
-        oddColor: new Cesium.Color(0, 0, 0, 0) // transparent
+    const lineDash = stroke.getLineDash();
+    if (outline && lineDash) {
+      return Cesium.Material.fromType('PolylineDash', {
+        dashPattern: dashPattern(lineDash),
+        color
       });
     } else {
       return Cesium.Material.fromType('Color', {
@@ -1229,4 +1228,44 @@ export default class FeatureConverter {
     }
     return primitives;
   }
+}
+
+/**
+ * Transform a canvas line dash pattern to a Cesium dash pattern
+ * See https://cesium.com/learn/cesiumjs/ref-doc/PolylineDashMaterialProperty.html#dashPattern
+ * @param lineDash
+ */
+export function dashPattern(lineDash: number[]): number {
+  if (lineDash.length < 2) {
+    lineDash = [1, 1];
+  }
+  const segments = lineDash.length % 2 === 0 ? lineDash : [...lineDash, ...lineDash];
+  const total = segments.reduce((a, b) => a + b, 0);
+  const div = total / 16;
+  // create a 16 bit binary string
+  let binaryString = segments.map((segment, index) => {
+    // we alternate between 1 and 0
+    const digit = index % 2 === 0 ? '1' : '0';
+    // We scale the segment length to fit 16 slots.
+    let count = Math.round(segment / div);
+    if (index === 0 && count === 0) {
+      // We need to start with a 1
+      count = 1;
+    }
+    return digit.repeat(count);
+  }).join('');
+
+  // We rounded so it might be that the string is too short or too long.
+  // We try to fix it by padding or truncating the string.
+  if (binaryString.length < 16) {
+    binaryString = binaryString.padEnd(16, '0');
+  } else if (binaryString.length > 16) {
+    binaryString = binaryString.substring(0, 16);
+  }
+  if (binaryString[15] === '1') {
+    // We need to really finish with a 0
+    binaryString = binaryString.substring(0, 15) + '0';
+  }
+  console.assert(binaryString.length === 16);
+  return parseInt(binaryString, 2);
 }
