@@ -69,10 +69,8 @@ export default class Camera {
    * @private
    */
   setView_(view: View | undefined) {
-    if (this.view_) {
-      olObservableUnByKey(this.viewListenKey_);
-      this.viewListenKey_ = null;
-    }
+    olObservableUnByKey(this.viewListenKey_);
+    this.viewListenKey_ = null;
 
     this.view_ = view;
     if (view) {

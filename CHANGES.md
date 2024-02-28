@@ -4,7 +4,7 @@
 
 * Changes
   * Support dashed lines by converting the pattern
-
+  * Fix unlistening condition in camera._setView
 
 ## v 2.19.2
 
