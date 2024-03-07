@@ -123,6 +123,8 @@ export default class OLCesium {
   private needTrackedEntityUpdate_ = false;
   private boundingSphereScratch_: BoundingSphere = new Cesium.BoundingSphere();
   private synchronizers_: SynchronizerType[];
+  private pegmanIcon: Feature | null = null;
+  private miniMap: Map | null = null;
 
   constructor(options: OLCesiumOptions) {
     this.map_ = options.map;
@@ -208,7 +210,7 @@ export default class OLCesium {
 
     this.scene_.camera.constrainedAxis = Cesium.Cartesian3.UNIT_Z;
 
-    this.camera_ = new olcsCamera(this.scene_, this.map_);
+    this.camera_ = new olcsCamera(this.scene_, this.map_, this.miniMap);
 
     this.globe_ = new Cesium.Globe(Cesium.Ellipsoid.WGS84);
     this.globe_.baseColor = Cesium.Color.WHITE;
@@ -316,6 +318,10 @@ export default class OLCesium {
         this.entityView_.update(julianDate, this.boundingSphereScratch_);
       }
     }
+
+    this.pegmanIcon.getGeometry().setCoordinates(this.camera_.getPosition());
+    this.miniMap.getView().setCenter(this.camera_.getPosition());
+    this.miniMap.getView().setZoom(this.map_.getView().getZoom());
 
     this.scene_.render(julianDate);
     this.camera_.checkCameraChange();
