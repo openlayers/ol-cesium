@@ -123,6 +123,8 @@ export default class OLCesium {
   private needTrackedEntityUpdate_ = false;
   private boundingSphereScratch_: BoundingSphere = new Cesium.BoundingSphere();
   private synchronizers_: SynchronizerType[];
+  private refresh2DAfterCameraMoveEndOnly = false;
+  private moveEndRemoveCallback_: () => void;
 
   constructor(options: OLCesiumOptions) {
     this.map_ = options.map;
@@ -247,6 +249,12 @@ export default class OLCesium {
 
     const eventHelper = new Cesium.EventHelper();
     eventHelper.add(this.scene_.postRender, OLCesium.prototype.updateTrackedEntity_, this);
+
+    this.moveEndRemoveCallback_ = this.scene_.camera.moveEnd.addEventListener(() => {
+      if (this.refresh2DAfterCameraMoveEndOnly) {
+        this.camera_.checkCameraChange();
+      }
+    });
   }
 
   /**
@@ -260,6 +268,7 @@ export default class OLCesium {
     this.scene_.destroy();
     // @ts-ignore TS2341
     this.scene_._postRender = null;
+    this.moveEndRemoveCallback_();
     this.container_.remove();
   }
 
@@ -318,7 +327,10 @@ export default class OLCesium {
     }
 
     this.scene_.render(julianDate);
-    this.camera_.checkCameraChange();
+
+    if (!this.refresh2DAfterCameraMoveEndOnly) {
+      this.camera_.checkCameraChange();
+    }
 
     // request the next render call after this one completes to ensure the browser doesn't get backed up
     this.render_();
@@ -573,6 +585,14 @@ export default class OLCesium {
       // reset the render loop
       this.render_();
     }
+  }
+
+  /**
+   * Set if the synchronization back to the OL 2D map happens continuously or only after the camera is at rest again.
+   * @param {boolean} value true: synch after camera move end only; false: synch continuously
+   */
+  setRefresh2DAfterCameraMoveEndOnly(value: boolean) {
+    this.refresh2DAfterCameraMoveEndOnly = value;
   }
 
   /**
