@@ -69,6 +69,8 @@ export default class AutoRenderLoop {
   }
 
   notifyRepaintRequired() {
-    this.scene_.requestRender();
+    if (!this.scene_.isDestroyed()) {
+      this.scene_.requestRender();
+    }
   }
 }
