@@ -4,7 +4,8 @@
 
 * Changes
   * Support dashed lines by converting the pattern
-  * Fix unlistening condition in camera._setView
+  * Fix unlistening condition in camera.\_setView
+  * Introduce olcs.setRefresh2DAfterCameraMoveEndOnly to optimize camera synchronization
 
 ## v 2.19.2
 
