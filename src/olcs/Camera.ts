@@ -372,7 +372,8 @@ export default class Camera {
       this.tilt_ = -this.cam_.pitch + Math.PI / 2;
     }
 
-    this.viewUpdateInProgress_ = false;
+    // delay resetting the guard flag to account for asynchronous event generation in ol maps
+    setTimeout(() => this.viewUpdateInProgress_ = false, 1000);
   }
 
   /**
