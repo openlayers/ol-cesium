@@ -14,7 +14,7 @@ export async function initCodeSandbox(indexJsPath, ...filesPathes) {
   
   indexJsContent = indexJsContent.replaceAll(/(olcs\/.*?).ts('?;?)/ig, '$1.js$2');
   indexJsContent = indexJsContent.replace('import {OLCS_ION_TOKEN} from \'./_common.js\';', '');
-  indexJsContent = indexJsContent.replace('OLCS_ION_TOKEN', `'${OLCS_ION_TOKEN}'`);
+  indexJsContent = indexJsContent.replace('//##OLCS_ION_TOKEN##', `Cesium.Ion.defaultAccessToken = '${OLCS_ION_TOKEN}'`);
 
   const additionalJsFiles = {};
 
@@ -22,7 +22,7 @@ export async function initCodeSandbox(indexJsPath, ...filesPathes) {
     const responseFile = await fetch(filePath);
     const txtDataFile = await responseFile.text();
 
-    additionalJsFiles[filePath.replace('./', '')] = {content: txtDataFile};
+    additionalJsFiles[filePath.replace('./', '').replace('rawjs', '')] = {content: txtDataFile};
   }
 
   initCodeSandboxButton({indexJsContent, additionalJsFiles});
@@ -48,10 +48,10 @@ function initCodeSandboxButton(options) {
 <!DOCTYPE html>
 <html>
   <head>
-  <title>Ol-Cesium example</title>
+  <title>Ol-Cesium example in sandbox</title>
   <meta charset="UTF-8" />
-  <link rel="stylesheet" href="node_modules/ol/ol.css">  
-  <script type="text/javascript" src="node_modules/cesium/Build/Cesium/Cesium.js"></script>
+  <link rel="stylesheet" href="node_modules/ol/ol.css">
+  <script src="https://cesium.com/downloads/cesiumjs/releases/1.116/Build/Cesium/Cesium.js"></script>
   </head>
   <body>
   ${indexHtmlContent}
@@ -59,25 +59,30 @@ function initCodeSandboxButton(options) {
   <script type="module" src="/index.js"></script>
 </html>`;
   const parameters = {
+    template: 'parcel',
     files: {
       'package.json': {
         content: {
           'source': 'index.html',
+          'main': 'index.html',
           'scripts': {
             "start": "vite",
-            "build": "vite build"
           },
-          "devDependencies": {            
+          "devDependencies": {
             "vite": "^3.2.3",
-            "typescript": "latest"
+            "@babel/core": "^7.24.4",
+            "@babel/plugin-proposal-class-properties": "^7.18.6"
           },
           "dependencies": {
-            "olcs": "2.15.2",
+            "olcs": "latest",
             "proj4": "2.9.0",
             "cesium": "1.108",
             "ol": "8.1.0"
           }
         },
+      },
+      '.babelrc': {
+        content: '{ "plugins": ["@babel/plugin-proposal-class-properties"] }'
       },
       'data/geojson/countries.geojson': {
         "isBinary": true,
@@ -107,3 +112,9 @@ function initCodeSandboxButton(options) {
     form.submit();
   };
 }
+
+
+// dans npm prepare : extraire les versions à utiliser et faire un fichier json avec ces versions
+// Ce fichier json doit etre lu, faire un fetch de ce fichier
+// ce fichier ne peut pas etre commit
+// à rajouter dans gitinore

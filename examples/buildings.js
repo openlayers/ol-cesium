@@ -93,4 +93,4 @@ map.on('click', (e) => {
 //##REMOVE## Keep this tag, split code here for code sandbox
 
 import {initCodeSandbox} from './_code-sandbox.js';
-initCodeSandbox('./rawsjs/buildings.js');
+initCodeSandbox('rawjs/buildings.js');

@@ -7,7 +7,6 @@ import olLayerTile from 'ol/layer/Tile.js';
 import olMap from 'ol/Map.js';
 import {get as getProjection} from 'ol/proj.js';
 import './_proj21781.js';
-import {OLCS_ION_TOKEN} from './_common.js';
 
 const customProjSource = new olSourceImageWMS({
   attributions: '© <a href="http://www.geo.admin.ch/internet/geoportal/' +
@@ -21,7 +20,6 @@ const customProjSource = new olSourceImageWMS({
 customProjSource.set('olcs_projection', getProjection('EPSG:3857'));
 
 const Cesium = window.Cesium;
-Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 const ol2d = new olMap({
   layers: [
     new olLayerTile({
@@ -53,4 +51,4 @@ document.getElementById('enable').addEventListener('click', () => ol3d.setEnable
 //##REMOVE## Keep this tag, split code here for code sandbox
 
 import {initCodeSandbox} from './_code-sandbox.js';
-initCodeSandbox('./customProj.js', './_proj21781.js');
+initCodeSandbox('rawjs/customProj.js', 'rawjs/_proj21781.js');

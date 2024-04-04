@@ -39,6 +39,9 @@
     "./ts/*": "./lib/olcs/*.ts",
     "./*": "./lib/olcs/*.js"
   },
+  "parcelIgnore": [
+    "dist/examples/rawjs/*"
+  ],
   "types": "lib/types/olcs.d.ts",
   "directories": {
     "doc": "apidoc/"

@@ -9,12 +9,10 @@ import olMap from 'ol/Map.js';
 import {Image as ImageLayer} from 'ol/layer.js';
 import {getCenter} from 'ol/extent.js';
 import Static from 'ol/source/ImageStatic.js';
-import {OLCS_ION_TOKEN} from './_common.js';
 
 const imageExtent = [-40, 50, -10, 65];
 
 const Cesium = window.Cesium;
-Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 const ol2d = new olMap({
   layers: [
     new olLayerTile({
@@ -55,4 +53,4 @@ document.getElementById('enable').addEventListener('click', () => ol3d.setEnable
 //##REMOVE## Keep this tag, split code here for code sandbox
 
 import {initCodeSandbox} from './_code-sandbox.js';
-initCodeSandbox('./image-static.js');
+initCodeSandbox('rawjs/image-static.js');

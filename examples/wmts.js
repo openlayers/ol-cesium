@@ -8,9 +8,7 @@ import {get as getProjection} from 'ol/proj.js';
 import OSM from 'ol/source/OSM.js';
 import WMTS from 'ol/source/WMTS.js';
 import WMTSTileGrid from 'ol/tilegrid/WMTS.js';
-import {OLCS_ION_TOKEN} from './_common.js';
 
-Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 const projection = getProjection('EPSG:3857');
 const projectionExtent = projection.getExtent();
 const size = getWidth(projectionExtent) / 256;
@@ -68,4 +66,4 @@ document.getElementById('enable').addEventListener('click', () => ol3d.setEnable
 //##REMOVE## Keep this tag, split code here for code sandbox
 
 import {initCodeSandbox} from './_code-sandbox.js';
-initCodeSandbox('./wmts.js');
+initCodeSandbox('rawjs/wmts.js');

@@ -25,7 +25,6 @@ import olInteractionDragAndDrop from 'ol/interaction/DragAndDrop.js';
 import olGeomMultiPolygon from 'ol/geom/MultiPolygon.js';
 import olLayerVector from 'ol/layer/Vector.js';
 import {transform} from 'ol/proj.js';
-import {OLCS_ION_TOKEN} from './_common.js';
 
 
 const iconFeature = new olFeature({
@@ -327,8 +326,9 @@ dragAndDropInteraction.on('addfeatures', (event) => {
       vectorSource.getExtent(), /** @type {ol.Size} */ (map.getSize()));
 });
 
+const Cesium = window.Cesium;
+//##OLCS_ION_TOKEN##
 
-Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 const ol3d = new OLCesium({map, target: 'map3d'});
 const scene = ol3d.getCesiumScene();
 Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
@@ -406,3 +406,8 @@ window['scene'] = scene;
 document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
 
 ol3d.enableAutoRenderLoop();
+
+//##REMOVE## Keep this tag, split code here for code sandbox
+
+import {initCodeSandbox} from './_code-sandbox.js';
+initCodeSandbox('rawjs/vectors.js');

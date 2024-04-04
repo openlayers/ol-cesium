@@ -6,7 +6,6 @@ import {fromLonLat} from 'ol/proj.js';
 import olSourceOSM from 'ol/source/OSM.js';
 import olSourceTileJSON from 'ol/source/TileJSON.js';
 import OLCesium from 'olcs';
-import {OLCS_ION_TOKEN} from './_common.js';
 
 const layer0 = new olLayerTile({
   source: new olSourceOSM()
@@ -45,7 +44,6 @@ const ol2d = new olMap({
 });
 
 const Cesium = window.Cesium;
-Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 const ol3d = new OLCesium({map: ol2d, target: 'mapCesium'});
 ol3d.setEnabled(true);
 
@@ -74,4 +72,4 @@ window['setLayerOpacity'] = function(element, name) {
 //##REMOVE## Keep this tag, split code here for code sandbox
 
 import {initCodeSandbox} from './_code-sandbox.js';
-initCodeSandbox('./layer-group.js');
+initCodeSandbox('rawjs/layer-group.js');

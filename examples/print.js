@@ -5,11 +5,10 @@ import {defaults as olControlDefaults} from 'ol/control.js';
 import olSourceOSM from 'ol/source/OSM.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olMap from 'ol/Map.js';
-import {OLCS_ION_TOKEN} from './_common.js';
 
 
 const Cesium = window.Cesium;
-Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
+//##OLCS_ION_TOKEN##
 const ol2d = new olMap({
   layers: [
     new olLayerTile({
@@ -37,7 +36,7 @@ ol3d.setEnabled(true);
 
 
 document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
-document.getElementById('resolutionScale').addEventListener('change', evt => ol3d.setResolutionScale(Number.parseFloat(evt.target.value)));
+document.getElementById('printScale').addEventListener('change', evt => ol3d.setResolutionScale(Number.parseFloat(evt.target.value)));
 
 function scalingOptions() {
   const printValue = document.querySelector('#printValue').value;
@@ -51,6 +50,8 @@ function scalingOptions() {
   }
 }
 autoDrawMask(scene, () => scalingOptions().scaling);
+
+document.querySelector("#takeScreenshot").addEventListener("click", window.takeScreenshot);
 
 window['takeScreenshot'] = async function() {
   const r = scalingOptions();
@@ -70,4 +71,4 @@ window['takeScreenshot'] = async function() {
 //##REMOVE## Keep this tag, split code here for code sandbox
 
 import {initCodeSandbox} from './_code-sandbox.js';
-initCodeSandbox('./print.js');
+initCodeSandbox('rawjs/print.js');

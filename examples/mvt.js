@@ -10,10 +10,8 @@ import Stroke from 'ol/style/Stroke.js';
 import Style from 'ol/style/Style.js';
 import OSMSource from 'ol/source/OSM.js';
 import './_proj21781.js';
-import {OLCS_ION_TOKEN} from './_common.js';
 
 const Cesium = window.Cesium;
-Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 
 const projection = getProjection('EPSG:3857');
 console.assert(projection);
@@ -95,4 +93,4 @@ document.getElementById('toggle').addEventListener('click', () => {
 //##REMOVE## Keep this tag, split code here for code sandbox
 
 import {initCodeSandbox} from './_code-sandbox.js';
-initCodeSandbox('./mvt.js', './_proj21781.js');
+initCodeSandbox('rawjs/mvt.js', 'rawjs/_proj21781.js');

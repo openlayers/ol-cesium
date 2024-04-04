@@ -10,10 +10,8 @@ import olStyleStyle from 'ol/style/Style.js';
 import olFeature from 'ol/Feature.js';
 import olGeomPoint from 'ol/geom/Point.js';
 import olMap from 'ol/Map.js';
-import {OLCS_ION_TOKEN} from './_common.js';
 
 const Cesium = window.Cesium;
-Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 
 const point = new olGeomPoint([700000, 200000, 100000]);
 
@@ -84,4 +82,4 @@ setInterval(() => {
 //##REMOVE## Keep this tag, split code here for code sandbox
 
 import {initCodeSandbox} from './_code-sandbox.js';
-initCodeSandbox('./tracking.js');
+initCodeSandbox('rawjs/tracking.js');

@@ -10,7 +10,6 @@ import olSourceOSM from 'ol/source/OSM.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olFeature from 'ol/Feature.js';
 import olGeomPoint from 'ol/geom/Point.js';
-import {OLCS_ION_TOKEN} from './_common.js';
 
 
 let total = 0;
@@ -31,7 +30,7 @@ const map = new olMap({
   })
 });
 
-Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
+
 const ol3d = new OLCesium({map});
 const scene = ol3d.getCesiumScene();
 Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
@@ -119,4 +118,4 @@ window['addFeatures'] = function() {
 //##REMOVE## Keep this tag, split code here for code sandbox
 
 import {initCodeSandbox} from './_code-sandbox.js';
-initCodeSandbox('./synthvectors.js');
+initCodeSandbox('rawjs/synthvectors.js');

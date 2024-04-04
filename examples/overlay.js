@@ -7,11 +7,9 @@ import olView from 'ol/View.js';
 import {defaults as olControlDefaults} from 'ol/control.js';
 import olOverlay from 'ol/Overlay.js';
 import {toStringHDMS} from 'ol/coordinate.js';
-import {OLCS_ION_TOKEN} from './_common.js';
 
 const source = new olSourceOSM();
 
-Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 const ol2d = new olMap({
   layers: [
     new olLayerTile({
@@ -175,4 +173,4 @@ document.getElementById('enable').addEventListener('click', () => ol3d.setEnable
 //##REMOVE## Keep this tag, split code here for code sandbox
 
 import {initCodeSandbox} from './_code-sandbox.js';
-initCodeSandbox('./overlay.js');
+initCodeSandbox('rawjs/overlay.js');

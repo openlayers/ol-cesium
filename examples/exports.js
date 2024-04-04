@@ -4,10 +4,9 @@ import olView from 'ol/View.js';
 import olSourceOSM from 'ol/source/OSM.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olMap from 'ol/Map.js';
-import {OLCS_ION_TOKEN} from './_common.js';
 
 const Cesium = window.Cesium;
-Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
+
 const ol2d = new olMap({
   layers: [
     new olLayerTile({
@@ -46,4 +45,4 @@ window['olProjTransform'] = transform;
 //##REMOVE## Keep this tag, split code here for code sandbox
 
 import {initCodeSandbox} from './_code-sandbox.js';
-initCodeSandbox('./exports.js');
+initCodeSandbox('rawjs/exports.js');

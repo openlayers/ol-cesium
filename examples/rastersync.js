@@ -8,8 +8,6 @@ import olSourceOSM from 'ol/source/OSM.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import {transform} from 'ol/proj.js';
 import olView from 'ol/View.js';
-import {OLCS_ION_TOKEN} from './_common.js';
-
 
 const view = new olView({
   center: transform([-112.2, 36.06], 'EPSG:4326', 'EPSG:3857'),
@@ -35,7 +33,6 @@ const ol2d = new olMap({
   view,
 });
 
-Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 const ol3d = new OLCesium({map: ol2d, target: 'map3d'});
 const scene = ol3d.getCesiumScene();
 Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
@@ -96,3 +93,8 @@ window['global'] = {
   layer0,
   layer2
 };
+
+//##REMOVE## Keep this tag, split code here for code sandbox
+
+import {initCodeSandbox} from './_code-sandbox.js';
+initCodeSandbox('rawjs/rastersync.js');

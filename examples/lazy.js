@@ -5,7 +5,6 @@ import olSourceOSM from 'ol/source/OSM.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olMap from 'ol/Map.js';
 import {ContribManager} from 'olcs';
-import {OLCS_ION_TOKEN} from './_common.js';
 
 const ol2d = new olMap({
   layers: [
@@ -27,11 +26,10 @@ const ol2d = new olMap({
 
 window['manager'] = new ContribManager(window.CESIUM_URL, {
   map: ol2d,
-  cameraExtentInRadians: [0.0897, 0.7923, 0.2003, 0.8417],
-  cesiumIonDefaultAccessToken: OLCS_ION_TOKEN
+  cameraExtentInRadians: [0.0897, 0.7923, 0.2003, 0.8417]
 });
 
 //##REMOVE## Keep this tag, split code here for code sandbox
 
 import {initCodeSandbox} from './_code-sandbox.js';
-initCodeSandbox('./lazy.js');
+initCodeSandbox('rawjs/lazy.js');

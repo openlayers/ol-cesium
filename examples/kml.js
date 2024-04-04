@@ -5,10 +5,8 @@ import {defaults as olControlDefaults} from 'ol/control.js';
 import olSourceOSM from 'ol/source/OSM.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olMap from 'ol/Map.js';
-import {OLCS_ION_TOKEN} from './_common.js';
 
 const Cesium = window.Cesium;
-Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 const ol2d = new olMap({
   layers: [
     new olLayerTile({
@@ -47,4 +45,4 @@ document.getElementById('enable').addEventListener('click', () => ol3d.setEnable
 //##REMOVE## Keep this tag, split code here for code sandbox
 
 import { initCodeSandbox } from './_code-sandbox.js';
-initCodeSandbox('./kml.js');
+initCodeSandbox('rawjs/kml.js');
