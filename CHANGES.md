@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.20.0
+
+- Changes
+  * Port to Cesium 1.116 (WIP: raster, selectin and layergroup are all black)
+
 ## v 2.19.3
 
 * Changes
