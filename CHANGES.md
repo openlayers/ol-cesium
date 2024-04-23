@@ -1,5 +1,10 @@
 # Changelog
 
+## v 2.19.4
+
+* Changes
+  * Convert all image WMS sources regardless of their load functions
+
 ## v 2.19.3
 
 * Changes
