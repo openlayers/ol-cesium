@@ -33,6 +33,26 @@ Value: number
 Allows you to set a minimum zoom level for rendering 3D tiles in the Cesium view. This property helps to control the level of detail displayed in the 3D view based on the current zoom level.
 Check mvt example for usage in context.
 
-## olcs_tileLoadFunction
+## olcs_tileLoadFunction (ImageWMS sources)
 Value: https://openlayers.org/en/latest/apidoc/module-ol_Tile.html#~LoadFunction
 Allows to use a custom function, for example when converting a WMS image source to a tiled one.
+
+## olcs_projection
+Value: https://openlayers.org/en/latest/apidoc/module-ol_proj_Projection-Projection.html
+Allows to use an alternative projection in CesiumJS. See the customProj example.
+
+## olcs_polygon_kind
+Value: "rectangle"
+Allows to use the Cesium Rectangle geometry instead of a polygon geometry. See the vector example.
+
+## olcs_3d_geometry (OL vector source)
+Value: https://openlayers.org/en/latest/apidoc/module-ol_geom_Geometry-Geometry.html
+Allows to use an alternative geometry in CesiumJS.
+
+## olcs_proxy
+Value: https://cesium.com/learn/cesiumjs/ref-doc/Proxy.html
+Allows to add authentication information to requests sent by CesiumJS or manipulate request.
+
+## olcs_extent
+Value: An array of numbers representing an extent: [minx, miny, maxx, maxy]
+Allows to restrict a tiled imagery layer to a rectangle. This avoid sending useless requests.

@@ -18,7 +18,7 @@ const customProjSource = new olSourceImageWMS({
   url: 'https://wms.geo.admin.ch/'
 });
 
-customProjSource.set('olcs.projection', getProjection('EPSG:3857'));
+customProjSource.set('olcs_projection', getProjection('EPSG:3857'));
 
 Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 const ol2d = new olMap({

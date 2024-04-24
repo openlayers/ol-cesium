@@ -41,7 +41,7 @@ export function imageRenderingValue() {
  * @return The projection of the source.
  */
 export function getSourceProjection(source: Source): Projection {
-  return source.get('olcs.projection') as Projection || source.getProjection();
+  return source.get('olcs_projection') as Projection || source.getProjection();
 }
 
 

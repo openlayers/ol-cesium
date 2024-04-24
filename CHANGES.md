@@ -1,9 +1,14 @@
 # Changelog
 
-## v 2.19.4
+
+## v 2.20.0
 
 * Changes
   * Convert all image WMS sources regardless of their load functions
+  * Allow to force a specific tileLoadFunction using the olcs\_tileLoadFunction property
+
+* Breaking changes
+  * Rename all 'olcs.xx' properties to 'olcs\_xx' and document them in PROPERTIES.md
 
 ## v 2.19.3
 

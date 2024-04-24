@@ -359,9 +359,9 @@ export function sourceToImageryProvider(
   // Convert ImageWMS to TileWMS
   if (source instanceof olSourceImageWMS && source.getUrl()) {
     const sourceProps = {
-      'olcs.proxy': source.get('olcs.proxy'),
-      'olcs.extent': source.get('olcs.extent'),
-      'olcs.projection': source.get('olcs.projection'),
+      'olcs_proxy': source.get('olcs_proxy'),
+      'olcs_extent': source.get('olcs_extent'),
+      'olcs_projection': source.get('olcs_projection'),
       'olcs.imagesource': source
     };
     const imageLoadFunction = source.getImageLoadFunction();
@@ -482,7 +482,7 @@ export function tileLayerToImageryLayer(olMap: Map, olLayer: BaseLayer, viewProj
 
   const layerOptions: {rectangle?: Rectangle} = {};
 
-  const forcedExtent = (olLayer.get('olcs.extent'));
+  const forcedExtent = (olLayer.get('olcs_extent'));
   const ext = forcedExtent || olLayer.getExtent();
   if (ext) {
     layerOptions.rectangle = extentToRectangle(ext, viewProj);
