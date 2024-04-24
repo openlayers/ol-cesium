@@ -246,7 +246,7 @@ const cartographicRectangleStyle = new olStyleStyle({
 });
 const cartographicRectangleGeometry = new olGeomPolygon([[[-5e6, 11e6],
   [4e6, 11e6], [4e6, 10.5e6], [-5e6, 10.5e6], [-5e6, 11e6]]]);
-cartographicRectangleGeometry.set('olcs.polygon_kind', 'rectangle');
+cartographicRectangleGeometry.set('olcs_polygon_kind', 'rectangle');
 const cartographicRectangle = new olFeature({
   geometry: cartographicRectangleGeometry
 });
@@ -263,7 +263,7 @@ const cartographicRectangleGeometry2 = new olGeomMultiPolygon([
     [-5e6, 11e6, 1e6], [-5e6, 11.5e6, 1e6]
   ]]
 ]);
-cartographicRectangleGeometry2.set('olcs.polygon_kind', 'rectangle');
+cartographicRectangleGeometry2.set('olcs_polygon_kind', 'rectangle');
 const cartographicRectangle2 = new olFeature({
   geometry: cartographicRectangleGeometry2
 });

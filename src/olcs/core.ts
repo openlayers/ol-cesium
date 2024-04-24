@@ -7,7 +7,7 @@ import olSourceImageWMS from 'ol/source/ImageWMS.js';
 import olSourceTileImage from 'ol/source/TileImage.js';
 import olSourceTileWMS from 'ol/source/TileWMS.js';
 import olSourceVectorTile from 'ol/source/VectorTile.js';
-import {defaultImageLoadFunction} from 'ol/source/Image.js';
+import type ImageTile from 'ol/ImageTile.js';
 import olcsCoreOLImageryProvider from './core/OLImageryProvider';
 import {getSourceProjection} from './util';
 import MVTImageryProvider from './MVTImageryProvider';
@@ -357,18 +357,25 @@ export function sourceToImageryProvider(
   }
   let provider = null;
   // Convert ImageWMS to TileWMS
-  if (source instanceof olSourceImageWMS && source.getUrl() &&
-  source.getImageLoadFunction() === defaultImageLoadFunction) {
+  if (source instanceof olSourceImageWMS && source.getUrl()) {
     const sourceProps = {
-      'olcs.proxy': source.get('olcs.proxy'),
-      'olcs.extent': source.get('olcs.extent'),
-      'olcs.projection': source.get('olcs.projection'),
+      'olcs_proxy': source.get('olcs_proxy'),
+      'olcs_extent': source.get('olcs_extent'),
+      'olcs_projection': source.get('olcs_projection'),
       'olcs.imagesource': source
+    };
+    const imageLoadFunction = source.getImageLoadFunction();
+    const tileLoadFunction = source.get('olcs_tileLoadFunction') || function tileLoadFunction(tile: ImageTile, src: string) {
+      // An imageLoadFunction takes an ImageWrapperm which has a getImage method.
+      // A tile also has a getImage method.
+      // We incorrectly passe a tile as an ImageWrapper and hopes for the best.
+      imageLoadFunction(tile as any, src);
     };
     source = new olSourceTileWMS({
       url: source.getUrl(),
       attributions: source.getAttributions(),
       projection: source.getProjection(),
+      tileLoadFunction,
       params: source.getParams()
     });
     source.setProperties(sourceProps);
@@ -475,7 +482,7 @@ export function tileLayerToImageryLayer(olMap: Map, olLayer: BaseLayer, viewProj
 
   const layerOptions: {rectangle?: Rectangle} = {};
 
-  const forcedExtent = (olLayer.get('olcs.extent'));
+  const forcedExtent = (olLayer.get('olcs_extent'));
   const ext = forcedExtent || olLayer.getExtent();
   if (ext) {
     layerOptions.rectangle = extentToRectangle(ext, viewProj);

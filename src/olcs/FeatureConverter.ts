@@ -472,7 +472,7 @@ export default class FeatureConverter {
     let fillGeometry, outlineGeometry;
     let outlinePrimitive: GroundPolylinePrimitive;
     if ((olGeometry.getCoordinates()[0].length == 5) &&
-        (feature.get('olcs.polygon_kind') === 'rectangle')) {
+        (feature.get('olcs_polygon_kind') === 'rectangle')) {
       // Create a rectangle according to the longitude and latitude curves
       const coordinates = olGeometry.getCoordinates()[0];
       // Extract the West, South, East, North coordinates
@@ -1033,7 +1033,7 @@ export default class FeatureConverter {
       return opt_geom;
     }
 
-    const geom3d: OLGeometry = feature.get('olcs.3d_geometry');
+    const geom3d: OLGeometry = feature.get('olcs_3d_geometry');
     if (geom3d && geom3d instanceof OLGeometry) {
       return geom3d;
     }

@@ -196,7 +196,7 @@ export default class OLImageryProvider implements ImageryProvider /* should not 
 
     this.shouldRequestNextLevel = false;
 
-    const proxy = this.source_.get('olcs.proxy');
+    const proxy = this.source_.get('olcs_proxy');
     if (proxy) {
       if (typeof proxy === 'function') {
         // Duck typing a proxy
