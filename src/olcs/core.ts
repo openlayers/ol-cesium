@@ -365,16 +365,17 @@ export function sourceToImageryProvider(
       'olcs.imagesource': source
     };
     const imageLoadFunction = source.getImageLoadFunction();
+    const tileLoadFunction = source.get('olcs_tileLoadFunction') || function tileLoadFunction(tile: ImageTile, src: string) {
+      // An imageLoadFunction takes an ImageWrapperm which has a getImage method.
+      // A tile also has a getImage method.
+      // We incorrectly passe a tile as an ImageWrapper and hopes for the best.
+      imageLoadFunction(tile as any, src);
+    };
     source = new olSourceTileWMS({
       url: source.getUrl(),
       attributions: source.getAttributions(),
       projection: source.getProjection(),
-      tileLoadFunction(tile: ImageTile, src: string) {
-        // An imageLoadFunction takes an ImageWrapperm which has a getImage method.
-        // A tile also has a getImage method.
-        // We incorrectly passe a tile as an ImageWrapper and hopes for the best.
-        imageLoadFunction(tile as any, src);
-      },
+      tileLoadFunction,
       params: source.getParams()
     });
     source.setProperties(sourceProps);

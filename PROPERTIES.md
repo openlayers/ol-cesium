@@ -1,13 +1,13 @@
-# OLCEsium Properties 
+# OLCEsium Properties
 
-## olcs_extruded_height 
+## olcs_extruded_height
 Value: number
 The distance in meters between the polygon's extruded face and the ellipsoid surface.
 Check buildings example for usage in context.
 
 ## olcs_shadows
 Value: boolean
-Enables shadow casting in 3D. Can be either applied to the entire feature set or by feature individually. 
+Enables shadow casting in 3D. Can be either applied to the entire feature set or by feature individually.
 In order for it to work, [shadowMap](https://cesium.com/learn/cesiumjs/ref-doc/Scene.html?classFilter=scene#shadowMap) needs to be enabled in the Cesium scene. To use the sun as light source, enable [enableLighting](https://cesium.com/learn/cesiumjs/ref-doc/Globe.html#enableLighting) on the Globe.
 Check buildings example for usage in context.
 
@@ -33,5 +33,6 @@ Value: number
 Allows you to set a minimum zoom level for rendering 3D tiles in the Cesium view. This property helps to control the level of detail displayed in the 3D view based on the current zoom level.
 Check mvt example for usage in context.
 
-
-
+## olcs_tileLoadFunction
+Value: https://openlayers.org/en/latest/apidoc/module-ol_Tile.html#~LoadFunction
+Allows to use a custom function, for example when converting a WMS image source to a tiled one.
