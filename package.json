@@ -4,20 +4,20 @@
   "description": "OpenLayers Cesium integration and plugin library",
   "scripts": {
     "test": "node --enable-source-maps --import @swc-node/register/esm-register --test  src/olcs/*.test.ts",
-    "build-examples": "rm -rf dist; parcel build; mkdir -p dist/examples/node_modules/ol; mkdir -p dist/examples/node_modules/cesium/Build/; cp examples/inject_ol_cesium.js dist/examples/; cp node_modules/ol/ol.css dist/examples/node_modules/ol/; cp -R node_modules/cesium/Build/CesiumUnminified node_modules/cesium/Build/Cesium dist/examples/node_modules/cesium/Build/; cp -R examples/data dist/examples/",
+    "build-examples": "rm -rf dist; parcel build --dist-dir dist/examples && npm run copy-static-dist",
     "prepare": "tsc --pretty && node buildtools/fix_paths_recast.js; npm run doc",
     "typecheck": "tsc --pretty --noEmit",
     "lint": "eslint src buildtools examples",
     "checks": "npm run lint && npm run typecheck",
     "doc": "typedoc --name ol-cesium --excludeExternals --out apidoc --entryPoints src/olcs.ts --tsconfig ./tsconfig.json",
-    "prestart": "rm -rf dist; mkdir -p dist/examples/node_modules/ol; mkdir -p dist/examples/node_modules/cesium/Build/; cp examples/inject_ol_cesium.js dist/examples/; cp node_modules/ol/ol.css dist/examples/node_modules/ol/; cp -R node_modules/cesium/Build/CesiumUnminified node_modules/cesium/Build/Cesium dist/examples/node_modules/cesium/Build/; cp -R examples/data dist/examples/",
+    "copy-static-dist": "mkdir -p dist/examples/node_modules/ol; mkdir -p dist/examples/node_modules/cesium/Build/; cp examples/inject_ol_cesium.js dist/examples/; cp node_modules/ol/ol.css dist/examples/node_modules/ol/; cp -R node_modules/cesium/Build/CesiumUnminified node_modules/cesium/Build/Cesium dist/examples/node_modules/cesium/Build/; cp -R examples/data dist/examples/",
+    "prestart": "rm -rf dist; npm run copy-static-dist",
     "start": "parcel serve ./examples/index.html --dist-dir dist/examples --no-autoinstall",
     "serve-built-examples": "python3 -m http.server --directory dist 12345"
   },
   "targets": {
     "examples": {
       "source": "./examples/index.html",
-      "distDir": "dist/examples/",
       "context": "browser",
       "publicUrl": "./",
       "optimize": true,

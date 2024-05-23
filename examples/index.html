@@ -3,27 +3,6 @@
   <head>
     <meta charset="utf-8"/>
     <title>OL-Cesium examples</title>
-    <script type="module">
-      // In local dev, we need to open /examples/index.html for relative paths to be correct
-      // This ugly workaround ensures that.
-      function ensureExamplesUrl(h) {
-        if (h.endsWith('/')) {
-          h += 'index.html';
-        }
-        const split = h.split('/');
-        const lastDir = split.at(-2);
-        if (lastDir !== 'examples') {
-          split.splice(split.length -1, 0, ['examples']);
-          return split.join('/');
-        }
-        return h;
-      }
-      const h = document.location.href.substring(document.location.origin.length);
-      const newH = ensureExamplesUrl(h);
-      if (h !== newH) {
-        document.location.href = newH;
-      }
-    </script>
   </head>
   <body>
 <ul>
