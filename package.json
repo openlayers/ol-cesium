@@ -10,7 +10,8 @@
     "lint": "eslint src buildtools examples",
     "checks": "npm run lint && npm run typecheck",
     "doc": "typedoc --name ol-cesium --excludeExternals --out apidoc --entryPoints src/olcs.ts --tsconfig ./tsconfig.json",
-    "start": "parcel serve --no-autoinstall --target examples",
+    "prestart": "rm -rf dist; mkdir -p dist/examples/node_modules/ol; mkdir -p dist/examples/node_modules/cesium/Build/; cp examples/inject_ol_cesium.js dist/examples/; cp node_modules/ol/ol.css dist/examples/node_modules/ol/; cp -R node_modules/cesium/Build/CesiumUnminified node_modules/cesium/Build/Cesium dist/examples/node_modules/cesium/Build/; cp -R examples/data dist/examples/",
+    "start": "parcel serve ./examples/index.html --dist-dir dist/examples --no-autoinstall",
     "serve-built-examples": "python3 -m http.server --directory dist 12345"
   },
   "targets": {
