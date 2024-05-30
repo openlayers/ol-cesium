@@ -18,6 +18,13 @@ npm start
 browse http://localhost:1234
 ```
 
+### OLCesium import
+The examples use a compiled version of OLCesium. If you want to use the source code directly you can change the import to '../src/olcs.ts'
+
+```typescript
+import OLCesium from 'olcs'; // or '../src/olcs.ts' for source code
+```
+
 ### The `check` target
 
 ```bash
