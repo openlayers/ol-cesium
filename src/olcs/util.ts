@@ -1,5 +1,5 @@
-import type {Projection} from 'ol/proj';
-import type {Source} from 'ol/source';
+import type {Projection} from 'ol/proj.js';
+import type {Source} from 'ol/source.js';
 
 let _imageRenderingPixelatedSupported: boolean = undefined;
 let _imageRenderingValue: string = undefined;

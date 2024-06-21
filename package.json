@@ -5,7 +5,7 @@
   "scripts": {
     "test": "node --enable-source-maps --import @swc-node/register/esm-register --test  src/olcs/*.test.ts",
     "build-examples": "rm -rf dist; parcel build --dist-dir dist/examples && npm run copy-static-dist",
-    "prepare": "tsc --pretty && node buildtools/fix_paths_recast.js; npm run doc",
+    "prepare": "tsc --pretty; npm run doc",
     "typecheck": "tsc --pretty --noEmit",
     "lint": "eslint src buildtools examples",
     "checks": "npm run lint && npm run typecheck",
@@ -90,7 +90,6 @@
     "ol": "9.2.4",
     "parcel": "2.12.0",
     "proj4": "2.11.0",
-    "recast": "0.23.9",
     "typedoc": "0.25.13",
     "typescript": "5.4.5"
   }

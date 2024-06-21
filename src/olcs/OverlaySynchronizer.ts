@@ -1,10 +1,10 @@
 import type {Collection, Map as OLMap, Overlay} from 'ol';
-import SynchronizedOverlay from './SynchronizedOverlay';
-import {getUid} from './util';
+import SynchronizedOverlay from './SynchronizedOverlay.js';
+import {getUid} from './util.js';
 import type {Scene} from 'cesium';
 import type {CollectionEvent} from 'ol/Collection.js';
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
-import type {EventsKey} from 'ol/events';
+import type {EventsKey} from 'ol/events.js';
 
 export default class OverlaySynchronizer {
   private overlayCollection_: Collection<Overlay>;
