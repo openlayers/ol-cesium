@@ -1,7 +1,7 @@
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
-import {toRadians, toDegrees} from './math';
+import {toRadians, toDegrees} from './math.js';
 import {getTransform} from 'ol/proj.js';
-import {pickCenterPoint, calcDistanceForResolution, calcResolutionForDistance} from './core';
+import {pickCenterPoint, calcDistanceForResolution, calcResolutionForDistance} from './core.js';
 import type {Map, View} from 'ol';
 import type {Scene, Camera as CesiumCamera, Matrix4, HeadingPitchRollValues} from 'cesium';
 import type {EventsKey} from 'ol/events.js';

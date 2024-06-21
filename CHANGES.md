@@ -1,5 +1,9 @@
 # Changelog
 
+## v 2.21.0
+
+* Changes
+  * Changes types to work with OL 9.2, min version is now 9.2
 
 ## v 2.20.0
 

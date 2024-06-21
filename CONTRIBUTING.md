@@ -35,3 +35,9 @@ Run this before every commit. It will catch many problems quickly.
 
 Please submit separate pull requests for separate issues.  This allows each to
 be reviewed on its own merits.
+
+### Typescript imports
+
+Write typescript files with the ".ts" extension.
+But import these files with a ".js" extension.
+This is a useful strangeness of Typescript which, in the end, produces correct transpiled code.

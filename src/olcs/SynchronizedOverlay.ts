@@ -2,9 +2,9 @@ import OLOverlay from 'ol/Overlay.js';
 import {transform} from 'ol/proj.js';
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
 import type {Scene} from 'cesium';
-import type OverlaySynchronizer from './OverlaySynchronizer';
-import type {EventsKey} from 'ol/events';
-import type {ObjectEvent} from 'ol/Object';
+import type OverlaySynchronizer from './OverlaySynchronizer.js';
+import type {EventsKey} from 'ol/events.js';
+import type {ObjectEvent} from 'ol/Object.js';
 
 
 /**

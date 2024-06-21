@@ -1,12 +1,12 @@
 import olGeomPoint from 'ol/geom/Point.js';
-import {supportsImageRenderingPixelated, imageRenderingValue} from './util';
+import {supportsImageRenderingPixelated, imageRenderingValue} from './util.js';
 import {ol4326CoordinateToCesiumCartesian} from './core';
 import {getTransform, type TransformFunction} from 'ol/proj.js';
 import olcsAutoRenderLoop from './AutoRenderLoop';
-import olcsCamera from './Camera';
-import olcsRasterSynchronizer from './RasterSynchronizer';
-import olcsVectorSynchronizer from './VectorSynchronizer';
-import olcsOverlaySynchronizer from './OverlaySynchronizer';
+import olcsCamera from './Camera.js';
+import olcsRasterSynchronizer from './RasterSynchronizer.js';
+import olcsVectorSynchronizer from './VectorSynchronizer.js';
+import olcsOverlaySynchronizer from './OverlaySynchronizer.js';
 import type Map from 'ol/Map.js';
 import type Interaction from 'ol/interaction/Interaction.js';
 import type {Group} from 'ol/layer.js';
@@ -23,8 +23,8 @@ import type {
   Scene,
   ImageryLayer
 } from 'cesium';
-import type AbstractSynchronizer from './AbstractSynchronizer';
-import type VectorLayerCounterpart from './core/VectorLayerCounterpart';
+import type AbstractSynchronizer from './AbstractSynchronizer.js';
+import type VectorLayerCounterpart from './core/VectorLayerCounterpart.js';
 
 /**
  * Moved from Cesium

@@ -9,7 +9,7 @@ import {createFromTemplates as createTileUrlFunctions} from 'ol/tileurlfunction.
 import type {Credit, Event, ImageryLayerFeatureInfo, ImageryProvider, ImageryTypes, Proxy, Rectangle, Request, TileDiscardPolicy, TilingScheme} from 'cesium';
 import type {UrlFunction} from 'ol/Tile.js';
 import RenderFeature from 'ol/render/Feature.js';
-import {createEmptyCanvas} from './core/OLImageryProvider';
+import {createEmptyCanvas} from './core/OLImageryProvider.js';
 
 
 export interface MVTOptions {

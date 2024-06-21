@@ -1,6 +1,6 @@
-export {computeRectangle} from './computeRectangle';
+export {computeRectangle} from './computeRectangle.js';
 
-export type{RectangleOutput} from './computeRectangle';
+export type {RectangleOutput} from './computeRectangle.js';
 
 export function computeDPIForPDF(pdfPixels: [number, number], imageDimensions: [number, number]): number {
   const widthDPI = imageDimensions[0] / (pdfPixels[0] / 72);
