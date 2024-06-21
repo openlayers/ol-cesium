@@ -7,7 +7,7 @@
     "build-examples": "rm -rf dist; parcel build --dist-dir dist/examples && npm run copy-static-dist",
     "prepare": "tsc --pretty; npm run doc",
     "typecheck": "tsc --pretty --noEmit",
-    "lint": "eslint src buildtools examples",
+    "lint": "eslint src examples",
     "checks": "npm run lint && npm run typecheck",
     "doc": "typedoc --name ol-cesium --excludeExternals --out apidoc --entryPoints src/olcs.ts --tsconfig ./tsconfig.json",
     "copy-static-dist": "mkdir -p dist/examples/node_modules/ol; mkdir -p dist/examples/node_modules/cesium/Build/; cp examples/inject_ol_cesium.js dist/examples/; cp node_modules/ol/ol.css dist/examples/node_modules/ol/; cp -R node_modules/cesium/Build/CesiumUnminified node_modules/cesium/Build/Cesium dist/examples/node_modules/cesium/Build/; cp -R examples/data dist/examples/",
