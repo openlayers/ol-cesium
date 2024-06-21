@@ -7,7 +7,7 @@ import olGeomSimpleGeometry from 'ol/geom/SimpleGeometry.js';
 import {convertColorToCesium, olGeometryCloneTo4326, ol4326CoordinateToCesiumCartesian, ol4326CoordinateArrayToCsCartesians} from './core';
 import VectorLayerCounterpart, {type OlFeatureToCesiumContext} from './core/VectorLayerCounterpart';
 import {getUid, waitReady} from './util';
-import type {CircleGeometry, CircleOutlineGeometry, Primitive, Billboard, Label, Matrix4, Scene, Geometry as CSGeometry, Color as CSColor, GroundPrimitive, PrimitiveCollection, ImageMaterialProperty, BillboardCollection, Cartesian3, GroundPolylinePrimitive, PolygonHierarchy, HeightReference, Model, LabelCollection, Material} from 'cesium';
+import {type CircleGeometry, type CircleOutlineGeometry, type Primitive, type Billboard, type Label, type Matrix4, type Scene, type Geometry as CSGeometry, Color as CSColor, type GroundPrimitive, type PrimitiveCollection, type ImageMaterialProperty, type BillboardCollection, type Cartesian3, type GroundPolylinePrimitive, type PolygonHierarchy, type HeightReference, type Model, type LabelCollection, type Material} from 'cesium';
 import type VectorLayer from 'ol/layer/Vector.js';
 import type ImageLayer from 'ol/layer/Image.js';
 import type {Feature, View} from 'ol';
@@ -231,11 +231,8 @@ export default class FeatureConverter {
 
   /**
    * Return the fill or stroke color from a plain ol style.
-   * @param style
-   * @param outline
-   * @return {!CSColor}
    */
-  protected extractColorFromOlStyle(style: Style | Text, outline: boolean) {
+  protected extractColorFromOlStyle(style: Style | Text, outline: boolean): CSColor {
     const fillColor = style.getFill()?.getColor();
     const strokeColor = style.getStroke() ? style.getStroke().getColor() : null;
 
@@ -246,7 +243,13 @@ export default class FeatureConverter {
       olColor = fillColor;
     }
 
-    return convertColorToCesium(olColor);
+    const csColor = convertColorToCesium(olColor);
+    if ('red' in csColor) {
+      return csColor;
+    } else {
+      // Fallback to black if that was not a plain color
+      return CSColor.BLACK;
+    }
   }
 
   /**
@@ -670,9 +673,9 @@ export default class FeatureConverter {
       const heightReference = this.getHeightReference(layer, feature, olGeometry);
 
       const bbOptions: Parameters<BillboardCollection['add']>[0] = {
-        image,
+        image: (image as any),
         color,
-        scale,
+        scale: Array.isArray(scale) ? (scale[0] + scale[1]) / 2 : scale,
         heightReference,
         position
       };
@@ -886,11 +889,11 @@ export default class FeatureConverter {
       const first = geometry.getFirstCoordinate();
       extentCenter[2] = first.length == 3 ? first[2] : 0.0;
     }
-    const options: Parameters<LabelCollection['add']>[0] = {};
+    const options: Parameters<LabelCollection['add']>[0] = {
+      position: ol4326CoordinateToCesiumCartesian(extentCenter)
+    };
 
-    options.position = ol4326CoordinateToCesiumCartesian(extentCenter);
-
-    options.text = text;
+    options.text = Array.isArray(text) ? text.join(' ') : text;
 
     options.heightReference = this.getHeightReference(layer, feature, geometry);
 
@@ -1126,7 +1129,7 @@ export default class FeatureConverter {
    * `featurePrimitiveMap`.
    * @api
    */
-  olVectorLayerToCesium(olLayer: VectorLayer<VectorSource>, olView: View, featurePrimitiveMap: Record<number, PrimitiveCollection>): VectorLayerCounterpart {
+  olVectorLayerToCesium(olLayer: VectorLayer<Feature>, olView: View, featurePrimitiveMap: Record<number, PrimitiveCollection>): VectorLayerCounterpart {
     const proj = olView.getProjection();
     const resolution = olView.getResolution();
 
@@ -1188,7 +1191,7 @@ export default class FeatureConverter {
    * Convert an OpenLayers feature to Cesium primitive collection.
    * @api
    */
-  convert(layer: VectorLayer<VectorSource>, view: View, feature: Feature, context: OlFeatureToCesiumContext): PrimitiveCollection {
+  convert(layer: VectorLayer<Feature>, view: View, feature: Feature, context: OlFeatureToCesiumContext): PrimitiveCollection {
     const proj = view.getProjection();
     const resolution = view.getResolution();
 
