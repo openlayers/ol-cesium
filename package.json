@@ -77,11 +77,11 @@
     "ol": "7 || 8 || 9"
   },
   "devDependencies": {
-    "@babel/parser": "7.24.4",
+    "@babel/parser": "7.24.7",
     "@mapbox/geojsonhint": "3.3.0",
-    "@swc-node/register": "1.9.0",
-    "@typescript-eslint/eslint-plugin": "7.7.1",
-    "@typescript-eslint/parser": "7.7.1",
+    "@swc-node/register": "1.10.0",
+    "@typescript-eslint/eslint-plugin": "7.15.0",
+    "@typescript-eslint/parser": "7.15.0",
     "cesium": "1.115.0",
     "eslint": "8.57.0",
     "eslint-config-openlayers": "12.0.0",
@@ -90,8 +90,8 @@
     "ol": "9.1.0",
     "parcel": "2.12.0",
     "proj4": "2.11.0",
-    "recast": "0.23.6",
-    "typedoc": "0.25.13",
-    "typescript": "5.4.5"
+    "recast": "0.23.9",
+    "typedoc": "0.26.3",
+    "typescript": "5.5.3"
   }
 }
