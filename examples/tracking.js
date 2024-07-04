@@ -12,6 +12,7 @@ import olGeomPoint from 'ol/geom/Point.js';
 import olMap from 'ol/Map.js';
 
 const Cesium = window.Cesium;
+//##OLCS_ION_TOKEN##
 
 const point = new olGeomPoint([700000, 200000, 100000]);
 
@@ -25,7 +26,8 @@ const iconStyle = new olStyleStyle({
     anchorXUnits: 'fraction',
     anchorYUnits: 'pixels',
     opacity: 0.75,
-    src: 'data/icon.png'
+    src: 'data/icon.png',
+    crossOrigin: 'anonymous'
   }))
 });
 
