@@ -55,7 +55,8 @@ const iconStyle = new olStyleStyle({
     anchorXUnits: 'fraction',
     anchorYUnits: 'pixels',
     opacity: 0.75,
-    src: 'data/icon.png'
+    src: 'data/icon.png',
+    crossOrigin: 'anonymous'
   })),
   text: new olStyleText({
     text: 'Some text',
@@ -109,7 +110,8 @@ modelFeatures.forEach((feature) => {
       anchorXUnits: 'fraction',
       anchorYUnits: 'pixels',
       opacity: 0.75,
-      src: 'data/icon.png'
+      src: 'data/icon.png',
+      crossOrigin: 'anonymous'
     }))
   });
   const olcsModelFunction = () => {
@@ -228,7 +230,8 @@ const styleFunction = function(feature, resolution) {
 
 const vectorSource = new olSourceVector({
   format: new olFormatGeoJSON(),
-  url: 'data/geojson/vector_data.geojson'
+  url: 'data/geojson/vector_data.geojson',
+  crossOrigin: 'anonymous'
 });
 
 const theCircle = new olFeature(new olGeomCircle([5e6, 7e6, 5e5], 1e6));
@@ -329,7 +332,7 @@ dragAndDropInteraction.on('addfeatures', (event) => {
 const Cesium = window.Cesium;
 //##OLCS_ION_TOKEN##
 
-const ol3d = new OLCesium({map, target: 'map3d'});
+const ol3d = new OLCesium({map, target: 'mapCesium'});
 const scene = ol3d.getCesiumScene();
 Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
 ol3d.setEnabled(true);
