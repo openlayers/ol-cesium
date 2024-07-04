@@ -33,7 +33,7 @@ const ol2d = new olMap({
   view,
 });
 
-const ol3d = new OLCesium({map: ol2d, target: 'map3d'});
+const ol3d = new OLCesium({map: ol2d, target: 'mapCesium'});
 const scene = ol3d.getCesiumScene();
 Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
 
