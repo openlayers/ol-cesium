@@ -1,29 +1,41 @@
-<?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="robots" content="index, all" />
-    <title>olcesium example</title>
+    <title>Ol-Cesium | Example</title>
     <link rel="stylesheet" href="../node_modules/ol/ol.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" crossorigin="anonymous">
   </head>
-  <body>
-    <div id="map" style="width:600px;height:400px;"></div>
-    <input id="enable" type="button" value="Enable/disable" />
 
-    <input type="button" value="Enable/disable lightning (only 3d)" onclick="javascript:toggleTime()"/>
-    <select id="time">
-      <option value="">Now</option>
-      <option value="0">0:00</option>
-      <option value="3">3:00</option>
-      <option value="6">6:00</option>
-      <option value="9">9:00</option>
-      <option value="12">12:00</option>
-      <option value="15">15:00</option>
-      <option value="18">18:00</option>
-      <option value="21">21:00</option>
-    </select>
+  <body>
+    <div style="text-align: right;">
+      <button id="sandbox-button"><i class="fab fa-codepen fa-lg"></i> Edit in sandbox</button>
+      <form method="POST" id="sandbox-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
+        <input id="sandbox-params" type="hidden" name="parameters">
+      </form>
+    </div>
+
+    <div id="example-html-source">
+      <div class="clear-map-sandbox" id="mapCesium" style="width:600px;height:400px;"></div>
+      <input id="enable" type="button" value="Enable/disable" />
+
+      <input type="button" value="Enable/disable lightning (only 3d)" onclick="javascript:toggleTime()"/>
+      <select id="time">
+        <option value="">Now</option>
+        <option value="0">0:00</option>
+        <option value="3">3:00</option>
+        <option value="6">6:00</option>
+        <option value="9">9:00</option>
+        <option value="12">12:00</option>
+        <option value="15">15:00</option>
+        <option value="18">18:00</option>
+        <option value="21">21:00</option>
+      </select>
+    </div>
+
     <script src="./inject_ol_cesium.js"></script>
     <script type="module" src="./main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lz-string@1.4.4/libs/lz-string.min.js"></script>
   </body>
 </html>

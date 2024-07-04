@@ -1,72 +1,84 @@
-<?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="robots" content="index, all" />
-    <title>olcesium layergroup synchronization</title>
+    <title>Ol-Cesium | Layergroup synchronization</title>
     <link rel="stylesheet" href="../node_modules/ol/ol.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" crossorigin="anonymous">
     <style>
       #layertree li > span {
         cursor: pointer;
       }
     </style>
   </head>
+
   <body>
-    <div id="map2d" style="width:600px;height:400px;float:left;"></div>
-    <div id="map3d" style="width:600px;height:400px;float:left;position:relative;"></div>
-    <div id="layertree" style="position:absolute;top:400px">
-      <h5>Click on layer nodes below to change their properties.</h5>
-      <ul>
-        <li><span>OSM layer</span>
-          <fieldset id="layer0">
-            <label class="checkbox" for="visible0">
-              <input id="visible0" class="visible" onchange="toggleLayer(this, 'layer0')" type="checkbox" checked/>
-              visibility
-            </label>
-            <label>opacity</label>
-            <input class="opacity" type="range" min="0" max="1" step="0.01" value="1"
-                   onchange="setLayerOpacity(this, 'layer0');" oninput="setLayerOpacity(this, 'layer0');"/>
-          </fieldset>
-        </li>
-        <li><span>Layer group</span>
-          <fieldset id="layer1">
-            <label class="checkbox" for="visible1">
-              <input id="visible1" class="visible" onchange="toggleLayer(this, 'layer1')" type="checkbox" checked/>
-              visibility
-            </label>
-            <label>opacity</label>
-            <input class="opacity" type="range" min="0" max="1" step="0.01" value="1"
-                   onchange="setLayerOpacity(this, 'layer1');" oninput="setLayerOpacity(this, 'layer1');"/>
-          </fieldset>
-          <ul>
-            <li><span>Food insecurity layer</span>
-              <fieldset id="layer10">
-                <label class="checkbox" for="visible10">
-                  <input id="visible10" class="visible" onchange="toggleLayer(this, 'layer10')" type="checkbox" checked/>
-                  visibility
-                </label>
-                <label>opacity</label>
-                <input class="opacity" type="range" min="0" max="1" step="0.01" value="1"
-                       onchange="setLayerOpacity(this, 'layer10');" oninput="setLayerOpacity(this, 'layer10');"/>
-              </fieldset>
-            </li>
-            <li><span>World borders layer</span>
-              <fieldset id="layer11">
-                <label class="checkbox" for="visible11">
-                  <input id="visible11" class="visible" onchange="toggleLayer(this, 'layer11')" type="checkbox" checked/>
-                  visibility
-                </label>
-                <label>opacity</label>
-                <input class="opacity" type="range" min="0" max="1" step="0.01" value="1"
-                       onchange="setLayerOpacity(this, 'layer11');" oninput="setLayerOpacity(this, 'layer11');"/>
-              </fieldset>
-            </li>
-          </ul>
-        </li>
-      </ul>
+    <div style="text-align: right;">
+      <button id="sandbox-button"><i class="fab fa-codepen fa-lg"></i> Edit in sandbox</button>
+      <form method="POST" id="sandbox-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
+        <input id="sandbox-params" type="hidden" name="parameters">
+      </form>
     </div>
+    
+    <div id="example-html-source">
+      <div class="clear-map-sandbox" id="map2d" style="width:600px;height:400px;float:left;"></div>
+      <div class="clear-map-sandbox" id="mapCesium" style="width:600px;height:400px;float:left;position:relative;"></div>
+      <div id="layertree" style="position:absolute;top:400px">
+        <h5>Click on layer nodes below to change their properties.</h5>
+        <ul>
+          <li><span>OSM layer</span>
+            <fieldset id="layer0">
+              <label class="checkbox" for="visible0">
+                <input id="visible0" class="visible" onchange="toggleLayer(this, 'layer0')" type="checkbox" checked/>
+                visibility
+              </label>
+              <label>opacity</label>
+              <input class="opacity" type="range" min="0" max="1" step="0.01" value="1"
+                    onchange="setLayerOpacity(this, 'layer0');" oninput="setLayerOpacity(this, 'layer0');"/>
+            </fieldset>
+          </li>
+          <li><span>Layer group</span>
+            <fieldset id="layer1">
+              <label class="checkbox" for="visible1">
+                <input id="visible1" class="visible" onchange="toggleLayer(this, 'layer1')" type="checkbox" checked/>
+                visibility
+              </label>
+              <label>opacity</label>
+              <input class="opacity" type="range" min="0" max="1" step="0.01" value="1"
+                    onchange="setLayerOpacity(this, 'layer1');" oninput="setLayerOpacity(this, 'layer1');"/>
+            </fieldset>
+            <ul>
+              <li><span>Food insecurity layer</span>
+                <fieldset id="layer10">
+                  <label class="checkbox" for="visible10">
+                    <input id="visible10" class="visible" onchange="toggleLayer(this, 'layer10')" type="checkbox" checked/>
+                    visibility
+                  </label>
+                  <label>opacity</label>
+                  <input class="opacity" type="range" min="0" max="1" step="0.01" value="1"
+                        onchange="setLayerOpacity(this, 'layer10');" oninput="setLayerOpacity(this, 'layer10');"/>
+                </fieldset>
+              </li>
+              <li><span>World borders layer</span>
+                <fieldset id="layer11">
+                  <label class="checkbox" for="visible11">
+                    <input id="visible11" class="visible" onchange="toggleLayer(this, 'layer11')" type="checkbox" checked/>
+                    visibility
+                  </label>
+                  <label>opacity</label>
+                  <input class="opacity" type="range" min="0" max="1" step="0.01" value="1"
+                        onchange="setLayerOpacity(this, 'layer11');" oninput="setLayerOpacity(this, 'layer11');"/>
+                </fieldset>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+
     <script src="./inject_ol_cesium.js"></script>
     <script type="module" src="./layer-group.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lz-string@1.4.4/libs/lz-string.min.js"></script>
   </body>
 </html>

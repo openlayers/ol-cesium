@@ -25,7 +25,6 @@ import olInteractionDragAndDrop from 'ol/interaction/DragAndDrop.js';
 import olGeomMultiPolygon from 'ol/geom/MultiPolygon.js';
 import olLayerVector from 'ol/layer/Vector.js';
 import {transform} from 'ol/proj.js';
-import {OLCS_ION_TOKEN} from './_common.js';
 
 
 const iconFeature = new olFeature({
@@ -56,7 +55,8 @@ const iconStyle = new olStyleStyle({
     anchorXUnits: 'fraction',
     anchorYUnits: 'pixels',
     opacity: 0.75,
-    src: 'data/icon.png'
+    src: 'data/icon.png',
+    crossOrigin: 'anonymous'
   })),
   text: new olStyleText({
     text: 'Some text',
@@ -110,7 +110,8 @@ modelFeatures.forEach((feature) => {
       anchorXUnits: 'fraction',
       anchorYUnits: 'pixels',
       opacity: 0.75,
-      src: 'data/icon.png'
+      src: 'data/icon.png',
+      crossOrigin: 'anonymous'
     }))
   });
   const olcsModelFunction = () => {
@@ -229,7 +230,8 @@ const styleFunction = function(feature, resolution) {
 
 const vectorSource = new olSourceVector({
   format: new olFormatGeoJSON(),
-  url: 'data/geojson/vector_data.geojson'
+  url: 'data/geojson/vector_data.geojson',
+  crossOrigin: 'anonymous'
 });
 
 const theCircle = new olFeature(new olGeomCircle([5e6, 7e6, 5e5], 1e6));
@@ -327,9 +329,10 @@ dragAndDropInteraction.on('addfeatures', (event) => {
       vectorSource.getExtent(), /** @type {ol.Size} */ (map.getSize()));
 });
 
+const Cesium = window.Cesium;
+//##OLCS_ION_TOKEN##
 
-Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
-const ol3d = new OLCesium({map, target: 'map3d'});
+const ol3d = new OLCesium({map, target: 'mapCesium'});
 const scene = ol3d.getCesiumScene();
 Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
 ol3d.setEnabled(true);
@@ -406,3 +409,8 @@ window['scene'] = scene;
 document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
 
 ol3d.enableAutoRenderLoop();
+
+//##REMOVE## Keep this tag, split code here for code sandbox
+
+import {initCodeSandbox} from './_code-sandbox.js';
+initCodeSandbox('rawjs/vectors.js');

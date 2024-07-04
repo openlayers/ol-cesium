@@ -4,16 +4,16 @@ import olView from 'ol/View.js';
 import olSourceOSM from 'ol/source/OSM.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olMap from 'ol/Map.js';
-import {OLCS_ION_TOKEN} from './_common.js';
 
-Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
+const Cesium = window.Cesium;
+
 const ol2d = new olMap({
   layers: [
     new olLayerTile({
       source: new olSourceOSM()
     })
   ],
-  target: 'map',
+  target: 'mapCesium',
   view: new olView({
     center: transform([25, 20], 'EPSG:4326', 'EPSG:3857'),
     zoom: 3
@@ -41,3 +41,8 @@ setInterval(printInfo, 100);
 document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
 window['camera'] = camera;
 window['olProjTransform'] = transform;
+
+//##REMOVE## Keep this tag, split code here for code sandbox
+
+import {initCodeSandbox} from './_code-sandbox.js';
+initCodeSandbox('rawjs/exports.js');
