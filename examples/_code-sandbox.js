@@ -13,19 +13,30 @@ export async function initCodeSandbox(indexJsPath, ...filesPathes) {
   indexJsContent = indexJsContent.replaceAll(/(olcs\/.*?).ts('?;?)/ig, '$1.js$2');
 
   const additionalJsFiles = {};
+  const resourcesFiles = filesPathes
+      .filter(path => path.indexOf('data/') === 0)
+      // eslint-disable-next-line arrow-body-style
+      .map(path => ({
+        [path]: {
+          'isBinary': true,
+          content: `https://openlayers.org/ol-cesium/examples/${path}`
+        }
+      }));
+  const jsFiles = filesPathes.filter(path => path.indexOf('data/') !== 0);
 
-  for (const filePath of filesPathes) {
+  for (const filePath of jsFiles) {
     const responseFile = await fetch(filePath);
     const txtDataFile = await responseFile.text();
 
     additionalJsFiles[filePath.replace('./', '').replace('rawjs', '')] = {content: txtDataFile};
   }
 
-  initCodeSandboxButton({indexJsContent, additionalJsFiles});
+  initCodeSandboxButton({indexJsContent, additionalJsFiles, resourcesFiles});
 }
 
 function initCodeSandboxButton(options) {
-  const {indexJsContent, additionalJsFiles} = options;
+  const {indexJsContent, additionalJsFiles, resourcesFiles} = options;
+
   let indexHtmlContent = '';
   const button = document.getElementById('sandbox-button');
   const form = document.querySelector('#sandbox-form');
@@ -38,7 +49,6 @@ function initCodeSandboxButton(options) {
   divExampleCodeSource.innerHTML = document.getElementById('example-html-source').innerHTML;
   divExampleCodeSource.querySelectorAll('.clear-map-sandbox').forEach(map => map.innerHTML = '');
   indexHtmlContent = divExampleCodeSource.innerHTML;
-
 
   const indexHtml = `
 <!DOCTYPE html>
@@ -139,32 +149,17 @@ function initCodeSandboxButton(options) {
       '.babelrc': {
         content: '{ "plugins": ["@babel/plugin-proposal-class-properties"] }'
       },
-      'data/geojson/countries.geojson': {
-        'isBinary': true,
-        content: 'https://openlayers.org/ol-cesium/examples/data/geojson/countries.geojson'
-      },
-      'data/geojson/buildings.geojson': {
-        'isBinary': true,
-        content: 'https://openlayers.org/ol-cesium/examples/data/geojson/buildings.geojson'
-      },
-      'data/geojson/vector_data.geojson': {
-        'isBinary': true,
-        content: 'https://openlayers.org/ol-cesium/examples/data/geojson/vector_data.geojson'
-      },
-      'data/icon.png': {
-        'isBinary': true,
-        content: 'https://openlayers.org/ol-cesium/examples/data/icon.png'
-      },
-      'data/Box.gltf': {
-        'isBinary': true,
-        content: 'https://openlayers.org/ol-cesium/examples/data/Box.gltf'
-      },
       'index.js': {
         content: indexJsContent,
       },
       'index.html': {
         content: indexHtml
       },
+      ...resourcesFiles.reduce((acc, curr) => {
+        const key = Object.keys(curr)[0]; // Récupérer la clé de l'objet
+        acc[key] = curr[key]; // Ajouter la propriété à l'objet accumulé
+        return acc;
+      }, {}),
       ...additionalJsFiles
     }
   };

@@ -410,4 +410,4 @@ ol3d.enableAutoRenderLoop();
 //##REMOVE## Keep this tag, split code here for code sandbox
 
 import {initCodeSandbox} from './_code-sandbox.js';
-initCodeSandbox('rawjs/vectors.js');
+initCodeSandbox('rawjs/vectors.js', 'data/geojson/vector_data.geojson', 'data/Box.gltf', 'data/icon.png');

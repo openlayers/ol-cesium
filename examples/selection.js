@@ -62,5 +62,5 @@ map.on('click', (e) => {
 //##REMOVE## Keep this tag, split code here for code sandbox
 
 import {initCodeSandbox} from './_code-sandbox.js';
-initCodeSandbox('rawjs/selection.js');
+initCodeSandbox('rawjs/selection.js', 'data/geojson/countries.geojson');
 

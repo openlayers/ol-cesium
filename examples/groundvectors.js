@@ -154,7 +154,7 @@ ol3d.enableAutoRenderLoop();
 //##REMOVE## Keep this tag, split code here for code sandbox
 
 import {initCodeSandbox} from './_code-sandbox.js';
-initCodeSandbox('rawjs/groundvectors.js', './data/geojson/ground_vector_data.geojson');
+initCodeSandbox('rawjs/groundvectors.js', 'data/geojson/ground_vector_data.geojson');
 
 // faire à la demande
 // définir un objet

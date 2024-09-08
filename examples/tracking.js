@@ -80,4 +80,4 @@ setInterval(() => {
 //##REMOVE## Keep this tag, split code here for code sandbox
 
 import {initCodeSandbox} from './_code-sandbox.js';
-initCodeSandbox('rawjs/tracking.js');
+initCodeSandbox('rawjs/tracking.js', 'data/icon.png');
