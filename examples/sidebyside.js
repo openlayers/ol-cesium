@@ -6,7 +6,6 @@ import {transform} from 'ol/proj.js';
 import olView from 'ol/View.js';
 
 const Cesium = window.Cesium;
-//##OLCS_ION_TOKEN##
 
 const view = new olView({
   center: transform([25, 20], 'EPSG:4326', 'EPSG:3857'),
@@ -25,8 +24,8 @@ const ol2d = new olMap({
 });
 
 const ol3d = new OLCesium({map: ol2d, target: 'mapCesium'});
-const scene = ol3d.getCesiumScene();
-Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
+
+ol3d.getCesiumScene();
 ol3d.setEnabled(true);
 
 document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));

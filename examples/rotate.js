@@ -26,11 +26,9 @@ const map = new olMap({
 
 
 const ol3d = new OLCesium({map/*, target: 'map3d'*/});
-const scene = ol3d.getCesiumScene();
-Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
+
+ol3d.getCesiumScene();
 ol3d.setEnabled(true);
-
-
 
 /**
  * @param {!olcs.OLCesium} ol3d

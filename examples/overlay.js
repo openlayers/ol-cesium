@@ -32,7 +32,6 @@ const ol3d = new OLCesium({
   target: 'mapCesium'
 });
 const scene = ol3d.getCesiumScene();
-Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
 
 class OverlayHandler {
   constructor(ol2d, ol3d, scene) {

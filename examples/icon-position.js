@@ -89,7 +89,6 @@ const map = new olMap({
 const Cesium = window.Cesium;
 const ol3d = new OLCesium({map, target: 'mapCesium'});
 const scene = ol3d.getCesiumScene();
-Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
 ol3d.setEnabled(true);
 
 window['toggleClampToGround'] = function() {

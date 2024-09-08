@@ -57,8 +57,7 @@ const ol2d = new Map({
 const ol3d = new OLCesium({
   map: ol2d,
 });
-const scene = ol3d.getCesiumScene();
-Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
+ol3d.getCesiumScene();
 ol3d.setEnabled(true);
 
 document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));

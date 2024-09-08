@@ -34,9 +34,8 @@ const ol2d = new olMap({
 });
 
 const ol3d = new OLCesium({map: ol2d, target: 'mapCesium'});
-const scene = ol3d.getCesiumScene();
-Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
 
+ol3d.getCesiumScene();
 ol3d.setEnabled(true);
 
 const addStamen = function() { // eslint-disable-line no-unused-vars

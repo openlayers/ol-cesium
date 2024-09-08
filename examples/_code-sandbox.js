@@ -1,5 +1,3 @@
-import {OLCS_ION_TOKEN} from './_common.js';
-
 function compress(json) {
   return window.LZString.compressToBase64(JSON.stringify(json))
       .replace(/\+/g, '-')
@@ -13,8 +11,6 @@ export async function initCodeSandbox(indexJsPath, ...filesPathes) {
   let indexJsContent = txtData.split('//##REMOVE##')[0];
   
   indexJsContent = indexJsContent.replaceAll(/(olcs\/.*?).ts('?;?)/ig, '$1.js$2');
-  indexJsContent = indexJsContent.replace('import {OLCS_ION_TOKEN} from \'./_common.js\';', '');
-  indexJsContent = indexJsContent.replace('//##OLCS_ION_TOKEN##', `Cesium.Ion.defaultAccessToken = '${OLCS_ION_TOKEN}'`);
 
   const additionalJsFiles = {};
 
@@ -23,6 +19,8 @@ export async function initCodeSandbox(indexJsPath, ...filesPathes) {
     const txtDataFile = await responseFile.text();
 
     additionalJsFiles[filePath.replace('./', '').replace('rawjs', '')] = {content: txtDataFile};
+
+    console.log("additionalJsFiles", additionalJsFiles)
   }
 
   initCodeSandboxButton({indexJsContent, additionalJsFiles});
@@ -123,9 +121,11 @@ function initCodeSandboxButton(options) {
           'source': 'index.html',
           'main': 'index.html',
           'scripts': {
-            "start": "vite",
+            "build": "vite build",
+            "start": "npm run build && serve dist",
           },
           "devDependencies": {
+            "serve": "14.2.3",
             "vite": "^3.2.3",
             "@babel/core": "^7.24.4",
             "@babel/plugin-proposal-class-properties": "^7.18.6"
@@ -149,9 +149,17 @@ function initCodeSandboxButton(options) {
         "isBinary": true,
         content: "https://openlayers.org/ol-cesium/examples/data/geojson/buildings.geojson"
       },
+      'data/geojson/vector_data.geojson': {
+        "isBinary": true,
+        content: "https://openlayers.org/ol-cesium/examples/data/geojson/vector_data.geojson"
+      },
       'data/icon.png': {
         "isBinary": true,
         content: "https://openlayers.org/ol-cesium/examples/data/icon.png"
+      },
+      'data/Box.gltf': {
+        "isBinary": true,
+        content: "https://openlayers.org/ol-cesium/examples/data/Box.gltf"
       },
       'index.js': {
         content: indexJsContent,

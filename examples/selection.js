@@ -18,7 +18,8 @@ const raster = new olLayerTile({
 const vector = new olLayerVector({
   source: new olSourceVector({
     format: new olFormatGeoJSON(),
-    url: 'data/geojson/countries.geojson'
+    url: 'data/geojson/countries.geojson',
+    crossOrigin: 'anonymous'
   })
 });
 
@@ -34,8 +35,6 @@ const map = new olMap({
 
 const ol3d = new OLCesium({map, target: 'mapCesium'});
 ol3d.setEnabled(true);
-
-
 
 const selectionStyle = new olStyleStyle({
   fill: new olStyleFill({

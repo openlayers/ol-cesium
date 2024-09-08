@@ -12,7 +12,6 @@ import olGeomPoint from 'ol/geom/Point.js';
 import olMap from 'ol/Map.js';
 
 const Cesium = window.Cesium;
-//##OLCS_ION_TOKEN##
 
 const point = new olGeomPoint([700000, 200000, 100000]);
 
@@ -61,8 +60,7 @@ const map = new olMap({
 });
 
 const ol3d = new OLCesium({map});
-const scene = ol3d.getCesiumScene();
-Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
+ol3d.getCesiumScene();
 ol3d.setEnabled(true);
 
 let tracking = false;

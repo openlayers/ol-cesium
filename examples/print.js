@@ -8,7 +8,6 @@ import olMap from 'ol/Map.js';
 
 
 const Cesium = window.Cesium;
-//##OLCS_ION_TOKEN##
 const ol2d = new olMap({
   layers: [
     new olLayerTile({
@@ -31,7 +30,6 @@ const ol3d = new OLCesium({
   map: ol2d,
 });
 const scene = ol3d.getCesiumScene();
-Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
 ol3d.setEnabled(true);
 
 
@@ -58,9 +56,6 @@ window['takeScreenshot'] = async function() {
   console.log(r);
   const value = await takeScreenshot(scene, r);
   const img = new Image();
-  /**
-   * @type {HTMLCanvasElement}
-   */
   const canvas = scene.canvas;
   img.src = value;
   img.width = r.width / (canvas.width / canvas.clientWidth);

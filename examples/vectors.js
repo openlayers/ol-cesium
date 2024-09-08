@@ -330,11 +330,9 @@ dragAndDropInteraction.on('addfeatures', (event) => {
 });
 
 const Cesium = window.Cesium;
-//##OLCS_ION_TOKEN##
 
 const ol3d = new OLCesium({map, target: 'mapCesium'});
 const scene = ol3d.getCesiumScene();
-Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
 ol3d.setEnabled(true);
 
 const csLabels = new Cesium.LabelCollection();
