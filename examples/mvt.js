@@ -11,8 +11,6 @@ import Style from 'ol/style/Style.js';
 import OSMSource from 'ol/source/OSM.js';
 import './_proj21781.js';
 
-const Cesium = window.Cesium;
-
 const projection = getProjection('EPSG:3857');
 console.assert(projection);
 

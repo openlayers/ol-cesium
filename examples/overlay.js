@@ -1,3 +1,4 @@
+/* global $ */
 import OLCesium from 'olcs';
 import olMap from 'ol/Map.js';
 import olSourceOSM from 'ol/source/OSM.js';
@@ -59,18 +60,16 @@ class OverlayHandler {
     eventHandler.setInputAction(this.onClickHandlerCS.bind(this), Cesium.ScreenSpaceEventType['LEFT_CLICK']);
 
     const clickForm = document.getElementById('click-action-form');
-    clickForm.onchange = function(event) {
-      const checked = $('input[name="click-action"]:checked').val();
+    clickForm.onchange = () => {
+      const checked = document.querySelector('input[name="click-action"]:checked')?.value;
       this.options.add = checked === 'add';
-
-      console.log("checked", checked)
-    }.bind(this);
+    };
 
     const typeForm = document.getElementById('overlay-type-form');
-    typeForm.onchange = function(event) {
-      const checked = $('input[name="overlay-type"]:checked').val();
+    typeForm.onchange = (event) => {
+      const checked = document.querySelector('input[name="overlay-type"]:checked')?.value;
       this.options.boostrap = checked === 'popover';
-    }.bind(this);
+    };
   }
 
   onClickHandlerOL(event) {

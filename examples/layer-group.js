@@ -43,7 +43,6 @@ const ol2d = new olMap({
   })
 });
 
-const Cesium = window.Cesium;
 const ol3d = new OLCesium({map: ol2d, target: 'mapCesium'});
 ol3d.setEnabled(true);
 

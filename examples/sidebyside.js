@@ -5,8 +5,6 @@ import olMap from 'ol/Map.js';
 import {transform} from 'ol/proj.js';
 import olView from 'ol/View.js';
 
-const Cesium = window.Cesium;
-
 const view = new olView({
   center: transform([25, 20], 'EPSG:4326', 'EPSG:3857'),
   zoom: 3,

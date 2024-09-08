@@ -9,7 +9,7 @@ export async function initCodeSandbox(indexJsPath, ...filesPathes) {
   const response = await fetch(indexJsPath);
   const txtData = await response.text();
   let indexJsContent = txtData.split('//##REMOVE##')[0];
-  
+
   indexJsContent = indexJsContent.replaceAll(/(olcs\/.*?).ts('?;?)/ig, '$1.js$2');
 
   const additionalJsFiles = {};
@@ -19,8 +19,6 @@ export async function initCodeSandbox(indexJsPath, ...filesPathes) {
     const txtDataFile = await responseFile.text();
 
     additionalJsFiles[filePath.replace('./', '').replace('rawjs', '')] = {content: txtDataFile};
-
-    console.log("additionalJsFiles", additionalJsFiles)
   }
 
   initCodeSandboxButton({indexJsContent, additionalJsFiles});
@@ -121,20 +119,20 @@ function initCodeSandboxButton(options) {
           'source': 'index.html',
           'main': 'index.html',
           'scripts': {
-            "build": "vite build",
-            "start": "npm run build && serve dist",
+            'build': 'vite build',
+            'start': 'npm run build && serve dist',
           },
-          "devDependencies": {
-            "serve": "14.2.3",
-            "vite": "^3.2.3",
-            "@babel/core": "^7.24.4",
-            "@babel/plugin-proposal-class-properties": "^7.18.6"
+          'devDependencies': {
+            'serve': '14.2.3',
+            'vite': '^3.2.3',
+            '@babel/core': '^7.24.4',
+            '@babel/plugin-proposal-class-properties': '^7.18.6'
           },
-          "dependencies": {
-            "olcs": "latest",
-            "proj4": "2.9.0",
-            "cesium": "1.108",
-            "ol": "8.1.0"
+          'dependencies': {
+            'olcs': 'latest',
+            'proj4': '2.9.0',
+            'cesium': '1.108',
+            'ol': '8.1.0'
           }
         },
       },
@@ -142,24 +140,24 @@ function initCodeSandboxButton(options) {
         content: '{ "plugins": ["@babel/plugin-proposal-class-properties"] }'
       },
       'data/geojson/countries.geojson': {
-        "isBinary": true,
-        content: "https://openlayers.org/ol-cesium/examples/data/geojson/countries.geojson"
+        'isBinary': true,
+        content: 'https://openlayers.org/ol-cesium/examples/data/geojson/countries.geojson'
       },
       'data/geojson/buildings.geojson': {
-        "isBinary": true,
-        content: "https://openlayers.org/ol-cesium/examples/data/geojson/buildings.geojson"
+        'isBinary': true,
+        content: 'https://openlayers.org/ol-cesium/examples/data/geojson/buildings.geojson'
       },
       'data/geojson/vector_data.geojson': {
-        "isBinary": true,
-        content: "https://openlayers.org/ol-cesium/examples/data/geojson/vector_data.geojson"
+        'isBinary': true,
+        content: 'https://openlayers.org/ol-cesium/examples/data/geojson/vector_data.geojson'
       },
       'data/icon.png': {
-        "isBinary": true,
-        content: "https://openlayers.org/ol-cesium/examples/data/icon.png"
+        'isBinary': true,
+        content: 'https://openlayers.org/ol-cesium/examples/data/icon.png'
       },
       'data/Box.gltf': {
-        "isBinary": true,
-        content: "https://openlayers.org/ol-cesium/examples/data/Box.gltf"
+        'isBinary': true,
+        content: 'https://openlayers.org/ol-cesium/examples/data/Box.gltf'
       },
       'index.js': {
         content: indexJsContent,
@@ -177,7 +175,6 @@ function initCodeSandboxButton(options) {
     form.submit();
   };
 }
-
 
 // dans npm prepare : extraire les versions à utiliser et faire un fichier json avec ces versions
 // Ce fichier json doit etre lu, faire un fetch de ce fichier

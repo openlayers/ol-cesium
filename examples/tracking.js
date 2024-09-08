@@ -11,8 +11,6 @@ import olFeature from 'ol/Feature.js';
 import olGeomPoint from 'ol/geom/Point.js';
 import olMap from 'ol/Map.js';
 
-const Cesium = window.Cesium;
-
 const point = new olGeomPoint([700000, 200000, 100000]);
 
 const iconFeature = new olFeature({

@@ -6,8 +6,6 @@ import olSourceOSM from 'ol/source/OSM.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olMap from 'ol/Map.js';
 
-
-const Cesium = window.Cesium;
 const ol2d = new olMap({
   layers: [
     new olLayerTile({
@@ -49,7 +47,7 @@ function scalingOptions() {
 }
 autoDrawMask(scene, () => scalingOptions().scaling);
 
-document.querySelector("#takeScreenshot").addEventListener("click", window.takeScreenshot);
+document.querySelector('#takeScreenshot').addEventListener('click', window.takeScreenshot);
 
 window['takeScreenshot'] = async function() {
   const r = scalingOptions();
@@ -60,7 +58,7 @@ window['takeScreenshot'] = async function() {
   img.src = value;
   img.width = r.width / (canvas.width / canvas.clientWidth);
   img.height = r.height / (canvas.height / canvas.clientHeight);
-  document.querySelector("#screenshots").append(img);
+  document.querySelector('#screenshots').append(img);
 };
 
 //##REMOVE## Keep this tag, split code here for code sandbox

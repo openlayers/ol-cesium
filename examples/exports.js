@@ -5,8 +5,6 @@ import olSourceOSM from 'ol/source/OSM.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olMap from 'ol/Map.js';
 
-const Cesium = window.Cesium;
-
 const ol2d = new olMap({
   layers: [
     new olLayerTile({

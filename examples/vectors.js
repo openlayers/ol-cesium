@@ -40,14 +40,12 @@ const cervinFeature = new olFeature({
 });
 cervinFeature.getGeometry().set('altitudeMode', 'clampToGround');
 
-
 const modelFeatures = [-1, -1 / 2, 0, 1 / 2, 1, 3 / 2].map(
     factor => new olFeature({
       geometry: new olGeomPoint([852641, 5776749, 4500]),
       'rotation': factor * Math.PI
     })
 );
-
 
 const iconStyle = new olStyleStyle({
   image: new olStyleIcon(/** @type {olx.style.IconOptions} */ ({
@@ -122,6 +120,7 @@ modelFeatures.forEach((feature) => {
       cesiumOptions: {
         url: './data/Box.gltf',
         modelMatrix: createMatrixAtCoordinates(center, rotation),
+        // eslint-disable-next-line no-use-before-define
         heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
         minimumPixelSize: 64
       }

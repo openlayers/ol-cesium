@@ -29,19 +29,19 @@ const ol3d = new OLCesium({map: ol2d});
 const scene = ol3d.getCesiumScene();
 
 ol3d.getDataSources().add(
-  Cesium.KmlDataSource.load(
-    "https://api3.geo.admin.ch/ogcproxy?url=" +
-      "https%3A%2F%2Fdav0.bgdi.admin.ch%2Fbazl_web%2FActive_Obstacles.kmz",
-    {
-      camera: scene.camera,
-      canvas: scene.canvas
-    }
-  )
+    Cesium.KmlDataSource.load(
+        'https://api3.geo.admin.ch/ogcproxy?url=' +
+          'https%3A%2F%2Fdav0.bgdi.admin.ch%2Fbazl_web%2FActive_Obstacles.kmz',
+        {
+          camera: scene.camera,
+          canvas: scene.canvas
+        }
+    )
 );
 
 document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
 
 //##REMOVE## Keep this tag, split code here for code sandbox
 
-import { initCodeSandbox } from './_code-sandbox.js';
+import {initCodeSandbox} from './_code-sandbox.js';
 initCodeSandbox('rawjs/kml.js');

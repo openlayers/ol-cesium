@@ -12,7 +12,6 @@ import Static from 'ol/source/ImageStatic.js';
 
 const imageExtent = [-40, 50, -10, 65];
 
-const Cesium = window.Cesium;
 const ol2d = new olMap({
   layers: [
     new olLayerTile({
@@ -43,9 +42,8 @@ const ol2d = new olMap({
 const ol3d = new OLCesium({
   map: ol2d
 });
-const scene = ol3d.getCesiumScene();
+ol3d.getCesiumScene();
 ol3d.setEnabled(true);
-
 
 document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
 

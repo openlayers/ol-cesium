@@ -1,9 +1,10 @@
 import path from 'path';
 import fs from 'fs';
 import glob from 'fast-glob';
+// eslint-disable-next-line no-use-before-define
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
-import { fileURLToPath } from 'url';
+import {fileURLToPath} from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const plugins = [];

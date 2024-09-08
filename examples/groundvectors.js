@@ -130,7 +130,6 @@ const map = new olMap({
   })
 });
 
-const Cesium = window.Cesium;
 vectorLayer.set('altitudeMode', 'clampToGround');
 const ol3d = new OLCesium({map, target: 'map3d'});
 const scene = ol3d.getCesiumScene();
