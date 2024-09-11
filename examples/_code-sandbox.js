@@ -140,9 +140,9 @@ function initCodeSandboxButton(options) {
           },
           'dependencies': {
             'olcs': 'latest',
-            'proj4': '2.9.0',
-            'cesium': '1.108',
-            'ol': '8.1.0'
+            'proj4': '2.11.0',
+            'cesium': '^1.90.0',
+            'ol': '10.1.0'
           }
         },
       },
