@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert';
 
-import {dashPattern} from './FeatureConverter';
+import {dashPattern} from './FeatureConverter.js';
 
 function olPatternAsBinary(pattern: number[]): string {
   const pattern16 = dashPattern(pattern);

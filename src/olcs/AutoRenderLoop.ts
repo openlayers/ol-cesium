@@ -1,5 +1,5 @@
 import type {Scene} from 'cesium';
-import type OLCesium from './OLCesium';
+import type OLCesium from './OLCesium.js';
 
 /**
  * By default Cesium (used to?) renders as often as possible.

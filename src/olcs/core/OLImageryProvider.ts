@@ -1,6 +1,6 @@
-import {getSourceProjection} from '../util';
+import {getSourceProjection} from '../util.js';
 import {type TileImage} from 'ol/source.js';
-import {attributionsFunctionToCredits} from '../core';
+import {attributionsFunctionToCredits} from '../core.js';
 import type {Map} from 'ol';
 import type {Projection} from 'ol/proj.js';
 import type {Credit, Event, ImageryLayerFeatureInfo, ImageryProvider, ImageryTypes, Proxy, Rectangle, Request, TileDiscardPolicy, TilingScheme} from 'cesium';
