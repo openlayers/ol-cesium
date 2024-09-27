@@ -49,7 +49,7 @@ const ol3d = new OLCesium({map: ol2dMap});
 
 ```js
 ol3d.setEnabled(true); // switch to 3D - show the globe
-ol3d.setEnabled(true); // switch to 2D - show the map
+ol3d.setEnabled(false); // switch to 2D - show the map
 ```
 
 Build with your prefered bundler.
