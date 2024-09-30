@@ -1,15 +1,11 @@
 # Changelog
 
-## v 2.22.0
-
-* Changes
-  * Add OL 10 support.
-  * Port to CesiumJS 1.121.
-
 ## v 2.21.0
 
 * Changes
   * Changes types to work with OL 9.2, min version is now 9.2
+  * Add OL 10 support.
+  * Port to CesiumJS 1.121.
 
 ## v 2.20.0
 
