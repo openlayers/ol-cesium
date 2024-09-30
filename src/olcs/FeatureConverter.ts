@@ -24,6 +24,17 @@ type ModelFromGltfOptions = Parameters<typeof Model.fromGltfAsync>[0];
 
 type PrimitiveLayer = VectorLayer<any> | ImageLayer<any>;
 
+/**
+ * OL 10 changed the way the VectorLayer is typed.
+ * With "Feature": our code is compatible with OL 6-9 but fails with OL 10.
+ * With "VectorSource": it is compatible with OL 10 but fails with OL 6-9.
+ * This is just a typin issue: our "actual" code does not need to change...
+ * I think some magics with "typescript conditional types" may help here, but how to detect the OL version at typing time?
+ * There is a {VERSION} from 'ol/utils.js symbol, but it is just of type "string", which is not helpful.
+ * For now, I will use "any" here: it is ugly but at least will not put a burden on users of OL versions < 10.
+ */
+type BackwardCompatibleFeature = any; // VectorSource; // Feature;
+
 declare module 'cesium' {
   // eslint-disable-next-line no-unused-vars
   interface Primitive {
@@ -1129,7 +1140,7 @@ export default class FeatureConverter {
    * `featurePrimitiveMap`.
    * @api
    */
-  olVectorLayerToCesium(olLayer: VectorLayer<Feature>, olView: View, featurePrimitiveMap: Record<number, PrimitiveCollection>): VectorLayerCounterpart {
+  olVectorLayerToCesium(olLayer: VectorLayer<BackwardCompatibleFeature>, olView: View, featurePrimitiveMap: Record<number, PrimitiveCollection>): VectorLayerCounterpart {
     const proj = olView.getProjection();
     const resolution = olView.getResolution();
 
@@ -1191,7 +1202,7 @@ export default class FeatureConverter {
    * Convert an OpenLayers feature to Cesium primitive collection.
    * @api
    */
-  convert(layer: VectorLayer<Feature>, view: View, feature: Feature, context: OlFeatureToCesiumContext): PrimitiveCollection {
+  convert(layer: VectorLayer<BackwardCompatibleFeature>, view: View, feature: Feature, context: OlFeatureToCesiumContext): PrimitiveCollection {
     const proj = view.getProjection();
     const resolution = view.getResolution();
 
