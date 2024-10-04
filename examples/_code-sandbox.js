@@ -9,9 +9,6 @@ export async function initCodeSandbox(indexJsPath, ...filesPathes) {
   const response = await fetch(indexJsPath);
   const txtData = await response.text();
   let indexJsContent = txtData.split('//##REMOVE##')[0];
-
-  indexJsContent = indexJsContent.replaceAll(/(olcs\/.*?).ts('?;?)/ig, '$1.js$2');
-
   const additionalJsFiles = {};
   const resourcesFiles = filesPathes
       .filter(path => path.indexOf('data/') === 0)
