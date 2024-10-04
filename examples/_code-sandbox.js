@@ -58,7 +58,7 @@ function initCodeSandboxButton(options) {
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="node_modules/ol/ol.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <script src="https://cesium.com/downloads/cesiumjs/releases/1.9/Build/Cesium/Cesium.js"></script>
+    <script src="https://cesium.com/downloads/cesiumjs/releases/1.122/Build/Cesium/Cesium.js"></script>
     <style>
       .ol-popup {
         position: absolute;
@@ -139,9 +139,9 @@ function initCodeSandboxButton(options) {
             '@babel/plugin-proposal-class-properties': '^7.18.6'
           },
           'dependencies': {
-            'olcs': 'latest',
+            'olcs': '2.20.0',
             'proj4': '2.11.0',
-            'cesium': '1.90.0',
+            'cesium': '1.122.0',
             'ol': '10.1.0'
           }
         },
