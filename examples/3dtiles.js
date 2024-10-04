@@ -43,4 +43,4 @@ scene.camera.flyTo({
 //##REMOVE## Keep this tag, split code here for code sandbox
 
 import {initCodeSandbox} from './_code-sandbox.js';
-initCodeSandbox('rawjs/customProj.js', 'rawjs/_proj21781.js');
+initCodeSandbox('rawjs/3dtiles.js', 'rawjs/_proj21781.js');
