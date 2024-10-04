@@ -1,6 +1,6 @@
 {
   "name": "olcs",
-  "version": "2.20.0",
+  "version": "2.22.0",
   "description": "OpenLayers Cesium integration and plugin library",
   "scripts": {
     "test": "node --enable-source-maps --import @swc-node/register/esm-register --test  src/olcs/*.test.ts",
@@ -78,7 +78,7 @@
   ],
   "peerDependencies": {
     "cesium": ">= 1.90.0",
-    "ol": ">= 9.2"
+    "ol": ">= 9.2, >= 10"
   },
   "devDependencies": {
     "@babel/parser": "7.25.6",
