@@ -1,3 +1,7 @@
+const lzScript = document.createElement('script');
+lzScript.src = 'https://cdn.jsdelivr.net/npm/lz-string@1.4.4/libs/lz-string.min.js';
+document.head.appendChild(lzScript);
+
 function compress(json) {
   return window.LZString.compressToBase64(JSON.stringify(json))
       .replace(/\+/g, '-')
@@ -19,7 +23,7 @@ export async function initCodeSandbox(indexJsPath, ...filesPathes) {
           content: `https://openlayers.org/ol-cesium/examples/${path}`
         }
       }));
-  const jsFiles = filesPathes.filter(path => path.indexOf('data/') !== 0);
+  const jsFiles = filesPathes.filter(path => !path.startsWith('data/'));
 
   for (const filePath of jsFiles) {
     const responseFile = await fetch(filePath);
