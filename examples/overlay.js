@@ -1,3 +1,4 @@
+/* global $ */
 import OLCesium from 'olcs';
 import olMap from 'ol/Map.js';
 import olSourceOSM from 'ol/source/OSM.js';
@@ -7,12 +8,9 @@ import olView from 'ol/View.js';
 import {defaults as olControlDefaults} from 'ol/control.js';
 import olOverlay from 'ol/Overlay.js';
 import {toStringHDMS} from 'ol/coordinate.js';
-import {OLCS_ION_TOKEN} from './_common.js';
-/* global $ */
 
 const source = new olSourceOSM();
 
-Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 const ol2d = new olMap({
   layers: [
     new olLayerTile({
@@ -32,10 +30,9 @@ const ol2d = new olMap({
 });
 const ol3d = new OLCesium({
   map: ol2d,
-  target: 'map3d'
+  target: 'mapCesium'
 });
 const scene = ol3d.getCesiumScene();
-Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
 
 class OverlayHandler {
   constructor(ol2d, ol3d, scene) {
@@ -63,16 +60,16 @@ class OverlayHandler {
     eventHandler.setInputAction(this.onClickHandlerCS.bind(this), Cesium.ScreenSpaceEventType['LEFT_CLICK']);
 
     const clickForm = document.getElementById('click-action-form');
-    clickForm.onchange = function(event) {
-      const checked = $('input[name="click-action"]:checked').val();
+    clickForm.onchange = () => {
+      const checked = document.querySelector('input[name="click-action"]:checked')?.value;
       this.options.add = checked === 'add';
-    }.bind(this);
+    };
 
     const typeForm = document.getElementById('overlay-type-form');
-    typeForm.onchange = function(event) {
-      const checked = $('input[name="overlay-type"]:checked').val();
+    typeForm.onchange = (event) => {
+      const checked = document.querySelector('input[name="overlay-type"]:checked')?.value;
       this.options.boostrap = checked === 'popover';
-    }.bind(this);
+    };
   }
 
   onClickHandlerOL(event) {
@@ -170,3 +167,8 @@ class OverlayHandler {
 new OverlayHandler(ol2d, ol3d, scene);
 
 document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
+
+//##REMOVE## Keep this tag, split code here for code sandbox
+
+import {initCodeSandbox} from './_code-sandbox.js';
+initCodeSandbox('rawjs/overlay.js');

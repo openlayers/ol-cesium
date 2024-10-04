@@ -1,5 +1,11 @@
 # Changelog
 
+## v 2.22.0
+
+* Changes
+  * Port to CesiumJS 1.122.
+  * Allow to live edit examples.
+
 ## v 2.21.0
 
 * Changes

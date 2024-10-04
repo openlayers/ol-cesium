@@ -10,7 +10,6 @@ import olSourceOSM from 'ol/source/OSM.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olFeature from 'ol/Feature.js';
 import olGeomPoint from 'ol/geom/Point.js';
-import {OLCS_ION_TOKEN} from './_common.js';
 
 
 let total = 0;
@@ -24,17 +23,16 @@ const tile = new olLayerTile({
 
 const map = new olMap({
   layers: [tile],
-  target: 'map2d',
+  target: 'mapCesium',
   view: new olView({
     center: [0, 0],
     zoom: 2
   })
 });
 
-Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
+
 const ol3d = new OLCesium({map});
 const scene = ol3d.getCesiumScene();
-Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
 ol3d.setEnabled(true);
 
 // Show off 3D feature picking
@@ -115,3 +113,8 @@ window['addFeatures'] = function() {
   document.getElementById('created').innerHTML = `Features created in ${created}ms.`;
   document.getElementById('added').innerHTML = `Features added in ${added}ms.`;
 };
+
+//##REMOVE## Keep this tag, split code here for code sandbox
+
+import {initCodeSandbox} from './_code-sandbox.js';
+initCodeSandbox('rawjs/synthvectors.js');

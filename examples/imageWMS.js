@@ -6,7 +6,6 @@ import olSourceOSM from 'ol/source/OSM.js';
 import olLayerImage from 'ol/layer/Image.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olMap from 'ol/Map.js';
-import {OLCS_ION_TOKEN} from './_common.js';
 
 const imageWMSSource = new olSourceImageWMS({
   url: 'https://ahocevar.com/geoserver/wms',
@@ -14,7 +13,7 @@ const imageWMSSource = new olSourceImageWMS({
   ratio: 1
 });
 
-Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
+const Cesium = window.Cesium;
 const ol2d = new olMap({
   layers: [
     new olLayerTile({
@@ -30,7 +29,7 @@ const ol2d = new olMap({
       collapsible: false
     }
   }),
-  target: 'map',
+  target: 'mapCesium',
   view: new olView({
     center: [-10967567.978507737, 4204193.972847062],
     zoom: 3
@@ -43,8 +42,12 @@ const ol3d = new OLCesium({
     return Cesium.JulianDate.now();
   }
 });
-const scene = ol3d.getCesiumScene();
-Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
+ol3d.getCesiumScene();
 ol3d.setEnabled(true);
 
 document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
+
+//##REMOVE## Keep this tag, split code here for code sandbox
+
+import {initCodeSandbox} from './_code-sandbox.js';
+initCodeSandbox('rawjs/imageWMS.js');

@@ -4,8 +4,6 @@ import olLayerTile from 'ol/layer/Tile.js';
 import olMap from 'ol/Map.js';
 import {transform} from 'ol/proj.js';
 import olView from 'ol/View.js';
-import {OLCS_ION_TOKEN} from './_common.js';
-
 
 const view = new olView({
   center: transform([25, 20], 'EPSG:4326', 'EPSG:3857'),
@@ -13,7 +11,6 @@ const view = new olView({
   rotation: Math.PI / 6
 });
 
-Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 const ol2d = new olMap({
   layers: [
     new olLayerTile({
@@ -24,9 +21,14 @@ const ol2d = new olMap({
   view
 });
 
-const ol3d = new OLCesium({map: ol2d, target: 'map3d'});
-const scene = ol3d.getCesiumScene();
-Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
+const ol3d = new OLCesium({map: ol2d, target: 'mapCesium'});
+
+ol3d.getCesiumScene();
 ol3d.setEnabled(true);
 
 document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
+
+//##REMOVE## Keep this tag, split code here for code sandbox
+
+import {initCodeSandbox} from './_code-sandbox.js';
+initCodeSandbox('rawjs/sidebyside.js');

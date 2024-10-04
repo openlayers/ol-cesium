@@ -6,7 +6,6 @@ import {fromLonLat} from 'ol/proj.js';
 import olSourceOSM from 'ol/source/OSM.js';
 import olSourceTileJSON from 'ol/source/TileJSON.js';
 import OLCesium from 'olcs';
-import {OLCS_ION_TOKEN} from './_common.js';
 
 const layer0 = new olLayerTile({
   source: new olSourceOSM()
@@ -44,8 +43,7 @@ const ol2d = new olMap({
   })
 });
 
-Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
-const ol3d = new OLCesium({map: ol2d, target: 'map3d'});
+const ol3d = new OLCesium({map: ol2d, target: 'mapCesium'});
 ol3d.setEnabled(true);
 
 function getLayer(layername) {
@@ -69,3 +67,8 @@ window['toggleLayer'] = function(element, name) {
 window['setLayerOpacity'] = function(element, name) {
   getLayer(name).setOpacity(parseFloat(element.value));
 };
+
+//##REMOVE## Keep this tag, split code here for code sandbox
+
+import {initCodeSandbox} from './_code-sandbox.js';
+initCodeSandbox('rawjs/layer-group.js');

@@ -14,7 +14,6 @@ import olStyleFill from 'ol/style/Fill.js';
 import olMap from 'ol/Map.js';
 import olSourceVector from 'ol/source/Vector.js';
 import olLayerVector from 'ol/layer/Vector.js';
-import {OLCS_ION_TOKEN} from './_common.js';
 
 
 const icon1Feature = new olFeature({
@@ -87,10 +86,9 @@ const map = new olMap({
   })
 });
 
-Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
-const ol3d = new OLCesium({map, target: 'map3d'});
+const Cesium = window.Cesium;
+const ol3d = new OLCesium({map, target: 'mapCesium'});
 const scene = ol3d.getCesiumScene();
-Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
 ol3d.setEnabled(true);
 
 window['toggleClampToGround'] = function() {
@@ -109,7 +107,6 @@ document.getElementById('enable').addEventListener('click', () => ol3d.setEnable
 
 ol3d.enableAutoRenderLoop();
 
-
 // Tilt camera
 const camera = scene.camera;
 const pivot = pickBottomPoint(scene);
@@ -119,3 +116,8 @@ if (pivot) {
   const axis = camera.right;
   rotateAroundAxis(camera, -Math.PI / 4, axis, transform, options);
 }
+
+//##REMOVE## Keep this tag, split code here for code sandbox
+
+import {initCodeSandbox} from './_code-sandbox.js';
+initCodeSandbox('rawjs/icon-position.js', 'data/icon.png', 'data/image-static.png');

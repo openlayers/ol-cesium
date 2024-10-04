@@ -14,7 +14,6 @@ import olFormatGeoJSON from 'ol/format/GeoJSON.js';
 import olLayerVector from 'ol/layer/Vector.js';
 import olFeature from 'ol/Feature.js';
 import olCircle from 'ol/geom/Circle.js';
-import {OLCS_ION_TOKEN} from './_common.js';
 
 const image = new olStyleCircle({
   radius: 5,
@@ -100,7 +99,7 @@ const styleFunction = function(feature, resolution) {
 
 const vectorSource = new olSourceVector({
   format: new olFormatGeoJSON(),
-  url: 'data/geojson/ground_vector_data.geojson'
+  url: 'data/geojson/ground_vector_data.geojson' // la mettre en ref
 });
 
 const vectorLayer = new olLayerVector({
@@ -131,11 +130,9 @@ const map = new olMap({
   })
 });
 
-Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 vectorLayer.set('altitudeMode', 'clampToGround');
 const ol3d = new OLCesium({map, target: 'map3d'});
 const scene = ol3d.getCesiumScene();
-Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
 ol3d.setEnabled(true);
 
 window['toggleClampToGround'] = function() {
@@ -153,3 +150,18 @@ window['scene'] = scene;
 document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
 
 ol3d.enableAutoRenderLoop();
+
+//##REMOVE## Keep this tag, split code here for code sandbox
+
+import {initCodeSandbox} from './_code-sandbox.js';
+initCodeSandbox('rawjs/groundvectors.js', 'data/geojson/ground_vector_data.geojson');
+
+// faire à la demande
+// définir un objet
+// ex Ground vector titlre + urls list
+// introduire
+
+
+// voir
+//https://github.com/geoblocks/mapfishprint/tree/main/demo
+

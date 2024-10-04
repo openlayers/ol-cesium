@@ -4,7 +4,6 @@ import {defaults as olControlDefaults} from 'ol/control.js';
 import olSourceOSM from 'ol/source/OSM.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olMap from 'ol/Map.js';
-import {OLCS_ION_TOKEN} from './_common.js';
 
 
 const map = new olMap({
@@ -13,7 +12,7 @@ const map = new olMap({
       source: new olSourceOSM()
     })
   ],
-  target: 'map2d',
+  target: 'mapCesium',
   controls: olControlDefaults({
     attributionOptions: {
       collapsible: false
@@ -26,13 +25,10 @@ const map = new olMap({
 });
 
 
-Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
 const ol3d = new OLCesium({map/*, target: 'map3d'*/});
-const scene = ol3d.getCesiumScene();
-Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
+
+ol3d.getCesiumScene();
 ol3d.setEnabled(true);
-
-
 
 /**
  * @param {!olcs.OLCesium} ol3d
@@ -167,3 +163,8 @@ OlcsControl.prototype.tiltOnGlobe = function(angle) {
 
 
 window['control'] = new OlcsControl(ol3d); // eslint-disable-line no-unused-vars
+
+//##REMOVE## Keep this tag, split code here for code sandbox
+
+import {initCodeSandbox} from './_code-sandbox.js';
+initCodeSandbox('rawjs/rotate.js');

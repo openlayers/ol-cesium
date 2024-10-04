@@ -1,6 +1,5 @@
 import OLCesium from 'olcs';
 import olMap from 'ol/Map.js';
-import './_proj21781.js';
 import TileLayer from 'ol/layer/Tile.js';
 import {get as getProjection} from 'ol/proj.js';
 import View from 'ol/View.js';
@@ -10,9 +9,7 @@ import VectorTileSource from 'ol/source/VectorTile.js';
 import Stroke from 'ol/style/Stroke.js';
 import Style from 'ol/style/Style.js';
 import OSMSource from 'ol/source/OSM.js';
-import {OLCS_ION_TOKEN} from './_common.js';
-
-Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
+import './_proj21781.js';
 
 const projection = getProjection('EPSG:3857');
 console.assert(projection);
@@ -42,14 +39,6 @@ function createMVTLayer(url, maxZoom) {
     format: new MVT(),
   });
   const styles = allStyles[styleNumber];
-  // const swissExtentDegrees = [5.2, 45.45, 11, 48];
-  // source.set('olcs_provider', new MVTImageryProvider({
-  //   credit: new Cesium.Credit('Schweizmobil', false),
-  //   urls: [url],
-  //   styleFunction: () => styles,
-  //   rectangle: new Cesium.Rectangle(...swissExtentDegrees.map(Cesium.Math.toRadians)),
-  //   minimumLevel: 6,
-  // }));
   source.set('olcs_skip', false);
   source.set('olcs_minimumLevel', 6);
   return new VectorTileLayer({
@@ -66,7 +55,6 @@ export const mvtLayer = createMVTLayer(
 
 function createOSMLayer() {
   const source = new OSMSource();
-  //source.set('olcs_provider', new Cesium.OpenStreetMapImageryProvider());
   return new TileLayer({source});
 }
 
@@ -75,7 +63,7 @@ const ol2d = new olMap({
     createOSMLayer(),
     mvtLayer
   ],
-  target: 'map',
+  target: 'mapCesium',
   view: new View()
 });
 
@@ -99,3 +87,8 @@ document.getElementById('toggle').addEventListener('click', () => {
   styleNumber = (styleNumber + 1) % 2;
   mvtLayer.setStyle(allStyles[styleNumber]);
 });
+
+//##REMOVE## Keep this tag, split code here for code sandbox
+
+import {initCodeSandbox} from './_code-sandbox.js';
+initCodeSandbox('rawjs/mvt.js', 'rawjs/_proj21781.js');

@@ -1,11 +1,11 @@
-<?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="robots" content="index, all" />
-    <title>olcesium raster layer synchronization example</title>
+    <title>Ol-Cesium | Buildings example</title>
     <link rel="stylesheet" href="../node_modules/ol/ol.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" crossorigin="anonymous">
     <style>
       fieldset {display:inline-block;float:left;}
       label {display:block;}
@@ -13,36 +13,47 @@
     </style>
   </head>
   <body>
-    <div id="map2d" style="width:600px;height:400px;float:left;"></div>
-    <div id="map3d" style="width:600px;height:400px;float:left;position:relative;"></div>
-    <input type="button" value="Remove all layers" onclick="global.ol2d.getLayers().clear();document.body.className='hideLayerInputs';" />
-    <input type="button" value="Remove last layer" onclick="global.removeLastLayer();document.body.className='hideLayerInputs';" />
-    <br />
-    <input type="button" value="Add Stamen" onclick="global.addStamen();" />
-    <input type="button" value="Add TileWMS" onclick="global.addTileWMS();" />
-    <input type="button" value="Add TileJSON" onclick="global.addTileJSON();" />
-    <br /><br />
-    <input type="button" value="TileWMS change" onclick="global.changeTileWMSParams();" />
+    <div style="text-align: right;">
+      <button id="sandbox-button"><i class="fab fa-codepen fa-lg"></i> Edit in sandbox</button>
+      <form method="POST" id="sandbox-form" target="_blank" action="https://codesandbox.io/api/v1/sandboxes/define">
+        <input id="sandbox-params" type="hidden" name="parameters">
+      </form>
+    </div>
 
-    <fieldset id="layer0">
-      <label class="checkbox">
-        <input class="visible" type="checkbox" onchange="global.layer0.setVisible(this.checked)" checked/>OpenAerial layer
-      </label>
-      <label>opacity</label>
-      <input class="opacity" type="range" min="0" max="1" step="0.01" value="1" oninput="global.layer0.setOpacity(parseFloat(this.value))"/>
-      <label>Z-index</label>
-      <input type="range" min="-10" max="10" step="1" oninput="global.layer0.setZIndex(parseFloat(this.value))" />
-    </fieldset>
-    <fieldset id="layer2">
-      <label class="checkbox">
-        <input class="visible" type="checkbox" onchange="global.layer2.setVisible(this.checked)" checked/>World borders
-      </label>
-      <label>opacity</label>
-      <input class="opacity" type="range" min="0" max="1" step="0.01" value="1" oninput="global.layer2.setOpacity(parseFloat(this.value))"/>
-      <label>Z-index</label>
-      <input type="range" min="-10" max="10" step="1" oninput="global.layer2.setZIndex(parseFloat(this.value))" />
-    </fieldset>
+    <div id="example-html-source">
+      <div class="clear-map-sandbox" id="map2d" style="width:600px;height:400px;float:left;"></div>
+      <div class="clear-map-sandbox" id="mapCesium" style="width:600px;height:400px;float:left;position:relative;"></div>
+      <input type="button" value="Remove all layers" onclick="global.ol2d.getLayers().clear();document.body.className='hideLayerInputs';" />
+      <input type="button" value="Remove last layer" onclick="global.removeLastLayer();document.body.className='hideLayerInputs';" />
+      <br />
+      <input type="button" value="Add Stamen" onclick="global.addStamen();" />
+      <input type="button" value="Add TileWMS" onclick="global.addTileWMS();" />
+      <input type="button" value="Add TileJSON" onclick="global.addTileJSON();" />
+      <br /><br />
+      <input type="button" value="TileWMS change" onclick="global.changeTileWMSParams();" />
+  
+      <fieldset id="layer0">
+        <label class="checkbox">
+          <input class="visible" type="checkbox" onchange="global.layer0.setVisible(this.checked)" checked/>OpenAerial layer
+        </label>
+        <label>opacity</label>
+        <input class="opacity" type="range" min="0" max="1" step="0.01" value="1" oninput="global.layer0.setOpacity(parseFloat(this.value))"/>
+        <label>Z-index</label>
+        <input type="range" min="-10" max="10" step="1" oninput="global.layer0.setZIndex(parseFloat(this.value))" />
+      </fieldset>
+      <fieldset id="layer2">
+        <label class="checkbox">
+          <input class="visible" type="checkbox" onchange="global.layer2.setVisible(this.checked)" checked/>World borders
+        </label>
+        <label>opacity</label>
+        <input class="opacity" type="range" min="0" max="1" step="0.01" value="1" oninput="global.layer2.setOpacity(parseFloat(this.value))"/>
+        <label>Z-index</label>
+        <input type="range" min="-10" max="10" step="1" oninput="global.layer2.setZIndex(parseFloat(this.value))" />
+      </fieldset>
+    </div>
+    
     <script src="./inject_ol_cesium.js"></script>
     <script type="module" src="./rastersync.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lz-string@1.4.4/libs/lz-string.min.js"></script>
   </body>
 </html>

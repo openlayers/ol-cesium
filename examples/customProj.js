@@ -7,7 +7,6 @@ import olLayerTile from 'ol/layer/Tile.js';
 import olMap from 'ol/Map.js';
 import {get as getProjection} from 'ol/proj.js';
 import './_proj21781.js';
-import {OLCS_ION_TOKEN} from './_common.js';
 
 const customProjSource = new olSourceImageWMS({
   attributions: '© <a href="http://www.geo.admin.ch/internet/geoportal/' +
@@ -20,7 +19,7 @@ const customProjSource = new olSourceImageWMS({
 
 customProjSource.set('olcs_projection', getProjection('EPSG:3857'));
 
-Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
+const Cesium = window.Cesium;
 const ol2d = new olMap({
   layers: [
     new olLayerTile({
@@ -30,7 +29,7 @@ const ol2d = new olMap({
       source: customProjSource
     })
   ],
-  target: 'map',
+  target: 'mapCesium',
   view: new olView({
     center: [860434.6266531206, 6029479.0044273855],
     zoom: 6
@@ -43,8 +42,12 @@ const ol3d = new OLCesium({
     return Cesium.JulianDate.now();
   }
 });
-const scene = ol3d.getCesiumScene();
-Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
+ol3d.getCesiumScene();
 ol3d.setEnabled(true);
 
 document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
+
+//##REMOVE## Keep this tag, split code here for code sandbox
+
+import {initCodeSandbox} from './_code-sandbox.js';
+initCodeSandbox('rawjs/customProj.js', 'rawjs/_proj21781.js');

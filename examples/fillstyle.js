@@ -12,8 +12,6 @@ import olMap from 'ol/Map.js';
 import olSourceVector from 'ol/source/Vector.js';
 import olGeomPolygon from 'ol/geom/Polygon.js';
 import olLayerVector from 'ol/layer/Vector.js';
-import {OLCS_ION_TOKEN} from './_common.js';
-
 
 const vectorSource = new olSourceVector({
   features: []
@@ -51,7 +49,6 @@ image.onload = () => {
 };
 image.src = 'data/icon.png';
 
-
 const map = new olMap({
   interactions: interactionDefaults(),
   layers: [
@@ -72,10 +69,8 @@ const map = new olMap({
   })
 });
 
-Cesium.Ion.defaultAccessToken = OLCS_ION_TOKEN;
-const ol3d = new OLCesium({map, target: 'map3d'});
+const ol3d = new OLCesium({map, target: 'mapCesium'});
 const scene = ol3d.getCesiumScene();
-Cesium.createWorldTerrainAsync().then(tp => scene.terrainProvider = tp);
 ol3d.setEnabled(true);
 
 window['ol3d'] = ol3d;
@@ -93,3 +88,8 @@ window['toggleClampToGround'] = function() {
   map.removeLayer(vectorLayer);
   map.addLayer(vectorLayer);
 };
+
+//##REMOVE## Keep this tag, split code here for code sandbox
+
+import {initCodeSandbox} from './_code-sandbox.js';
+initCodeSandbox('rawjs/fillstyle.js', 'data/icon.png');

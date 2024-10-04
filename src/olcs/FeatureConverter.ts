@@ -7,7 +7,7 @@ import olGeomSimpleGeometry from 'ol/geom/SimpleGeometry.js';
 import {convertColorToCesium, olGeometryCloneTo4326, ol4326CoordinateToCesiumCartesian, ol4326CoordinateArrayToCsCartesians} from './core.js';
 import VectorLayerCounterpart, {type OlFeatureToCesiumContext} from './core/VectorLayerCounterpart.js';
 import {getUid, waitReady} from './util.js';
-import {type CircleGeometry, type CircleOutlineGeometry, type Primitive, type Billboard, type Label, type Matrix4, type Scene, type Geometry as CSGeometry, Color as CSColor, type GroundPrimitive, type PrimitiveCollection, type ImageMaterialProperty, type BillboardCollection, type Cartesian3, type GroundPolylinePrimitive, type PolygonHierarchy, type HeightReference, type Model, type LabelCollection, type Material} from 'cesium';
+import {type CircleGeometry, type CircleOutlineGeometry, type Primitive, type Billboard, type Label, type Matrix4, type Scene, type Geometry as CSGeometry, type Color as CSColor, type GroundPrimitive, type PrimitiveCollection, type ImageMaterialProperty, type BillboardCollection, type Cartesian3, type GroundPolylinePrimitive, type PolygonHierarchy, type HeightReference, type Model, type LabelCollection, type Material} from 'cesium';
 import type VectorLayer from 'ol/layer/Vector.js';
 import type ImageLayer from 'ol/layer/Image.js';
 import type {Feature, View} from 'ol';
@@ -259,7 +259,7 @@ export default class FeatureConverter {
       return csColor;
     } else {
       // Fallback to black if that was not a plain color
-      return CSColor.BLACK;
+      return Cesium.Color.BLACK;
     }
   }
 
