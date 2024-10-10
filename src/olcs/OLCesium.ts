@@ -1,8 +1,8 @@
 import olGeomPoint from 'ol/geom/Point.js';
 import {supportsImageRenderingPixelated, imageRenderingValue} from './util.js';
-import {ol4326CoordinateToCesiumCartesian} from './core';
+import {ol4326CoordinateToCesiumCartesian} from './core.js';
 import {getTransform, type TransformFunction} from 'ol/proj.js';
-import olcsAutoRenderLoop from './AutoRenderLoop';
+import olcsAutoRenderLoop from './AutoRenderLoop.js';
 import olcsCamera from './Camera.js';
 import olcsRasterSynchronizer from './RasterSynchronizer.js';
 import olcsVectorSynchronizer from './VectorSynchronizer.js';
