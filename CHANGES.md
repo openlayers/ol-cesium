@@ -1,5 +1,10 @@
 # Changelog
 
+## v 2.22.1
+
+* Changes
+  * Port to CesiumJS 1.123.
+
 ## v 2.22.0
 
 * Changes
