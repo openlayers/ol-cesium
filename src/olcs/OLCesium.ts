@@ -61,13 +61,13 @@ type SceneOptions = {
   msaaSamples?: number;
 }
 
-type OLCesiumOptions = {
+export type OLCesiumOptions = {
   map: Map,
   time?: () => JulianDate,
   target?: Element | string,
   createSynchronizers?: (map: Map, scene: Scene, dataSourceCollection: DataSourceCollection) => AbstractSynchronizer<ImageryLayer | VectorLayerCounterpart>[],
   stopOpenLayersEventsPropagation?: boolean,
-  sceneOptions?: SceneOptions
+  sceneOptions?: Omit<SceneOptions, 'canvas'|'scene3DOnly'>
 }
 
 // FIXME: remove this when all the synchronizers are migrated to typescript.

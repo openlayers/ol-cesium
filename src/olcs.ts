@@ -1,6 +1,8 @@
 import OLCesium from './olcs/OLCesium.js';
 export default OLCesium;
 
+export type {OLCesiumOptions} from './olcs/OLCesium.js';
+
 export {default as AbstractSynchronizer} from './olcs/AbstractSynchronizer.js';
 export {default as RasterSynchronizer} from './olcs/RasterSynchronizer.js';
 export {default as VectorSynchronizer} from './olcs/VectorSynchronizer.js';
