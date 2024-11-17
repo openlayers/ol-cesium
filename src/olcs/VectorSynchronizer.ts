@@ -96,6 +96,11 @@ export default class VectorSynchronizer extends olcsAbstractSynchronizer<VectorL
     }
 
     console.assert(source instanceof olSourceVector);
+
+    const skip = source.get('olcs_skip');
+    if (skip) {
+      return null;
+    }
     console.assert(this.view);
 
     const view = this.view;
@@ -121,6 +126,10 @@ export default class VectorSynchronizer extends olcsAbstractSynchronizer<VectorL
     };
 
     const onRemoveFeature = (feature: Feature) => {
+      const skip = feature.get('olcs_skip')
+      if (skip) {
+        return;
+      }
       const id = getUid(feature);
       const context: OlFeatureToCesiumContext = counterpart.context;
       const bbs = context.featureToCesiumMap[id];
@@ -151,7 +160,10 @@ export default class VectorSynchronizer extends olcsAbstractSynchronizer<VectorL
 
     olListenKeys.push(source.on('changefeature', (e: VectorSourceEvent) => {
       const feature = e.feature;
-      console.assert(feature);
+      const skip = feature.get('olcs_skip')
+      if (skip) {
+        return;
+      }
       onRemoveFeature(feature);
       onAddFeature(feature);
     }));
