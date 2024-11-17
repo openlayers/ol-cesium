@@ -126,7 +126,7 @@ export default class VectorSynchronizer extends olcsAbstractSynchronizer<VectorL
     };
 
     const onRemoveFeature = (feature: Feature) => {
-      const skip = feature.get('olcs_skip')
+      const skip = feature.get('olcs_skip');
       if (skip) {
         return;
       }
@@ -160,7 +160,7 @@ export default class VectorSynchronizer extends olcsAbstractSynchronizer<VectorL
 
     olListenKeys.push(source.on('changefeature', (e: VectorSourceEvent) => {
       const feature = e.feature;
-      const skip = feature.get('olcs_skip')
+      const skip = feature.get('olcs_skip');
       if (skip) {
         return;
       }

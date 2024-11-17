@@ -1165,7 +1165,7 @@ export default class FeatureConverter {
       if (!feature) {
         continue;
       }
-      const skip = feature.get('olcs_skip')
+      const skip = feature.get('olcs_skip');
       if (skip) {
         continue;
       }
