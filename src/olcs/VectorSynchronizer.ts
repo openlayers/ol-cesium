@@ -159,7 +159,8 @@ export default class VectorSynchronizer extends olcsAbstractSynchronizer<VectorL
     }));
 
     olListenKeys.push(source.on('changefeature', (e: VectorSourceEvent) => {
-      const feature = e.feature;
+      const feature = e.feature
+      console.assert(feature);
       const skip = feature.get('olcs_skip');
       if (skip) {
         return;
