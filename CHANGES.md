@@ -1,5 +1,11 @@
 # Changelog
 
+## v 2.22.2
+
+* Changes
+  * Test with CesiumJS 1.130.
+  * Test with OL 10.5.
+
 ## v 2.22.1
 
 * Changes
