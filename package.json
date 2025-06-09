@@ -88,7 +88,7 @@
     "@typescript-eslint/parser": "8.33.1",
     "cesium": "1.130.0",
     "eslint": "8.57.0",
-    "eslint-config-openlayers": "12.0.0",
+    "eslint-config-openlayers": "20.0.0",
     "eslint-import-resolver-typescript": "3.6.3",
     "eslint-plugin-import": "2.31.0",
     "ol": "10.5.0",
