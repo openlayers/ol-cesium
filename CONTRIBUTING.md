@@ -23,10 +23,10 @@ browse http://localhost:1234
 The examples use a compiled version of OLCesium. If you want to use the source code directly you can define an alias.
 See https://en.parceljs.org/module_resolution.html#aliases
 
-### The `check` target
+### The `checks` target
 
 ```bash
-npm run check
+npm run checks
 ```
 
 Run this before every commit. It will catch many problems quickly.

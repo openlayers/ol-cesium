@@ -1165,6 +1165,10 @@ export default class FeatureConverter {
       if (!feature) {
         continue;
       }
+      const skip = feature.get('olcs_skip');
+      if (skip) {
+        continue;
+      }
       const layerStyle: StyleFunction | undefined = olLayer.getStyleFunction();
       const styles = this.computePlainStyle(olLayer, feature, layerStyle,
           resolution);
@@ -1203,6 +1207,11 @@ export default class FeatureConverter {
    * @api
    */
   convert(layer: VectorLayer<BackwardCompatibleFeature>, view: View, feature: Feature, context: OlFeatureToCesiumContext): PrimitiveCollection {
+    const skip = feature.get('olcs_skip');
+    if (skip) {
+      return null;
+    }
+
     const proj = view.getProjection();
     const resolution = view.getResolution();
 
