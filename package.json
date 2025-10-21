@@ -89,7 +89,7 @@
     "cesium": "1.130.0",
     "eslint": "8.57.0",
     "eslint-config-openlayers": "12.0.0",
-    "eslint-import-resolver-typescript": "3.6.3",
+    "eslint-import-resolver-typescript": "4.4.4",
     "eslint-plugin-import": "2.31.0",
     "ol": "10.5.0",
     "parcel": "2.15.2",
