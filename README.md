@@ -116,7 +116,7 @@ If you think some low level features should be spotlited here, open an issue and
 
 Use properties to control specific aspects of OL-Cesium integration, see the [PROPERTIES.MD](https://github.com/openlayers/ol-cesium/blob/master/PROPERTIES.md).
 
-Also, check the [api doc](https://openlayers.org/ol-cesium/apidoc/).
+Also, check the [api doc](https://openlayers.org/ol-cesium/doc/).
 
 ## Limitations due to OpenLayers
 
