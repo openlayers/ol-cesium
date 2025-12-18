@@ -1,5 +1,10 @@
 # Changelog
 
+## v 2.22.3
+
+* Changes
+  * Fix typing exports
+
 ## v 2.22.2
 
 * Changes
