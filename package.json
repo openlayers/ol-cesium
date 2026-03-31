@@ -38,11 +38,12 @@
       "types": "./lib/types/olcs.d.ts",
       "default": "./lib/olcs.js"
     },
-    "./src/*": {
+    "./css/olcs.css": "./css/olcs.css",
+    "./src/*.js": {
       "types": "./lib/types/*.d.ts",
       "default": "./lib/olcs/*.js"
     },
-    "./*": {
+    "./*.js": {
       "types": "./lib/types/*.d.ts",
       "default": "./lib/olcs/*.js"
     }
