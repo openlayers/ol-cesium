@@ -1,5 +1,11 @@
 # Changelog
 
+## v 2.22.4
+
+* Changes
+  * Fix exports to correctly resolve css.
+  * Stop using deprecated Cesium defaultValue function.
+
 ## v 2.22.3
 
 * Changes
