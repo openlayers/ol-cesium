@@ -58,14 +58,14 @@ export default class RasterSynchronizer extends olcsAbstractSynchronizer<Imagery
     const olLayer = olLayerWithParents.layer;
     const uid = getUid(olLayer).toString();
     const viewProj = this.view.getProjection();
-    console.assert(viewProj);
+    console.assert(!!viewProj);
     const cesiumObjects = this.convertLayerToCesiumImageries(olLayer, viewProj);
     if (cesiumObjects) {
       const listenKeyArray = [];
       [olLayerWithParents.layer].concat(olLayerWithParents.parents).forEach((olLayerItem) => {
         listenKeyArray.push(olLayerItem.on(['change:opacity', 'change:visible'], () => {
           // the compiler does not seem to be able to infer this
-          console.assert(cesiumObjects);
+          console.assert(!!cesiumObjects);
           for (let i = 0; i < cesiumObjects.length; ++i) {
             updateCesiumLayerProperties(olLayerWithParents, cesiumObjects[i]);
           }
@@ -137,10 +137,8 @@ export default class RasterSynchronizer extends olcsAbstractSynchronizer<Imagery
   /**
    * Order counterparts using the same algorithm as the Openlayers renderer:
    * z-index then original sequence order.
-   * @override
-   * @protected
    */
-  orderLayers() {
+  protected override orderLayers() {
     const layers = [];
     const zIndices: Record<number, number> = {};
     const queue: Array<BaseLayer | LayerGroup> = [this.mapLayerGroup];

@@ -48,7 +48,7 @@ export default class Manager extends Observable {
   constructor(cesiumUrl: string, {map, cameraExtentInRadians, cesiumIonDefaultAccessToken}: {map: OLMap, cameraExtentInRadians?: Extent, cesiumIonDefaultAccessToken?: string}) {
     super();
     this.cesiumUrl_ = cesiumUrl;
-    console.assert(map);
+    console.assert(!!map);
     this.map = map;
     this.cameraExtentInRadians = cameraExtentInRadians || null;
     this.cesiumIonDefaultAccessToken_ = cesiumIonDefaultAccessToken;
@@ -154,7 +154,7 @@ export default class Manager extends Observable {
       const scene = ol3d.getCesiumScene();
       if (is3DCurrentlyEnabled) {
         // Disable 3D
-        console.assert(this.map);
+        console.assert(!!this.map);
         return resetToNorthZenith(this.map, scene).then(() => {
           ol3d.setEnabled(false);
           this.dispatchEvent('toggle');

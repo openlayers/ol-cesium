@@ -66,9 +66,8 @@ export default class Camera {
 
   /**
    * @param {?ol.View} view New view to use.
-   * @private
    */
-  setView_(view: View | undefined) {
+  private setView_(view: View | undefined) {
     olObservableUnByKey(this.viewListenKey_);
     this.viewListenKey_ = null;
 
@@ -76,7 +75,7 @@ export default class Camera {
     if (view) {
       const toLonLat = getTransform(view.getProjection(), 'EPSG:4326');
       const fromLonLat = getTransform('EPSG:4326', view.getProjection());
-      console.assert(toLonLat && fromLonLat);
+      console.assert(!!(toLonLat && fromLonLat));
 
       this.toLonLat_ = toLonLat;
       this.fromLonLat_ = fromLonLat;
@@ -185,7 +184,7 @@ export default class Camera {
       return;
     }
     const ll = this.toLonLat_(position);
-    console.assert(ll);
+    console.assert(!!ll);
 
     const carto = new Cesium.Cartographic(
         toRadians(ll[0]),
@@ -213,7 +212,7 @@ export default class Camera {
       toDegrees(carto.longitude),
       toDegrees(carto.latitude)
     ]);
-    console.assert(pos);
+    console.assert(!!pos);
     return pos;
   }
 
@@ -252,7 +251,7 @@ export default class Camera {
       return;
     }
     const ll = this.toLonLat_(center);
-    console.assert(ll);
+    console.assert(!!ll);
 
     const carto = new Cesium.Cartographic(toRadians(ll[0]),
         toRadians(ll[1]));
@@ -290,7 +289,7 @@ export default class Camera {
       return;
     }
     const ll = this.toLonLat_(center);
-    console.assert(ll);
+    console.assert(!!ll);
 
     const resolution = this.view_.getResolution();
     this.distance_ = this.calcDistanceForResolution(

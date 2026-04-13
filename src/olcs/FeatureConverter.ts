@@ -838,7 +838,7 @@ export default class FeatureConverter {
         if (olStyle.getText()) {
           const primitives = new Cesium.PrimitiveCollection();
           points.forEach((geom) => {
-            console.assert(geom);
+            console.assert(!!geom);
             const result = this.olPointGeometryToCesium(layer, feature, geom,
                 projection, olStyle, billboards, opt_newBillboardCallback);
             if (result) {
@@ -848,7 +848,7 @@ export default class FeatureConverter {
           return primitives;
         } else {
           points.forEach((geom) => {
-            console.assert(geom);
+            console.assert(!!geom);
             this.olPointGeometryToCesium(layer, feature, geom, projection,
                 olStyle, billboards, opt_newBillboardCallback);
           });

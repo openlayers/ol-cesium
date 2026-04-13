@@ -1,15 +1,15 @@
 {
   "name": "olcs",
-  "version": "2.22.3",
+  "version": "2.22.4",
   "description": "OpenLayers Cesium integration and plugin library",
   "scripts": {
     "test": "node --enable-source-maps --import @swc-node/register/esm-register --test  src/olcs/*.test.ts",
-    "build-examples": "rm -rf dist; parcel build --dist-dir dist/examples && npm run copy-static-dist && npm run copy-rawjs-sandbox",
+    "build-examples": "rm -rf dist; parcel build --dist-dir dist/examples --no-autoinstall && npm run copy-static-dist && npm run copy-rawjs-sandbox",
     "prepare": "tsc --pretty; npm run doc",
     "typecheck": "tsc --pretty --noEmit",
     "lint": "eslint src examples",
     "checks": "npm run lint && npm run typecheck",
-    "doc": "typedoc --name ol-cesium --excludeExternals --out apidoc --entryPoints src/olcs.ts --tsconfig ./tsconfig.json",
+    "doc": "typedoc --name ol-cesium --excludeExternals --out apidoc --entryPoints src/olcs.ts --tsconfig ./tsconfig.json --modifierTags @api",
     "copy-static-dist": "mkdir -p dist/examples/node_modules/ol; mkdir -p dist/examples/node_modules/cesium/Build/; cp examples/inject_ol_cesium.js dist/examples/; cp node_modules/ol/ol.css dist/examples/node_modules/ol/; cp -R node_modules/cesium/Build/CesiumUnminified node_modules/cesium/Build/Cesium dist/examples/node_modules/cesium/Build/; cp -R examples/data dist/examples/",
     "copy-rawjs-sandbox": "mkdir -p dist/examples/rawjs/; cp -r examples/* dist/examples/rawjs; ",
     "prestart": "rm -rf dist; npm run copy-static-dist",
@@ -28,7 +28,11 @@
   },
   "alias": {
     "olcs": "./lib/olcs",
-    "buffer": false
+    "buffer": false,
+    "process": false,
+    "@zip.js/zip.js/lib/zip-no-worker.js": "./node_modules/@zip.js/zip.js/lib/zip-no-worker.js",
+    "@zip.js/zip.js": "./node_modules/@zip.js/zip.js/index.js",
+    "zstddec/stream": "./node_modules/zstddec/dist/zstddec-stream.modern.js"
   },
   "source": "./src/olcs.ts",
   "type": "module",
@@ -85,25 +89,30 @@
       "url": "https://github.com/gberaudo"
     }
   ],
+  "@parcel/transformer-js": {
+    "inlineFS": false,
+    "inlineEnvironment": false
+  },
   "peerDependencies": {
     "cesium": ">= 1.90.0",
     "ol": ">= 9.2, >= 10"
   },
   "devDependencies": {
-    "@babel/parser": "7.27.5",
+    "@zip.js/zip.js": "2.7.34",
+    "@babel/parser": "7.29.2",
     "@mapbox/geojsonhint": "3.3.0",
-    "@swc-node/register": "1.10.10",
-    "@typescript-eslint/eslint-plugin": "8.33.1",
-    "@typescript-eslint/parser": "8.33.1",
+    "@swc-node/register": "1.9.2",
+    "@typescript-eslint/eslint-plugin": "8.58.1",
+    "@typescript-eslint/parser": "8.58.1",
     "cesium": "1.130.0",
     "eslint": "8.57.0",
     "eslint-config-openlayers": "12.0.0",
     "eslint-import-resolver-typescript": "3.6.3",
-    "eslint-plugin-import": "2.31.0",
-    "ol": "10.5.0",
-    "parcel": "2.15.2",
-    "proj4": "2.17.0",
-    "typedoc": "0.28.5",
+    "eslint-plugin-import": "2.32.0",
+    "ol": "10.8.0",
+    "parcel": "2.16.4",
+    "proj4": "2.20.8",
+    "typedoc": "0.28.19",
     "typescript": "5.8.3"
   }
 }

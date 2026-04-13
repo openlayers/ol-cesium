@@ -132,11 +132,10 @@ export function createMatrixAtCoordinates(
 export function rotateAroundAxis(camera: Camera, angle: number, axis: Cartesian3, transform: Matrix4,
     opt_options?: RotateAroundAxisOption) {
   const clamp = Cesium.Math.clamp;
-  const defaultValue = Cesium.defaultValue;
 
   const options: RotateAroundAxisOption = opt_options;
-  const duration = defaultValue(options?.duration, 500); // ms
-  const easing = defaultValue(options?.easing, linearEasing);
+  const duration = options?.duration ?? 500; // ms
+  const easing = options?.easing ?? linearEasing;
   const callback = options?.callback;
 
   let lastProgress = 0;
@@ -546,7 +545,7 @@ export function ol4326CoordinateArrayToCsCartesians(coordinates: Coordinate[]): 
  * and the properties will be shallow copied.
  */
 export function olGeometryCloneTo4326<T extends Geometry>(geometry: T, projection: ProjectionLike): T {
-  console.assert(projection);
+  console.assert(!!projection);
 
   const proj4326 = getProjection('EPSG:4326');
   const proj = getProjection(projection);

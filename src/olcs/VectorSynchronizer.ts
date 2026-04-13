@@ -34,7 +34,7 @@ export default class VectorSynchronizer extends olcsAbstractSynchronizer<VectorL
   }
 
   addCesiumObject(counterpart: VectorLayerCounterpart) {
-    console.assert(counterpart);
+    console.assert(!!counterpart);
     const collection = <PrimitiveCollectionCounterpart>counterpart.getRootPrimitive();
     collection.counterpart = counterpart;
     this.csAllPrimitives_.add(counterpart.getRootPrimitive());
@@ -96,7 +96,7 @@ export default class VectorSynchronizer extends olcsAbstractSynchronizer<VectorL
     }
 
     console.assert(source instanceof olSourceVector);
-    console.assert(this.view);
+    console.assert(!!this.view);
 
     const view = this.view;
     const featurePrimitiveMap: Record<number, PrimitiveCollection> = {};
@@ -140,18 +140,18 @@ export default class VectorSynchronizer extends olcsAbstractSynchronizer<VectorL
     };
 
     olListenKeys.push(source.on('addfeature', (e: VectorSourceEvent) => {
-      console.assert(e.feature);
+      console.assert(!!e.feature);
       onAddFeature(e.feature);
     }));
 
     olListenKeys.push(source.on('removefeature', (e: VectorSourceEvent) => {
-      console.assert(e.feature);
+      console.assert(!!e.feature);
       onRemoveFeature(e.feature);
     }));
 
     olListenKeys.push(source.on('changefeature', (e: VectorSourceEvent) => {
       const feature = e.feature;
-      console.assert(feature);
+      console.assert(!!feature);
       onRemoveFeature(feature);
       onAddFeature(feature);
     }));
