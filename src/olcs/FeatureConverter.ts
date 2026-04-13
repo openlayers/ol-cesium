@@ -243,7 +243,7 @@ export default class FeatureConverter {
   /**
    * Return the fill or stroke color from a plain ol style.
    */
-  protected extractColorFromOlStyle(style: Style | Text, outline: boolean): CSColor {
+  protected extractColorFromOlStyle(style: Style | Text, outline: boolean): CSColor | ImageMaterialProperty {
     const fillColor = style.getFill()?.getColor();
     const strokeColor = style.getStroke() ? style.getStroke().getColor() : null;
 
@@ -254,13 +254,7 @@ export default class FeatureConverter {
       olColor = fillColor;
     }
 
-    const csColor = convertColorToCesium(olColor);
-    if ('red' in csColor) {
-      return csColor;
-    } else {
-      // Fallback to black if that was not a plain color
-      return Cesium.Color.BLACK;
-    }
+    return convertColorToCesium(olColor);
   }
 
   /**
@@ -919,12 +913,12 @@ export default class FeatureConverter {
 
     let labelStyle = undefined;
     if (style.getFill()) {
-      options.fillColor = this.extractColorFromOlStyle(style, false);
+      options.fillColor = this.extractColorFromOlStyle(style, false) as CSColor;
       labelStyle = Cesium.LabelStyle.FILL;
     }
     if (style.getStroke()) {
       options.outlineWidth = this.extractLineWidthFromOlStyle(style);
-      options.outlineColor = this.extractColorFromOlStyle(style, true);
+      options.outlineColor = this.extractColorFromOlStyle(style, true) as CSColor;
       labelStyle = Cesium.LabelStyle.OUTLINE;
     }
     if (style.getFill() && style.getStroke()) {
