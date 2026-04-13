@@ -90,20 +90,20 @@
     "ol": ">= 9.2, >= 10"
   },
   "devDependencies": {
-    "@babel/parser": "7.27.5",
+    "@babel/parser": "7.29.2",
     "@mapbox/geojsonhint": "3.3.0",
-    "@swc-node/register": "1.10.10",
-    "@typescript-eslint/eslint-plugin": "8.33.1",
-    "@typescript-eslint/parser": "8.33.1",
-    "cesium": "1.130.0",
+    "@swc-node/register": "1.9.2",
+    "@typescript-eslint/eslint-plugin": "8.58.1",
+    "@typescript-eslint/parser": "8.58.1",
+    "cesium": "1.140.0",
     "eslint": "8.57.0",
     "eslint-config-openlayers": "12.0.0",
     "eslint-import-resolver-typescript": "3.6.3",
-    "eslint-plugin-import": "2.31.0",
-    "ol": "10.5.0",
-    "parcel": "2.15.2",
-    "proj4": "2.17.0",
-    "typedoc": "0.28.5",
+    "eslint-plugin-import": "2.32.0",
+    "ol": "10.8.0",
+    "parcel": "2.16.4",
+    "proj4": "2.20.8",
+    "typedoc": "0.28.19",
     "typescript": "5.8.3"
   }
 }
