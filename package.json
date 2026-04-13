@@ -30,6 +30,8 @@
     "olcs": "./lib/olcs",
     "buffer": false,
     "process": false,
+    "@zip.js/zip.js/lib/zip-no-worker.js": "./node_modules/@zip.js/zip.js/lib/zip-no-worker.js",
+    "@zip.js/zip.js": "./node_modules/@zip.js/zip.js/index.js",
     "zstddec/stream": "./node_modules/zstddec/dist/zstddec-stream.modern.js"
   },
   "source": "./src/olcs.ts",
@@ -96,12 +98,13 @@
     "ol": ">= 9.2, >= 10"
   },
   "devDependencies": {
+    "@zip.js/zip.js": "2.7.34",
     "@babel/parser": "7.29.2",
     "@mapbox/geojsonhint": "3.3.0",
     "@swc-node/register": "1.9.2",
     "@typescript-eslint/eslint-plugin": "8.58.1",
     "@typescript-eslint/parser": "8.58.1",
-    "cesium": "1.140.0",
+    "cesium": "1.130.0",
     "eslint": "8.57.0",
     "eslint-config-openlayers": "12.0.0",
     "eslint-import-resolver-typescript": "3.6.3",
@@ -110,7 +113,6 @@
     "parcel": "2.16.4",
     "proj4": "2.20.8",
     "typedoc": "0.28.19",
-    "typescript": "5.8.3",
-    "zstddec": "^0.2.0"
+    "typescript": "5.8.3"
   }
 }
