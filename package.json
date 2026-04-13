@@ -4,7 +4,7 @@
   "description": "OpenLayers Cesium integration and plugin library",
   "scripts": {
     "test": "node --enable-source-maps --import @swc-node/register/esm-register --test  src/olcs/*.test.ts",
-    "build-examples": "rm -rf dist; parcel build --dist-dir dist/examples && npm run copy-static-dist && npm run copy-rawjs-sandbox",
+    "build-examples": "rm -rf dist; parcel build --dist-dir dist/examples --no-autoinstall && npm run copy-static-dist && npm run copy-rawjs-sandbox",
     "prepare": "tsc --pretty; npm run doc",
     "typecheck": "tsc --pretty --noEmit",
     "lint": "eslint src examples",
