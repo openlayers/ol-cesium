@@ -16,4 +16,4 @@ Each month, a new release is published in accordance to https://github.com/openl
   - npm version minor # or patch
   - npm pack
   - npm publish # this will publish package olcs (ol-cesium package is obsolete and not updated anymore)
-  - git push --tags
+  - git push --tags # this will trigger the deploy workflow to publish the website

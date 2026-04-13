@@ -1,5 +1,10 @@
 # Changelog
 
+## v 2.23.0
+
+* Changes
+  * Replace Jekyll-based gh-pages with GitHub Actions deploy workflow.
+
 ## v 2.22.4
 
 * Changes
