@@ -10,8 +10,8 @@ Each month, a new release is published in accordance to https://github.com/openl
 - Compile from scratch and run all tests:
   - npm run lint
   - npm run typecheck
-  - npm start; open http://localhost:3000/examples # test all examples (dev mode)
-  - npm run build-examples; python3 -m http.server --directory dist 12345; open http://localhost:12345/examples # test all examples (built mode)
+  - npm start; open http://localhost:5173/examples # test all examples (dev mode)
+  - npm run build-examples; npx serve dist; open http://localhost:3000/examples # test all examples (built mode)
 - Publish with:
   - npm version minor # or patch
   - npm pack

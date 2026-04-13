@@ -30,8 +30,7 @@ const scene = ol3d.getCesiumScene();
 
 ol3d.getDataSources().add(
     Cesium.KmlDataSource.load(
-        'https://api3.geo.admin.ch/ogcproxy?url=' +
-          'https%3A%2F%2Fdav0.bgdi.admin.ch%2Fbazl_web%2FActive_Obstacles.kmz',
+        'https://data.geo.admin.ch/ch.bazl.luftfahrthindernis/luftfahrthindernis/luftfahrthindernis_4326.kmz',
         {
           camera: scene.camera,
           canvas: scene.canvas
