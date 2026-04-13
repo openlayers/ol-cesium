@@ -17,7 +17,6 @@ export default class OverlaySynchronizer {
   /**
   * @param map
   * @param scene
-  * @constructor
   * @api
   */
   constructor(protected map: OLMap, protected scene: Scene) {

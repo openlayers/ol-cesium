@@ -249,7 +249,6 @@ export default class OLImageryProvider implements ImageryProvider /* should not 
   /**
    * Generates the proper attributions for a given position and zoom
    * level.
-   * @implements
    */
   getTileCredits(x: number, y: number, level: number): Credit[] {
     const attributionsFunction = this.source_.getAttributions();
@@ -262,9 +261,6 @@ export default class OLImageryProvider implements ImageryProvider /* should not 
     return attributionsFunctionToCredits(attributionsFunction, zoom, center, extent);
   }
 
-  /**
-   * @implements
-   */
   requestImage(x: number, y: number, level: number, request?: Request): Promise<ImageryTypes> | undefined {
     const tileUrlFunction = this.source_.getTileUrlFunction();
     if (tileUrlFunction && this.projection_) {

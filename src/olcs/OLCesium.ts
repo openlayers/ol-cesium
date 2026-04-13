@@ -404,7 +404,7 @@ export default class OLCesium {
 
   getOlView(): View {
     const view = this.map_.getView();
-    console.assert(view);
+    console.assert(!!view);
     return view;
   }
 

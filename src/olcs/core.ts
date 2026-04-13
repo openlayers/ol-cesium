@@ -545,7 +545,7 @@ export function ol4326CoordinateArrayToCsCartesians(coordinates: Coordinate[]): 
  * and the properties will be shallow copied.
  */
 export function olGeometryCloneTo4326<T extends Geometry>(geometry: T, projection: ProjectionLike): T {
-  console.assert(projection);
+  console.assert(!!projection);
 
   const proj4326 = getProjection('EPSG:4326');
   const proj = getProjection(projection);
