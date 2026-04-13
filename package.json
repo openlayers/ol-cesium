@@ -28,7 +28,9 @@
   },
   "alias": {
     "olcs": "./lib/olcs",
-    "buffer": false
+    "buffer": false,
+    "process": false,
+    "zstddec/stream": "./node_modules/zstddec/dist/zstddec-stream.modern.js"
   },
   "source": "./src/olcs.ts",
   "type": "module",
@@ -85,6 +87,10 @@
       "url": "https://github.com/gberaudo"
     }
   ],
+  "@parcel/transformer-js": {
+    "inlineFS": false,
+    "inlineEnvironment": false
+  },
   "peerDependencies": {
     "cesium": ">= 1.90.0",
     "ol": ">= 9.2, >= 10"
@@ -104,6 +110,7 @@
     "parcel": "2.16.4",
     "proj4": "2.20.8",
     "typedoc": "0.28.19",
-    "typescript": "5.8.3"
+    "typescript": "5.8.3",
+    "zstddec": "^0.2.0"
   }
 }
