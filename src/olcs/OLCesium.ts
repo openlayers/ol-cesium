@@ -1,30 +1,34 @@
-import olGeomPoint from 'ol/geom/Point.js';
-import {supportsImageRenderingPixelated, imageRenderingValue} from './util.js';
-import {ol4326CoordinateToCesiumCartesian} from './core.js';
-import {getTransform, type TransformFunction} from 'ol/proj.js';
-import olcsAutoRenderLoop from './AutoRenderLoop.js';
-import olcsCamera from './Camera.js';
-import olcsRasterSynchronizer from './RasterSynchronizer.js';
-import olcsVectorSynchronizer from './VectorSynchronizer.js';
-import olcsOverlaySynchronizer from './OverlaySynchronizer.js';
-import type Map from 'ol/Map.js';
-import type Interaction from 'ol/interaction/Interaction.js';
-import type {Group} from 'ol/layer.js';
-import type Feature from 'ol/Feature.js';
-import type View from 'ol/View.js';
 import type {
-  BoundingSphere, ContextOptions,
+  BoundingSphere,
+  ContextOptions,
   DataSourceCollection,
   DataSourceDisplay,
   Entity,
   EntityView,
   Globe,
-  JulianDate, MapMode2D, MapProjection, PerspectiveFrustum,
+  ImageryLayer,
+  JulianDate,
+  MapMode2D,
+  MapProjection,
+  PerspectiveFrustum,
   Scene,
-  ImageryLayer
 } from 'cesium';
+import type Feature from 'ol/Feature.js';
+import type Map from 'ol/Map.js';
+import type View from 'ol/View.js';
+import olGeomPoint from 'ol/geom/Point.js';
+import type Interaction from 'ol/interaction/Interaction.js';
+import type {Group} from 'ol/layer.js';
+import {getTransform, type TransformFunction} from 'ol/proj.js';
 import type AbstractSynchronizer from './AbstractSynchronizer.js';
+import olcsAutoRenderLoop from './AutoRenderLoop.js';
+import olcsCamera from './Camera.js';
+import olcsOverlaySynchronizer from './OverlaySynchronizer.js';
+import olcsRasterSynchronizer from './RasterSynchronizer.js';
+import olcsVectorSynchronizer from './VectorSynchronizer.js';
+import {ol4326CoordinateToCesiumCartesian} from './core.js';
 import type VectorLayerCounterpart from './core/VectorLayerCounterpart.js';
+import {imageRenderingValue, supportsImageRenderingPixelated} from './util.js';
 
 /**
  * Moved from Cesium
@@ -59,19 +63,25 @@ type SceneOptions = {
   maximumRenderTimeChange?: number;
   depthPlaneEllipsoidOffset?: number;
   msaaSamples?: number;
-}
+};
 
 export type OLCesiumOptions = {
-  map: Map,
-  time?: () => JulianDate,
-  target?: Element | string,
-  createSynchronizers?: (map: Map, scene: Scene, dataSourceCollection: DataSourceCollection) => AbstractSynchronizer<ImageryLayer | VectorLayerCounterpart>[],
-  stopOpenLayersEventsPropagation?: boolean,
-  sceneOptions?: Omit<SceneOptions, 'canvas'|'scene3DOnly'>
-}
+  map: Map;
+  time?: () => JulianDate;
+  target?: Element | string;
+  createSynchronizers?: (
+    map: Map,
+    scene: Scene,
+    dataSourceCollection: DataSourceCollection,
+  ) => AbstractSynchronizer<ImageryLayer | VectorLayerCounterpart>[];
+  stopOpenLayersEventsPropagation?: boolean;
+  sceneOptions?: Omit<SceneOptions, 'canvas' | 'scene3DOnly'>;
+};
 
 // FIXME: remove this when all the synchronizers are migrated to typescript.
-type SynchronizerType = AbstractSynchronizer<ImageryLayer | VectorLayerCounterpart>;
+type SynchronizerType = AbstractSynchronizer<
+  ImageryLayer | VectorLayerCounterpart
+>;
 
 /**
  * @typedef {Object} OLCesiumOptions
@@ -129,16 +139,22 @@ export default class OLCesium {
   constructor(options: OLCesiumOptions) {
     this.map_ = options.map;
 
-    this.time_ = options.time || function() {
-      return Cesium.JulianDate.now();
-    };
+    this.time_ =
+      options.time ||
+      function () {
+        return Cesium.JulianDate.now();
+      };
 
     /**
      * No change of the view projection.
      */
-    this.to4326Transform_ = getTransform(this.map_.getView().getProjection(), 'EPSG:4326');
+    this.to4326Transform_ = getTransform(
+      this.map_.getView().getProjection(),
+      'EPSG:4326',
+    );
 
-    const fillArea = 'position:absolute;top:0;left:0;width:100%;height:100%;touch-action:none;';
+    const fillArea =
+      'position:absolute;top:0;left:0;width:100%;height:100%;touch-action:none;';
     this.container_ = document.createElement('DIV');
     const containerAttribute = document.createAttribute('style');
     containerAttribute.value = `${fillArea}visibility:hidden;`;
@@ -157,11 +173,20 @@ export default class OLCesium {
      */
     this.isOverMap_ = !options.target;
 
-
     if (this.isOverMap_ && options.stopOpenLayersEventsPropagation) {
-      const overlayEvents = ['click', 'dblclick', 'mousedown', 'touchstart', 'pointerdown', 'mousewheel', 'wheel'];
+      const overlayEvents = [
+        'click',
+        'dblclick',
+        'mousedown',
+        'touchstart',
+        'pointerdown',
+        'mousewheel',
+        'wheel',
+      ];
       for (let i = 0, ii = overlayEvents.length; i < ii; ++i) {
-        this.container_.addEventListener(overlayEvents[i], evt => evt.stopPropagation());
+        this.container_.addEventListener(overlayEvents[i], (evt) =>
+          evt.stopPropagation(),
+        );
       }
     }
 
@@ -175,18 +200,19 @@ export default class OLCesium {
       this.canvas_.style['imageRendering'] = imageRenderingValue();
     }
 
-    this.canvas_.oncontextmenu = function() {
+    this.canvas_.oncontextmenu = function () {
       return false;
     };
-    this.canvas_.onselectstart = function() {
+    this.canvas_.onselectstart = function () {
       return false;
     };
 
     this.container_.appendChild(this.canvas_);
 
-    const sceneOptions: SceneOptions = options.sceneOptions !== undefined ?
-      {...options.sceneOptions, canvas: this.canvas_, scene3DOnly: true} :
-      {canvas: this.canvas_, scene3DOnly: true};
+    const sceneOptions: SceneOptions =
+      options.sceneOptions !== undefined
+        ? {...options.sceneOptions, canvas: this.canvas_, scene3DOnly: true}
+        : {canvas: this.canvas_, scene3DOnly: true};
 
     this.scene_ = new Cesium.Scene(sceneOptions);
 
@@ -197,12 +223,12 @@ export default class OLCesium {
     } else {
       sscc.tiltEventTypes.push({
         'eventType': Cesium.CameraEventType.LEFT_DRAG,
-        'modifier': Cesium.KeyboardEventModifier.SHIFT
+        'modifier': Cesium.KeyboardEventModifier.SHIFT,
       });
 
       sscc.tiltEventTypes.push({
         'eventType': Cesium.CameraEventType.LEFT_DRAG,
-        'modifier': Cesium.KeyboardEventModifier.ALT
+        'modifier': Cesium.KeyboardEventModifier.ALT,
       });
     }
 
@@ -223,22 +249,27 @@ export default class OLCesium {
       tileHeight: 1,
       tileWidth: 1,
       url: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=',
-      rectangle: Cesium.Rectangle.fromDegrees(0, 0, 1, 1) // the Rectangle dimensions are arbitrary
+      rectangle: Cesium.Rectangle.fromDegrees(0, 0, 1, 1), // the Rectangle dimensions are arbitrary
     });
     this.globe_.imageryLayers.addImageryProvider(firstImageryProvider, 0);
 
     this.dataSourceCollection_ = new Cesium.DataSourceCollection();
     this.dataSourceDisplay_ = new Cesium.DataSourceDisplay({
       scene: this.scene_,
-      dataSourceCollection: this.dataSourceCollection_
+      dataSourceCollection: this.dataSourceCollection_,
     });
 
-    this.synchronizers_ = options.createSynchronizers ?
-      options.createSynchronizers(this.map_, this.scene_, this.dataSourceCollection_) : [
-        new olcsRasterSynchronizer(this.map_, this.scene_),
-        new olcsVectorSynchronizer(this.map_, this.scene_),
-        new olcsOverlaySynchronizer(this.map_, this.scene_)
-      ] as unknown as SynchronizerType[];
+    this.synchronizers_ = options.createSynchronizers
+      ? options.createSynchronizers(
+          this.map_,
+          this.scene_,
+          this.dataSourceCollection_,
+        )
+      : ([
+          new olcsRasterSynchronizer(this.map_, this.scene_),
+          new olcsVectorSynchronizer(this.map_, this.scene_),
+          new olcsOverlaySynchronizer(this.map_, this.scene_),
+        ] as unknown as SynchronizerType[]);
 
     // Assures correct canvas size after initialisation
     this.handleResize_();
@@ -248,13 +279,19 @@ export default class OLCesium {
     }
 
     const eventHelper = new Cesium.EventHelper();
-    eventHelper.add(this.scene_.postRender, OLCesium.prototype.updateTrackedEntity_, this);
+    eventHelper.add(
+      this.scene_.postRender,
+      OLCesium.prototype.updateTrackedEntity_,
+      this,
+    );
 
-    this.moveEndRemoveCallback_ = this.scene_.camera.moveEnd.addEventListener(() => {
-      if (this.refresh2DAfterCameraMoveEndOnly) {
-        this.camera_.checkCameraChange();
-      }
-    });
+    this.moveEndRemoveCallback_ = this.scene_.camera.moveEnd.addEventListener(
+      () => {
+        if (this.refresh2DAfterCameraMoveEndOnly) {
+          this.camera_.checkCameraChange();
+        }
+      },
+    );
   }
 
   /**
@@ -263,7 +300,7 @@ export default class OLCesium {
   destroy() {
     cancelAnimationFrame(this.renderId_);
     this.renderId_ = undefined;
-    this.synchronizers_.forEach(synchronizer => synchronizer.destroyAll());
+    this.synchronizers_.forEach((synchronizer) => synchronizer.destroyAll());
     this.camera_.destroy();
     this.scene_.destroy();
     // @ts-ignore TS2341
@@ -319,7 +356,11 @@ export default class OLCesium {
       const trackedEntity = this.trackedEntity_;
       // getBoundingSphere private property
       // @ts-ignore TS2341
-      const trackedState = this.dataSourceDisplay_.getBoundingSphere(trackedEntity, false, this.boundingSphereScratch_);
+      const trackedState = this.dataSourceDisplay_.getBoundingSphere(
+        trackedEntity,
+        false,
+        this.boundingSphereScratch_,
+      );
       if (trackedState === BoundingSphereState.DONE) {
         this.boundingSphereScratch_.radius = 1; // a radius of 1 is enough for tracking points
         this.entityView_.update(julianDate, this.boundingSphereScratch_);
@@ -346,18 +387,29 @@ export default class OLCesium {
 
     // getBoundingSphere private property
     // @ts-ignore TS2341
-    const state = this.dataSourceDisplay_.getBoundingSphere(trackedEntity, false, this.boundingSphereScratch_);
+    const state = this.dataSourceDisplay_.getBoundingSphere(
+      trackedEntity,
+      false,
+      this.boundingSphereScratch_,
+    );
     if (state === BoundingSphereState.PENDING) {
       return;
     }
 
     scene.screenSpaceCameraController.enableTilt = false;
 
-    const bs = state !== BoundingSphereState.FAILED ? this.boundingSphereScratch_ : undefined;
+    const bs =
+      state !== BoundingSphereState.FAILED
+        ? this.boundingSphereScratch_
+        : undefined;
     if (bs) {
       bs.radius = 1;
     }
-    this.entityView_ = new Cesium.EntityView(trackedEntity, scene, scene.mapProjection.ellipsoid);
+    this.entityView_ = new Cesium.EntityView(
+      trackedEntity,
+      scene,
+      scene.mapProjection.ellipsoid,
+    );
     this.entityView_.update(this.time_(), bs);
     this.needTrackedEntityUpdate_ = false;
   }
@@ -371,9 +423,11 @@ export default class OLCesium {
       return;
     }
 
-    if (width === this.canvasClientWidth_ &&
-        height === this.canvasClientHeight_ &&
-        !this.resolutionScaleChanged_) {
+    if (
+      width === this.canvasClientWidth_ &&
+      height === this.canvasClientHeight_ &&
+      !this.resolutionScaleChanged_
+    ) {
       return;
     }
 
@@ -391,7 +445,8 @@ export default class OLCesium {
 
     this.canvas_.width = width;
     this.canvas_.height = height;
-    (<PerspectiveFrustum> this.scene_.camera.frustum).aspectRatio = width / height;
+    (<PerspectiveFrustum>this.scene_.camera.frustum).aspectRatio =
+      width / height;
   }
 
   getCamera(): olcsCamera {
@@ -427,6 +482,7 @@ export default class OLCesium {
   /**
    * Enables/disables the Cesium.
    * This modifies the visibility style of the container element.
+   * @param enable
    */
   setEnabled(enable: boolean) {
     if (this.enabled_ === enable) {
@@ -447,12 +503,15 @@ export default class OLCesium {
         });
         interactions.clear();
 
-        this.map_.addInteraction = interaction => this.pausedInteractions_.push(interaction);
+        this.map_.addInteraction = (interaction) =>
+          this.pausedInteractions_.push(interaction);
         this.map_.removeInteraction = (interaction) => {
           let interactionRemoved = false;
           this.pausedInteractions_ = this.pausedInteractions_.filter((i) => {
             const removed = i !== interaction;
-            if (!interactionRemoved) {interactionRemoved = removed;}
+            if (!interactionRemoved) {
+              interactionRemoved = removed;
+            }
             return removed;
           });
           return interactionRemoved ? interaction : undefined;
@@ -477,8 +536,10 @@ export default class OLCesium {
         });
         this.pausedInteractions_.length = 0;
 
-        this.map_.addInteraction = interaction => this.map_.getInteractions().push(interaction);
-        this.map_.removeInteraction = interaction => this.map_.getInteractions().remove(interaction);
+        this.map_.addInteraction = (interaction) =>
+          this.map_.getInteractions().push(interaction);
+        this.map_.removeInteraction = (interaction) =>
+          this.map_.getInteractions().remove(interaction);
 
         this.map_.getOverlayContainer().classList.remove('olcs-hideoverlay');
         if (this.hiddenRootGroup_) {
@@ -495,7 +556,7 @@ export default class OLCesium {
    * Preload Cesium so that it is ready when transitioning from 2D to 3D.
    * @param {number} height Target height of the camera
    * @param {number} timeout Milliseconds after which the warming will stop
-  */
+   */
   warmUp(height: number, timeout: number) {
     if (this.enabled_) {
       // already enabled
@@ -522,7 +583,7 @@ export default class OLCesium {
   /**
    * Block Cesium rendering to save resources.
    * @param {boolean} block True to block.
-  */
+   */
   setBlockCesiumRendering(block: boolean) {
     if (this.blockCesiumRendering_ !== block) {
       this.blockCesiumRendering_ = block;
@@ -544,7 +605,7 @@ export default class OLCesium {
 
   /**
    * Get the autorender loop.
-  */
+   */
   getAutoRenderLoop(): olcsAutoRenderLoop {
     return this.autoRenderLoop_;
   }
@@ -561,6 +622,7 @@ export default class OLCesium {
    * Pixel ratio should also be taken into account; by default, a device with
    * pixel ratio of 2.0 will have a buffer surface 4 times bigger than the client
    * surface.
+   * @param value
    */
   setResolutionScale(value: number) {
     value = Math.max(0, value);
@@ -603,7 +665,9 @@ export default class OLCesium {
     const view = map.getView();
     const center = view.getCenter();
     if (!view.isDef() || isNaN(center[0]) || isNaN(center[1])) {
-      throw new Error(`The OpenLayers map is not properly initialized: ${center} / ${view.getResolution()}`);
+      throw new Error(
+        `The OpenLayers map is not properly initialized: ${center} / ${view.getResolution()}`,
+      );
     }
   }
 
@@ -613,7 +677,6 @@ export default class OLCesium {
 
   set trackedFeature(feature: Feature) {
     if (this.trackedFeature_ !== feature) {
-
       const scene = this.scene_;
 
       //Stop tracking
@@ -622,7 +685,9 @@ export default class OLCesium {
         scene.screenSpaceCameraController.enableTilt = true;
 
         if (this.trackedEntity_) {
-          this.dataSourceDisplay_.defaultDataSource.entities.remove(this.trackedEntity_);
+          this.dataSourceDisplay_.defaultDataSource.entities.remove(
+            this.trackedEntity_,
+          );
         }
         this.trackedEntity_ = null;
         this.trackedFeature_ = null;
@@ -638,10 +703,11 @@ export default class OLCesium {
       this.needTrackedEntityUpdate_ = true;
 
       const to4326Transform = this.to4326Transform_;
-      const toCesiumPosition = function() {
+      const toCesiumPosition = function () {
         const geometry = feature.getGeometry();
         console.assert(geometry instanceof olGeomPoint);
-        const coo = geometry instanceof olGeomPoint ? geometry.getCoordinates() : [];
+        const coo =
+          geometry instanceof olGeomPoint ? geometry.getCoordinates() : [];
         const coo4326 = to4326Transform(coo, undefined, coo.length);
         return ol4326CoordinateToCesiumCartesian(coo4326);
       };
@@ -650,14 +716,18 @@ export default class OLCesium {
       // It is independent of the primitive/geometry created by the vector synchronizer.
       const options: Entity.ConstructorOptions = {
         // @ts-ignore according to Cesium types, not possible to pass CallbackProperty
-        position: new Cesium.CallbackProperty((time, result) => toCesiumPosition(), false),
+        position: new Cesium.CallbackProperty(
+          (time, result) => toCesiumPosition(),
+          false,
+        ),
         point: {
           pixelSize: 1,
-          color: Cesium.Color.TRANSPARENT
-        }
+          color: Cesium.Color.TRANSPARENT,
+        },
       };
 
-      this.trackedEntity_ = this.dataSourceDisplay_.defaultDataSource.entities.add(options);
+      this.trackedEntity_ =
+        this.dataSourceDisplay_.defaultDataSource.entities.add(options);
     }
   }
 }

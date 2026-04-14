@@ -4,12 +4,12 @@ export default OLCesium;
 export type {OLCesiumOptions} from './olcs/OLCesium.js';
 
 export {default as AbstractSynchronizer} from './olcs/AbstractSynchronizer.js';
+export {default as OverlaySynchronizer} from './olcs/OverlaySynchronizer.js';
 export {default as RasterSynchronizer} from './olcs/RasterSynchronizer.js';
 export {default as VectorSynchronizer} from './olcs/VectorSynchronizer.js';
-export {default as OverlaySynchronizer} from './olcs/OverlaySynchronizer.js';
 
-export {default as FeatureConverter} from './olcs/FeatureConverter.js';
 export {default as OLCSCamera} from './olcs/Camera.js';
+export {default as FeatureConverter} from './olcs/FeatureConverter.js';
 
 // Core api functions
 export * from './olcs/core.js';
@@ -20,5 +20,5 @@ export {default as VectorLayerCounterpart} from './olcs/core/VectorLayerCounterp
 export * from './olcs/print.js';
 
 // Contrib Manager
-export {default as ContribManager} from './olcs/contrib/Manager.js';
 export {default as ContribLazyLoader} from './olcs/contrib/LazyLoader.js';
+export {default as ContribManager} from './olcs/contrib/Manager.js';

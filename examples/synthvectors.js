@@ -1,16 +1,15 @@
-import olLayerVector from 'ol/layer/Vector.js';
-import olSourceVector from 'ol/source/Vector.js';
-import olStyleFill from 'ol/style/Fill.js';
-import olStyleCircle from 'ol/style/Circle.js';
-import olStyleStyle from 'ol/style/Style.js';
-import OLCesium from 'olcs';
-import olView from 'ol/View.js';
-import olMap from 'ol/Map.js';
-import olSourceOSM from 'ol/source/OSM.js';
-import olLayerTile from 'ol/layer/Tile.js';
 import olFeature from 'ol/Feature.js';
 import olGeomPoint from 'ol/geom/Point.js';
-
+import olLayerTile from 'ol/layer/Tile.js';
+import olLayerVector from 'ol/layer/Vector.js';
+import olMap from 'ol/Map.js';
+import olSourceOSM from 'ol/source/OSM.js';
+import olSourceVector from 'ol/source/Vector.js';
+import olStyleCircle from 'ol/style/Circle.js';
+import olStyleFill from 'ol/style/Fill.js';
+import olStyleStyle from 'ol/style/Style.js';
+import olView from 'ol/View.js';
+import OLCesium from 'olcs';
 
 let total = 0;
 let created = 0;
@@ -18,7 +17,7 @@ let added = 0;
 const vectorLayers = [];
 
 const tile = new olLayerTile({
-  source: new olSourceOSM()
+  source: new olSourceOSM(),
 });
 
 const map = new olMap({
@@ -26,10 +25,9 @@ const map = new olMap({
   target: 'mapCesium',
   view: new olView({
     center: [0, 0],
-    zoom: 2
-  })
+    zoom: 2,
+  }),
 });
-
 
 const ol3d = new OLCesium({map});
 const scene = ol3d.getCesiumScene();
@@ -43,8 +41,12 @@ handler.setInputAction((movement) => {
   if (Cesium.defined(pickedObjects)) {
     for (let i = 0; i < pickedObjects.length; ++i) {
       const picked = pickedObjects[i].primitive;
-      if (picked.olFeature == lastPicked) {continue;}
-      const carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(picked.position);
+      if (picked.olFeature == lastPicked) {
+        continue;
+      }
+      const carto = Cesium.Ellipsoid.WGS84.cartesianToCartographic(
+        picked.position,
+      );
       console.log('Picked feature', picked.olFeature, ' is at ', carto);
       lastPicked = picked.olFeature;
     }
@@ -53,18 +55,18 @@ handler.setInputAction((movement) => {
   }
 }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
-
-window['clearFeatures'] = function() {
+window['clearFeatures'] = function () {
   vectorLayers.forEach((layer) => {
     map.getLayers().remove(layer);
   });
   vectorLayers.length = 0;
-  total = document.getElementById('total').innerHTML = 0;
+  document.getElementById('total').innerHTML = 0;
+  total = 0;
   document.getElementById('created').innerHTML = '';
   document.getElementById('added').innerHTML = '';
 };
 
-window['addFeatures'] = function() {
+window['addFeatures'] = function () {
   let then = Date.now();
   const count = 1000;
   const features = [];
@@ -74,20 +76,24 @@ window['addFeatures'] = function() {
       geometry: new olGeomPoint([
         2 * e * Math.random() - e,
         2 * e * Math.random() - e,
-        e * Math.random()
-      ])
+        e * Math.random(),
+      ]),
     });
-    const style = [new olStyleStyle({
-      image: new olStyleCircle({
-        radius: 2,
-        fill: new olStyleFill({color: [
-          Math.random() * 255,
-          Math.random() * 255,
-          Math.random() * 255,
-          Math.random()
-        ]})
-      })
-    })];
+    const style = [
+      new olStyleStyle({
+        image: new olStyleCircle({
+          radius: 2,
+          fill: new olStyleFill({
+            color: [
+              Math.random() * 255,
+              Math.random() * 255,
+              Math.random() * 255,
+              Math.random(),
+            ],
+          }),
+        }),
+      }),
+    ];
     feature.setStyle(style);
 
     feature.setId(e * Math.random());
@@ -100,7 +106,7 @@ window['addFeatures'] = function() {
 
   const vectorSource = new olSourceVector({});
   const vector = new olLayerVector({
-    source: vectorSource
+    source: vectorSource,
   });
   vectorSource.addFeatures(features);
   map.addLayer(vector);
@@ -110,7 +116,8 @@ window['addFeatures'] = function() {
   total += count;
 
   document.getElementById('total').innerHTML = total;
-  document.getElementById('created').innerHTML = `Features created in ${created}ms.`;
+  document.getElementById('created').innerHTML =
+    `Features created in ${created}ms.`;
   document.getElementById('added').innerHTML = `Features added in ${added}ms.`;
 };
 

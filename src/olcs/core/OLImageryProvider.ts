@@ -1,10 +1,20 @@
-import {getSourceProjection} from '../util.js';
-import {type TileImage} from 'ol/source.js';
-import {attributionsFunctionToCredits} from '../core.js';
+import type {
+  Credit,
+  Event,
+  ImageryLayerFeatureInfo,
+  ImageryProvider,
+  ImageryTypes,
+  Proxy,
+  Rectangle,
+  Request,
+  TileDiscardPolicy,
+  TilingScheme,
+} from 'cesium';
 import type {Map} from 'ol';
 import type {Projection} from 'ol/proj.js';
-import type {Credit, Event, ImageryLayerFeatureInfo, ImageryProvider, ImageryTypes, Proxy, Rectangle, Request, TileDiscardPolicy, TilingScheme} from 'cesium';
-
+import {type TileImage} from 'ol/source.js';
+import {attributionsFunctionToCredits} from '../core.js';
+import {getSourceProjection} from '../util.js';
 
 export function createEmptyCanvas(): HTMLCanvasElement {
   const canvas = document.createElement('canvas');
@@ -20,22 +30,24 @@ export default class OLImageryProvider implements ImageryProvider /* should not 
   private map_: Map;
   private shouldRequestNextLevel: boolean;
   private emptyCanvas_: HTMLCanvasElement = createEmptyCanvas();
-  private emptyCanvasPromise_: Promise<HTMLCanvasElement> = Promise.resolve(this.emptyCanvas_);
+  private emptyCanvasPromise_: Promise<HTMLCanvasElement> = Promise.resolve(
+    this.emptyCanvas_,
+  );
   private tilingScheme_: TilingScheme;
   private ready_: boolean;
   private rectangle_: Rectangle;
 
   /**
- * When <code>true</code>, this model is ready to render, i.e., the external binary, image,
- * and shader files were downloaded and the WebGL resources were created.
- */
+   * When <code>true</code>, this model is ready to render, i.e., the external binary, image,
+   * and shader files were downloaded and the WebGL resources were created.
+   */
   get ready(): boolean {
     return this.ready_;
   }
 
   /**
- * Gets the rectangle, in radians, of the imagery provided by the instance.
- */
+   * Gets the rectangle, in radians, of the imagery provided by the instance.
+   */
   get rectangle() {
     return this.rectangle_;
   }
@@ -78,9 +90,8 @@ export default class OLImageryProvider implements ImageryProvider /* should not 
       const tileSizeAtZoom0 = tileGrid.getTileSize(0);
       if (Array.isArray(tileSizeAtZoom0)) {
         return tileSizeAtZoom0[0];
-      } else {
-        return tileSizeAtZoom0; // same width and height
       }
+      return tileSizeAtZoom0; // same width and height
     }
     return 256;
   }
@@ -94,9 +105,8 @@ export default class OLImageryProvider implements ImageryProvider /* should not 
       const tileSizeAtZoom0 = tileGrid.getTileSize(0);
       if (Array.isArray(tileSizeAtZoom0)) {
         return tileSizeAtZoom0[1];
-      } else {
-        return tileSizeAtZoom0; // same width and height
       }
+      return tileSizeAtZoom0; // same width and height
     }
     return 256;
   }
@@ -108,9 +118,8 @@ export default class OLImageryProvider implements ImageryProvider /* should not 
     const tileGrid = this.source_.getTileGrid();
     if (tileGrid) {
       return tileGrid.getMaxZoom();
-    } else {
-      return 18; // some arbitrary value
     }
+    return 18; // some arbitrary value
   }
 
   // FIXME: to implement, we could check the number of tiles at minzoom (for this rectangle) and return 0 if too big
@@ -157,17 +166,23 @@ export default class OLImageryProvider implements ImageryProvider /* should not 
    * Asynchronously determines what features, if any, are located at a given longitude and latitude within
    * a tile.
    * This function is optional, so it may not exist on all ImageryProviders.
-   * @param x - The tile X coordinate.
-   * @param y - The tile Y coordinate.
-   * @param level - The tile level.
-   * @param longitude - The longitude at which to pick features.
-   * @param latitude - The latitude at which to pick features.
+   * @param x The tile X coordinate.
+   * @param y The tile Y coordinate.
+   * @param level The tile level.
+   * @param longitude The longitude at which to pick features.
+   * @param latitude The latitude at which to pick features.
    * @return A promise for the picked features that will resolve when the asynchronous
    *                   picking completes.  The resolved value is an array of {@link ImageryLayerFeatureInfo}
    *                   instances.  The array may be empty if no features are found at the given location.
    *                   It may also be undefined if picking is not supported.
    */
-  pickFeatures(x: number, y: number, level: number, longitude: number, latitude: number): Promise<ImageryLayerFeatureInfo[]> | undefined {
+  pickFeatures(
+    x: number,
+    y: number,
+    level: number,
+    longitude: number,
+    latitude: number,
+  ): Promise<ImageryLayerFeatureInfo[]> | undefined {
     return undefined;
   }
 
@@ -201,7 +216,7 @@ export default class OLImageryProvider implements ImageryProvider /* should not 
       if (typeof proxy === 'function') {
         // Duck typing a proxy
         this.proxy = {
-          'getURL': proxy
+          'getURL': proxy,
         } as Proxy;
       } else if (typeof proxy === 'string') {
         this.proxy = new Cesium.DefaultProxy(proxy);
@@ -219,20 +234,29 @@ export default class OLImageryProvider implements ImageryProvider /* should not 
    */
   private handleSourceChanged_() {
     if (!this.ready_ && this.source_.getState() == 'ready') {
-      this.projection_ = getSourceProjection(this.source_) || this.fallbackProj_;
+      this.projection_ =
+        getSourceProjection(this.source_) || this.fallbackProj_;
       const options = {numberOfLevelZeroTilesX: 1, numberOfLevelZeroTilesY: 1};
 
       if (this.source_.getTileGrid() !== null) {
         // Get the number of tiles at level 0 if it is defined
-        this.source_.getTileGrid().forEachTileCoord(this.projection_.getExtent(), 0, ([zoom, xIndex, yIndex]) => {
-          options.numberOfLevelZeroTilesX = xIndex + 1;
-          options.numberOfLevelZeroTilesY = yIndex + 1;
-        });
+        this.source_
+          .getTileGrid()
+          .forEachTileCoord(
+            this.projection_.getExtent(),
+            0,
+            ([zoom, xIndex, yIndex]) => {
+              options.numberOfLevelZeroTilesX = xIndex + 1;
+              options.numberOfLevelZeroTilesY = yIndex + 1;
+            },
+          );
       }
 
       if (this.projection_.getCode() === 'EPSG:4326') {
         // Cesium zoom level 0 is OpenLayers zoom level 1 for layer in EPSG:4326 with a single tile on level 0
-        this.shouldRequestNextLevel = options.numberOfLevelZeroTilesX === 1 && options.numberOfLevelZeroTilesY === 1;
+        this.shouldRequestNextLevel =
+          options.numberOfLevelZeroTilesX === 1 &&
+          options.numberOfLevelZeroTilesY === 1;
         this.tilingScheme_ = new Cesium.GeographicTilingScheme(options);
       } else if (this.projection_.getCode() === 'EPSG:3857') {
         this.shouldRequestNextLevel = false;
@@ -249,6 +273,9 @@ export default class OLImageryProvider implements ImageryProvider /* should not 
   /**
    * Generates the proper attributions for a given position and zoom
    * level.
+   * @param x
+   * @param y
+   * @param level
    */
   getTileCredits(x: number, y: number, level: number): Credit[] {
     const attributionsFunction = this.source_.getAttributions();
@@ -258,25 +285,42 @@ export default class OLImageryProvider implements ImageryProvider /* should not 
     const extent = this.map_.getView().calculateExtent(this.map_.getSize());
     const center = this.map_.getView().getCenter();
     const zoom = this.shouldRequestNextLevel ? level + 1 : level;
-    return attributionsFunctionToCredits(attributionsFunction, zoom, center, extent);
+    return attributionsFunctionToCredits(
+      attributionsFunction,
+      zoom,
+      center,
+      extent,
+    );
   }
 
-  requestImage(x: number, y: number, level: number, request?: Request): Promise<ImageryTypes> | undefined {
+  requestImage(
+    x: number,
+    y: number,
+    level: number,
+    request?: Request,
+  ): Promise<ImageryTypes> | undefined {
     const tileUrlFunction = this.source_.getTileUrlFunction();
     if (tileUrlFunction && this.projection_) {
       const z_ = this.shouldRequestNextLevel ? level + 1 : level;
-      let url = tileUrlFunction.call(this.source_, [z_, x, y], 1, this.projection_);
+      let url = tileUrlFunction.call(
+        this.source_,
+        [z_, x, y],
+        1,
+        this.projection_,
+      );
       if (this.proxy) {
         url = this.proxy.getURL(url);
       }
       if (url) {
         // It is probably safe to cast here
-        return Cesium.ImageryProvider.loadImage(this, url) as Promise<ImageryTypes>;
+        return Cesium.ImageryProvider.loadImage(
+          this,
+          url,
+        ) as Promise<ImageryTypes>;
       }
       return this.emptyCanvasPromise_;
-    } else {
-      // return empty canvas to stop Cesium from retrying later
-      return this.emptyCanvasPromise_;
     }
+    // return empty canvas to stop Cesium from retrying later
+    return this.emptyCanvasPromise_;
   }
 }

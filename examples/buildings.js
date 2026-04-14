@@ -1,14 +1,14 @@
-import OLCesium from 'olcs';
-import olStyleStroke from 'ol/style/Stroke.js';
+import olFormatGeoJSON from 'ol/format/GeoJSON.js';
+import olLayerTile from 'ol/layer/Tile.js';
+import olLayerVector from 'ol/layer/Vector.js';
+import olMap from 'ol/Map.js';
+import olSourceOSM from 'ol/source/OSM.js';
+import olSourceVector from 'ol/source/Vector.js';
 import olStyleFill from 'ol/style/Fill.js';
+import olStyleStroke from 'ol/style/Stroke.js';
 import olStyleStyle from 'ol/style/Style.js';
 import olView from 'ol/View.js';
-import olFormatGeoJSON from 'ol/format/GeoJSON.js';
-import olSourceVector from 'ol/source/Vector.js';
-import olLayerVector from 'ol/layer/Vector.js';
-import olSourceOSM from 'ol/source/OSM.js';
-import olLayerTile from 'ol/layer/Tile.js';
-import olMap from 'ol/Map.js';
+import OLCesium from 'olcs';
 
 const raster = new olLayerTile({
   source: new olSourceOSM(),
@@ -46,7 +46,6 @@ const map = new olMap({
 // Alternatively, you can enable 'olcs_shadows' for each feature individually
 vector.set('olcs_shadows', true);
 
-
 const ol3d = new OLCesium({map, target: 'mapCesium'});
 ol3d.setEnabled(true);
 
@@ -57,14 +56,12 @@ scene.shadowMap.enabled = true;
 // Enable lighting the globe with the sun as a light source to have dynamic lighting conditions according to the position of the sun
 scene.globe.enableLighting = true;
 
-
 const vectorSource = vector.getSource();
 vectorSource.once('featuresloadend', () => {
   if (vectorSource.getState() === 'ready') {
     map.getView().fit(vector.getSource().getExtent());
   }
 });
-
 
 const selectionStyle = new olStyleStyle({
   fill: new olStyleFill({
@@ -82,8 +79,8 @@ map.on('click', (e) => {
     selectedFeature.setStyle(null);
   }
   selectedFeature = map.forEachFeatureAtPixel(
-      e.pixel,
-      (feature, layer) => feature
+    e.pixel,
+    (feature, layer) => feature,
   );
   if (selectedFeature) {
     selectedFeature.setStyle(selectionStyle);

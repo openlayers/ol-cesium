@@ -4,7 +4,6 @@ import type {Source} from 'ol/source.js';
 let _imageRenderingPixelatedSupported: boolean = undefined;
 let _imageRenderingValue: string = undefined;
 
-
 /**
  * https://caniuse.com/mdn-css_properties_image-rendering_pixelated
  * @return whether the browser supports
@@ -12,7 +11,10 @@ let _imageRenderingValue: string = undefined;
 export function supportsImageRenderingPixelated(): boolean {
   if (_imageRenderingPixelatedSupported === undefined) {
     const canvas = document.createElement('canvas');
-    canvas.setAttribute('style', 'image-rendering: -moz-crisp-edges; image-rendering: crisp-edges; image-rendering: pixelated;');
+    canvas.setAttribute(
+      'style',
+      'image-rendering: -moz-crisp-edges; image-rendering: crisp-edges; image-rendering: pixelated;',
+    );
     // canvas.style.imageRendering will be undefined, null or an
     // empty string on unsupported browsers.
     const imageRenderingValue = canvas.style.imageRendering;
@@ -23,7 +25,6 @@ export function supportsImageRenderingPixelated(): boolean {
   }
   return _imageRenderingPixelatedSupported;
 }
-
 
 /**
  * The value supported by thie browser for the CSS property "image-rendering"
@@ -41,9 +42,10 @@ export function imageRenderingValue() {
  * @return The projection of the source.
  */
 export function getSourceProjection(source: Source): Projection {
-  return source.get('olcs_projection') as Projection || source.getProjection();
+  return (
+    (source.get('olcs_projection') as Projection) || source.getProjection()
+  );
 }
-
 
 /**
  * Counter for getUid.

@@ -4,43 +4,36 @@ import olLayerGroup from 'ol/layer/Group.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import {fromLonLat} from 'ol/proj.js';
 import olSourceOSM from 'ol/source/OSM.js';
-import olSourceTileJSON from 'ol/source/TileJSON.js';
+import StadiaMaps from 'ol/source/StadiaMaps.js';
 import OLCesium from 'olcs';
 
 const layer0 = new olLayerTile({
-  source: new olSourceOSM()
+  source: new olSourceOSM(),
 });
 
-const key = 'pk.eyJ1IjoiZ2JvMiIsImEiOiJjazFraHV4N3gwZHliM2JucHYxdTNnNXh1In0.tzs3TxoVCaMNQf455mh-3w';
-
 const layer10 = new olLayerTile({
-  source: new olSourceTileJSON({
-    url: 'https://api.tiles.mapbox.com/v4/mapbox.20110804-hoa-foodinsecurity-3month.json?secure&access_token=' + key,
-    crossOrigin: 'anonymous'
-  })
+  source: new StadiaMaps({
+    layer: 'stamen_terrain',
+  }),
 });
 
 const layer11 = new olLayerTile({
-  source: new olSourceTileJSON({
-    url: 'https://api.tiles.mapbox.com/v4/mapbox.world-borders-light.json?secure&access_token=' + key,
-    crossOrigin: 'anonymous'
-  })
+  source: new StadiaMaps({
+    layer: 'stamen_toner',
+  }),
 });
 
 const layer1 = new olLayerGroup({
-  layers: [
-    layer10,
-    layer11
-  ]
+  layers: [layer10, layer11],
 });
 
 const ol2d = new olMap({
   layers: [layer0, layer1],
   target: 'map2d',
   view: new olView({
-    center: fromLonLat([37.40570, 8.81566]),
-    zoom: 4
-  })
+    center: fromLonLat([37.4057, 8.81566]),
+    zoom: 4,
+  }),
 });
 
 const ol3d = new OLCesium({map: ol2d, target: 'mapCesium'});
@@ -61,10 +54,10 @@ function getLayer(layername) {
   }
 }
 
-window['toggleLayer'] = function(element, name) {
+window['toggleLayer'] = function (element, name) {
   getLayer(name).setVisible(element.checked);
 };
-window['setLayerOpacity'] = function(element, name) {
+window['setLayerOpacity'] = function (element, name) {
   getLayer(name).setOpacity(parseFloat(element.value));
 };
 

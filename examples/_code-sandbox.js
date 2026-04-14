@@ -1,12 +1,13 @@
 const lzScript = document.createElement('script');
-lzScript.src = 'https://cdn.jsdelivr.net/npm/lz-string@1.4.4/libs/lz-string.min.js';
+lzScript.src =
+  'https://cdn.jsdelivr.net/npm/lz-string@1.4.4/libs/lz-string.min.js';
 document.head.appendChild(lzScript);
 
 function compress(json) {
   return window.LZString.compressToBase64(JSON.stringify(json))
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_')
-      .replace(/=+$/, '');
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '');
 }
 
 export async function initCodeSandbox(indexJsPath, ...filesPathes) {
@@ -15,21 +16,23 @@ export async function initCodeSandbox(indexJsPath, ...filesPathes) {
   const indexJsContent = txtData.split('//##REMOVE##')[0];
   const additionalJsFiles = {};
   const resourcesFiles = filesPathes
-      .filter(path => path.indexOf('data/') === 0)
-      // eslint-disable-next-line arrow-body-style
-      .map(path => ({
-        [path]: {
-          'isBinary': true,
-          content: `https://openlayers.org/ol-cesium/examples/${path}`
-        }
-      }));
-  const jsFiles = filesPathes.filter(path => !path.startsWith('data/'));
+    .filter((path) => path.indexOf('data/') === 0)
+
+    .map((path) => ({
+      [path]: {
+        'isBinary': true,
+        content: `https://openlayers.org/ol-cesium/examples/${path}`,
+      },
+    }));
+  const jsFiles = filesPathes.filter((path) => !path.startsWith('data/'));
 
   for (const filePath of jsFiles) {
     const responseFile = await fetch(filePath);
     const txtDataFile = await responseFile.text();
 
-    additionalJsFiles[filePath.replace('./', '').replace('rawjs', '')] = {content: txtDataFile};
+    additionalJsFiles[filePath.replace('./', '').replace('rawjs', '')] = {
+      content: txtDataFile,
+    };
   }
 
   initCodeSandboxButton({indexJsContent, additionalJsFiles, resourcesFiles});
@@ -47,8 +50,12 @@ function initCodeSandboxButton(options) {
   }
 
   const divExampleCodeSource = document.createElement('div');
-  divExampleCodeSource.innerHTML = document.getElementById('example-html-source').innerHTML;
-  divExampleCodeSource.querySelectorAll('.clear-map-sandbox').forEach(map => map.innerHTML = '');
+  divExampleCodeSource.innerHTML = document.getElementById(
+    'example-html-source',
+  ).innerHTML;
+  divExampleCodeSource
+    .querySelectorAll('.clear-map-sandbox')
+    .forEach((map) => (map.innerHTML = ''));
   indexHtmlContent = divExampleCodeSource.innerHTML;
 
   const indexHtml = `
@@ -137,35 +144,35 @@ function initCodeSandboxButton(options) {
             'serve': '14.2.3',
             'vite': '^3.2.3',
             '@babel/core': '^7.24.4',
-            '@babel/plugin-proposal-class-properties': '^7.18.6'
+            '@babel/plugin-proposal-class-properties': '^7.18.6',
           },
           'dependencies': {
             'olcs': '2.20.0',
             'proj4': '2.11.0',
             'cesium': '1.122.0',
-            'ol': '10.1.0'
-          }
+            'ol': '10.1.0',
+          },
         },
       },
       '.babelrc': {
-        content: '{ "plugins": ["@babel/plugin-proposal-class-properties"] }'
+        content: '{ "plugins": ["@babel/plugin-proposal-class-properties"] }',
       },
       'index.js': {
         content: indexJsContent,
       },
       'index.html': {
-        content: indexHtml
+        content: indexHtml,
       },
       ...resourcesFiles.reduce((acc, curr) => {
         const key = Object.keys(curr)[0]; // Récupérer la clé de l'objet
         acc[key] = curr[key]; // Ajouter la propriété à l'objet accumulé
         return acc;
       }, {}),
-      ...additionalJsFiles
-    }
+      ...additionalJsFiles,
+    },
   };
 
-  button.onclick = function(event) {
+  button.onclick = function (event) {
     event.preventDefault();
     form.parameters.value = compress(parameters);
     form.submit();

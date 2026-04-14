@@ -6,8 +6,11 @@ export interface RectangleOutput {
   height: number;
 }
 
-export function computeRectangle(canvas: HTMLCanvasElement, tw: number, th: number): RectangleOutput {
-
+export function computeRectangle(
+  canvas: HTMLCanvasElement,
+  tw: number,
+  th: number,
+): RectangleOutput {
   const maskAspectRatio = tw / th;
   let maskSize;
 
@@ -17,8 +20,7 @@ export function computeRectangle(canvas: HTMLCanvasElement, tw: number, th: numb
     if (maskSize[1] > canvas.height) {
       maskSize = [canvas.height * maskAspectRatio, canvas.height];
     }
-  }
-  else {
+  } else {
     // portrait
     maskSize = [canvas.height * maskAspectRatio, canvas.height];
     if (maskSize[0] > canvas.width) {

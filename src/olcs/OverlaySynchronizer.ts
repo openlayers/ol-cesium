@@ -1,34 +1,49 @@
-import type {Collection, Map as OLMap, Overlay} from 'ol';
-import SynchronizedOverlay from './SynchronizedOverlay.js';
-import {getUid} from './util.js';
 import type {Scene} from 'cesium';
+import type {Collection, Map as OLMap, Overlay} from 'ol';
 import type {CollectionEvent} from 'ol/Collection.js';
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
 import type {EventsKey} from 'ol/events.js';
+import SynchronizedOverlay from './SynchronizedOverlay.js';
+import {getUid} from './util.js';
 
 export default class OverlaySynchronizer {
   private overlayCollection_: Collection<Overlay>;
   private overlayContainerStopEvent_: HTMLDivElement;
   private overlayContainer_: HTMLDivElement;
   private overlayMap_: Map<number, SynchronizedOverlay> = new Map();
-  private overlayEvents = ['click', 'dblclick', 'mousedown', 'touchstart', 'pointerdown', 'mousewheel', 'wheel'];
+  private overlayEvents = [
+    'click',
+    'dblclick',
+    'mousedown',
+    'touchstart',
+    'pointerdown',
+    'mousewheel',
+    'wheel',
+  ];
   private listenerKeys_: EventsKey[] = [];
 
   /**
-  * @param map
-  * @param scene
-  * @api
-  */
-  constructor(protected map: OLMap, protected scene: Scene) {
+   * @param map
+   * @param scene
+   * @api
+   */
+  constructor(
+    protected map: OLMap,
+    protected scene: Scene,
+  ) {
     this.map = map;
     this.overlayCollection_ = this.map.getOverlays();
     this.scene = scene;
     this.overlayContainerStopEvent_ = document.createElement('div');
     this.overlayContainerStopEvent_.className = 'ol-overlaycontainer-stopevent';
     this.overlayEvents.forEach((name) => {
-      this.overlayContainerStopEvent_.addEventListener(name, evt => evt.stopPropagation());
+      this.overlayContainerStopEvent_.addEventListener(name, (evt) =>
+        evt.stopPropagation(),
+      );
     });
-    this.scene.canvas.parentElement.appendChild(this.overlayContainerStopEvent_);
+    this.scene.canvas.parentElement.appendChild(
+      this.overlayContainerStopEvent_,
+    );
 
     this.overlayContainer_ = document.createElement('div');
     this.overlayContainer_.className = 'ol-overlaycontainer';
@@ -36,43 +51,49 @@ export default class OverlaySynchronizer {
   }
 
   /**
-  * Get the element that serves as a container for overlays that don't allow
-  * event propagation. Elements added to this container won't let mousedown and
-  * touchstart events through to the map, so clicks and gestures on an overlay
-  * don't trigger any {@link ol.MapBrowserEvent}.
-  * @return The map's overlay container that stops events.
-  */
+   * Get the element that serves as a container for overlays that don't allow
+   * event propagation. Elements added to this container won't let mousedown and
+   * touchstart events through to the map, so clicks and gestures on an overlay
+   * don't trigger any {@link ol.MapBrowserEvent}.
+   * @return The map's overlay container that stops events.
+   */
   getOverlayContainerStopEvent(): Element {
     return this.overlayContainerStopEvent_;
   }
 
   /**
-  * Get the element that serves as a container for overlays.
-  * @return The map's overlay container.
-  */
+   * Get the element that serves as a container for overlays.
+   * @return The map's overlay container.
+   */
   getOverlayContainer(): Element {
     return this.overlayContainer_;
   }
 
   /**
-  * Destroy all and perform complete synchronization of the overlays.
-  * @api
-  */
+   * Destroy all and perform complete synchronization of the overlays.
+   * @api
+   */
   synchronize() {
     this.destroyAll();
-    this.overlayCollection_.forEach((overlay) => { this.addOverlay(overlay); });
+    this.overlayCollection_.forEach((overlay) => {
+      this.addOverlay(overlay);
+    });
     this.listenerKeys_.push(
-        this.overlayCollection_.on('add', (evt: CollectionEvent<Overlay>) => this.addOverlay(evt.element))
+      this.overlayCollection_.on('add', (evt: CollectionEvent<Overlay>) =>
+        this.addOverlay(evt.element),
+      ),
     );
     this.listenerKeys_.push(
-        this.overlayCollection_.on('remove', (evt: CollectionEvent<Overlay>) => this.removeOverlay(evt.element))
+      this.overlayCollection_.on('remove', (evt: CollectionEvent<Overlay>) =>
+        this.removeOverlay(evt.element),
+      ),
     );
   }
 
-
   /**
-  * @api
-  */
+   * @param overlay
+   * @api
+   */
   addOverlay(overlay: Overlay) {
     if (!overlay) {
       return;
@@ -80,17 +101,17 @@ export default class OverlaySynchronizer {
     const cesiumOverlay = new SynchronizedOverlay({
       scene: this.scene,
       synchronizer: this,
-      parent: overlay
+      parent: overlay,
     });
 
     this.overlayMap_.set(getUid(overlay), cesiumOverlay);
   }
 
-
   /**
-  * Removes an overlay from the scene
-  * @api
-  */
+   * Removes an overlay from the scene
+   * @param overlay
+   * @api
+   */
   removeOverlay(overlay: Overlay) {
     const overlayId = getUid(overlay);
     const csOverlay = this.overlayMap_.get(overlayId);
@@ -101,8 +122,8 @@ export default class OverlaySynchronizer {
   }
 
   /**
-  * Destroys all the created Cesium objects.
-  */
+   * Destroys all the created Cesium objects.
+   */
   protected destroyAll() {
     this.overlayMap_.forEach((overlay: SynchronizedOverlay) => {
       overlay.destroy();
