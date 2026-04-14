@@ -1,17 +1,18 @@
-import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
-import LayerGroup from 'ol/layer/Group.js';
-import {getUid} from './util.js';
-import type Map from 'ol/Map.js';
-import type {Scene, ImageryLayer} from 'cesium';
-import type View from 'ol/View.js';
+import type {ImageryLayer, Scene} from 'cesium';
 import type Collection from 'ol/Collection.js';
-import type BaseLayer from 'ol/layer/Base.js';
+import type Map from 'ol/Map.js';
+import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
+import type View from 'ol/View.js';
 import type {EventsKey} from 'ol/events.js';
+import type BaseLayer from 'ol/layer/Base.js';
+import LayerGroup from 'ol/layer/Group.js';
 import type {LayerWithParents} from './core.js';
 import type VectorLayerCounterpart from './core/VectorLayerCounterpart.js';
+import {getUid} from './util.js';
 
-
-export default abstract class AbstractSynchronizer<T extends ImageryLayer | VectorLayerCounterpart> {
+export default abstract class AbstractSynchronizer<
+  T extends ImageryLayer | VectorLayerCounterpart,
+> {
   protected map: Map;
   protected view: View;
   protected scene: Scene;
@@ -57,12 +58,15 @@ export default abstract class AbstractSynchronizer<T extends ImageryLayer | Vect
 
   /**
    * Add a layer hierarchy.
+   * @param root
    */
   private addLayers_(root: BaseLayer) {
-    const fifo: LayerWithParents[] = [{
-      layer: root,
-      parents: []
-    }];
+    const fifo: LayerWithParents[] = [
+      {
+        layer: root,
+        parents: [],
+      },
+    ];
     while (fifo.length > 0) {
       const olLayerWithParents = fifo.splice(0, 1)[0];
       const olLayer = olLayerWithParents.layer;
@@ -74,16 +78,20 @@ export default abstract class AbstractSynchronizer<T extends ImageryLayer | Vect
       if (olLayer instanceof LayerGroup) {
         this.listenForGroupChanges_(olLayer);
         if (olLayer !== this.mapLayerGroup) {
-          cesiumObjects = this.createSingleLayerCounterparts(olLayerWithParents);
+          cesiumObjects =
+            this.createSingleLayerCounterparts(olLayerWithParents);
         }
         if (!cesiumObjects) {
           olLayer.getLayers().forEach((l) => {
             if (l) {
               const newOlLayerWithParents: LayerWithParents = {
                 layer: l,
-                parents: olLayer === this.mapLayerGroup ?
-                  [] :
-                  [olLayerWithParents.layer].concat(olLayerWithParents.parents)
+                parents:
+                  olLayer === this.mapLayerGroup
+                    ? []
+                    : [olLayerWithParents.layer].concat(
+                        olLayerWithParents.parents,
+                      ),
               };
               fifo.push(newOlLayerWithParents);
             }
@@ -97,15 +105,22 @@ export default abstract class AbstractSynchronizer<T extends ImageryLayer | Vect
           const layerId = olLayerId;
           const layerWithParents = olLayerWithParents;
           const onLayerChange = () => {
-            const cesiumObjs = this.createSingleLayerCounterparts(layerWithParents);
+            const cesiumObjs =
+              this.createSingleLayerCounterparts(layerWithParents);
             if (cesiumObjs) {
               // unsubscribe event listener
               layerWithParents.layer.un('change', onLayerChange);
-              this.addCesiumObjects_(cesiumObjs, layerId, layerWithParents.layer);
+              this.addCesiumObjects_(
+                cesiumObjs,
+                layerId,
+                layerWithParents.layer,
+              );
               this.orderLayers();
             }
           };
-          this.olLayerListenKeys[olLayerId].push(layerWithParents.layer.on('change', onLayerChange));
+          this.olLayerListenKeys[olLayerId].push(
+            layerWithParents.layer.on('change', onLayerChange),
+          );
         }
       }
       // add Cesium layers
@@ -119,10 +134,19 @@ export default abstract class AbstractSynchronizer<T extends ImageryLayer | Vect
 
   /**
    * Add Cesium objects.
+   * @param cesiumObjects
+   * @param layerId
+   * @param layer
    */
-  private addCesiumObjects_(cesiumObjects: Array<T>, layerId: string, layer: BaseLayer) {
+  private addCesiumObjects_(
+    cesiumObjects: Array<T>,
+    layerId: string,
+    layer: BaseLayer,
+  ) {
     this.layerMap[layerId] = cesiumObjects;
-    this.olLayerListenKeys[layerId].push(layer.on('change:zIndex', () => this.orderLayers()));
+    this.olLayerListenKeys[layerId].push(
+      layer.on('change:zIndex', () => this.orderLayers()),
+    );
     cesiumObjects.forEach((cesiumObject) => {
       this.addCesiumObject(cesiumObject);
     });
@@ -136,7 +160,7 @@ export default abstract class AbstractSynchronizer<T extends ImageryLayer | Vect
   private removeAndDestroySingleLayer_(layer: BaseLayer): boolean {
     const uid = getUid(layer).toString();
     const counterparts = this.layerMap[uid];
-    if (!!counterparts) {
+    if (counterparts) {
       counterparts.forEach((counterpart) => {
         this.removeSingleCesiumObject(counterpart, false);
         this.destroyCesiumObject(counterpart);
@@ -150,6 +174,7 @@ export default abstract class AbstractSynchronizer<T extends ImageryLayer | Vect
 
   /**
    * Unlisten a single layer group.
+   * @param group
    */
   private unlistenSingleGroup_(group: LayerGroup) {
     if (group === this.mapLayerGroup) {
@@ -166,9 +191,10 @@ export default abstract class AbstractSynchronizer<T extends ImageryLayer | Vect
 
   /**
    * Remove layer hierarchy.
+   * @param root
    */
   private removeLayer_(root: BaseLayer) {
-    if (!!root) {
+    if (root) {
       const fifo = [root];
       while (fifo.length > 0) {
         const olLayer = fifo.splice(0, 1)[0];
@@ -189,6 +215,7 @@ export default abstract class AbstractSynchronizer<T extends ImageryLayer | Vect
 
   /**
    * Register listeners for single layer group change.
+   * @param group
    */
   private listenForGroupChanges_(group: LayerGroup) {
     const uuid = getUid(group).toString();
@@ -200,7 +227,7 @@ export default abstract class AbstractSynchronizer<T extends ImageryLayer | Vect
 
     // only the keys that need to be relistened when collection changes
     let contentKeys: EventsKey[] = [];
-    const listenAddRemove = (function() {
+    const listenAddRemove = function () {
       const collection = group.getLayers();
       if (collection) {
         contentKeys = [
@@ -209,24 +236,26 @@ export default abstract class AbstractSynchronizer<T extends ImageryLayer | Vect
           }),
           collection.on('remove', (event) => {
             this.removeLayer_(event.element);
-          })
+          }),
         ];
         listenKeyArray.push(...contentKeys);
       }
-    }).bind(this);
+    }.bind(this);
 
     listenAddRemove();
 
-    listenKeyArray.push(group.on('change:layers', (e) => {
-      contentKeys.forEach((el) => {
-        const i = listenKeyArray.indexOf(el);
-        if (i >= 0) {
-          listenKeyArray.splice(i, 1);
-        }
-        olObservableUnByKey(el);
-      });
-      listenAddRemove();
-    }));
+    listenKeyArray.push(
+      group.on('change:layers', (e) => {
+        contentKeys.forEach((el) => {
+          const i = listenKeyArray.indexOf(el);
+          if (i >= 0) {
+            listenKeyArray.splice(i, 1);
+          }
+          olObservableUnByKey(el);
+        });
+        listenAddRemove();
+      }),
+    );
   }
 
   /**
@@ -257,9 +286,14 @@ export default abstract class AbstractSynchronizer<T extends ImageryLayer | Vect
   /**
    * Remove single Cesium object from the collection.
    */
-  protected abstract removeSingleCesiumObject(object: T, destroy: boolean): void;
+  protected abstract removeSingleCesiumObject(
+    object: T,
+    destroy: boolean,
+  ): void;
 
   protected abstract removeAllCesiumObjects(destroy: boolean): void;
 
-  protected abstract createSingleLayerCounterparts(olLayerWithParents: LayerWithParents): Array<T>;
+  protected abstract createSingleLayerCounterparts(
+    olLayerWithParents: LayerWithParents,
+  ): Array<T>;
 }

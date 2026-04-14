@@ -1,44 +1,57 @@
+import type {
+  Credit,
+  Event,
+  ImageryLayerFeatureInfo,
+  ImageryProvider,
+  ImageryTypes,
+  Proxy,
+  Rectangle,
+  Request,
+  TileDiscardPolicy,
+  TilingScheme,
+} from 'cesium';
+import type {UrlFunction} from 'ol/Tile.js';
 import MVT from 'ol/format/MVT.js';
-import Style, {type StyleFunction} from 'ol/style/Style.js';
-import Stroke from 'ol/style/Stroke.js';
-import {toContext} from 'ol/render.js';
 import {get as getProjection} from 'ol/proj.js';
+import {toContext} from 'ol/render.js';
+import RenderFeature from 'ol/render/Feature.js';
 import LRUCache from 'ol/structs/LRUCache.js';
+import Stroke from 'ol/style/Stroke.js';
+import Style, {type StyleFunction} from 'ol/style/Style.js';
 import {getForProjection as getTilegridForProjection} from 'ol/tilegrid.js';
 import {createFromTemplates as createTileUrlFunctions} from 'ol/tileurlfunction.js';
-import type {Credit, Event, ImageryLayerFeatureInfo, ImageryProvider, ImageryTypes, Proxy, Rectangle, Request, TileDiscardPolicy, TilingScheme} from 'cesium';
-import type {UrlFunction} from 'ol/Tile.js';
-import RenderFeature from 'ol/render/Feature.js';
 import {createEmptyCanvas} from './core/OLImageryProvider.js';
 
-
 export interface MVTOptions {
-  urls: string[],
-  rectangle: Rectangle,
-  credit: Credit,
-  styleFunction: StyleFunction,
-  cacheSize?: number,
-  featureCache?: LRUCache<Promise<RenderFeature[]>>
-  minimumLevel: number
+  urls: string[];
+  rectangle: Rectangle;
+  credit: Credit;
+  styleFunction: StyleFunction;
+  cacheSize?: number;
+  featureCache?: LRUCache<Promise<RenderFeature[]>>;
+  minimumLevel: number;
 }
 
 const format = new MVT({
-  featureClass: RenderFeature
+  featureClass: RenderFeature,
 });
 
-const styles = [new Style({
-  stroke: new Stroke({
-    color: 'blue',
-    width: 2
-  })
-})];
-
+const styles = [
+  new Style({
+    stroke: new Stroke({
+      color: 'blue',
+      width: 2,
+    }),
+  }),
+];
 
 export default class MVTImageryProvider implements ImageryProvider {
   private urls: string[];
   private emptyCanvas_: HTMLCanvasElement = createEmptyCanvas();
-  private emptyCanvasPromise_: Promise<HTMLCanvasElement> = Promise.resolve(this.emptyCanvas_);
-  private tilingScheme_ = new Cesium.WebMercatorTilingScheme;
+  private emptyCanvasPromise_: Promise<HTMLCanvasElement> = Promise.resolve(
+    this.emptyCanvas_,
+  );
+  private tilingScheme_ = new Cesium.WebMercatorTilingScheme();
   private ready_ = true;
   private rectangle_: Rectangle;
   private tileRectangle_: Rectangle;
@@ -56,16 +69,16 @@ export default class MVTImageryProvider implements ImageryProvider {
   private projection_ = getProjection('EPSG:3857');
 
   /**
- * When <code>true</code>, this model is ready to render, i.e., the external binary, image,
- * and shader files were downloaded and the WebGL resources were created.
- */
+   * When <code>true</code>, this model is ready to render, i.e., the external binary, image,
+   * and shader files were downloaded and the WebGL resources were created.
+   */
   get ready(): boolean {
     return this.ready_;
   }
 
   /**
- * Gets the rectangle, in radians, of the imagery provided by the instance.
- */
+   * Gets the rectangle, in radians, of the imagery provided by the instance.
+   */
   get rectangle() {
     return this.rectangle_;
   }
@@ -129,17 +142,23 @@ export default class MVTImageryProvider implements ImageryProvider {
    * Asynchronously determines what features, if any, are located at a given longitude and latitude within
    * a tile.
    * This function is optional, so it may not exist on all ImageryProviders.
-   * @param x - The tile X coordinate.
-   * @param y - The tile Y coordinate.
-   * @param level - The tile level.
-   * @param longitude - The longitude at which to pick features.
-   * @param latitude - The latitude at which to pick features.
+   * @param x The tile X coordinate.
+   * @param y The tile Y coordinate.
+   * @param level The tile level.
+   * @param longitude The longitude at which to pick features.
+   * @param latitude The latitude at which to pick features.
    * @return A promise for the picked features that will resolve when the asynchronous
    *                   picking completes.  The resolved value is an array of {@link ImageryLayerFeatureInfo}
    *                   instances.  The array may be empty if no features are found at the given location.
    *                   It may also be undefined if picking is not supported.
    */
-  pickFeatures(x: number, y: number, level: number, longitude: number, latitude: number): Promise<ImageryLayerFeatureInfo[]> | undefined {
+  pickFeatures(
+    x: number,
+    y: number,
+    level: number,
+    longitude: number,
+    latitude: number,
+  ): Promise<ImageryLayerFeatureInfo[]> | undefined {
     return undefined;
   }
 
@@ -158,7 +177,11 @@ export default class MVTImageryProvider implements ImageryProvider {
     this.tileFunction_ = createTileUrlFunctions(this.urls, tileGrid);
   }
 
-  private getTileFeatures(z: number, x: number, y: number): Promise<RenderFeature[]> {
+  private getTileFeatures(
+    z: number,
+    x: number,
+    y: number,
+  ): Promise<RenderFeature[]> {
     const cacheKey = this.getCacheKey_(z, x, y);
     let promise;
     if (this.featureCache.containsKey(cacheKey)) {
@@ -167,9 +190,9 @@ export default class MVTImageryProvider implements ImageryProvider {
     if (!promise) {
       const url = this.getUrl_(z, x, y);
       promise = fetch(url)
-          .then(r => (r.ok ? r : Promise.reject(r)))
-          .then(r => r.arrayBuffer())
-          .then(buffer => this.readFeaturesFromBuffer(buffer));
+        .then((r) => (r.ok ? r : Promise.reject(r)))
+        .then((r) => r.arrayBuffer())
+        .then((buffer) => this.readFeaturesFromBuffer(buffer));
       this.featureCache.set(cacheKey, promise);
       if (this.featureCache.getCount() > 2 * this.featureCache.highWaterMark) {
         while (this.featureCache.canExpireCache()) {
@@ -203,7 +226,12 @@ export default class MVTImageryProvider implements ImageryProvider {
     return `${z}_${x}_${y}`;
   }
 
-  requestImage(x: number, y: number, z: number, request?: Request): Promise<ImageryTypes> | undefined {
+  requestImage(
+    x: number,
+    y: number,
+    z: number,
+    request?: Request,
+  ): Promise<ImageryTypes> | undefined {
     if (z < this.minimumLevel_) {
       return this.emptyCanvasPromise_;
     }
@@ -215,13 +243,23 @@ export default class MVTImageryProvider implements ImageryProvider {
         promise = this.tileCache.get(cacheKey);
       }
       if (!promise) {
-        promise = this.getTileFeatures(z, x, y)
-            .then((features) => {
-            // FIXME: here we suppose the 2D projection is in meters
-              this.tilingScheme.tileXYToNativeRectangle(x, y, z, this.tileRectangle_);
-              const resolution = (this.tileRectangle_.east - this.tileRectangle_.west) / this.tileWidth;
-              return this.rasterizeFeatures(features, this.styleFunction_, resolution);
-            });
+        promise = this.getTileFeatures(z, x, y).then((features) => {
+          // FIXME: here we suppose the 2D projection is in meters
+          this.tilingScheme.tileXYToNativeRectangle(
+            x,
+            y,
+            z,
+            this.tileRectangle_,
+          );
+          const resolution =
+            (this.tileRectangle_.east - this.tileRectangle_.west) /
+            this.tileWidth;
+          return this.rasterizeFeatures(
+            features,
+            this.styleFunction_,
+            resolution,
+          );
+        });
         this.tileCache.set(cacheKey, promise);
         if (this.tileCache.getCount() > 2 * this.tileCache.highWaterMark) {
           while (this.tileCache.canExpireCache()) {
@@ -238,9 +276,15 @@ export default class MVTImageryProvider implements ImageryProvider {
     }
   }
 
-  rasterizeFeatures(features: RenderFeature[], styleFunction: StyleFunction, resolution: number): HTMLCanvasElement {
+  rasterizeFeatures(
+    features: RenderFeature[],
+    styleFunction: StyleFunction,
+    resolution: number,
+  ): HTMLCanvasElement {
     const canvas = document.createElement('canvas');
-    const vectorContext = toContext(canvas.getContext('2d'), {size: [this.tileWidth, this.tileHeight]});
+    const vectorContext = toContext(canvas.getContext('2d'), {
+      size: [this.tileWidth, this.tileHeight],
+    });
     features.forEach((f) => {
       const styles = styleFunction(f, resolution);
       if (styles) {

@@ -74,18 +74,15 @@
   },
   "devDependencies": {
     "@swc-node/register": "1.9.2",
-    "@typescript-eslint/eslint-plugin": "8.58.1",
-    "@typescript-eslint/parser": "8.58.1",
     "cesium": "1.130.0",
-    "eslint": "8.57.0",
+    "eslint": "^10.2.0",
     "eslint-config-openlayers": "21.0.0",
-    "eslint-import-resolver-typescript": "3.6.3",
-    "eslint-plugin-import": "2.32.0",
     "marked": "^18.0.0",
     "ol": "10.8.0",
     "proj4": "2.20.8",
     "typedoc": "0.28.19",
     "typescript": "6.0.2",
+    "typescript-eslint": "8.58.2",
     "vite": "6.3.2"
   }
 }

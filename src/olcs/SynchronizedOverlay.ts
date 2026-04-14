@@ -1,11 +1,10 @@
-import OLOverlay from 'ol/Overlay.js';
-import {transform} from 'ol/proj.js';
-import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
 import type {Scene} from 'cesium';
-import type OverlaySynchronizer from './OverlaySynchronizer.js';
 import type {EventsKey} from 'ol/events.js';
 import type {ObjectEvent} from 'ol/Object.js';
-
+import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
+import OLOverlay from 'ol/Overlay.js';
+import {transform} from 'ol/proj.js';
+import type OverlaySynchronizer from './OverlaySynchronizer.js';
 
 /**
  * @param node The node to remove.
@@ -49,16 +48,13 @@ function cloneNode<T extends Node, U extends Node>(node: T, parent: U): T {
   return clone;
 }
 
-
 interface SynchronizedOverlayOptions {
   scene: Scene;
   parent: OLOverlay;
   synchronizer: OverlaySynchronizer;
 }
 
-
 export default class SynchronizedOverlay extends OLOverlay {
-
   private scenePostRenderListenerRemover_?: Function = null;
   private scene_: Scene;
   private synchronizer_: OverlaySynchronizer;
@@ -67,7 +63,6 @@ export default class SynchronizedOverlay extends OLOverlay {
   private observer_: MutationObserver;
   private attributeObserver_: MutationObserver[] = [];
   private listenerKeys_: EventsKey[];
-
 
   /**
    * @param options SynchronizedOverlay Options.
@@ -85,11 +80,20 @@ export default class SynchronizedOverlay extends OLOverlay {
     this.listenerKeys_ = [];
 
     // synchronize our Overlay with the parent Overlay
-    const setPropertyFromEvent = (event: ObjectEvent) => this.setPropertyFromEvent_(event);
-    this.listenerKeys_.push(this.parent_.on('change:element', setPropertyFromEvent));
-    this.listenerKeys_.push(this.parent_.on('change:offset', setPropertyFromEvent));
-    this.listenerKeys_.push(this.parent_.on('change:position', setPropertyFromEvent));
-    this.listenerKeys_.push(this.parent_.on('change:positioning', setPropertyFromEvent));
+    const setPropertyFromEvent = (event: ObjectEvent) =>
+      this.setPropertyFromEvent_(event);
+    this.listenerKeys_.push(
+      this.parent_.on('change:element', setPropertyFromEvent),
+    );
+    this.listenerKeys_.push(
+      this.parent_.on('change:offset', setPropertyFromEvent),
+    );
+    this.listenerKeys_.push(
+      this.parent_.on('change:position', setPropertyFromEvent),
+    );
+    this.listenerKeys_.push(
+      this.parent_.on('change:positioning', setPropertyFromEvent),
+    );
 
     this.setProperties(this.parent_.getProperties());
 
@@ -111,7 +115,7 @@ export default class SynchronizedOverlay extends OLOverlay {
       attributes: false,
       childList: true,
       characterData: true,
-      subtree: true
+      subtree: true,
     });
     this.attributeObserver_.forEach((observer) => {
       observer.disconnect();
@@ -120,10 +124,12 @@ export default class SynchronizedOverlay extends OLOverlay {
     for (let i = 0; i < target.childNodes.length; i++) {
       const node = target.childNodes[i];
       if (node.nodeType === 1) {
-        const observer = new MutationObserver(this.handleElementChanged.bind(this));
+        const observer = new MutationObserver(
+          this.handleElementChanged.bind(this),
+        );
         observer.observe(node, {
           attributes: true,
-          subtree: true
+          subtree: true,
         });
         this.attributeObserver_.push(observer);
       }
@@ -161,10 +167,13 @@ export default class SynchronizedOverlay extends OLOverlay {
     this.scenePostRenderListenerRemover_ = null;
     const scene = this.getScene();
     if (scene) {
-      this.scenePostRenderListenerRemover_ = scene.postRender.addEventListener(this.updatePixelPosition.bind(this));
+      this.scenePostRenderListenerRemover_ = scene.postRender.addEventListener(
+        this.updatePixelPosition.bind(this),
+      );
       this.updatePixelPosition();
-      const container = this.stopEvent ?
-        this.synchronizer_.getOverlayContainerStopEvent() : this.synchronizer_.getOverlayContainer();
+      const container = this.stopEvent
+        ? this.synchronizer_.getOverlayContainerStopEvent()
+        : this.synchronizer_.getOverlayContainer();
       if (this.insertFirst) {
         container.insertBefore(this.element, container.childNodes[0] || null);
       } else {
@@ -223,7 +232,9 @@ export default class SynchronizedOverlay extends OLOverlay {
     }
     let height = 0;
     if (position.length === 2) {
-      const globeHeight = this.scene_.globe.getHeight(Cesium.Cartographic.fromDegrees(position[0], position[1]));
+      const globeHeight = this.scene_.globe.getHeight(
+        Cesium.Cartographic.fromDegrees(position[0], position[1]),
+      );
       if (globeHeight && this.scene_.globe.tilesLoaded) {
         position[2] = globeHeight;
       }
@@ -233,18 +244,35 @@ export default class SynchronizedOverlay extends OLOverlay {
     } else {
       height = position[2];
     }
-    const cartesian = Cesium.Cartesian3.fromDegrees(position[0], position[1], height);
+    const cartesian = Cesium.Cartesian3.fromDegrees(
+      position[0],
+      position[1],
+      height,
+    );
     const camera = this.scene_.camera;
-    const ellipsoidBoundingSphere = new Cesium.BoundingSphere(new Cesium.Cartesian3(), 6356752);
-    const occluder = new Cesium.Occluder(ellipsoidBoundingSphere, camera.position);
+    const ellipsoidBoundingSphere = new Cesium.BoundingSphere(
+      new Cesium.Cartesian3(),
+      6356752,
+    );
+    const occluder = new Cesium.Occluder(
+      ellipsoidBoundingSphere,
+      camera.position,
+    );
     // check if overlay position is behind the horizon
     if (!occluder.isPointVisible(cartesian)) {
       this.setVisible(false);
       return;
     }
-    const cullingVolume = camera.frustum.computeCullingVolume(camera.position, camera.direction, camera.up);
+    const cullingVolume = camera.frustum.computeCullingVolume(
+      camera.position,
+      camera.direction,
+      camera.up,
+    );
     // check if overlay position is visible from the camera
-    if (cullingVolume.computeVisibility(new Cesium.BoundingSphere(cartesian)) !== 1) {
+    if (
+      cullingVolume.computeVisibility(new Cesium.BoundingSphere(cartesian)) !==
+      1
+    ) {
       this.setVisible(false);
       return;
     }

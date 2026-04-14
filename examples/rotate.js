@@ -1,41 +1,44 @@
-import OLCesium, {computeSignedTiltAngleOnGlobe, pickBottomPoint, computeAngleToZenith, setHeadingUsingBottomCenter, rotateAroundAxis} from 'olcs';
-import olView from 'ol/View.js';
 import {defaults as olControlDefaults} from 'ol/control.js';
-import olSourceOSM from 'ol/source/OSM.js';
 import olLayerTile from 'ol/layer/Tile.js';
 import olMap from 'ol/Map.js';
-
+import olSourceOSM from 'ol/source/OSM.js';
+import olView from 'ol/View.js';
+import OLCesium, {
+  computeAngleToZenith,
+  computeSignedTiltAngleOnGlobe,
+  pickBottomPoint,
+  rotateAroundAxis,
+  setHeadingUsingBottomCenter,
+} from 'olcs';
 
 const map = new olMap({
   layers: [
     new olLayerTile({
-      source: new olSourceOSM()
-    })
+      source: new olSourceOSM(),
+    }),
   ],
   target: 'mapCesium',
   controls: olControlDefaults({
     attributionOptions: {
-      collapsible: false
-    }
+      collapsible: false,
+    },
   }),
   view: new olView({
     center: [333333, 1500000],
-    zoom: 6
-  })
+    zoom: 6,
+  }),
 });
 
-
-const ol3d = new OLCesium({map/*, target: 'map3d'*/});
+const ol3d = new OLCesium({map /*, target: 'map3d'*/});
 
 ol3d.getCesiumScene();
 ol3d.setEnabled(true);
 
 /**
  * @param {!olcs.OLCesium} ol3d
- * @constructor
+ * @class
  */
-const OlcsControl = function(ol3d) {
-
+const OlcsControl = function (ol3d) {
   /**
    * @type {!olcs.OLCesium}
    * @private
@@ -43,14 +46,12 @@ const OlcsControl = function(ol3d) {
   this.ol3d_ = ol3d;
 };
 
-
 /**
  * Almost PI / 2.
  * @const
  * @type {number}
  */
-OlcsControl.MAX_TILT = 7 * Math.PI / 16;
-
+OlcsControl.MAX_TILT = (7 * Math.PI) / 16;
 
 /**
  * @const
@@ -58,45 +59,40 @@ OlcsControl.MAX_TILT = 7 * Math.PI / 16;
  */
 OlcsControl.MIN_TILT = 0;
 
-
 /**
  * @return {ol.View}
  */
-OlcsControl.prototype.getOlView = function() {
+OlcsControl.prototype.getOlView = function () {
   return this.ol3d_.getOlView();
 };
 
-
 /**
- * @return {Array.<number>}
+ * @return {Array<number>}
  */
-OlcsControl.prototype.getTiltRange = function() {
+OlcsControl.prototype.getTiltRange = function () {
   return [OlcsControl.MIN_TILT, OlcsControl.MAX_TILT];
 };
-
 
 /**
  * @return {number}
  */
-OlcsControl.prototype.getHeading = function() {
+OlcsControl.prototype.getHeading = function () {
   return this.getOlView().getRotation() || 0;
 };
-
 
 /**
  * @return {number|undefined}
  */
-OlcsControl.prototype.getTiltOnGlobe = function() {
+OlcsControl.prototype.getTiltOnGlobe = function () {
   const scene = this.ol3d_.getCesiumScene();
   const tiltOnGlobe = computeSignedTiltAngleOnGlobe(scene);
   return -tiltOnGlobe;
 };
 
-
 /**
  * @param {function()} callback
  */
-OlcsControl.prototype.resetToNorthZenith = function(callback) {
+OlcsControl.prototype.resetToNorthZenith = function (callback) {
   const scene = this.ol3d_.getCesiumScene();
   const camera = scene.camera;
   const pivot = pickBottomPoint(scene);
@@ -119,21 +115,19 @@ OlcsControl.prototype.resetToNorthZenith = function(callback) {
   rotateAroundAxis(camera, -angle, axis, transform, options);
 };
 
-
-OlcsControl.prototype.rotate = function(angle) {
+OlcsControl.prototype.rotate = function (angle) {
   const view = this.ol3d_.getOlView();
   const current = view.getRotation();
   view.animate({
     rotation: current + angle,
-    duration: 250
+    duration: 250,
   });
 };
-
 
 /**
  * @param {number} angle
  */
-OlcsControl.prototype.setHeading = function(angle) {
+OlcsControl.prototype.setHeading = function (angle) {
   const scene = this.ol3d_.getCesiumScene();
   const bottom = pickBottomPoint(scene);
   if (bottom) {
@@ -141,11 +135,10 @@ OlcsControl.prototype.setHeading = function(angle) {
   }
 };
 
-
 /**
  * @param {number} angle
  */
-OlcsControl.prototype.tiltOnGlobe = function(angle) {
+OlcsControl.prototype.tiltOnGlobe = function (angle) {
   const scene = this.ol3d_.getCesiumScene();
   const camera = scene.camera;
   const pivot = pickBottomPoint(scene);
@@ -160,9 +153,7 @@ OlcsControl.prototype.tiltOnGlobe = function(angle) {
   rotateAroundAxis(camera, -angle, axis, transform, options);
 };
 
-
-
-window['control'] = new OlcsControl(ol3d); // eslint-disable-line no-unused-vars
+window['control'] = new OlcsControl(ol3d);
 
 //##REMOVE## Keep this tag, split code here for code sandbox
 

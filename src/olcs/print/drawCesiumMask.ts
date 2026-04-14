@@ -3,18 +3,16 @@ import type {Scene} from 'cesium';
 let postUnlistener: Function = null;
 
 interface ProgramInfo {
-  program: WebGLProgram,
+  program: WebGLProgram;
   attribLocations: {
-    vertexPosition: number
-  },
+    vertexPosition: number;
+  };
   uniformLocations: {
-    uScaling: WebGLUniformLocation
-  }
+    uScaling: WebGLUniformLocation;
+  };
 }
 
-
 // CC0 from https://github.com/mdn/dom-examples/tree/main/webgl-examples/tutorial/sample2
-
 
 export class MaskDrawer {
   private programInfo: ProgramInfo;
@@ -26,14 +24,11 @@ export class MaskDrawer {
     this.programInfo = {
       program: shaderProgram,
       attribLocations: {
-        vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition')
+        vertexPosition: gl.getAttribLocation(shaderProgram, 'aVertexPosition'),
       },
       uniformLocations: {
-        uScaling: gl.getUniformLocation(
-            shaderProgram,
-            'uScaling'
-        )
-      }
+        uScaling: gl.getUniformLocation(shaderProgram, 'uScaling'),
+      },
     };
 
     this.positionBuffer = gl.createBuffer();
@@ -70,8 +65,8 @@ export class MaskDrawer {
     const vsSource = this.getVertexShaderSource();
     const fsSource = this.getFragmentShaderSource();
     const vertexShader = MaskDrawer.loadShader(gl, gl.VERTEX_SHADER, vsSource),
-        fragmentShader = MaskDrawer.loadShader(gl, gl.FRAGMENT_SHADER, fsSource),
-        shaderProgram = gl.createProgram();
+      fragmentShader = MaskDrawer.loadShader(gl, gl.FRAGMENT_SHADER, fsSource),
+      shaderProgram = gl.createProgram();
 
     gl.attachShader(shaderProgram, vertexShader);
     gl.attachShader(shaderProgram, fragmentShader);
@@ -81,19 +76,18 @@ export class MaskDrawer {
 
     if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
       throw new Error(
-          `Unable to initialize the shader program: ${gl.getProgramInfoLog(
-              shaderProgram
-          )}`
+        `Unable to initialize the shader program: ${gl.getProgramInfoLog(
+          shaderProgram,
+        )}`,
       );
     }
 
     return shaderProgram;
   }
 
-
   /**
    *
-   * @param {number[]} scaling scaling
+   * @param {Array<number>} scaling scaling
    */
   drawMask(scaling: number[]) {
     const gl = this.gl;
@@ -103,61 +97,42 @@ export class MaskDrawer {
 
     gl.bindBuffer(gl.ARRAY_BUFFER, this.positionBuffer);
     gl.vertexAttribPointer(
-        programInfo.attribLocations.vertexPosition,
-        2,
-        gl.FLOAT,
-        false,
-        0,
-        0
+      programInfo.attribLocations.vertexPosition,
+      2,
+      gl.FLOAT,
+      false,
+      0,
+      0,
     );
     gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
     gl.useProgram(programInfo.program);
 
-
     // Draw a first time to fill the stencil area while keeping the destination color
     gl.enable(gl.STENCIL_TEST);
-    gl.stencilFunc(
-        gl.ALWAYS,
-        1,
-        0xFF
-    );
-    gl.stencilOp(
-        gl.KEEP,
-        gl.KEEP,
-        gl.REPLACE
-    );
-    gl.uniform2fv(
-        programInfo.uniformLocations.uScaling,
-        scaling
-    );
+    gl.stencilFunc(gl.ALWAYS, 1, 0xff);
+    gl.stencilOp(gl.KEEP, gl.KEEP, gl.REPLACE);
+    gl.uniform2fv(programInfo.uniformLocations.uScaling, scaling);
     gl.blendFunc(gl.ZERO, gl.ONE);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
-
     // Now draw again the whole viewport and darken the pixels that are not on the stencil
-    gl.stencilFunc(
-        gl.EQUAL,
-        0,
-        0xFF
-    );
-    gl.stencilOp(
-        gl.KEEP,
-        gl.KEEP,
-        gl.KEEP
-    );
-    gl.uniform2fv(
-        programInfo.uniformLocations.uScaling,
-        [1, 1]
-    );
+    gl.stencilFunc(gl.EQUAL, 0, 0xff);
+    gl.stencilOp(gl.KEEP, gl.KEEP, gl.KEEP);
+    gl.uniform2fv(programInfo.uniformLocations.uScaling, [1, 1]);
     gl.blendFunc(gl.ZERO, gl.SRC_ALPHA);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
   }
 
-
-
   /**
+   * @param gl
+   * @param type
+   * @param source
    */
-  private static loadShader(gl: WebGL2RenderingContext | WebGLRenderingContext, type: number, source: string): WebGLShader {
+  private static loadShader(
+    gl: WebGL2RenderingContext | WebGLRenderingContext,
+    type: number,
+    source: string,
+  ): WebGLShader {
     const shader = gl.createShader(type);
 
     gl.shaderSource(shader, source);
@@ -165,7 +140,7 @@ export class MaskDrawer {
 
     if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
       throw new Error(
-          `An error occurred compiling the shaders: ${gl.getShaderInfoLog(shader)}`
+        `An error occurred compiling the shaders: ${gl.getShaderInfoLog(shader)}`,
       );
       // gl.deleteShader(shader);
     }
@@ -176,6 +151,8 @@ export class MaskDrawer {
 
 /**
  *
+ * @param scene
+ * @param getScalings
  */
 export function autoDrawMask(scene: Scene, getScalings: () => number[]) {
   const canvas = scene.canvas;
@@ -188,8 +165,7 @@ export function autoDrawMask(scene: Scene, getScalings: () => number[]) {
         drawer.drawMask(getScalings());
       });
     }
-  }
-  else if (postUnlistener) {
+  } else if (postUnlistener) {
     postUnlistener();
     // FIXME: destroy program
     postUnlistener = null;

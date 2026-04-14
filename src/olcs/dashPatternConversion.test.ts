@@ -1,5 +1,5 @@
-import test from 'node:test';
 import assert from 'node:assert';
+import test from 'node:test';
 
 import {dashPattern} from './FeatureConverter.js';
 
@@ -18,7 +18,10 @@ test('pattern-100-100', (t) => {
 
 test('pattern-100-100-100-100', (t) => {
   // We should see 4 dashes of equal length.
-  assert.strictEqual(olPatternAsBinary([100, 100, 100, 100]), '1111000011110000');
+  assert.strictEqual(
+    olPatternAsBinary([100, 100, 100, 100]),
+    '1111000011110000',
+  );
 });
 
 test('pattern-too-long', (t) => {
@@ -26,9 +29,11 @@ test('pattern-too-long', (t) => {
   // we should still ensure that the pattern is well formed (I guess):
   // - starts with a 1:
   // - ends with a 0.
-  assert.strictEqual(olPatternAsBinary(Array.from({length: 200}, _ => 1)), '1000000000000000');
+  assert.strictEqual(
+    olPatternAsBinary(Array.from({length: 200}, (_) => 1)),
+    '1000000000000000',
+  );
 });
-
 
 test('pattern-uneven', (t) => {
   // When the pattern is uneven, it is duplicated

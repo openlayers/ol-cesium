@@ -8,10 +8,15 @@ interface ScreenshotOptions {
 }
 
 /**
+ * @param scene
+ * @param options
  */
-export function takeScreenshot(scene: Scene, options: ScreenshotOptions): Promise<string> {
+export function takeScreenshot(
+  scene: Scene,
+  options: ScreenshotOptions,
+): Promise<string> {
   return new Promise((resolve, reject) => {
-  // preserveDrawingBuffers is false so we render on demand and immediately read the buffer
+    // preserveDrawingBuffers is false so we render on demand and immediately read the buffer
     const remover = scene.postRender.addEventListener(() => {
       remover();
       try {
@@ -22,18 +27,25 @@ export function takeScreenshot(scene: Scene, options: ScreenshotOptions): Promis
 
           smallerCanvas.width = options.width;
           smallerCanvas.height = options.height;
-          smallerCanvas.getContext('2d').drawImage(
+          smallerCanvas
+            .getContext('2d')
+            .drawImage(
               scene.canvas,
-              options.offsetX, options.offsetY, options.width, options.height,
-              0, 0, options.width, options.height);
+              options.offsetX,
+              options.offsetY,
+              options.width,
+              options.height,
+              0,
+              0,
+              options.width,
+              options.height,
+            );
           url = smallerCanvas.toDataURL();
-        }
-        else {
+        } else {
           url = scene.canvas.toDataURL();
         }
         resolve(url);
-      }
-      catch (e) {
+      } catch (e) {
         reject(e);
       }
     });

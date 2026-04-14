@@ -2,7 +2,7 @@ import OLCesium from 'olcs';
 
 import Map from 'ol/Map.js';
 import View from 'ol/View.js';
-import {getWidth, getTopLeft} from 'ol/extent.js';
+import {getTopLeft, getWidth} from 'ol/extent.js';
 import TileLayer from 'ol/layer/Tile.js';
 import {get as getProjection} from 'ol/proj.js';
 import OSM from 'ol/source/OSM.js';
@@ -24,15 +24,17 @@ const ol2d = new Map({
   layers: [
     new TileLayer({
       source: new OSM(),
-      opacity: 0.7
+      opacity: 0.7,
     }),
     new TileLayer({
       opacity: 0.7,
       source: new WMTS({
-        attributions: 'Tiles © <a href="https://sampleserver6.arcgisonline.com/arcgis/rest/' +
-            'services/WorldTimeZones/MapServer/WMTS/">ArcGIS</a>',
-        url: 'https://sampleserver6.arcgisonline.com/arcgis/rest/' +
-            'services/WorldTimeZones/MapServer/WMTS/',
+        attributions:
+          'Tiles © <a href="https://sampleserver6.arcgisonline.com/arcgis/rest/' +
+          'services/WorldTimeZones/MapServer/WMTS/">ArcGIS</a>',
+        url:
+          'https://sampleserver6.arcgisonline.com/arcgis/rest/' +
+          'services/WorldTimeZones/MapServer/WMTS/',
         layer: 'WorldTimeZones',
         matrixSet: 'GoogleMapsCompatible',
         format: 'image/png',
@@ -40,18 +42,18 @@ const ol2d = new Map({
         tileGrid: new WMTSTileGrid({
           origin: getTopLeft(projectionExtent),
           resolutions,
-          matrixIds
+          matrixIds,
         }),
         style: 'default',
-        wrapX: true
-      })
-    })
+        wrapX: true,
+      }),
+    }),
   ],
   target: 'mapCesium',
   view: new View({
     center: [-11158582, 4813697],
-    zoom: 4
-  })
+    zoom: 4,
+  }),
 });
 
 const ol3d = new OLCesium({
@@ -60,7 +62,9 @@ const ol3d = new OLCesium({
 ol3d.getCesiumScene();
 ol3d.setEnabled(true);
 
-document.getElementById('enable').addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
+document
+  .getElementById('enable')
+  .addEventListener('click', () => ol3d.setEnabled(!ol3d.getEnabled()));
 
 //##REMOVE## Keep this tag, split code here for code sandbox
 

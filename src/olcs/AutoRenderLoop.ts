@@ -13,10 +13,16 @@ export default class AutoRenderLoop {
   private canvas_: HTMLCanvasElement;
   private _boundNotifyRepaintRequired: typeof this.notifyRepaintRequired;
   private repaintEventNames_ = [
-    'mousemove', 'mousedown', 'mouseup',
-    'touchstart', 'touchend', 'touchmove',
-    'pointerdown', 'pointerup', 'pointermove',
-    'wheel'
+    'mousemove',
+    'mousedown',
+    'mouseup',
+    'touchstart',
+    'touchend',
+    'touchmove',
+    'pointerdown',
+    'pointerup',
+    'pointermove',
+    'wheel',
   ] as const;
 
   /**
@@ -37,13 +43,20 @@ export default class AutoRenderLoop {
     this.scene_.requestRenderMode = true;
     this.scene_.maximumRenderTimeChange = 1000;
     for (const repaintKey of this.repaintEventNames_) {
-      this.canvas_.addEventListener(repaintKey, this._boundNotifyRepaintRequired, false);
+      this.canvas_.addEventListener(
+        repaintKey,
+        this._boundNotifyRepaintRequired,
+        false,
+      );
     }
 
     window.addEventListener('resize', this._boundNotifyRepaintRequired, false);
 
     // Listen for changes on the layer group
-    this.ol3d.getOlMap().getLayerGroup().on('change', this._boundNotifyRepaintRequired);
+    this.ol3d
+      .getOlMap()
+      .getLayerGroup()
+      .on('change', this._boundNotifyRepaintRequired);
   }
 
   /**
@@ -51,12 +64,23 @@ export default class AutoRenderLoop {
    */
   disable() {
     for (const repaintKey of this.repaintEventNames_) {
-      this.canvas_.removeEventListener(repaintKey, this._boundNotifyRepaintRequired, false);
+      this.canvas_.removeEventListener(
+        repaintKey,
+        this._boundNotifyRepaintRequired,
+        false,
+      );
     }
 
-    window.removeEventListener('resize', this._boundNotifyRepaintRequired, false);
+    window.removeEventListener(
+      'resize',
+      this._boundNotifyRepaintRequired,
+      false,
+    );
 
-    this.ol3d.getOlMap().getLayerGroup().un('change', this._boundNotifyRepaintRequired);
+    this.ol3d
+      .getOlMap()
+      .getLayerGroup()
+      .un('change', this._boundNotifyRepaintRequired);
     this.scene_.requestRenderMode = false;
   }
 

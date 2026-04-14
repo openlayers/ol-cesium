@@ -1,60 +1,62 @@
-import OLCesium from 'olcs';
-import olView from 'ol/View.js';
 import {defaults as olControlDefaults} from 'ol/control.js';
-import olSourceOSM from 'ol/source/OSM.js';
-import olLayerTile from 'ol/layer/Tile.js';
-import olSourceVector from 'ol/source/Vector.js';
-import olLayerVector from 'ol/layer/Vector.js';
-import olStyleIcon from 'ol/style/Icon.js';
-import olStyleStyle from 'ol/style/Style.js';
 import olFeature from 'ol/Feature.js';
 import olGeomPoint from 'ol/geom/Point.js';
+import olLayerTile from 'ol/layer/Tile.js';
+import olLayerVector from 'ol/layer/Vector.js';
 import olMap from 'ol/Map.js';
+import olSourceOSM from 'ol/source/OSM.js';
+import olSourceVector from 'ol/source/Vector.js';
+import olStyleIcon from 'ol/style/Icon.js';
+import olStyleStyle from 'ol/style/Style.js';
+import olView from 'ol/View.js';
+import OLCesium from 'olcs';
 
 const point = new olGeomPoint([700000, 200000, 100000]);
 
 const iconFeature = new olFeature({
-  geometry: point
+  geometry: point,
 });
 
 const iconStyle = new olStyleStyle({
-  image: new olStyleIcon(/** @type {olx.style.IconOptions} */ ({
-    anchor: [0.5, 46],
-    anchorXUnits: 'fraction',
-    anchorYUnits: 'pixels',
-    opacity: 0.75,
-    src: 'data/icon.png',
-    crossOrigin: 'anonymous'
-  }))
+  image: new olStyleIcon(
+    /** @type {olx.style.IconOptions} */ ({
+      anchor: [0.5, 46],
+      anchorXUnits: 'fraction',
+      anchorYUnits: 'pixels',
+      opacity: 0.75,
+      src: 'data/icon.png',
+      crossOrigin: 'anonymous',
+    }),
+  ),
 });
 
 iconFeature.setStyle(iconStyle);
 
 const vectorSource2 = new olSourceVector({
-  features: [iconFeature]
+  features: [iconFeature],
 });
 const vectorLayer2 = new olLayerVector({
   renderMode: 'image',
-  source: vectorSource2
+  source: vectorSource2,
 });
 
 const map = new olMap({
   layers: [
     new olLayerTile({
-      source: new olSourceOSM()
+      source: new olSourceOSM(),
     }),
-    vectorLayer2
+    vectorLayer2,
   ],
   target: 'mapCesium',
   controls: olControlDefaults({
     attributionOptions: {
-      collapsible: false
-    }
+      collapsible: false,
+    },
   }),
   view: new olView({
     center: [0, 0],
-    zoom: 2
-  })
+    zoom: 2,
+  }),
 });
 
 const ol3d = new OLCesium({map});
@@ -62,7 +64,7 @@ ol3d.getCesiumScene();
 ol3d.setEnabled(true);
 
 let tracking = false;
-window['toggleTracking'] = function() {
+window['toggleTracking'] = function () {
   tracking = !tracking;
   ol3d.trackedFeature = tracking ? iconFeature : undefined;
 };
@@ -72,7 +74,7 @@ setInterval(() => {
   point.setCoordinates([
     old[0] + 1000 * Math.random(),
     old[1] + 1000 * Math.random(),
-    old[2]
+    old[2],
   ]);
   iconFeature.changed();
 }, 100);

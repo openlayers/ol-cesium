@@ -5,9 +5,8 @@
  * @return Angle in degrees.
  */
 export function toDegrees(angleInRadians: number): number {
-  return angleInRadians * 180 / Math.PI;
+  return (angleInRadians * 180) / Math.PI;
 }
-
 
 /**
  * Converts degrees to radians.
@@ -16,5 +15,5 @@ export function toDegrees(angleInRadians: number): number {
  * @return Angle in radians.
  */
 export function toRadians(angleInDegrees: number): number {
-  return angleInDegrees * Math.PI / 180;
+  return (angleInDegrees * Math.PI) / 180;
 }
