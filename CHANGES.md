@@ -8,6 +8,7 @@
   * Fix canvas pattern fill rendering in Cesium (was falling back to black).
   * Fix invalid `</link>` closing tags in example HTML files.
   * Update KML example data source URL.
+  * Fix types exports map.
 
 ## v 2.22.4
 
