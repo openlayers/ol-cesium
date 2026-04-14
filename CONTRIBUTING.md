@@ -15,13 +15,13 @@ You will obviously start by
 ```bash
 npm i
 npm start
-browse http://localhost:1234
+browse http://localhost:5173/examples
 ```
 
 ### OLCesium import
 
 The examples use a compiled version of OLCesium. If you want to use the source code directly you can define an alias.
-See https://en.parceljs.org/module_resolution.html#aliases
+See the `resolve.alias` section of `vite.config.js`.
 
 ### The `check` target
 
