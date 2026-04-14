@@ -1,0 +1,32 @@
+name: Draft release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run prepare
+      - name: Create release zip
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          zip -r "olcs-${VERSION}.zip" package.json LICENSE README.md PROPERTIES.md css/ src/ lib/ apidoc/
+      - name: Draft GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          generate_release_notes: true
+          files: olcs-*.zip
