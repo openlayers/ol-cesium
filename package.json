@@ -35,9 +35,6 @@
     }
   },
   "types": "lib/types/olcs.d.ts",
-  "directories": {
-    "doc": "apidoc/"
-  },
   "homepage": "https://github.com/openlayers/ol-cesium/",
   "keywords": [
     "Cesium",
@@ -50,8 +47,7 @@
     "PROPERTIES.md",
     "css/",
     "src/",
-    "lib/",
-    "apidoc/"
+    "lib/"
   ],
   "repository": {
     "type": "git",
