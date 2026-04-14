@@ -73,7 +73,7 @@
     "ol": ">= 9.2, >= 10"
   },
   "devDependencies": {
-    "@swc-node/register": "1.9.2",
+    "@swc-node/register": "1.11.1",
     "cesium": "1.130.0",
     "eslint": "^10.2.0",
     "eslint-config-openlayers": "21.0.0",
@@ -83,6 +83,6 @@
     "typedoc": "0.28.19",
     "typescript": "6.0.2",
     "typescript-eslint": "8.58.2",
-    "vite": "6.3.2"
+    "vite": "6.4.2"
   }
 }
