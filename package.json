@@ -3,7 +3,7 @@
   "version": "2.22.4",
   "description": "OpenLayers Cesium integration and plugin library",
   "scripts": {
-    "test": "node --enable-source-maps --import @swc-node/register/esm-register --test  src/olcs/*.test.ts",
+    "test": "node --enable-source-maps --import tsx/esm --test  src/olcs/*.test.ts",
     "build-examples": "rm -rf dist; vite build && npm run copy-static-dist && npm run copy-rawjs-sandbox",
     "prepare": "tsc --pretty; npm run doc",
     "typecheck": "tsc --pretty --noEmit",
@@ -73,13 +73,13 @@
     "ol": ">= 9.2, >= 10"
   },
   "devDependencies": {
-    "@swc-node/register": "1.11.1",
     "cesium": "1.130.0",
     "eslint": "^10.2.0",
     "eslint-config-openlayers": "21.0.0",
     "marked": "^18.0.0",
     "ol": "10.8.0",
     "proj4": "2.20.8",
+    "tsx": "^4.21.0",
     "typedoc": "0.28.19",
     "typescript": "6.0.2",
     "typescript-eslint": "8.58.2",
