@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+      "ignoreDeprecations": "6.0",
       "target": "ES2022",
       "lib": ["es2023", "dom"],
       "allowJs": true,
@@ -8,9 +9,12 @@
       "moduleResolution": "Node",
       "module": "ES2022",
       "verbatimModuleSyntax": true,
+      "rootDir": "./src",
       "outDir": "./lib",
       "inlineSourceMap": true,
       "noImplicitAny": true,
+      "strictNullChecks": false,
+      "noImplicitThis": false,
       "declarationMap": true,
       "forceConsistentCasingInFileNames": true,
       "allowSyntheticDefaultImports": true,
@@ -22,6 +26,9 @@
     },
     "include": [
       "src/**/*.ts"
+    ],
+    "exclude": [
+      "src/**/*.test.ts"
     ],
     "typeAcquisition": {
       "enable": false
