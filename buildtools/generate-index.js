@@ -20,17 +20,40 @@ const html = `<!DOCTYPE html>
     .navigation {
       text-align: center;
       margin-bottom: 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
     }
-    .navigation a img {
-      margin: 0 0.5rem;
+    .navigation a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-size: cover;
+      background-position: center;
+      border-radius: 6px;
+      width: 200px;
+      height: 50px;
+      color: #fff;
+      text-decoration: none;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
     }
+    .navigation a:hover {
+      opacity: 0.9;
+    }
+    .navigation a.btn-download { background-image: url('images/download-button.png'); }
+    .navigation a.btn-examples { background-image: url('images/examples-button.png'); }
+    .navigation a.btn-apidoc { background-image: url('images/apidoc-button.png'); }
   </style>
 </head>
 <body>
   <div class="navigation">
-    <a href="https://github.com/openlayers/ol-cesium/releases/"><img src="images/download-button.png" alt="Download release"></a>
-    <a href="examples/"><img src="images/examples-button.png" alt="Browse examples"></a>
-    <a href="apidoc/"><img src="images/apidoc-button.png" alt="View API docs"></a>
+    <a class="btn-download" href="https://github.com/openlayers/ol-cesium/releases/">Download</a>
+    <a class="btn-examples" href="examples/">Examples</a>
+    <a class="btn-apidoc" href="doc/">API Doc</a>
   </div>
   <article class="markdown-body">
     ${content}
