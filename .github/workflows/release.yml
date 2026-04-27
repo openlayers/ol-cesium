@@ -25,7 +25,7 @@ jobs:
           VERSION=${GITHUB_REF_NAME#v}
           zip -r "olcs-${VERSION}.zip" package.json LICENSE README.md PROPERTIES.md css/ src/ lib/ apidoc/
       - name: Draft GitHub release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           draft: true
           generate_release_notes: true
