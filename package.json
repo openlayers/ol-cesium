@@ -78,7 +78,7 @@
     "tsx": "^4.21.0",
     "typedoc": "0.28.19",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.59.0",
+    "typescript-eslint": "8.59.1",
     "vite": "8.0.10"
   }
 }
