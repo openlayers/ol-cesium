@@ -178,11 +178,7 @@ export default class FeatureConverter {
     layer: PrimitiveLayer,
     feature: Feature,
     primitive:
-      | GroundPolylinePrimitive
-      | GroundPrimitive
-      | Primitive
-      | Label
-      | Billboard,
+      GroundPolylinePrimitive | GroundPrimitive | Primitive | Label | Billboard,
   ) {
     primitive.olLayer = layer;
     primitive.olFeature = feature;
@@ -855,13 +851,11 @@ export default class FeatureConverter {
       if (!image) {
         return;
       }
-      if (
-        !(
-          image instanceof HTMLCanvasElement ||
-          image instanceof Image ||
-          image instanceof HTMLImageElement
-        )
-      ) {
+      if (!(
+        image instanceof HTMLCanvasElement ||
+        image instanceof Image ||
+        image instanceof HTMLImageElement
+      )) {
         return;
       }
       const center = olGeometry.getCoordinates();
