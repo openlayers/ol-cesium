@@ -162,7 +162,7 @@ export default class Manager extends Observable {
    */
   protected limitCameraToBoundingSphere() {
     const scene = this.ol3d.getCesiumScene();
-    if(this.boundingSphere_){
+    if (this.boundingSphere_) {
       const limiter = limitCameraToBoundingSphere(
         scene.camera,
         this.boundingSphere_,
