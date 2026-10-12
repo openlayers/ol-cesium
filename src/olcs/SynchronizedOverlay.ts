@@ -295,6 +295,10 @@ export default class SynchronizedOverlay extends OLOverlay {
     if (this.observer_) {
       this.observer_.disconnect();
     }
+    this.attributeObserver_.forEach((observer) => {
+      observer.disconnect();
+    });
+    this.attributeObserver_.length = 0;
     olObservableUnByKey(this.listenerKeys_);
     this.listenerKeys_.splice(0);
     if ('removeNode' in this.element) {
