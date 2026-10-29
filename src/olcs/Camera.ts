@@ -7,7 +7,7 @@ import type {
 import type {Map, View} from 'ol';
 import type {EventsKey} from 'ol/events.js';
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
-import {getTransform} from 'ol/proj.js';
+import {getTransform, getUserProjection} from 'ol/proj.js';
 import {
   calcDistanceForResolution,
   calcResolutionForDistance,
@@ -88,8 +88,10 @@ export default class Camera {
 
     this.view_ = view;
     if (view) {
-      const toLonLat = getTransform(view.getProjection(), 'EPSG:4326');
-      const fromLonLat = getTransform('EPSG:4326', view.getProjection());
+      // The view center is exposed in the user projection, when one is set.
+      const projection = getUserProjection() ?? view.getProjection();
+      const toLonLat = getTransform(projection, 'EPSG:4326');
+      const fromLonLat = getTransform('EPSG:4326', projection);
       console.assert(!!(toLonLat && fromLonLat));
 
       this.toLonLat_ = toLonLat;
