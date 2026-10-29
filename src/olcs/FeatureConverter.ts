@@ -58,7 +58,7 @@ import {
 import VectorLayerCounterpart, {
   type OlFeatureToCesiumContext,
 } from './core/VectorLayerCounterpart.js';
-import {getUid, waitReady} from './util.js';
+import {getUid} from './util.js';
 
 type ModelFromGltfOptions = Parameters<typeof Model.fromGltfAsync>[0];
 
@@ -84,7 +84,6 @@ declare module 'cesium' {
   interface GroundPolylinePrimitive {
     olLayer: PrimitiveLayer;
     olFeature: Feature;
-    _primitive: Primitive; // Missing from types published by Cesium
   }
 
   interface GroundPrimitive {
@@ -518,10 +517,7 @@ export default class FeatureConverter {
           }),
           classificationType: Cesium.ClassificationType.TERRAIN,
         });
-        const op = outlinePrimitive;
-        waitReady(outlinePrimitive).then(() => {
-          this.setReferenceForPicking(layer, feature, op._primitive);
-        });
+        this.setReferenceForPicking(layer, feature, outlinePrimitive);
       }
     } else {
       outlineGeometry = new Cesium.CircleOutlineGeometry({
@@ -587,10 +583,6 @@ export default class FeatureConverter {
         geometryInstances: new Cesium.GeometryInstance({
           geometry,
         }),
-      });
-      const op = outlinePrimitive;
-      waitReady(outlinePrimitive).then(() => {
-        this.setReferenceForPicking(layer, feature, op._primitive);
       });
     } else {
       const geometry = new Cesium.PolylineGeometry({
@@ -742,13 +734,7 @@ export default class FeatureConverter {
             appearance,
             geometryInstances,
           });
-          waitReady(outlinePrimitive).then(() => {
-            this.setReferenceForPicking(
-              layer,
-              feature,
-              outlinePrimitive._primitive,
-            );
-          });
+          this.setReferenceForPicking(layer, feature, outlinePrimitive);
         }
       } else {
         // Actually do the normal polygon thing. This should end the removable
