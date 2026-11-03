@@ -64,28 +64,3 @@ let uidCounter_ = 0;
 export function getUid(obj: any): number {
   return obj.olcs_uid || (obj.olcs_uid = ++uidCounter_);
 }
-
-export function waitReady<Type>(object: Type): Promise<Type> {
-  const o = object as any;
-  const p = o.readyPromise;
-  if (p) {
-    return p;
-  }
-  if (o.ready !== undefined) {
-    if (o.ready) {
-      return Promise.resolve(object);
-    }
-    return new Promise((resolve, _) => {
-      // FIXME: this is crazy
-      // alternative: intercept _ready = true
-      // altnerative: pass a timeout
-      const stopper = setInterval(() => {
-        if (o.ready) {
-          clearInterval(stopper);
-          resolve(object);
-        }
-      }, 20);
-    });
-  }
-  return Promise.reject('Not a readyable object');
-}
