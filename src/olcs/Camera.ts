@@ -42,6 +42,7 @@ export default class Camera {
   private view_: View;
 
   private viewListenKey_: EventsKey = null;
+  private mapViewListenKey_: EventsKey = null;
 
   private toLonLat_ = identityProjection;
   private fromLonLat_ = identityProjection;
@@ -68,13 +69,15 @@ export default class Camera {
     this.scene_ = scene;
     this.cam_ = scene.camera;
     this.map_ = map;
-    this.map_.on('change:view', (e) => {
+    this.mapViewListenKey_ = this.map_.on('change:view', (e) => {
       this.setView_(this.map_.getView());
     });
     this.setView_(this.map_.getView());
   }
 
   destroy() {
+    olObservableUnByKey(this.mapViewListenKey_);
+    this.mapViewListenKey_ = null;
     olObservableUnByKey(this.viewListenKey_);
     this.viewListenKey_ = null;
   }
