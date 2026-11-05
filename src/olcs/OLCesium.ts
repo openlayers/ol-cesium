@@ -298,6 +298,9 @@ export default class OLCesium {
    * Destroys the Cesium resources held by this object.
    */
   destroy() {
+    if (this.isOverMap_) {
+      this.restoreMap_();
+    }
     cancelAnimationFrame(this.renderId_);
     this.renderId_ = undefined;
     this.synchronizers_.forEach((synchronizer) => synchronizer.destroyAll());
@@ -530,25 +533,32 @@ export default class OLCesium {
       this.render_();
     } else {
       if (this.isOverMap_) {
-        interactions = this.map_.getInteractions();
-        this.pausedInteractions_.forEach((interaction) => {
-          interactions.push(interaction);
-        });
-        this.pausedInteractions_.length = 0;
-
-        this.map_.addInteraction = (interaction) =>
-          this.map_.getInteractions().push(interaction);
-        this.map_.removeInteraction = (interaction) =>
-          this.map_.getInteractions().remove(interaction);
-
-        this.map_.getOverlayContainer().classList.remove('olcs-hideoverlay');
-        if (this.hiddenRootGroup_) {
-          this.hiddenRootGroup_.setVisible(true);
-          this.hiddenRootGroup_ = null;
-        }
+        this.restoreMap_();
       }
 
       this.camera_.updateView();
+    }
+  }
+
+  /**
+   * Gives the paused interactions back to the map and removes the overrides
+   * of addInteraction and removeInteraction, so that the map no longer
+   * references this instance.
+   */
+  private restoreMap_() {
+    const interactions = this.map_.getInteractions();
+    this.pausedInteractions_.forEach((interaction) => {
+      interactions.push(interaction);
+    });
+    this.pausedInteractions_.length = 0;
+
+    Reflect.deleteProperty(this.map_, 'addInteraction');
+    Reflect.deleteProperty(this.map_, 'removeInteraction');
+
+    this.map_.getOverlayContainer().classList.remove('olcs-hideoverlay');
+    if (this.hiddenRootGroup_) {
+      this.hiddenRootGroup_.setVisible(true);
+      this.hiddenRootGroup_ = null;
     }
   }
 
