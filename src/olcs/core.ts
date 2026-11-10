@@ -12,6 +12,7 @@ import type {
   Rectangle,
   Scene,
   SingleTileImageryProvider,
+  WebMercatorTilingScheme,
 } from 'cesium';
 import type {Coordinate} from 'ol/coordinate.js';
 import {linear as linearEasing} from 'ol/easing.js';
@@ -462,17 +463,28 @@ export function sourceToImageryProvider(
       projection = viewProj;
     }
     if (isCesiumProjection(projection)) {
-      const rectangle: Rectangle = Cesium.Rectangle.fromDegrees(
-        source.getImageExtent()[0],
-        source.getImageExtent()[1],
-        source.getImageExtent()[2],
-        source.getImageExtent()[3],
-        new Cesium.Rectangle(),
-      );
-      provider = new Cesium.SingleTileImageryProvider({
+      const rectangle = extentToRectangle(source.getImageExtent(), projection);
+      if (
+        !rectangle ||
+        !Number.isFinite(rectangle.west) ||
+        !Number.isFinite(rectangle.south) ||
+        !Number.isFinite(rectangle.east) ||
+        !Number.isFinite(rectangle.north)
+      ) {
+        return null;
+      }
+      const options: {
+        url: string;
+        rectangle: Rectangle;
+        tilingScheme?: WebMercatorTilingScheme;
+      } = {
         url: source.getUrl(),
         rectangle,
-      });
+      };
+      if (projection.getCode() === 'EPSG:3857') {
+        options.tilingScheme = new Cesium.WebMercatorTilingScheme();
+      }
+      provider = new Cesium.SingleTileImageryProvider(options);
     }
     // Projection not supported by Cesium
     else {
