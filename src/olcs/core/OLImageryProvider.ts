@@ -282,8 +282,11 @@ export default class OLImageryProvider implements ImageryProvider /* should not 
     if (!attributionsFunction) {
       return [];
     }
-    const extent = this.map_.getView().calculateExtent(this.map_.getSize());
-    const center = this.map_.getView().getCenter();
+    // Attribution functions expect view projection coordinates.
+    const extent = this.map_
+      .getView()
+      .calculateExtentInternal(this.map_.getSize());
+    const center = this.map_.getView().getCenterInternal();
     const zoom = this.shouldRequestNextLevel ? level + 1 : level;
     return attributionsFunctionToCredits(
       attributionsFunction,
