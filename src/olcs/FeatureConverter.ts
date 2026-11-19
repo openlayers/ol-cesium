@@ -854,7 +854,9 @@ export default class FeatureConverter {
       if (!(
         image instanceof HTMLCanvasElement ||
         image instanceof Image ||
-        image instanceof HTMLImageElement
+        image instanceof HTMLImageElement ||
+        // Since OpenLayers 10.8, the images of its shapes (Circle, RegularShape) are cached as ImageBitmap.
+        (typeof ImageBitmap !== 'undefined' && image instanceof ImageBitmap)
       )) {
         return;
       }
