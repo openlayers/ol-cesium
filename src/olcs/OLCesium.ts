@@ -19,7 +19,11 @@ import type View from 'ol/View.js';
 import olGeomPoint from 'ol/geom/Point.js';
 import type Interaction from 'ol/interaction/Interaction.js';
 import type {Group} from 'ol/layer.js';
-import {getTransform, type TransformFunction} from 'ol/proj.js';
+import {
+  getTransform,
+  getUserProjection,
+  type TransformFunction,
+} from 'ol/proj.js';
 import type AbstractSynchronizer from './AbstractSynchronizer.js';
 import olcsAutoRenderLoop from './AutoRenderLoop.js';
 import olcsCamera from './Camera.js';
@@ -147,9 +151,10 @@ export default class OLCesium {
 
     /**
      * No change of the view projection.
+     * The tracked feature geometry is in the user projection, when one is set.
      */
     this.to4326Transform_ = getTransform(
-      this.map_.getView().getProjection(),
+      getUserProjection() ?? this.map_.getView().getProjection(),
       'EPSG:4326',
     );
 

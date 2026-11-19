@@ -3,7 +3,7 @@ import type {EventsKey} from 'ol/events.js';
 import type {ObjectEvent} from 'ol/Object.js';
 import {unByKey as olObservableUnByKey} from 'ol/Observable.js';
 import OLOverlay from 'ol/Overlay.js';
-import {transform} from 'ol/proj.js';
+import {getUserProjection, transform} from 'ol/proj.js';
 import type OverlaySynchronizer from './OverlaySynchronizer.js';
 
 /**
@@ -193,7 +193,9 @@ export default class SynchronizedOverlay extends OLOverlay {
     // transform position to WGS84
     const position = this.getPosition();
     if (position) {
-      const sourceProjection = this.parent_.getMap().getView().getProjection();
+      // The overlay position is in the user projection, when one is set.
+      const sourceProjection =
+        getUserProjection() ?? this.parent_.getMap().getView().getProjection();
       this.positionWGS84_ = transform(position, sourceProjection, 'EPSG:4326');
     } else {
       this.positionWGS84_ = undefined;

@@ -25,6 +25,7 @@ import olLayerTile from 'ol/layer/Tile.js';
 import VectorTileLayer from 'ol/layer/VectorTile.js';
 import {
   get as getProjection,
+  getUserProjection,
   type ProjectionLike,
   transformExtent,
 } from 'ol/proj.js';
@@ -562,7 +563,11 @@ export function tileLayerToImageryLayer(
   const forcedExtent = olLayer.get('olcs_extent');
   const ext = forcedExtent || olLayer.getExtent();
   if (ext) {
-    layerOptions.rectangle = extentToRectangle(ext, viewProj);
+    // Layer extents are in the user projection, when one is set.
+    layerOptions.rectangle = extentToRectangle(
+      ext,
+      getUserProjection() ?? viewProj,
+    );
   }
 
   const cesiumLayer = new Cesium.ImageryLayer(provider, layerOptions);

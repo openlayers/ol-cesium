@@ -42,7 +42,7 @@ import {circular as olCreateCircularPolygon} from 'ol/geom/Polygon.js';
 import olGeomSimpleGeometry from 'ol/geom/SimpleGeometry.js';
 import type ImageLayer from 'ol/layer/Image.js';
 import type VectorLayer from 'ol/layer/Vector.js';
-import type {ProjectionLike} from 'ol/proj.js';
+import {getUserProjection, type ProjectionLike} from 'ol/proj.js';
 import OLClusterSource from 'ol/source/Cluster.js';
 import VectorSource, {type VectorSourceEvent} from 'ol/source/Vector.js';
 import OLStyleIcon from 'ol/style/Icon.js';
@@ -1496,7 +1496,8 @@ export default class FeatureConverter {
     olView: View,
     featurePrimitiveMap: Record<number, PrimitiveCollection>,
   ): VectorLayerCounterpart {
-    const proj = olView.getProjection();
+    // Feature geometries are in the user projection, when one is set.
+    const proj = getUserProjection() ?? olView.getProjection();
     const resolution = olView.getResolution();
 
     if (resolution === undefined || !proj) {
@@ -1577,7 +1578,8 @@ export default class FeatureConverter {
     feature: Feature,
     context: OlFeatureToCesiumContext,
   ): PrimitiveCollection {
-    const proj = view.getProjection();
+    // Feature geometries are in the user projection, when one is set.
+    const proj = getUserProjection() ?? view.getProjection();
     const resolution = view.getResolution();
 
     if (resolution == undefined || !proj) {

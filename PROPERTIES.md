@@ -56,3 +56,4 @@ Allows to add authentication information to requests sent by CesiumJS or manipul
 ## olcs_extent
 Value: An array of numbers representing an extent: [minx, miny, maxx, maxy]
 Allows to restrict a tiled imagery layer to a rectangle. This avoid sending useless requests.
+Like the layer extent, it is in the user projection when one is set, otherwise in the view projection.
