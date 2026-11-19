@@ -38,7 +38,7 @@ test('creates a billboard from an ImageBitmap', () => {
     FeatureConverter.prototype,
   ) as FeatureConverter;
   const image = new (globals.ImageBitmap as typeof FakeImageBitmap)();
-  // OpenLayers 10 returns its cached shape images (Circle, RegularShape) as ImageBitmap.
+  // Since OpenLayers 10.8, its cached shape images (Circle, RegularShape) are ImageBitmap.
   const imageStyle = {
     getImage: () => image,
     getOpacity: () => 1,
