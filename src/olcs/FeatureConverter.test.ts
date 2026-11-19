@@ -11,6 +11,10 @@ import type Style from 'ol/style/Style.js';
 
 import type FeatureConverterClass from './FeatureConverter.js';
 
+type PrimitiveLayer = Parameters<
+  FeatureConverterClass['createBillboardFromImage']
+>[0];
+
 class PendingImage extends EventTarget {
   src = 'icon.png';
   naturalWidth = 0;
@@ -18,12 +22,27 @@ class PendingImage extends EventTarget {
   complete = false;
 }
 
+class FakeImageBitmap {
+  width = 12;
+  height = 12;
+}
+
+const globals = globalThis as Record<string, unknown>;
 let FeatureConverter: typeof FeatureConverterClass;
 
 before(async () => {
   Object.assign(globalThis, {
-    Cesium: {Cartesian3: class {}},
+    Cesium: {
+      Color: class {},
+      Cartesian3: class {
+        static fromDegrees(x: number, y: number) {
+          return {x, y};
+        }
+      },
+      HeightReference: {NONE: 0, CLAMP_TO_GROUND: 1, RELATIVE_TO_GROUND: 2},
+    },
     Image: PendingImage,
+    ImageBitmap: FakeImageBitmap,
     HTMLCanvasElement: class {},
     HTMLImageElement: PendingImage,
   });
@@ -111,4 +130,41 @@ test('stops listening when only another converter still waits for an image of th
   image.dispatchEvent(new Event('load'));
 
   assert.strictEqual(source.getListeners('removefeature')?.length, 1);
+});
+
+test('creates a billboard from an ImageBitmap', () => {
+  const converter = Object.create(
+    FeatureConverter.prototype,
+  ) as FeatureConverterClass;
+  const image = new (globals.ImageBitmap as typeof FakeImageBitmap)();
+  const imageStyle = {
+    getImage: () => image,
+    getOpacity: () => 1,
+    getScale: () => 1,
+  } as unknown as ImageStyle;
+  const noProperty = {get: () => undefined};
+  const point = {
+    ...noProperty,
+    getCoordinates: () => [4.35, 50.85],
+  } as unknown as Point;
+  const added: unknown[] = [];
+  const billboards = {
+    add: (options: {image: unknown}) => {
+      added.push(options.image);
+      return {};
+    },
+  } as unknown as BillboardCollection;
+
+  converter.createBillboardFromImage(
+    noProperty as unknown as PrimitiveLayer,
+    noProperty as unknown as Feature,
+    point,
+    'EPSG:4326',
+    {} as Style,
+    imageStyle,
+    billboards,
+    () => undefined,
+  );
+
+  assert.deepStrictEqual(added, [image]);
 });
