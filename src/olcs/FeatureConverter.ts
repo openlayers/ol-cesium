@@ -903,7 +903,8 @@ export default class FeatureConverter {
       if (!(
         image instanceof HTMLCanvasElement ||
         image instanceof Image ||
-        image instanceof HTMLImageElement
+        image instanceof HTMLImageElement ||
+        (typeof ImageBitmap !== 'undefined' && image instanceof ImageBitmap)
       )) {
         return;
       }
