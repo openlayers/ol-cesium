@@ -64,6 +64,11 @@ type ModelFromGltfOptions = Parameters<typeof Model.fromGltfAsync>[0];
 
 type PrimitiveLayer = VectorLayer<any> | ImageLayer<any>;
 
+interface ImageCancellingSource {
+  olcs_cancellers?: {[fuid: number]: () => void};
+  un(type: string[], listener: (evt: VectorSourceEvent) => void): void;
+}
+
 /**
  * OL 10 changed the way the VectorLayer is typed.
  * With "Feature": our code is compatible with OL 6-9 but fails with OL 10.
@@ -125,6 +130,11 @@ export default class FeatureConverter {
   private boundOnRemoveOrClearFeatureListener_ =
     this.onRemoveOrClearFeature_.bind(this);
 
+  /**
+   * Cancellers of the images this converter still waits for
+   */
+  private pendingImageCancellers_ = new WeakSet<() => void>();
+
   private defaultBillboardEyeOffset_ = new Cesium.Cartesian3(0, 0, 10);
 
   /**
@@ -166,6 +176,45 @@ export default class FeatureConverter {
         }
         source['olcs_cancellers'] = {};
       }
+    }
+    this.unlistenWhenNoImagePending_(source);
+  }
+
+  /**
+   * Forget the canceller of a loaded image and stop listening to the source
+   * once this converter waits for no other image of it.
+   * @param source
+   * @param fuid
+   * @param canceller
+   */
+  private forgetImageCanceller_(
+    source: ImageCancellingSource,
+    fuid: number,
+    canceller: () => void,
+  ) {
+    const cancellers = source['olcs_cancellers'];
+    if (cancellers && cancellers[fuid] === canceller) {
+      delete cancellers[fuid];
+    }
+    this.pendingImageCancellers_.delete(canceller);
+    this.unlistenWhenNoImagePending_(source);
+  }
+
+  /**
+   * The listener keeps this converter and its scene alive as long as the
+   * source lives, so remove it as soon as no image of the source is pending.
+   * @param source
+   */
+  private unlistenWhenNoImagePending_(source: ImageCancellingSource) {
+    const cancellers = source['olcs_cancellers'] || {};
+    const isPending = Object.values(cancellers).some((canceller) =>
+      this.pendingImageCancellers_.has(canceller),
+    );
+    if (!isPending) {
+      source.un(
+        ['removefeature', 'clear'],
+        this.boundOnRemoveOrClearFeatureListener_,
+      );
     }
   }
 
@@ -933,9 +982,11 @@ export default class FeatureConverter {
         cancellers[fuid]();
       }
       cancellers[fuid] = canceller;
+      this.pendingImageCancellers_.add(canceller);
 
-      const listener = function () {
+      const listener = () => {
         image.removeEventListener('load', listener);
+        this.forgetImageCanceller_(source, fuid, canceller);
         if (!billboards.isDestroyed() && !cancelled) {
           // Create billboard if the feature is still displayed on the map.
           reallyCreateBillboard();
