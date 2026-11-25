@@ -128,17 +128,27 @@ export default class RasterSynchronizer extends olcsAbstractSynchronizer<Imagery
         updateCesiumLayerProperties(olLayerWithParents, cesiumObjects[i]);
       }
 
-      // there is no way to modify Cesium layer extent,
-      // we have to recreate when OpenLayers layer extent changes:
+      // there is no way to modify Cesium layer extent, and Cesium caches the
+      // empty tiles out of the visibility range: we have to recreate the layer
+      // when the OpenLayers layer extent or visibility range changes
       listenKeyArray.push(
-        olLayer.on('change:extent', (e) => {
-          for (let i = 0; i < cesiumObjects.length; ++i) {
-            this.cesiumLayers_.remove(cesiumObjects[i], true); // destroy
-            this.ourLayers_.remove(cesiumObjects[i], false);
-          }
-          delete this.layerMap[getUid(olLayer)]; // invalidate the map entry
-          this.synchronize();
-        }),
+        ...olLayer.on(
+          [
+            'change:extent',
+            'change:minResolution',
+            'change:maxResolution',
+            'change:minZoom',
+            'change:maxZoom',
+          ],
+          (e) => {
+            for (let i = 0; i < cesiumObjects.length; ++i) {
+              this.cesiumLayers_.remove(cesiumObjects[i], true); // destroy
+              this.ourLayers_.remove(cesiumObjects[i], false);
+            }
+            delete this.layerMap[getUid(olLayer)]; // invalidate the map entry
+            this.synchronize();
+          },
+        ),
       );
 
       listenKeyArray.push(

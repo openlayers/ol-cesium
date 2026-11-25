@@ -11,6 +11,9 @@ import type {
   TilingScheme,
 } from 'cesium';
 import type {Map} from 'ol';
+import type {State as ViewState} from 'ol/View.js';
+import type BaseLayer from 'ol/layer/Base.js';
+import {inView} from 'ol/layer/Layer.js';
 import type {Projection} from 'ol/proj.js';
 import {type TileImage} from 'ol/source.js';
 import {attributionsFunctionToCredits} from '../core.js';
@@ -25,6 +28,7 @@ export function createEmptyCanvas(): HTMLCanvasElement {
 
 export default class OLImageryProvider implements ImageryProvider /* should not extend Cesium.ImageryProvider */ {
   private source_: TileImage;
+  private layer_: BaseLayer | null;
   private projection_: Projection | undefined;
   private fallbackProj_: Projection | undefined;
   private map_: Map;
@@ -192,9 +196,18 @@ export default class OLImageryProvider implements ImageryProvider /* should not 
    * @param olMap OL map
    * @param source Tile image source
    * @param [opt_fallbackProj] Projection to assume if source has no projection
+   * @param [opt_layer] Layer whose visibility range (minZoom, maxZoom,
+   * minResolution, maxResolution) limits the requested tiles
    */
-  constructor(olMap: Map, source: TileImage, opt_fallbackProj: Projection) {
+  constructor(
+    olMap: Map,
+    source: TileImage,
+    opt_fallbackProj: Projection,
+    opt_layer?: BaseLayer,
+  ) {
     this.source_ = source;
+
+    this.layer_ = opt_layer || null;
 
     this.projection_ = null;
 
@@ -305,6 +318,10 @@ export default class OLImageryProvider implements ImageryProvider /* should not 
     const tileUrlFunction = this.source_.getTileUrlFunction();
     if (tileUrlFunction && this.projection_) {
       const z_ = this.shouldRequestNextLevel ? level + 1 : level;
+      if (!this.isInView_(z_)) {
+        // the layer is hidden at this resolution in OpenLayers
+        return this.emptyCanvasPromise_;
+      }
       let url = tileUrlFunction.call(
         this.source_,
         [z_, x, y],
@@ -325,5 +342,33 @@ export default class OLImageryProvider implements ImageryProvider /* should not 
     }
     // return empty canvas to stop Cesium from retrying later
     return this.emptyCanvasPromise_;
+  }
+
+  /**
+   * Whether the layer is visible in OpenLayers at the resolution of the tiles
+   * of the given zoom level, with the same bounds as OpenLayers.
+   * @param z Zoom level of the tile grid
+   */
+  private isInView_(z: number): boolean {
+    const tileResolution = this.source_.getTileGrid()?.getResolution(z);
+    if (!this.layer_ || tileResolution === undefined) {
+      return true;
+    }
+    const view = this.map_.getView();
+    // the layer limits are in the units of the view projection
+    const sourceMetersPerUnit = this.projection_.getMetersPerUnit();
+    const viewMetersPerUnit = view.getProjection().getMetersPerUnit();
+    const resolution =
+      sourceMetersPerUnit && viewMetersPerUnit
+        ? (tileResolution * sourceMetersPerUnit) / viewMetersPerUnit
+        : tileResolution;
+    // the visibility itself is synchronized with the show property of the Cesium layer
+    const layerState = {...this.layer_.getLayerState(), visible: true};
+    // inView only reads the resolution and the zoom of the view state
+    const viewState = {
+      resolution,
+      zoom: view.getZoomForResolution(resolution),
+    } as ViewState;
+    return inView(layerState, viewState);
   }
 }

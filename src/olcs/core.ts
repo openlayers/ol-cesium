@@ -451,7 +451,12 @@ export function sourceToImageryProvider(
     }
 
     if (isCesiumProjection(projection)) {
-      provider = new olcsCoreOLImageryProvider(olMap, source, viewProj);
+      provider = new olcsCoreOLImageryProvider(
+        olMap,
+        source,
+        viewProj,
+        olLayer,
+      );
     }
     // Projection not supported by Cesium
     else {
